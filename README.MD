@@ -1,3 +1,3 @@
-sudo home-manager switch
+home-manager switch
  sudo nixos-rebuild switch --flake /home/hubert/configuration/
 
