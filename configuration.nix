@@ -107,7 +107,10 @@
     wget 
 	xclip
 	git
+docker
   ];
+
+  services.docker.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are

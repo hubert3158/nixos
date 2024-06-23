@@ -20,6 +20,7 @@
 zsh-autosuggestions
 oh-my-zsh
 home-manager
+helix
   ];
  nixpkgs.config = {
               allowUnfree = true;
@@ -49,4 +50,7 @@ home-manager
       ];
     };
   };
+
+
+
 }
