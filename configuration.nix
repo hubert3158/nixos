@@ -89,7 +89,7 @@
     description = "hubert";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      kdePackages.kate
+    #  kdePackages.kate
     #  thunderbird
     ];
   };
@@ -105,9 +105,14 @@
   environment.systemPackages = with pkgs; [
     vim 
     wget 
-	xclip
-	git
-docker
+    xclip
+    git
+    docker
+    zsh
+    oh-my-zsh
+    zsh-autosuggestions
+    home-manager
+
   ];
 
 #  services.docker.enable = true;
@@ -142,7 +147,12 @@ docker
 
 nix.settings.experimental-features = ["nix-command" "flakes"];
 
-users.defaultUserShell = pkgs.zsh;
+
+
 environment.shells = with pkgs; [ zsh ];
+users.defaultUserShell = pkgs.zsh;
 programs.zsh.enable = true;
+programs.tmux.enable=true;
+
+
 }
