@@ -7,17 +7,21 @@
     # Add your user packages here
     microsoft-edge
     google-chrome
-    postgresql
     jetbrains.idea-ultimate
     discord
     pgadmin4
     wezterm
     pavucontrol
     helix
+
   ];
  nixpkgs.config = {
               allowUnfree = true;
+	      permittedInsecurePackages = [
+                "python-2.7.18.8"
+              ];
             };
+
 
 programs.neovim = {
 enable = true;
@@ -40,7 +44,7 @@ plugins = with pkgs.vimPlugins; [
 
     oh-my-zsh = {
       enable = true;
-      theme = "agnoster";
+      theme = "robbyrussell";
       plugins = [
         "git"
         "npm"

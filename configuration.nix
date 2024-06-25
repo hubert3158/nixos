@@ -48,11 +48,11 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = false;
-  services.xserver.desktopManager.gnome.enable = false;
-  services.xserver.desktopManager.xfce.enable = true;
+  services.desktopManager.plasma6.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
+  #services.xserver.desktopManager.xfce.enable = true;
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  #services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics.enable = true;
 
   # Configure keymap in X11
@@ -90,7 +90,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  kdePackages.kate
-    #  thunderbird
+      thunderbird
     ];
   };
 
@@ -107,15 +107,18 @@
     wget 
     xclip
     git
-    docker
     zsh
     oh-my-zsh
     zsh-autosuggestions
     home-manager
+    maven
+    jdk11
+    gcc
+    gnumake 
 
   ];
-
-#  services.docker.enable = true;
+  virtualisation.docker.enable = true;
+  #services.docker.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -129,7 +132,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+   services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -154,5 +157,6 @@ users.defaultUserShell = pkgs.zsh;
 programs.zsh.enable = true;
 programs.tmux.enable=true;
 
+services.postgresql.enable = true;
 
 }
