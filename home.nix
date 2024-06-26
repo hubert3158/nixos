@@ -10,7 +10,6 @@
     jetbrains.idea-ultimate
     discord
     pgadmin4
-    wezterm
     pavucontrol
     helix
 
@@ -92,6 +91,23 @@ set -g @catppuccin_directory_text "#{pane_current_path}"
 	'';
 };
 
+programs.wezterm = {
+enable = true;
+  #color_scheme = "Catppuccin Frappé (Gogh)",
+extraConfig = ''
+return {
+  font = wezterm.font("JetBrains Mono"),
+  font_size = 16.0,
+  color_scheme = "Catppuccin Frappe",
+  hide_tab_bar_if_only_one_tab = true,
+  default_prog = { "zsh", "--login", "-c", "tmux attach -t dev || tmux new -s dev" },
+  keys = {
+    {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
+  }
+}
+'';
+
+};
 
 
 }

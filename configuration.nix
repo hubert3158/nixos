@@ -117,6 +117,7 @@
     gnumake 
     nix-index
 devbox
+tree
 
   ];
   virtualisation.docker.enable = true;
