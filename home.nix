@@ -12,6 +12,8 @@
     pgadmin4
     pavucontrol
     helix
+    zsh-autocomplete
+
 
   ];
  nixpkgs.config = {
@@ -159,5 +161,22 @@ window_background_gradient = {
 
 };
 
+  programs.ssh= {
+    enable = true;
+    extraConfig = ''
+Host *
+    ForwardAgent yes
+    ForwardX11 no
+    ForwardX11Trusted yes
+    ServerAliveInterval 60
+    ServerAliveCountMax 30
+
+Host stg
+    HostName staging.v2.smartmca.com
+    User ubuntu
+    Port 22
+    IdentityFile ~/.ssh/stg.v2.pem
+''
+};
 
 }
