@@ -5,8 +5,9 @@
 { config, pkgs,lib, ... }:
 
 {
+# Include the results of the hardware scan.
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
       ./hardware-configuration.nix
     ];
 
@@ -48,11 +49,11 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+ services.desktopManager.plasma6.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
-  #services.xserver.desktopManager.xfce.enable = true;
+#  services.xserver.desktopManager.xfce.enable = true;
 
-  #services.xserver.videoDrivers = [ "nvidia" ];
+ # services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics.enable = true;
 
   # Configure keymap in X11
@@ -117,6 +118,7 @@
     gnumake 
     nix-index
 devbox
+tree
 
   ];
   virtualisation.docker.enable = true;
@@ -165,11 +167,12 @@ services.postgresql = {
   settings = {
     listen_addresses =lib.mkForce "*";
   };
-  authentication = ''  # replace this with your existing authentication settings
+  authentication = '' 
     host all all 0.0.0.0/0 md5
   '';
 };
 networking.firewall.allowedTCPPorts = [ 5432 ];
+
 
 
 }
