@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs,lib, ... }:
 
 {
   imports =
@@ -115,6 +115,8 @@
     jdk11
     gcc
     gnumake 
+    nix-index
+devbox
 
   ];
   virtualisation.docker.enable = true;
@@ -157,6 +159,17 @@ users.defaultUserShell = pkgs.zsh;
 programs.zsh.enable = true;
 programs.tmux.enable=true;
 
-services.postgresql.enable = true;
+services.postgresql = {
+  enable = true;
+  package = pkgs.postgresql_15;  # or your desired version
+  settings = {
+    listen_addresses =lib.mkForce "*";
+  };
+  authentication = ''  # replace this with your existing authentication settings
+    host all all 0.0.0.0/0 md5
+  '';
+};
+networking.firewall.allowedTCPPorts = [ 5432 ];
+
 
 }
