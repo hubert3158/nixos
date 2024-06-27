@@ -13,6 +13,7 @@
     pavucontrol
     helix
     zsh-autocomplete
+    mtr
 
 
   ];
@@ -175,8 +176,14 @@ Host stg
     HostName staging.v2.smartmca.com
     User ubuntu
     Port 22
-    IdentityFile ~/.ssh/stg.v2.pem
-''
+    IdentityFile ~/.ssh/staging.v2.pem
+
+Host prod
+    HostName app.v2.smartmca.com
+    User ubuntu
+    Port 22
+    IdentityFile ~/.ssh/prod.v2.pem
+'';
 };
 
 }
