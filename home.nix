@@ -14,6 +14,19 @@
     helix
     zsh-autocomplete
     mtr
+flameshot
+
+
+nmap
+nikto
+zap
+
+
+obsidian
+pandoc
+texlive.combined.scheme-full
+mdbook-pdf
+
 
 
   ];

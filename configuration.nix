@@ -49,11 +49,11 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-  #services.desktopManager.plasma6.enable = true;
+ services.desktopManager.plasma6.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+#  services.xserver.desktopManager.xfce.enable = true;
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+ # services.xserver.videoDrivers = [ "nvidia" ];
   hardware.graphics.enable = true;
 
   # Configure keymap in X11
@@ -172,5 +172,7 @@ services.postgresql = {
   '';
 };
 networking.firewall.allowedTCPPorts = [ 5432 ];
+
+
 
 }
