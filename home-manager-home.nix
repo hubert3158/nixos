@@ -48,6 +48,10 @@ mdbook-pdf
 #   }
 # ];};
 
+ # programs.neovim = import ./home-manager-config-files/neovim.nix { inherit pkgs; };
+ imports = [
+    ./home-manager-config-files/neovim.nix
+  ];
 
   programs.zsh = {
     enable = true;

@@ -6,7 +6,7 @@
   # Centralized package definitions
   home.packages = with pkgs; [
     # List your packages here
-neovim
+#neovim
     # Additional packages...
   ];
 }
