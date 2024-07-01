@@ -8,7 +8,7 @@
 
   imports =
     [ 
-      ./hardware-configuration-home.nix
+    #  ./hardware-configuration-home.nix
     ];
 
 
