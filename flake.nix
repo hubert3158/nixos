@@ -33,6 +33,7 @@
         modules = [
           ./configuration.nix
           ./home.nix
+	./hardware-configuration-home.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
