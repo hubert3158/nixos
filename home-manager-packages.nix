@@ -1,4 +1,7 @@
 { pkgs, ... }:
+let
+  neovimConfig = import ./home-manager-config-files/neovim.nix { inherit pkgs; };
+in
 {
   home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
   home.username="hubert";
@@ -10,15 +13,8 @@
     # Additional packages...
   ];
 
- programs.neovim = {
- enable = true;
- plugins = with pkgs.vimPlugins; [
-   yankring
-   vim-nix
-   { plugin = vim-startify;
-     config = "let g:startify_change_to_vcs_root = 0";
-   }
- ];};
+  # Import neovim configuration
+  inherit (neovimConfig) programs;
 
 }
 
