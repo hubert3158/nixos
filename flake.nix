@@ -42,7 +42,7 @@
               hmConfig = import ./home-manager-home.nix { inherit pkgs; };
               packages = import ./home-manager-packages.nix { inherit pkgs; };
             in
-              hmConfig // packages;
+             hmConfig // packages;
           }
         ];
       };
