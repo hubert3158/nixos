@@ -7,3 +7,8 @@ home-manager -f "~/.dotfiles/home.nix" doesn't specify command to run, so it dis
 
 
 
+ home-manager switch -f home-manager-work.nix
+
+
+
+

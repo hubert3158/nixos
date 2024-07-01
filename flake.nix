@@ -13,6 +13,7 @@
         modules = [
           ./configuration.nix
           ./work.nix
+	./hardware-configuration-work.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -20,7 +21,7 @@
             home-manager.backupFileExtension = "backup";
             home-manager.users.hubert = let
               pkgs = import nixpkgs { system = "x86_64-linux"; };
-              hmConfig = import ./home-manager-work.nix { inherit pkgs; };
+              hmConfig = import ./home-manager.nix { inherit pkgs; };
               packages = import ./home-manager-packages.nix { inherit pkgs; };
             in
               hmConfig // packages;
@@ -39,7 +40,7 @@
             home-manager.backupFileExtension = "backup";
             home-manager.users.hubert = let
               pkgs = import nixpkgs { system = "x86_64-linux"; };
-              hmConfig = import ./home-manager-home.nix { inherit pkgs; };
+              hmConfig = import ./home-manager.nix { inherit pkgs; };
               packages = import ./home-manager-packages.nix { inherit pkgs; };
             in
              hmConfig // packages;
