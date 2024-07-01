@@ -37,21 +37,9 @@ mdbook-pdf
               ];
             };
 
-
-# programs.neovim = {
-# enable = true;
-# plugins = with pkgs.vimPlugins; [
-#   yankring
-#   vim-nix
-#   { plugin = vim-startify;
-#     config = "let g:startify_change_to_vcs_root = 0";
-#   }
-# ];};
-
- # programs.neovim = import ./home-manager-config-files/neovim.nix { inherit pkgs; };
- imports = [
-    ./home-manager-config-files/neovim.nix
-  ];
+# imports = [
+#    ./home-manager-config-files/neovim.nix
+#  ];
 
   programs.zsh = {
     enable = true;
