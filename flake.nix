@@ -11,13 +11,16 @@
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          ./configuration.nix
+         ./configuration.nix
+          (import (if builtins.getEnv "NIXOS_PROFILE" == "work" then ./configuration-work.nix else ./configuration-home.nix))
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.users.hubert = import ./home.nix;
+            #home-manager.users.hubert = import ./home-manager-home.nix;
+            home-manager.users.hubert = import (if builtins.getEnv "NIXOS_PROFILE" == "work" then ./home-manager-work.nix else ./home-manager-home.nix);
+
           }
         ];
       };

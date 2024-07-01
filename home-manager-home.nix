@@ -69,6 +69,9 @@ plugins = with pkgs.vimPlugins; [
         "deno"
       ];
     };
+profileExtra= ''
+export NIXOS_PROFILE=work
+'';
   };
 
 
