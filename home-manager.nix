@@ -31,7 +31,7 @@ pandoc
 texlive.combined.scheme-full
 mdbook-pdf
 
-
+protonvpn-cli_2
 
   ];
  nixpkgs.config = {
