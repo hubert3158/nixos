@@ -1,4 +1,8 @@
+
 { pkgs, ... }:
+let
+  neovimConfig = import ./home-manager-config-files/neovim.nix { inherit pkgs; };
+in
 {
   home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
   home.username="hubert";
@@ -30,6 +34,8 @@ mdbook-pdf
 
 
   ];
+  #  inherit (neovimConfig) programs;
+
  nixpkgs.config = {
               allowUnfree = true;
 	      permittedInsecurePackages = [
@@ -40,6 +46,10 @@ mdbook-pdf
 # imports = [
 #    ./home-manager-config-files/neovim.nix
 #  ];
+
+  imports = [
+    ./home-manager-config-files/neovim.nix
+  ];
 
   programs.zsh = {
     enable = true;
@@ -195,3 +205,5 @@ Host prod
 };
 
 }
+
+

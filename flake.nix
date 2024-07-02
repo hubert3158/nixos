@@ -10,45 +10,66 @@
     nixosConfigurations = {
       work = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {
+          inherit nixpkgs;
+        };
         modules = [
           ./configuration.nix
           ./work.nix
-	./hardware-configuration-work.nix
+          ./hardware-configuration-work.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
             home-manager.users.hubert = let
-              pkgs = import nixpkgs { system = "x86_64-linux"; };
-              hmConfig = import ./home-manager.nix { inherit pkgs; };
-              packages = import ./home-manager-packages.nix { inherit pkgs; };
+              pkgs = import nixpkgs {
+                system = "x86_64-linux";
+                config = {
+                  allowUnfree = true;
+                  allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+                    "microsoft-edge-stable"
+                  ];
+                };
+              };
+
+              packages = import ./home-manager.nix { inherit pkgs; };
             in
-              hmConfig // packages;
+              packages;
           }
         ];
       };
       home = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {
+          inherit nixpkgs;
+        };
         modules = [
           ./configuration.nix
           ./home.nix
-	./hardware-configuration-home.nix
+          ./hardware-configuration-home.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
             home-manager.users.hubert = let
-              pkgs = import nixpkgs { system = "x86_64-linux"; };
-              hmConfig = import ./home-manager.nix { inherit pkgs; };
-              packages = import ./home-manager-packages.nix { inherit pkgs; };
+              pkgs = import nixpkgs {
+                system = "x86_64-linux";
+                config = {
+                  allowUnfree = true;
+                  allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+                    "microsoft-edge-stable"
+                  ];
+                };
+              };
+
+              packages = import ./home-manage.nix { inherit pkgs; };
             in
-             hmConfig // packages;
+              packages;
           }
         ];
       };
     };
   };
 }
-
