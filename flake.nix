@@ -64,7 +64,7 @@
                 };
               };
 
-              packages = import ./home-manage.nix { inherit pkgs; };
+              packages = import ./home-manager.nix { inherit pkgs; };
             in
               packages;
           }
