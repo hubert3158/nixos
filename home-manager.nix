@@ -34,18 +34,12 @@ mdbook-pdf
 
 
   ];
-  #  inherit (neovimConfig) programs;
-
  nixpkgs.config = {
               allowUnfree = true;
 	      permittedInsecurePackages = [
                 "python-2.7.18.8"
               ];
             };
-
-# imports = [
-#    ./home-manager-config-files/neovim.nix
-#  ];
 
   imports = [
     ./home-manager-config-files/neovim.nix
