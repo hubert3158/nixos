@@ -7,6 +7,13 @@ in
   home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
   home.username="hubert";
   home.homeDirectory="/home/hubert";
+  home.shellAliases={
+	"gs" = "git status";
+	"gaa" = "git add .";
+	"gp" = "git push";
+	"gwip" = "git commit -m \"wip\"";
+		};
+
   home.packages = with pkgs; [
     # Add your user packages here
     microsoft-edge
@@ -25,13 +32,18 @@ nmap
 nikto
 zap
 
+wireshark-qt
+
+
 
 obsidian
 pandoc
 texlive.combined.scheme-full
 mdbook-pdf
 
+
 protonvpn-cli_2
+
 
   ];
  nixpkgs.config = {
@@ -86,7 +98,7 @@ return {
   keys = {
     {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
   },
-window_background_image = '/home/hubert/images/wallpaper.jpg'
+window_background_image = '/home/hubert/images/wallpaper.png'
 }
 '';
 
