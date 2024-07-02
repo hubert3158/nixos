@@ -93,6 +93,7 @@
     vim 
     wget 
     xclip
+    curl
     git
     zsh
     oh-my-zsh
@@ -105,6 +106,7 @@
     nix-index
 devbox
 tree
+sqlite
 
   ];
   virtualisation.docker.enable = true;
