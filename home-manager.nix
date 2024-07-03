@@ -26,6 +26,8 @@ in
     zsh-autocomplete
     mtr
 flameshot
+postman
+teams-for-linux
 
 
 nmap
