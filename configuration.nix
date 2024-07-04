@@ -74,7 +74,7 @@
   users.users.hubert = {
     isNormalUser = true;
     description = "hubert";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "wireshark"];
     packages = with pkgs; [
     #  kdePackages.kate
       thunderbird
@@ -160,7 +160,7 @@ services.postgresql = {
     host all all 0.0.0.0/0 md5
   '';
 };
-networking.firewall.allowedTCPPorts = [ 5432 ];
+#networking.firewall.allowedTCPPorts = [ 5432 ];
 
 
 
