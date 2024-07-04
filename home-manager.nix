@@ -19,6 +19,8 @@ in
     microsoft-edge
     google-chrome
     jetbrains.idea-ultimate
+jetbrains.pycharm-professional
+
     discord
     pgadmin4
     pavucontrol
@@ -45,6 +47,8 @@ mdbook-pdf
 
 
 protonvpn-cli_2
+
+    (python312.withPackages (ps: with ps; [ reportlab ])) 
 
 
   ];
