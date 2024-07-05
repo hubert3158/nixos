@@ -20,6 +20,7 @@ services.desktopManager.plasma6.enable = true;
 
   hardware.graphics.enable = true;
 
+networking.firewall.allowedTCPPorts = [ 3000];
 
 
 }
