@@ -7,12 +7,21 @@ in
   home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
   home.username="hubert";
   home.homeDirectory="/home/hubert";
-  home.shellAliases={
-	"gs" = "git status";
-	"gaa" = "git add .";
-	"gp" = "git push";
-	"gwip" = "git commit -m \"wip\"";
-		};
+  home.shellAliases = {
+	  "gs" = "git status";
+	  "gaa" = "git add .";
+	  "gp" = "git push";
+	  "gwip" = "git commit -m \"wip\"";
+	  "v" = "nvim";
+	  "vi" = "nvim";
+	  "f" = ''
+		  fzf \
+		  -i \
+		  --margin 5% --padding 5% --border --preview 'cat {}' \
+		  --color bg:#222222,preview-bg:#333333
+		  '';
+  };
+
 
   home.packages = with pkgs; [
     # Add your user packages here
@@ -61,6 +70,7 @@ protonvpn-cli_2
 
   imports = [
     ./home-manager-config-files/tmux.nix
+    ./home-manager-config-files/neovim/neovim.nix
   ];
 
   programs.zsh = {
@@ -104,7 +114,7 @@ return {
   keys = {
     {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
   },
-window_background_image = '/home/hubert/images/wallpaper.png'
+window_background_image = '/home/hubert/nixos/images/wallpaper.png'
 }
 '';
 
