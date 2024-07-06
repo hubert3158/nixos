@@ -108,6 +108,8 @@
 devbox
 tree
 sqlite
+neovim
+fzf
 
   ];
   virtualisation.docker.enable = true;
