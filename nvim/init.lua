@@ -1,10 +1,3 @@
-# neovim.nix
-{ pkgs, ... }:
-{
- programs.neovim= {
-	enable = true;
-	extraLuaPackages = luaPkgs: with luaPkgs; [ luautf8 ];
-	extraLuaConfig = ''
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.mapleader = " "
@@ -22,9 +15,8 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 
-local base_path = "/home/hubert/configuration/home-manager-config-files/neovim"
-package.path = base_path .. "/?.lua;" .. package.path
-
+local lua_modules_path = "/home/hubert/nixos/nvim/lua"
+package.path = lua_modules_path .. "/?.lua;" .. lua_modules_path .. "/?/init.lua;" .. package.path
 
 require("core.options")
 require("core.keymaps")
@@ -40,11 +32,3 @@ vim.api.nvim_create_autocmd({'FocusLost'}, {
         command = 'silent! wa'
 
     })
-
-
-
-
-			'';
-};
-}
-
