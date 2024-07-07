@@ -15,7 +15,7 @@
 		  fzf \
 		  -i \
 		  --margin 5% --padding 5% --border --preview 'cat {}' \
-		  --bind 'enter:execute(vim {})' \
+		  --bind 'enter:execute(nvim {})' \
 		  --color bg:#222222,preview-bg:#333333
 		  '';
   };
