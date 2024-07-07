@@ -18,6 +18,9 @@
 		  --bind 'enter:execute(nvim {})' \
 		  --color bg:#222222,preview-bg:#333333
 		  '';
+          "gr" = ''
+            git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
+              '';
   };
 
 
@@ -117,8 +120,8 @@ programs.wezterm = {
     window_background_image = '/home/hubert/nixos/images/wallpaper.png',
     window_background_image_hsb = {
       brightness = 0.5,
-      hue = 1.0,       
-      saturation = 0.8,
+      hue = 0.5,       
+      saturation = 0.7,
     },
   }
   '';
