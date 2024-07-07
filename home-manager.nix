@@ -145,6 +145,23 @@ Host prod
 '';
 };
 
+  programs.git = {
+    enable = true;
+    extraConfig = {
+      user.name = "Subash Acharya";
+      user.email = "subash@example.com";
+      core.editor = "vim";
+      alias.co = "checkout";
+      alias.br = "branch";
+      alias.ci = "commit";
+      alias.st = "status";
+      alias.lg = "log --graph --oneline --all";
+      commit.gpgSign = false;
+
+    };
+  };
+
+
 }
 
 
