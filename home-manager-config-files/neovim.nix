@@ -1,21 +1,12 @@
-# neovim.nix
 { pkgs, ... }:
 {
-  programs.neovim= {
+  programs.neovim = {
     enable = true;
-    extraLuaPackages = luaPkgs: with luaPkgs; [ luautf8 ];
-    extraLuaConfig = ''
-    '';
-    extraConfig = ''
-                set number
-                set relativenumber		
-    '' ;
 
-    plugins = with pkgs.vimPlugins; [
-      # { plugin = vim-startify;
-      #   config = "let g:startify_change_to_vcs_root = 0";
-      # }
-      ];
-      };
-      }
+    # Disable other configurations as they will be handled by init.lua
+    extraConfig = ''
+      luafile /home/hubert/nixos/nvim/init.lua
+    '';
+  };
+}
 

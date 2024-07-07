@@ -37,6 +37,7 @@ jetbrains.pycharm-professional
 flameshot
 postman
 teams-for-linux
+ripgrep
 
 
 nmap

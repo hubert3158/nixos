@@ -110,6 +110,7 @@ tree
 sqlite
 neovim
 fzf
+nodejs
 
   ];
   virtualisation.docker.enable = true;

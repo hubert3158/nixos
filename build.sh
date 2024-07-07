@@ -1,4 +1,4 @@
-#!/home/hubert/.nix-profile/bin/zsh
+#!/etc/profiles/per-user/hubert/bin/zsh
 
 # Run the nix build command
 nix build .#homeConfigurations.hubert.activationPackage
