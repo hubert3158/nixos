@@ -149,7 +149,7 @@ Host prod
     enable = true;
     extraConfig = {
       user.name = "Subash Acharya";
-      user.email = "subash@example.com";
+      user.email = "hubert3158@gmail.com";
       core.editor = "vim";
       alias.co = "checkout";
       alias.br = "branch";
