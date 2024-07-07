@@ -1,8 +1,5 @@
 
 { pkgs, ... }:
-let
-  neovimConfig = import ./home-manager-config-files/neovim.nix { inherit pkgs; };
-in
 {
   home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
   home.username="hubert";
@@ -18,6 +15,7 @@ in
 		  fzf \
 		  -i \
 		  --margin 5% --padding 5% --border --preview 'cat {}' \
+		  --bind 'enter:execute(nvim {})' \
 		  --color bg:#222222,preview-bg:#333333
 		  '';
   };
@@ -39,6 +37,7 @@ jetbrains.pycharm-professional
 flameshot
 postman
 teams-for-linux
+ripgrep
 
 
 nmap
@@ -70,7 +69,8 @@ protonvpn-cli_2
 
   imports = [
     ./home-manager-config-files/tmux.nix
-    ./home-manager-config-files/neovim/neovim.nix
+    ./home-manager-config-files/vim.nix
+    ./home-manager-config-files/neovim.nix
   ];
 
   programs.zsh = {
