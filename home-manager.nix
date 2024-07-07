@@ -18,6 +18,7 @@ in
 		  fzf \
 		  -i \
 		  --margin 5% --padding 5% --border --preview 'cat {}' \
+		  --bind 'enter:execute(vim {})' \
 		  --color bg:#222222,preview-bg:#333333
 		  '';
   };
@@ -70,6 +71,7 @@ protonvpn-cli_2
 
   imports = [
     ./home-manager-config-files/tmux.nix
+    ./home-manager-config-files/vim.nix
     ./home-manager-config-files/neovim/neovim.nix
   ];
 
