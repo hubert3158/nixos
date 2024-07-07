@@ -38,6 +38,7 @@ flameshot
 postman
 teams-for-linux
 ripgrep
+lazygit
 
 
 nmap
