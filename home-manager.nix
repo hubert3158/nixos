@@ -101,25 +101,30 @@ export NIXOS_PROFILE=work
 
 
 
-
 programs.wezterm = {
-enable = true;
-  #color_scheme = "Catppuccin Frappé (Gogh)",
-extraConfig = ''
-return {
-  font = wezterm.font("JetBrains Mono"),
-  font_size = 16.0,
-  color_scheme = "Catppuccin Frappe",
-  hide_tab_bar_if_only_one_tab = true,
-  default_prog = { "zsh", "--login", "-c", "tmux attach -t dev || tmux new -s dev" },
-  keys = {
-    {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
-  },
-window_background_image = '/home/hubert/nixos/images/wallpaper.png'
-}
-'';
-
+  enable = true;
+  # color_scheme = "Catppuccin Frappé (Gogh)",
+  extraConfig = ''
+  return {
+    font = wezterm.font("JetBrains Mono"),
+    font_size = 16.0,
+    color_scheme = "Catppuccin Frappe",
+    hide_tab_bar_if_only_one_tab = true,
+    default_prog = { "zsh", "--login", "-c", "tmux attach -t dev || tmux new -s dev" },
+    keys = {
+      {key="n", mods="SHIFT|CTRL", action=wezterm.action.ToggleFullScreen},
+    },
+    window_background_image = '/home/hubert/nixos/images/wallpaper.png',
+    window_background_image_hsb = {
+      brightness = 0.5,
+      hue = 1.0,       
+      saturation = 0.8,
+    },
+  }
+  '';
 };
+
+
 
   programs.ssh= {
     enable = true;
