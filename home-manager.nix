@@ -69,7 +69,7 @@ protonvpn-cli_2
   imports = [
     ./home-manager-config-files/tmux.nix
     ./home-manager-config-files/vim.nix
-    ./home-manager-config-files/neovim/neovim.nix
+    ./home-manager-config-files/neovim.nix
   ];
 
   programs.zsh = {

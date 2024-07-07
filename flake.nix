@@ -71,5 +71,21 @@
         ];
       };
     };
+
+    homeConfigurations = {
+      hubert = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
+              "microsoft-edge-stable"
+            ];
+          };
+        };
+        modules = [ ./home-manager.nix ];
+      };
+    };
   };
 }
+
