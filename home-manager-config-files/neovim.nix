@@ -15,8 +15,6 @@ let
       sha256 = "sha256-U6fgii9FlJy+bHAtYVnZEOyiUAqlBHTvMFc4mo+xS/s=";
     };
   };
-  telescopeConfig = builtins.readFile ./neovim_config/telescope-config.lua;
-
 
   plenary = buildVimPlugin {
     pname = "plenary";
@@ -29,17 +27,6 @@ let
     };
   };
 
-  # treesitterNvim = buildVimPlugin {
-  #   pname = "nvim-treesitter";
-  #   version = "scm";
-  #   src = fetchFromGitHub {
-  #     owner = "nvim-treesitter";
-  #     repo = "nvim-treesitter";
-  #     rev = "master";
-  #     sha256 = "sha256-0000000000000000000000000000000000000000000000000000"; # Replace with actual hash
-  #   };
-  # };
-
 in
 {
   programs.neovim = {
@@ -49,18 +36,23 @@ in
       set number
       set relativenumber
 
+      lua << EOF
+      require('telescope').setup{
+        defaults = {
+          -- Your configuration comes here
+          -- It is passed to the configuration and set up here
+        }
+      }
+      EOF
     '';
 
-    plugins = [
-      pkgs.vimPlugins.vim-airline
-      pkgs.vimPlugins.vim-fugitive
+    plugins = with pkgs.vimPlugins; [
+      vim-airline
+      vim-fugitive
       telescopeNvim
       plenary
-      # treesitterNvim
     ];
   };
-
-  home.file.".config/nvim/lua/telescope-config.lua".text = telescopeConfig;
 
 }
 

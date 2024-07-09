@@ -30,6 +30,7 @@
     google-chrome
     jetbrains.idea-ultimate
 jetbrains.pycharm-professional
+onedrive
 
     discord
     pgadmin4
