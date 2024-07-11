@@ -1,1 +1,1 @@
-ssh stg 'cd ~/workspace/app/ && bash deploy.sh'
+ssh -t stg 'cd ~/workspace/app/ && bash deploy.sh'
