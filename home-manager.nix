@@ -5,22 +5,22 @@
   home.username="hubert";
   home.homeDirectory="/home/hubert";
   home.shellAliases = {
-	  "gs" = "git status";
-	  "gaa" = "git add .";
-	  "gp" = "git push";
-	  "gwip" = "git commit -m \"wip\"";
-	  "v" = "nvim";
-	  "vi" = "nvim";
-	  "f" = ''
-		  fzf \
-		  -i \
-		  --margin 5% --padding 5% --border --preview 'cat {}' \
-		  --bind 'enter:execute(nvim {})' \
-		  --color bg:#222222,preview-bg:#333333
-		  '';
-          "gr" = ''
-            git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
-              '';
+    "gs" = "git status";
+    "gaa" = "git add .";
+    "gp" = "git push";
+    "gwip" = "git commit -m \"wip\"";
+    "v" = "nvim";
+    "vi" = "nvim";
+    "f" = ''
+    fzf \
+    -i \
+    --margin 5% --padding 5% --border --preview 'cat {}' \
+    --bind 'enter:execute(nvim {})' \
+    --color bg:#222222,preview-bg:#333333
+    '';
+    "gr" = ''
+    git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
+    '';
   };
 
 
@@ -29,8 +29,8 @@
     microsoft-edge
     google-chrome
     jetbrains.idea-ultimate
-jetbrains.pycharm-professional
-onedrive
+    jetbrains.pycharm-professional
+    onedrive
 
     discord
     pgadmin4
@@ -38,39 +38,41 @@ onedrive
     helix
     zsh-autocomplete
     mtr
-flameshot
-postman
-teams-for-linux
-ripgrep
-lazygit
+    flameshot
+    postman
+    teams-for-linux
+    ripgrep
+    lazygit
 
 
-nmap
-nikto
-zap
+    nmap
+    nikto
+    zap
 
-wireshark-qt
-
-
-
-obsidian
-pandoc
-texlive.combined.scheme-full
-mdbook-pdf
+    wireshark-qt
 
 
-protonvpn-cli_2
+
+    obsidian
+    pandoc
+    texlive.combined.scheme-full
+    mdbook-pdf
+
+
+    protonvpn-cli_2
 
     (python312.withPackages (ps: with ps; [ reportlab ])) 
 
+    lua-language-server
+
 
   ];
- nixpkgs.config = {
-              allowUnfree = true;
-	      permittedInsecurePackages = [
-                "python-2.7.18.8"
-              ];
-            };
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "python-2.7.18.8"
+    ];
+  };
 
   imports = [
     ./home-manager-config-files/tmux.nix
@@ -81,8 +83,8 @@ protonvpn-cli_2
   programs.zsh = {
     enable = true;
     autosuggestion = {
-    enable = true;
-    highlight="fg=red,bold,underline";
+      enable = true;
+      highlight="fg=red,bold,underline";
     };
     enableCompletion =true;
 
@@ -98,15 +100,15 @@ protonvpn-cli_2
         "deno"
       ];
     };
-profileExtra= ''
-export NIXOS_PROFILE=work
-'';
+    profileExtra= ''
+    export NIXOS_PROFILE=work
+    '';
   };
 
 
 
-programs.wezterm = {
-  enable = true;
+  programs.wezterm = {
+    enable = true;
   # color_scheme = "Catppuccin Frappé (Gogh)",
   extraConfig = ''
   return {
@@ -130,45 +132,45 @@ programs.wezterm = {
 
 
 
-  programs.ssh= {
-    enable = true;
-    extraConfig = ''
-Host *
-    ForwardAgent yes
-    ForwardX11 no
-    ForwardX11Trusted yes
-    ServerAliveInterval 60
-    ServerAliveCountMax 30
+programs.ssh= {
+  enable = true;
+  extraConfig = ''
+  Host *
+  ForwardAgent yes
+  ForwardX11 no
+  ForwardX11Trusted yes
+  ServerAliveInterval 60
+  ServerAliveCountMax 30
 
-Host stg
-    HostName staging.v2.smartmca.com
-    User ubuntu
-    Port 22
-    IdentityFile ~/.ssh/staging.v2.pem
+  Host stg
+  HostName staging.v2.smartmca.com
+  User ubuntu
+  Port 22
+  IdentityFile ~/.ssh/staging.v2.pem
 
-Host prod
-    HostName app.v2.smartmca.com
-    User ubuntu
-    Port 22
-    IdentityFile ~/.ssh/prod.v2.pem
-'';
+  Host prod
+  HostName app.v2.smartmca.com
+  User ubuntu
+  Port 22
+  IdentityFile ~/.ssh/prod.v2.pem
+  '';
 };
 
-  programs.git = {
-    enable = true;
-    extraConfig = {
-      user.name = "Subash Acharya";
-      user.email = "hubert3158@gmail.com";
-      core.editor = "vim";
-      alias.co = "checkout";
-      alias.br = "branch";
-      alias.ci = "commit";
-      alias.st = "status";
-      alias.lg = "log --graph --oneline --all";
-      commit.gpgSign = false;
+programs.git = {
+  enable = true;
+  extraConfig = {
+    user.name = "Subash Acharya";
+    user.email = "hubert3158@gmail.com";
+    core.editor = "vim";
+    alias.co = "checkout";
+    alias.br = "branch";
+    alias.ci = "commit";
+    alias.st = "status";
+    alias.lg = "log --graph --oneline --all";
+    commit.gpgSign = false;
 
-    };
   };
+};
 
 
 }
