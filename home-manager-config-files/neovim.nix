@@ -1,57 +1,82 @@
 { config, pkgs, lib, ... }:
-
-let
-  buildVimPlugin = pkgs.vimUtils.buildVimPlugin;
-  fetchFromGitHub = pkgs.fetchFromGitHub;
-
-  # Define the custom plugins
-  telescopeNvim = buildVimPlugin {
-    pname = "telescope-nvim";
-    version = "scm";
-    src = fetchFromGitHub {
-      owner = "nvim-telescope";
-      repo = "telescope.nvim";
-      rev = "master";
-      sha256 = "sha256-U6fgii9FlJy+bHAtYVnZEOyiUAqlBHTvMFc4mo+xS/s=";
-    };
-  };
-
-  plenary = buildVimPlugin {
-    pname = "plenary";
-    version = "scm";
-    src = fetchFromGitHub {
-      owner = "nvim-lua";
-      repo = "plenary.nvim";
-      rev = "master";
-      sha256 = "sha256-5Jf2mWFVDofXBcXLbMa417mqlEPWLA+cQIZH/vNEV1g";
-    };
-  };
-
-in
+  let
+    toLua = str: "lua << EOF\n${str}\nEOF\n";
+    toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
+  in
 {
   programs.neovim = {
     enable = true;
 
-    extraConfig = ''
-      set number
-      set relativenumber
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
 
-      lua << EOF
-      require('telescope').setup{
-        defaults = {
-          -- Your configuration comes here
-          -- It is passed to the configuration and set up here
-        }
-      }
-      EOF
+    extraLuaConfig = ''
+      ${builtins.readFile ./nvim/options.lua}
     '';
 
-    plugins = with pkgs.vimPlugins; [
-      vim-airline
-      vim-fugitive
-      telescopeNvim
-      plenary
+	plugins = with pkgs.vimPlugins; [
+
+      {
+        plugin = nvim-lspconfig;
+        config = toLuaFile ./nvim/plugin/lsp.lua;
+      }
+
+      {
+        plugin = comment-nvim;
+        config = toLua "require(\"Comment\").setup()";
+      }
+
+      {
+        plugin = gruvbox-nvim;
+        config = "colorscheme gruvbox";
+      }
+
+      neodev-nvim
+
+      nvim-cmp 
+      {
+        plugin = nvim-cmp;
+        config = toLuaFile ./nvim/plugin/cmp.lua;
+      }
+
+      {
+        plugin = telescope-nvim;
+        config = toLuaFile ./nvim/plugin/telescope.lua;
+      }
+
+      telescope-fzf-native-nvim
+
+      cmp_luasnip
+      cmp-nvim-lsp
+
+      luasnip
+      friendly-snippets
+
+
+      lualine-nvim
+      nvim-web-devicons
+
+      {
+        plugin = (nvim-treesitter.withPlugins (p: [
+          p.tree-sitter-nix
+          p.tree-sitter-vim
+          p.tree-sitter-bash
+          p.tree-sitter-lua
+          p.tree-sitter-python
+          p.tree-sitter-json
+        ]));
+        config = toLuaFile ./nvim/plugin/treesitter.lua;
+      }
+
+      vim-nix
+
+      # {
+      #   plugin = vimPlugins.own-onedark-nvim;
+      #   config = "colorscheme onedark";
+      # }
     ];
+
   };
 
 }
