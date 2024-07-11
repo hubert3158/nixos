@@ -53,7 +53,6 @@
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -66,6 +65,9 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+
+  hardware.bluetooth.enable = true;
+  security.rtkit.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
