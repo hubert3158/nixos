@@ -13,6 +13,7 @@
 
     extraLuaConfig = ''
       ${builtins.readFile ./nvim/options.lua}
+      ${builtins.readFile ./nvim/keymaps.lua}
     '';
 
 	plugins = with pkgs.vimPlugins; [
@@ -45,6 +46,10 @@
         config = toLuaFile ./nvim/plugin/telescope.lua;
       }
 
+      {
+        plugin = which-key-nvim ;
+        config = toLuaFile ./nvim/plugin/which-key.lua;
+      }
       telescope-fzf-native-nvim
 
       cmp_luasnip
@@ -56,6 +61,9 @@
 
       lualine-nvim
       nvim-web-devicons
+
+
+      vim-nix
 
       {
         plugin = (nvim-treesitter.withPlugins (p: [
@@ -69,7 +77,6 @@
         config = toLuaFile ./nvim/plugin/treesitter.lua;
       }
 
-      vim-nix
 
       # {
       #   plugin = vimPlugins.own-onedark-nvim;
