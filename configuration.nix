@@ -104,6 +104,7 @@
     home-manager
     maven
     jdk11
+    jdk21
     gcc
     gnumake 
     nix-index
@@ -151,6 +152,13 @@ nix.settings.experimental-features = ["nix-command" "flakes"];
 
 
 environment.shells = with pkgs; [ zsh ];
+ environment.variables = {
+    JAVA_HOME = "${pkgs.jdk21}/lib/openjdk";
+  };
+    environment.shellInit = ''
+    export JAVA_HOME=${pkgs.jdk21}/lib/openjdk
+    export PATH=${pkgs.jdk21}/bin:$PATH
+  '';
 users.defaultUserShell = pkgs.zsh;
 programs.zsh.enable = true;
 programs.tmux.enable=true;
