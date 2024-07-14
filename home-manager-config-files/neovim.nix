@@ -57,7 +57,7 @@ in
 
         neodev-nvim
 
-          nvim-notify
+        nvim-notify
 
         telescope-fzf-native-nvim
 

@@ -50,9 +50,15 @@ vim.api.nvim_set_keymap("n", "<leader>s", "<Plug>(Sneak_S)", { silent = true })
 -- )
 
 
+-- notify
+vim.notify = require('notify')
+vim.notify("This is an error message", "error")
+require("notify")("My super important message")
+require("notify")("hey there")
+require("notify")("check out LudoPinelli/comment-box.nvim  <>cbccbox")
+require("notify")("install lazy git")
 
-
-
+vim.api.nvim_set_keymap("n", "<leader>un", ":lua require('notify').dismiss({ silent = true, pending = true })<CR>", { noremap = true, silent = true, desc = "[U]nnotify [N]otify dismiss" })
 
 
 
@@ -75,7 +81,6 @@ vim.api.nvim_set_keymap("n", "<leader>s", "<Plug>(Sneak_S)", { silent = true })
 --          ╭─────────────────────────────────────────────────────────╮
 --          │                        test test                        │
 --          ╰─────────────────────────────────────────────────────────╯
-
 
 
 
