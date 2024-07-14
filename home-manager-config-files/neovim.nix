@@ -27,6 +27,10 @@ in
           plugin = comment-nvim;
           config = toLua "require(\"Comment\").setup()";
         }
+        {
+          plugin = noice-nvim;
+          config = toLua "require(\"noice\").setup()";
+        }
 
         {
           plugin = gruvbox-nvim;
@@ -77,8 +81,10 @@ in
         vim-nix
         vim-visual-multi
 
+        
 
         {
+
           plugin = (nvim-treesitter.withPlugins (p: [
             p.tree-sitter-nix
             p.tree-sitter-vim
