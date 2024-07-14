@@ -49,11 +49,11 @@ in
           config = toLuaFile ./nvim/plugin/which-key.lua;
         }
 
-        {
-          plugin = nvim-jdtls;
-          config = toLuaFile ./nvim/plugin/dap.lua;
-        }
-        nvim-dap
+        # {
+        #   plugin = nvim-jdtls;
+        #   config = toLuaFile ./nvim/plugin/dap.lua;
+        # }
+        # nvim-dap
 
         neodev-nvim
 
@@ -86,6 +86,7 @@ in
             p.tree-sitter-lua
             p.tree-sitter-python
             p.tree-sitter-json
+            p.tree-sitter-java
           ]));
           config = toLuaFile ./nvim/plugin/treesitter.lua;
         }
