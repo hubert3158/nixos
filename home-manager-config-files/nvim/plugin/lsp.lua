@@ -52,6 +52,29 @@ require("lspconfig").html.setup({
 })
 
 require("lspconfig").jdtls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "jdtls" },
+  root_dir = function(fname)
+    return require('lspconfig.util').root_pattern('pom.xml', 'build.gradle', '.git')(fname) or vim.loop.os_homedir()
+  end,
+  settings = {
+    java = {
+      signatureHelp = { enabled = true },
+      contentProvider = { preferred = 'fernflower' },
+      completion = {
+        favoriteStaticMembers = {
+          "org.hamcrest.MatcherAssert.assertThat",
+          "org.hamcrest.Matchers.*",
+          "org.hamcrest.CoreMatchers.*",
+          "org.junit.jupiter.api.Assertions.*",
+          "java.util.Objects.requireNonNull",
+          "java.util.Objects.requireNonNullElse",
+        }
+      }
+    }
+  },
+  init_options = {
+    bundles = {}
+  },
 })

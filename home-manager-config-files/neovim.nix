@@ -48,8 +48,16 @@ in
           plugin = which-key-nvim ;
           config = toLuaFile ./nvim/plugin/which-key.lua;
         }
+
+        {
+          plugin = nvim-jdtls;
+          config = toLuaFile ./nvim/plugin/dap.lua;
+        }
+        nvim-dap
+
         neodev-nvim
 
+          nvim-notify
 
         telescope-fzf-native-nvim
 
@@ -68,6 +76,7 @@ in
 
         vim-nix
         vim-visual-multi
+
 
         {
           plugin = (nvim-treesitter.withPlugins (p: [
