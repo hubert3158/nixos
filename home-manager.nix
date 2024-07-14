@@ -64,6 +64,7 @@
     (python312.withPackages (ps: with ps; [ reportlab ])) 
 
     lua-language-server
+    nil
 
 
   ];
