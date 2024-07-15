@@ -1,6 +1,34 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "jdk@11.0.20": {
+      "last_modified": "2024-01-27T14:55:31Z",
+      "resolved": "github:NixOS/nixpkgs/160b762eda6d139ac10ae081f8f78d640dd523eb#jdk11",
+      "source": "devbox-search",
+      "version": "11.0.20",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/n2v0266ksf6v4qqk0nncm03lkp21l3c3-zulu-ca-jdk-11.0.20",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/n2v0266ksf6v4qqk0nncm03lkp21l3c3-zulu-ca-jdk-11.0.20"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/v1qqlsljc1q7hl6z2j198gk092xbylb4-zulu-ca-jdk-11.0.20",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/v1qqlsljc1q7hl6z2j198gk092xbylb4-zulu-ca-jdk-11.0.20"
+        }
+      }
+    },
     "liquibase@3.9.0": {
       "last_modified": "2020-06-13T22:15:40Z",
       "resolved": "github:NixOS/nixpkgs/d6d07f262b171bb1e415e1a06c52288af056a98d#liquibase",
