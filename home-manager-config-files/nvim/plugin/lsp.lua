@@ -54,7 +54,7 @@ require("lspconfig").html.setup({
 require("lspconfig").jdtls.setup({
   on_attach = on_attach,
   capabilities = capabilities,
-  cmd = { "jdtls" },
+  cmd = { "/etc/profiles/per-user/hubert/bin/jdtls" }, -- Update the path to your jdtls executable
   root_dir = function(fname)
     return require('lspconfig.util').root_pattern('pom.xml', 'build.gradle', '.git')(fname) or vim.loop.os_homedir()
   end,
@@ -75,6 +75,8 @@ require("lspconfig").jdtls.setup({
     }
   },
   init_options = {
-    bundles = {}
+    bundles = {
+      vim.fn.glob('/nix/store/id0zrxghssr6mkzxaaphs9yy1sjn7f57-vscode-extension-vscjava-vscode-java-debug-0.55.2023121302/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.50.0.jar', true),
+    }
   },
 })
