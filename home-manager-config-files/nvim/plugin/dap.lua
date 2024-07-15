@@ -28,7 +28,7 @@ local function setup_jdtls()
     }
   }
 
-  require('jdtls').start_or_attach(config)
+  -- require('jdtls').start_or_attach(config)
 
   -- Allow time for jdtls to fully load the project
   local timer = 2500
