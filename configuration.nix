@@ -94,6 +94,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim 
+    lsof
     wget 
     xclip
     curl

@@ -53,11 +53,12 @@ in
           config = toLuaFile ./nvim/plugin/which-key.lua;
         }
 
-        # {
-        #   plugin = nvim-jdtls;
-        #   config = toLuaFile ./nvim/plugin/dap.lua;
-        # }
-        # nvim-dap
+        {
+          plugin = nvim-jdtls;
+          config = toLuaFile ./nvim/plugin/dap.lua;
+        }
+         nvim-dap
+         nvim-dap-ui
 
         neodev-nvim
 
