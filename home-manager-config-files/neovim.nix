@@ -54,10 +54,11 @@ in
         }
 
         {
-          plugin = nvim-jdtls;
+          plugin = nvim-dap;
           config = toLuaFile ./nvim/plugin/dap.lua;
         }
-         nvim-dap
+        nvim-jdtls
+         
          nvim-dap-ui
 
         neodev-nvim
