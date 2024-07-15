@@ -63,7 +63,13 @@ vim.api.nvim_set_keymap("n", "<leader>un", ":lua require('notify').dismiss({ sil
 
 
 
-
+--DAP
+vim.api.nvim_set_keymap('n', '<F4>', ":lua require('dapui').toggle()<CR>", { noremap = true, silent = true, desc = "show dap ui" })
+vim.api.nvim_set_keymap('n', '<F5>', ":lua require'dap'.continue()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<F6>', ":lua require'dap'.disconnect()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<F10>', ":lua require'dap'.step_over()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<F11>', ":lua require'dap'.step_into()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<F12>', ":lua require'dap'.step_out()<CR>", { noremap = true, silent = true })
 
 
 
