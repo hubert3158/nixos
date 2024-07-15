@@ -27,7 +27,7 @@ end
 
 -- Configure Java DAP adapter
 dap.adapters.java = function(callback)
-  require('jdtls').setup_dap({ hotcodereplace = 'auto' })
+  -- require('jdtls').setup_dap({ hotcodereplace = 'auto' })
   callback({
     type = 'server',
     host = '127.0.0.1',
