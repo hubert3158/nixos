@@ -1,0 +1,18 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "liquibase@3.9.0": {
+      "last_modified": "2020-06-13T22:15:40Z",
+      "resolved": "github:NixOS/nixpkgs/d6d07f262b171bb1e415e1a06c52288af056a98d#liquibase",
+      "source": "devbox-search",
+      "version": "3.9.0"
+    },
+    "nodejs@10.21.0": {
+      "last_modified": "2020-07-14T01:56:14Z",
+      "plugin_version": "0.0.2",
+      "resolved": "github:NixOS/nixpkgs/aca0bbe791c220f8360bd0dd8e9dce161253b341#nodejs-10_x",
+      "source": "devbox-search",
+      "version": "10.21.0"
+    }
+  }
+}
