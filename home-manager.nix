@@ -31,6 +31,8 @@
     jetbrains.idea-ultimate
     jetbrains.pycharm-professional
     onedrive
+    vscode-extensions.vscjava.vscode-java-debug
+
 
     discord
     pgadmin4
