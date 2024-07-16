@@ -72,10 +72,11 @@ local function setup_jdtls()
 end
 
 -- Setup Java LSP only for Java files
+-- local jdtls_setup_done = false
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "java",
-	callback = function()
-		setup_jdtls()
-	end,
+	callback = setup_jdtls,
+	once = true,
 })
 
