@@ -26,6 +26,9 @@
 
   home.packages = with pkgs; [
     # Add your user packages here
+
+    hyprland
+
     microsoft-edge
     google-chrome
     jetbrains.idea-ultimate
