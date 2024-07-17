@@ -41,12 +41,6 @@
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-  # Configure keymap in X11
-  services.xserver = {
-    xkb.layout = "us";
-    xkb.variant = "";
-  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -93,6 +87,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+egl-wayland
     wayland
     xorg.xrandr
     weston
@@ -112,6 +107,7 @@
     gcc
     gnumake 
     nix-index
+    util-linux
 devbox
 tree
 sqlite
@@ -178,6 +174,8 @@ services.postgresql = {
   '';
 };
 networking.firewall.allowedTCPPorts = [ 5432 ];
+
+
 
 
 
