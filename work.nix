@@ -11,13 +11,18 @@
       #./hardware-configuration-work.nix
     ];
 
+  services.xserver.enable = true;
+  # Configure keymap in X11
+  services.xserver = {
+    xkb.layout = "us";
+    xkb.variant = "";
+  };
 
   # Enable the KDE Plasma Desktop Environment.
 #   services.displayManager.sddm.enable = true;
 # services.desktopManager.plasma6.enable = true;
 #services.xserver.desktopManager.gnome.enable = true;
  # services.xserver.desktopManager.xfce.enable = true;
-  services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
 
   services.xserver.desktopManager.plasma6.enable = true;
