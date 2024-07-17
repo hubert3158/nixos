@@ -25,12 +25,11 @@
 
 
   wayland.windowManager.sway.enable = true;
-
   # wayland.windowManager.hyprland = {
   #   enable = true;
   #   extraConfig = ''
   # bind = $mod, S, submap, resize
-  # 
+  #
   # submap = resize
   # binde = , right, resizeactive, 10 0
   # binde = , left, resizeactive, -10 0
