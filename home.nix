@@ -6,15 +6,9 @@
 
 {
 
-hardware.nvidia.modesetting.enable =  true;
-hardware.nvidia.open = true;
 
-  imports =
-    [ 
-    #  ./hardware-configuration-home.nix
-    ];
 
-   services.xserver.enable = true;
+
   # # Configure keymap in X11
   services.xserver = {
     xkb.layout = "us";
@@ -22,21 +16,41 @@ hardware.nvidia.open = true;
   };
 
 
+programs.hyprland.enable  = true;
+  services.xserver.enable = true;
+ #  services.displayManager.sddm.wayland.enable = true ;
+  hardware.graphics.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
 
-  services.displayManager.sddm.wayland.enable = true ;
+
+hardware.nvidia.modesetting.enable =  true;
+hardware.nvidia.open = true;
+
+
+
+
+
+  services.desktopManager.plasma6.enable = true;   # somehow its needed for hyprland to work
+
+
+
+
+
+
+
+
+  # imports =
+  #   [ 
+  #     ./hardware-configuration-home.nix
+  #   ];
 
 
   # wayland.inputDevices = {
   #   layout = "us";  # Set your desired keyboard layout
   #   variant = "";   # Optionally set the variant
   # };
-
-
-
-
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-services.desktopManager.plasma6.enable = true;
 # services.xserver.desktopManager.gnome.enable = true;
   # services.xserver.desktopManager.xfce.enable = true;
   # Enable Hyprland
@@ -48,9 +62,6 @@ services.desktopManager.plasma6.enable = true;
 
 
 
-  hardware.graphics.enable = true;
-
-  services.xserver.videoDrivers = [ "nvidia" ];
 
 
 }
