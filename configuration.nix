@@ -98,6 +98,7 @@
     swaylock
     mako
     hyprland
+    hyprpaper
 egl-wayland
     xorg.xrandr    
     weston
@@ -200,8 +201,6 @@ networking.firewall.allowedTCPPorts = [ 5432 ];
 #things needed for hyprland i guess
 
 services.dbus.enable  = true;
-#services.elogind.enable  = true;
-#services.xdg-desktop-portal.enable = true;
 
 
 

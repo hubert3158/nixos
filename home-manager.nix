@@ -181,9 +181,26 @@ programs.git = {
     alias.st = "status";
     alias.lg = "log --graph --oneline --all";
     commit.gpgSign = false;
-
   };
 };
+
+services.hyprpaper = {
+  enable = true;
+  settings = {
+    ipc = "on";
+    splash = false;
+    splash_offset = 2.0;
+
+    preload =
+      [ "~/nixos/images/wallpaper.png" "" ];
+
+      wallpaper = [
+        "DP-1,~/nixos/images/wallpaper.png"
+        "DP-2,~/nixos/images/wallpaper.png"
+        "DP-3,~/nixos/images/wallpaper.png"
+      ];
+    };
+  };
 
 
 }
