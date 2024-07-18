@@ -198,6 +198,8 @@ services.hyprpaper = {
         "DP-1,~/nixos/images/wallpaper.png"
         "DP-2,~/nixos/images/wallpaper.png"
         "DP-3,~/nixos/images/wallpaper.png"
+        "eDP-1,~/nixos/images/wallpaper.png"
+        "HDMI-A-1,~/nixos/images/wallpaper.png"
       ];
     };
   };
