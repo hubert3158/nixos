@@ -87,11 +87,31 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    wayland
+    wayland-protocols
+    wl-clipboard
+    xwayland
+    xdg-desktop-portal
+    xdg-desktop-portal-wlr
+    swaybg
+    swayidle                          # These are things needed for hyprland i guess lumaooooooooo
+    swaylock
+    mako
     hyprland
 egl-wayland
-    wayland
-    xorg.xrandr
+    xorg.xrandr    
     weston
+    alacritty
+    polkit
+    rofi
+    grim
+    slurp
+    dmenu
+    lightdm
+    wofi
+
+
+
     vim 
     lsof
     wget 
@@ -176,6 +196,12 @@ services.postgresql = {
 };
 networking.firewall.allowedTCPPorts = [ 5432 ];
 
+
+#things needed for hyprland i guess
+
+services.dbus.enable  = true;
+#services.elogind.enable  = true;
+#services.xdg-desktop-portal.enable = true;
 
 
 
