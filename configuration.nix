@@ -46,7 +46,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  # hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -60,7 +60,6 @@
     #media-session.enable = true;
   };
 
-  hardware.bluetooth.enable = true;
   security.rtkit.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -201,8 +200,14 @@ networking.firewall.allowedTCPPorts = [ 5432 ];
 
 #things needed for hyprland i guess and i was wrong i guess idk
 services.dbus.enable  = true;
-
-
-
-
+environment.sessionVariables = {
+  #Hint electron apps to use wayland
+  NIXOS_OZONE_WL = "1";
+};
+hardware = {
+    bluetooth.enable = true;
+    nvidia.modesetting.enable = true;
+};
+xdg.portal.enable = true;
+xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 }

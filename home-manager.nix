@@ -26,6 +26,7 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    xwayland.enable = true;
     extraConfig = ''
     source = ~/nixos/dotfiles/hypr/hyprland.conf
     '';
