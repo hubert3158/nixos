@@ -20,7 +20,7 @@
   programs.hyprland.enable  = true;
   services.xserver.enable = true;
   hardware.graphics.enable = true;
-  services.desktopManager.plasma6.enable = true;   # somehow its needed for hyprland to work
+  # services.desktopManager.plasma6.enable = true;   # somehow its needed for hyprland to work
   services.displayManager.sddm.enable = true;
 
 
