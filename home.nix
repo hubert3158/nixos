@@ -16,21 +16,16 @@
   };
 
 
-programs.hyprland.enable  = true;
+  programs.hyprland.enable  = true;
   services.xserver.enable = true;
- #  services.displayManager.sddm.wayland.enable = true ;
   hardware.graphics.enable = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
-
-
-hardware.nvidia.modesetting.enable =  true;
-hardware.nvidia.open = true;
-
-
-
-
-
   services.desktopManager.plasma6.enable = true;   # somehow its needed for hyprland to work
+  services.displayManager.sddm.enable = true;
+ #  services.displayManager.sddm.wayland.enable = true ;
+
+ services.xserver.videoDrivers = [ "nvidia" ];
+ hardware.nvidia.modesetting.enable =  true;
+ hardware.nvidia.open = true;
 
 
 
@@ -50,7 +45,6 @@ hardware.nvidia.open = true;
   #   variant = "";   # Optionally set the variant
   # };
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
 # services.xserver.desktopManager.gnome.enable = true;
   # services.xserver.desktopManager.xfce.enable = true;
   # Enable Hyprland
