@@ -198,8 +198,7 @@ services.postgresql = {
 networking.firewall.allowedTCPPorts = [ 5432 ];
 
 
-#things needed for hyprland i guess
-
+#things needed for hyprland i guess and i was wrong i guess idk
 services.dbus.enable  = true;
 
 
