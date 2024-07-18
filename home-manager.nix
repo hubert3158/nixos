@@ -24,11 +24,12 @@
   };
 
 
-  # wayland.windowManager.sway.enable = true;
-  # wayland.windowManager.hyprland = {
-  #   enable = true;
-  #   # extraConfig = '' '';
-  # };
+  wayland.windowManager.hyprland = {
+    enable = true;
+    extraConfig = ''
+    source = ~/nixos/dotfiles/hypr/hyprland.conf
+    '';
+  };
 
   home.packages = with pkgs; [
     # Add your user packages here
