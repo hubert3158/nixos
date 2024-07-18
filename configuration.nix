@@ -99,6 +99,7 @@
     mako
     hyprland
     hyprpaper
+    hyprlock
 egl-wayland
     xorg.xrandr    
     weston
