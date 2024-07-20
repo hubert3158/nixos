@@ -7,6 +7,9 @@
         columns = 200;
       };
 
+
+      import = ["nixos/home-manager-config-files/alacritty/alacritty-theme/themes/gruvbox_material_hard_dark.toml"];
+
       keyboard.bindings = [
         {
           key = "K";
