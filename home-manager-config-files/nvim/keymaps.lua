@@ -20,7 +20,12 @@ vim.api.nvim_set_keymap("n", "<leader>fs", "<cmd>Telescope builtin<CR>", { norem
 -- vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<leader>p", ":Neotree<CR>", { silent = true })
+vim.api.nvim_set_keymap("n", "<leader>nn", ":NERDTreeFocus<CR>", { silent = true })
+vim.api.nvim_set_keymap("n", "<leader>n", ":NERDTreeFocus<CR>", { silent = true })
+vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>", { silent = true })
+vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFind<CR>", { silent = true })
+
+
 
 vim.api.nvim_set_keymap("n", "<leader>t", ":terminal<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<leader>q", ":q<CR>", { silent = true })

@@ -58,8 +58,10 @@ in
           config = toLuaFile ./nvim/plugin/dap.lua;
         }
         nvim-jdtls
-         
-         nvim-dap-ui
+        nvim-dap-ui
+
+        nerdtree
+        
 
         neodev-nvim
 

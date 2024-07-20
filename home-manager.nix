@@ -92,6 +92,7 @@
     ./home-manager-config-files/tmux.nix
     ./home-manager-config-files/vim.nix
     ./home-manager-config-files/neovim.nix
+    ./home-manager-config-files/alacritty.nix
   ];
 
   programs.zsh = {
