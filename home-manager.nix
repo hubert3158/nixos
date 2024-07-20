@@ -21,6 +21,7 @@
     "gr" = ''
     git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
     '';
+    "h" = "omz_history | fzf > selected";
   };
 
 
@@ -79,6 +80,7 @@
     jdt-language-server
     nil
 
+    nerdfonts
 
   ];
   nixpkgs.config = {
