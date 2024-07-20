@@ -1,6 +1,6 @@
 vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 vim.g.maplocalleader = " " -- Same for `maplocalleader`
-vim.g.scrolloff = 5
+vim.opt.scrolloff = 6
 vim.opt.incsearch = true -- Do incremental searching. map Q gq
 vim.opt.relativenumber = true
 vim.opt.number = true
