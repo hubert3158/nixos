@@ -61,6 +61,8 @@ in
 	# -- ensure_installed = { "c", "query", "lua", "java", "nix", "vimdoc", "luadoc", "vim", "markdown", "markdown_inline" },
           nvim-treesitter-parsers.vimdoc
           nvim-treesitter-parsers.vim
+          nvim-treesitter-parsers.javascript
+          nvim-treesitter-parsers.json
           nvim-treesitter-parsers.c
           nvim-treesitter-parsers.query
           nvim-treesitter-parsers.lua
