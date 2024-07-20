@@ -57,6 +57,18 @@ in
           plugin = nvim-treesitter;
           config = toLuaFile ./nvim/plugin/treesitter.lua;
         }
+
+	# -- ensure_installed = { "c", "query", "lua", "java", "nix", "vimdoc", "luadoc", "vim", "markdown", "markdown_inline" },
+          nvim-treesitter-parsers.vimdoc
+          nvim-treesitter-parsers.vim
+          nvim-treesitter-parsers.c
+          nvim-treesitter-parsers.query
+          nvim-treesitter-parsers.lua
+          nvim-treesitter-parsers.java
+          nvim-treesitter-parsers.nix
+          nvim-treesitter-parsers.luadoc
+          nvim-treesitter-parsers.markdown
+          nvim-treesitter-parsers.markdown_inline
         {
           plugin = nvim-dap;
           config = toLuaFile ./nvim/plugin/dap.lua;

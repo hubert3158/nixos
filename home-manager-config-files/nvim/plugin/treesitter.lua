@@ -1,25 +1,23 @@
+local parser_install_dir = vim.fn.expand('/home/hubert/temp')
+
 require('nvim-treesitter.configs').setup {
-	ensure_installed = {
-		"lua",
-		"java",
-		"nix",
-		"vimdoc",
-		"luadoc",
-		"vim",
-		"lua",
-		"markdown"
-	},
+
+	-- ensure_installed = { "c", "query", "lua", "java", "nix", "vimdoc", "luadoc", "vim", "markdown", "markdown_inline" },
+	-- This is not needed / causes problems
 
 	auto_install = false,
 
-	highlight = { enable = true },
+	highlight = {
+		enable = true,
+		-- disable = { "c", "rust","vimdoc" },
+	},
 
 	indent = { enable = true },
 
-	-- Add the following line to set the parser install directory
-	parser_install_dir = vim.fn.stdpath('data') .. '/parsers'
+	-- Set the parser install directory to the expanded path
+	-- parser_install_dir = parser_install_dir
 }
 
 -- Optional: Create the directory if it doesn't exist
-vim.fn.mkdir(vim.fn.stdpath('data') .. '/parsers', 'p')
+-- vim.fn.mkdir(parser_install_dir, 'p')
 
