@@ -71,7 +71,8 @@
     description = "hubert";
     extraGroups = [ "networkmanager" "wheel" "docker" "wireshark" "postgres"];
     packages = with pkgs; [
-    #  kdePackages.kate
+      kdePackages.kate
+      kdiff3
       thunderbird
     ];
   };
@@ -124,6 +125,7 @@ egl-wayland
 
 
     vim 
+    zoxide
     lsof
     wget 
     xclip
@@ -145,7 +147,10 @@ tree
 sqlite
 neovim
 fzf
-nodejs
+nodejs_22
+ranger
+dolphin
+breeze-icons
 
   ];
   virtualisation.docker.enable = true;

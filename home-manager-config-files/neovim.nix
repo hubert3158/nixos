@@ -96,9 +96,6 @@ in
         vim-nix
         vim-visual-multi
 
-        
-
-
 
       # {
       #   plugin = vimPlugins.own-onedark-nvim;

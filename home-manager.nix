@@ -86,6 +86,8 @@
 
     alacritty-theme
 
+    krusader
+
   ];
   nixpkgs.config = {
     allowUnfree = true;
