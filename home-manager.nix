@@ -84,6 +84,8 @@
 
     obs-studio
 
+    alacritty-theme
+
   ];
   nixpkgs.config = {
     allowUnfree = true;
