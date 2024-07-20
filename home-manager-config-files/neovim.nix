@@ -64,8 +64,15 @@ in
         nvim-jdtls
         nvim-dap-ui
 
+        {
+          plugin = dashboard-nvim;
+          config = toLuaFile ./nvim/plugin/dashboard.lua;
+        }
+
+        vim-devicons
+        nvim-web-devicons 
+
         nerdtree
-        
 
         neodev-nvim
 

@@ -6,56 +6,46 @@
 
 {
 
-
-
-
-  # # Configure keymap in X11
+  ## Configure keymap in X11
   services.xserver = {
     xkb.layout = "us";
     xkb.variant = "";
   };
 
-
   programs.hyprland.enable  = true;
-  services.xserver.enable = true;
-  hardware.graphics.enable = true;
-  services.desktopManager.plasma6.enable = true;   # somehow its needed for hyprland to work
+  # services.desktopManager.plasma6.enable = true;
   services.displayManager.sddm.enable = true;
- #  services.displayManager.sddm.wayland.enable = true ;
 
- services.xserver.videoDrivers = [ "nvidia" ];
- hardware.nvidia.modesetting.enable =  true;
- hardware.nvidia.open = true;
+  services.xserver = {
+    enable = true;
+    videoDrivers = [ "nvidia" ];
+  };
 
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        vaapiIntel
+        vaapiVdpau
+        libvdpau
+      ];
+    };
+    bluetooth.enable = true;
+    nvidia = {
+      open = true;
+      modesetting.enable =  true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable; 
+    #Fixes a glitch
+    nvidiaPersistenced = true;
+    #Required for amdgpu and nvidia gpu pairings
+    # prime = {
+    #   offload.enable = true;
+    #    #sync.enable = true;
+    #    amdgpuBusId = "PCI:5:0:0";
+    #    nvidiaBusId = "PCI:1:0:0";
+    #  };
 
-
-
-
-
-
-
-  # imports =
-  #   [ 
-  #     ./hardware-configuration-home.nix
-  #   ];
-
-
-  # wayland.inputDevices = {
-  #   layout = "us";  # Set your desired keyboard layout
-  #   variant = "";   # Optionally set the variant
-  # };
-  # Enable the KDE Plasma Desktop Environment.
-# services.xserver.desktopManager.gnome.enable = true;
-  # services.xserver.desktopManager.xfce.enable = true;
-  # Enable Hyprland
-# Enable Sway
-#services.wayland.windowManager.sway.enable = true;
-# Enable Weston
-#services.wayland.windowManager.weston.enable = true;
-#  wayland.windowManager.sway.enable = true;
-
-
-
-
-
+  };
+};
 }
