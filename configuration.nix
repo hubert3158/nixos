@@ -53,7 +53,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -86,6 +86,16 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+
+     autoAddDriverRunpath
+     autoFixElfFiles
+    # cudaPackages_12_2 
+
+
+
+
+
+    pipewire
     wayland
     wayland-protocols
     wl-clipboard
@@ -204,10 +214,8 @@ environment.sessionVariables = {
   #Hint electron apps to use wayland
   NIXOS_OZONE_WL = "1";
 };
-hardware = {
-    bluetooth.enable = true;
-    nvidia.modesetting.enable = true;
-};
 xdg.portal.enable = true;
 xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
+
 }

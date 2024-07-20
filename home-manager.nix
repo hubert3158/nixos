@@ -82,6 +82,8 @@
 
     nerdfonts
 
+    obs-studio
+
   ];
   nixpkgs.config = {
     allowUnfree = true;
