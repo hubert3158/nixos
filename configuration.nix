@@ -69,7 +69,7 @@
   users.users.hubert = {
     isNormalUser = true;
     description = "hubert";
-    extraGroups = [ "networkmanager" "wheel" "docker" "wireshark" "postgres"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "wireshark" "postgres" "video"];
     packages = with pkgs; [
       kdePackages.kate
       kdiff3
@@ -103,6 +103,7 @@
     xwayland
     xdg-desktop-portal
     xdg-desktop-portal-wlr
+    waybar
     swaybg
     swayidle                          # These are things needed for hyprland i guess lumaooooooooo
     swaylock
@@ -152,6 +153,13 @@ ranger
 dolphin
 breeze-icons
 
+inotify-tools # help watch a file and reload when it changes
+# gtkmm3 
+# upower
+# cacert
+evolution
+
+
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
@@ -164,6 +172,16 @@ breeze-icons
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
+  systemd.user.services.waybar-symlinks = {
+    description = "Create Waybar configuration symlinks";
+    serviceConfig = {
+      ExecStart = "/home/hubert/nixos/home-manager-config-files/waybar/createSymlink.sh";
+      RemainAfterExit = true;
+    };
+    wantedBy = [ "default.target" ];
+  };
+
 
   # List services that you want to enable:
 
@@ -221,6 +239,9 @@ environment.sessionVariables = {
 };
 xdg.portal.enable = true;
 xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
+programs.waybar.enable = true;
+
 
 
 }
