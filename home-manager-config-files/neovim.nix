@@ -63,6 +63,7 @@ in
           nvim-treesitter-parsers.vim
           nvim-treesitter-parsers.javascript
           nvim-treesitter-parsers.json
+          nvim-treesitter-parsers.jsonc
           nvim-treesitter-parsers.c
           nvim-treesitter-parsers.query
           nvim-treesitter-parsers.lua
@@ -71,6 +72,7 @@ in
           nvim-treesitter-parsers.luadoc
           nvim-treesitter-parsers.markdown
           nvim-treesitter-parsers.markdown_inline
+
         {
           plugin = nvim-dap;
           config = toLuaFile ./nvim/plugin/dap.lua;

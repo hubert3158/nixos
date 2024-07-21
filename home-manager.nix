@@ -79,6 +79,7 @@
     lua-language-server
     jdt-language-server
     nil
+    bash-language-server
 
     nerdfonts
 
@@ -87,6 +88,7 @@
     alacritty-theme
 
     krusader
+    chatgpt-cli
 
   ];
   nixpkgs.config = {
@@ -197,37 +199,37 @@ programs.git = {
 programs.hyprlock = {
   enable = true;
   settings = {
-  general = {
-    disable_loading_bar = true;
-    grace = 300;
-    hide_cursor = true;
-    no_fade_in = false;
+    general = {
+      disable_loading_bar = true;
+      grace = 300;
+      hide_cursor = true;
+      no_fade_in = false;
+    };
+
+    background = [
+      {
+        path = "~/nixos/images/wallpaper.png";
+        blur_passes = 3;
+        blur_size = 8;
+      }
+    ];
+
+    input-field = [
+      {
+        size = "200, 50";
+        position = "0, -80";
+        monitor = "";
+        dots_center = true;
+        fade_on_empty = false;
+        font_color = "rgb(202, 211, 245)";
+        inner_color = "rgb(91, 96, 120)";
+        outer_color = "rgb(24, 25, 38)";
+        outline_thickness = 5;
+        placeholder_text = ''<span foreground="##cad3f5">Password...</span>'';
+        shadow_passes = 2;
+      }
+    ];
   };
-
-  background = [
-    {
-      path = "~/nixos/images/wallpaper.png";
-      blur_passes = 3;
-      blur_size = 8;
-    }
-  ];
-
-  input-field = [
-    {
-      size = "200, 50";
-      position = "0, -80";
-      monitor = "";
-      dots_center = true;
-      fade_on_empty = false;
-      font_color = "rgb(202, 211, 245)";
-      inner_color = "rgb(91, 96, 120)";
-      outer_color = "rgb(24, 25, 38)";
-      outline_thickness = 5;
-      placeholder_text = ''<span foreground="##cad3f5">Password...</span>'';
-      shadow_passes = 2;
-    }
-  ];
-};
 };
 
 services.hyprpaper = {
@@ -249,6 +251,40 @@ services.hyprpaper = {
       ];
     };
   };
+
+  programs.waybar = {
+    enable = true;
+    package = pkgs.waybar;
+  };
+
+  programs.wofi= {
+    enable = true;
+    style = ''
+    * {
+      font-family: monospace;
+    }
+
+    window {
+      background-color: #7c818c;
+    }
+    '';
+  };
+
+
+  xdg = {
+    enable = true;
+    desktopEntries = {
+      evolution = {
+        name="Evolution";
+        genericName = "Application";
+        exec = "evolution";
+        terminal = false;
+        categories = [ "Email" "Application" "Network" ];
+        mimeType = [ "text/html" "text/xml" ];
+      };
+    };
+  };
+
 }
 
 
