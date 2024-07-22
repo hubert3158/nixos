@@ -25,7 +25,7 @@
 
 
   networking.firewall.allowedTCPPorts = [ 3000];
-
+services.intune.enable = true;
 
 
 
