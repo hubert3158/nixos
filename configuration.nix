@@ -130,6 +130,7 @@ egl-wayland
     lsof
     wget 
     xclip
+    konsole
     curl
     git
     zsh
@@ -143,6 +144,7 @@ egl-wayland
     gnumake 
     nix-index
     util-linux
+
 devbox
 tree
 sqlite
