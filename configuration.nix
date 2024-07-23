@@ -160,6 +160,7 @@ inotify-tools # help watch a file and reload when it changes
 # upower
 # cacert
 evolution
+zoxide
 
 
   ];
@@ -243,6 +244,7 @@ xdg.portal.enable = true;
 xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
 programs.waybar.enable = true;
+
 
 
 
