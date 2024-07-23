@@ -41,6 +41,55 @@
       "resolved": "github:NixOS/nixpkgs/aca0bbe791c220f8360bd0dd8e9dce161253b341#nodejs-10_x",
       "source": "devbox-search",
       "version": "10.21.0"
+    },
+    "python2@latest": {
+      "last_modified": "2024-07-07T07:43:47Z",
+      "plugin_version": "0.0.3",
+      "resolved": "github:NixOS/nixpkgs/b60793b86201040d9dee019a05089a9150d08b5b#python2",
+      "source": "devbox-search",
+      "version": "2.7.18.8",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ch9wdnw8i3dzc5c8qfqahlv3jv0lrckz-python-2.7.18.8",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ch9wdnw8i3dzc5c8qfqahlv3jv0lrckz-python-2.7.18.8"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/nlgl4ilh36n20hmi4pa8q20gwgnvqh43-python-2.7.18.8",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/nlgl4ilh36n20hmi4pa8q20gwgnvqh43-python-2.7.18.8"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/4nc7vhs8rsi9k1i17y4ci9gmyzhnxr8a-python-2.7.18.8",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/4nc7vhs8rsi9k1i17y4ci9gmyzhnxr8a-python-2.7.18.8"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/inp9vhwaz7y2blsz28fy2i4a1hdkp0r2-python-2.7.18.8",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/inp9vhwaz7y2blsz28fy2i4a1hdkp0r2-python-2.7.18.8"
+        }
+      }
     }
   }
 }
