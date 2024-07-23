@@ -148,7 +148,6 @@ egl-wayland
 devbox
 tree
 sqlite
-neovim
 fzf
 nodejs_22
 ranger
@@ -244,6 +243,7 @@ xdg.portal.enable = true;
 xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
 programs.waybar.enable = true;
+programs.neovim.enable= true;
 
 
 

@@ -1,5 +1,8 @@
 
 { pkgs, ... }:
+let
+  ewwConfigDir = builtins.toPath ./nixos/home-manager-config-files/eww;
+in
 {
   home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
   home.username="hubert";
@@ -127,13 +130,6 @@
       ];
     };
     profileExtra= ''
-      eval "$(zoxide init zsh)"
-
-      # Define the 'z' function for quick navigation
-      z() {
-        zoxide cd "$@"
-      }
-
       # Define the 'zi' function for interactive selection using fzf
       zi() {
         zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
@@ -300,10 +296,29 @@ services.hyprpaper = {
     enable = true;
     package = pkgs.zoxide;
     options = [
-        "--no-aliases"
+        # "--no-aliases"
     ];
     enableZshIntegration = true;
   };
+
+  programs.ranger = {
+  enable = true;
+  extraConfig = ''
+    set colorscheme solarized
+  '';
+     rifle = [
+      {
+        command = "${pkgs.neovim}/bin/nvim -- \"$@\"";
+        condition = "mime ^text";
+      }
+    ];
+};
+
+# programs.eww = {
+#   enable = true;
+#   package = pkgs.eww;
+#   configDir = ewwConfigDir;
+# };
 }
 
 
