@@ -11,6 +11,7 @@
     "gwip" = "git commit -m \"wip\"";
     "v" = "nvim";
     "vi" = "nvim";
+    "cd" = "z";
     "f" = ''
     fzf \
     -i \
@@ -126,7 +127,17 @@
       ];
     };
     profileExtra= ''
-    export NIXOS_PROFILE=work
+      eval "$(zoxide init zsh)"
+
+      # Define the 'z' function for quick navigation
+      z() {
+        zoxide cd "$@"
+      }
+
+      # Define the 'zi' function for interactive selection using fzf
+      zi() {
+        zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
+      }
     '';
   };
 
@@ -285,6 +296,14 @@ services.hyprpaper = {
     };
   };
 
+  programs.zoxide = {
+    enable = true;
+    package = pkgs.zoxide;
+    options = [
+        "--no-aliases"
+    ];
+    enableZshIntegration = true;
+  };
 }
 
 
