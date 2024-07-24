@@ -1,7 +1,7 @@
 
 { pkgs, ... }:
 let
-  ewwConfigDir = builtins.toPath ./nixos/home-manager-config-files/eww;
+  ewwConfigDir = builtins.toPath ./home-manager-config-files/eww;
 in
 {
   home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
@@ -315,11 +315,11 @@ services.hyprpaper = {
     ];
 };
 
-# programs.eww = {
-#   enable = true;
-#   package = pkgs.eww;
-#   configDir = ewwConfigDir;
-# };
+programs.eww = {
+  enable = true;
+  package = pkgs.eww;
+  configDir = ./home-manager-config-files/eww;
+};
 }
 
 
