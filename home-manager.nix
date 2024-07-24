@@ -15,6 +15,7 @@ in
     "v" = "nvim";
     "vi" = "nvim";
     "cd" = "z";
+    "r" = "ranger";
     "f" = ''
     fzf \
     -i \

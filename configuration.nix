@@ -144,6 +144,7 @@ egl-wayland
     gnumake 
     nix-index
     util-linux
+    gpg
 
 devbox
 tree
@@ -159,6 +160,9 @@ inotify-tools # help watch a file and reload when it changes
 # upower
 # cacert
 evolution
+evolution-ews
+pass
+age
 zoxide
 
 
