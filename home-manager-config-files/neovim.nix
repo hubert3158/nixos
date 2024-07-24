@@ -72,6 +72,7 @@ in
           nvim-treesitter-parsers.luadoc
           nvim-treesitter-parsers.markdown
           nvim-treesitter-parsers.markdown_inline
+          nvim-treesitter-parsers.yuck
 
         {
           plugin = nvim-dap;
