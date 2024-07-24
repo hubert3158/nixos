@@ -17,6 +17,8 @@
     xkb.variant = "";
   };
 
+   hardware.bluetooth.enable = true;
+
   programs.hyprland.enable  = true;
   services.xserver.enable = true;
   hardware.graphics.enable = true;
@@ -24,7 +26,7 @@
   services.displayManager.sddm.enable = true;
 
 
-  networking.firewall.allowedTCPPorts = [ 3000];
+  networking.firewall.allowedTCPPorts = [ 3000 8080];
 services.intune.enable = true;
 
 
