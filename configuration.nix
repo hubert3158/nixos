@@ -144,7 +144,6 @@ egl-wayland
     gnumake 
     nix-index
     util-linux
-    gpg
 
 devbox
 tree

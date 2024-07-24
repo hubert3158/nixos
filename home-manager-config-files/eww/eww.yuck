@@ -1,0 +1,11 @@
+(defwidget hello-world []
+  (box :orientation "vertical"
+       :spacing 10
+       (label :text "Hello, World!")
+       (button :text "Click Me!"
+               :onclick "echo 'Button clicked!'")))
+
+(defwindow main
+  :monitor "Sceptre K27"
+  (hello-world))
+
