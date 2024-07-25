@@ -61,11 +61,13 @@ in
     teams-for-linux
     ripgrep
     lazygit
+    pinentry-tty
 
 
     nmap
     nikto
     zap
+    gnupg
 
     wireshark-qt
 
@@ -320,6 +322,15 @@ programs.eww = {
   package = pkgs.eww;
   configDir = ./home-manager-config-files/eww;
 };
+
+services.gnome-keyring = {
+  enable = true;
+  components = [ "secrets"];
+};
+
+# programs.gpg{
+#
+#  }
 }
 
 

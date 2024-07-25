@@ -122,6 +122,8 @@ egl-wayland
     dmenu
     lightdm
     wofi
+    gnome.gnome-keyring
+
 
 
 
@@ -246,9 +248,10 @@ xdg.portal.enable = true;
 xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
 programs.waybar.enable = true;
-programs.neovim.enable= true;
+programs.neovim.enable = true;
 
-
-
+  services.gnome.gnome-keyring = {
+    enable = true;
+  };
 
 }
