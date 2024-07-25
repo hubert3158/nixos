@@ -147,6 +147,9 @@ egl-wayland
     nix-index
     util-linux
 
+    gnupg
+    pinentry-all
+
 devbox
 tree
 sqlite
@@ -252,6 +255,19 @@ programs.neovim.enable = true;
 
   services.gnome.gnome-keyring = {
     enable = true;
+  };
+
+
+
+
+  services.dbus.packages = [ pkgs.gcr ];
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    settings = {
+      default-cache-ttl = 600;
+    };
   };
 
 }
