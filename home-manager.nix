@@ -61,13 +61,11 @@ in
     teams-for-linux
     ripgrep
     lazygit
-    pinentry-tty
 
 
     nmap
     nikto
     zap
-    gnupg
 
     wireshark-qt
 
@@ -328,9 +326,19 @@ services.gnome-keyring = {
   components = [ "secrets"];
 };
 
-# programs.gpg{
-#
-#  }
+
+services.gpg-agent.enable = true;
+services.gpg-agent.enableZshIntegration = true;
+services.gpg-agent.enableSshSupport = true;
+
+services.gpg-agent.pinentryPackage = pkgs.pinentry-gnome3;
+
+
+programs.neomutt = {
+  enable = true;
+  editor = "nvim";
+};
+
 }
 
 
