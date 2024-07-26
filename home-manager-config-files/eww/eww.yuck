@@ -7,6 +7,8 @@
 	)
 	:stacking "fg"
    :monitor "Sceptre K27"
+   :monitor "Sceptre F27"
+
            ; ... values omitted
   (greeter :text "Say hello!"
            :name "Tim"))
