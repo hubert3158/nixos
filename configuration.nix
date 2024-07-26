@@ -146,6 +146,8 @@ egl-wayland
     gnumake 
     nix-index
     util-linux
+    zip
+    unzip
 
     gnupg
     pinentry-all
