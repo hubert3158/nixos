@@ -3,13 +3,21 @@
 }
 
 window {
-  background-color: #121212;
+  /* background-color: #121212; */
+  /* background-color: skyblue; */
 	color: #ffd5cd;
   font-family: Museo Sans;
 }
 
 button {
-  all: unset;
-  background-color: #121212;
-  padding: 10px;
+  background-color: blue;
+  color: white;
+  color:red;
+  border: 1px solid #000;
+  border-radius:10px;
+  padding : 0px 10px;
+}
+.screenshot-button {
+  color:white;
+
 }
