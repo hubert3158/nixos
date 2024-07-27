@@ -50,11 +50,15 @@ require("lspconfig").html.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
-require("lspconfig").bash.setup({
+-- require("lspconfig").bashls.setup({
+-- 	on_attach = on_attach,
+-- 	capabilities = capabilities,
+-- })
+
+require("lspconfig").zls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
-
 -- require("lspconfig").jdtls.setup({
 --   on_attach = on_attach,
 --   capabilities = capabilities,

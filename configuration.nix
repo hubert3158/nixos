@@ -127,6 +127,7 @@ egl-wayland
 
 
 
+
     vim 
     zoxide
     lsof
@@ -148,6 +149,9 @@ egl-wayland
     util-linux
     zip
     unzip
+
+    zig
+    zls
 
     gnupg
     pinentry-all
