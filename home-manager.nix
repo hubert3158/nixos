@@ -49,6 +49,8 @@ in
     onedrive
     vscode-extensions.vscjava.vscode-java-debug
 
+    zig_0_12
+    zls
 
     discord
     pgadmin4

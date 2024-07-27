@@ -150,8 +150,6 @@ egl-wayland
     zip
     unzip
 
-    zig
-    zls
 
     gnupg
     pinentry-all
