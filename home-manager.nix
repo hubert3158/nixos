@@ -85,6 +85,7 @@ in
     jdt-language-server
     nil
     bash-language-server
+    zls
 
     nerdfonts
 

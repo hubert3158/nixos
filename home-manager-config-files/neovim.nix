@@ -73,6 +73,7 @@ in
           nvim-treesitter-parsers.markdown
           nvim-treesitter-parsers.markdown_inline
           nvim-treesitter-parsers.yuck
+          nvim-treesitter-parsers.zig
 
         {
           plugin = nvim-dap;
