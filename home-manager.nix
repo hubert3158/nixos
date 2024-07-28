@@ -177,19 +177,19 @@ programs.ssh= {
   extraConfig = ''
   Host *
   ForwardAgent yes
-  ForwardX11 yes
+  ForwardX11 no
   ForwardX11Trusted yes
   ServerAliveInterval 60
   ServerAliveCountMax 30
 
   Host stg
-  HostName 0.0.0.0
+  HostName REDACTED-HOST-STG
   User ubuntu
   Port 22
   IdentityFile ~/.ssh/staging.v2.pem
 
   Host prod
-  HostName 0.0.0.0
+  HostName REDACTED-HOST-PROD
   User ubuntu
   Port 22
   IdentityFile ~/.ssh/prod.v2.pem
