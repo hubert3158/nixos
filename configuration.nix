@@ -88,8 +88,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
 
-     autoAddDriverRunpath
-     autoFixElfFiles
+    autoAddDriverRunpath
+    autoFixElfFiles
     # cudaPackages_12_2 
 
 
@@ -111,7 +111,7 @@
     hyprland
     hyprpaper
     hyprlock
-egl-wayland
+    egl-wayland
     xorg.xrandr    
     weston
     alacritty
@@ -154,16 +154,16 @@ egl-wayland
     gnupg
     pinentry-all
 
-devbox
-tree
-sqlite
-fzf
-nodejs_22
-ranger
-dolphin
-breeze-icons
+    devbox
+    tree
+    sqlite
+    fzf
+    nodejs_22
+    ranger
+    dolphin
+    breeze-icons
 
-inotify-tools # help watch a file and reload when it changes
+    inotify-tools # help watch a file and reload when it changes
 # gtkmm3 
 # upower
 # cacert
@@ -172,7 +172,6 @@ evolution-ews
 pass
 age
 zoxide
-
 
   ];
   virtualisation.docker.enable = true;
@@ -200,7 +199,7 @@ zoxide
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-   services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -216,33 +215,33 @@ zoxide
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
 
-nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
 
 
-environment.shells = with pkgs; [ zsh ];
- environment.variables = {
+  environment.shells = with pkgs; [ zsh ];
+  environment.variables = {
     JAVA_HOME = "${pkgs.jdk21}/lib/openjdk";
   };
-    environment.shellInit = ''
-    export JAVA_HOME=${pkgs.jdk21}/lib/openjdk
-    export PATH=${pkgs.jdk21}/bin:$PATH
+  environment.shellInit = ''
+  export JAVA_HOME=${pkgs.jdk21}/lib/openjdk
+  export PATH=${pkgs.jdk21}/bin:$PATH
   '';
-users.defaultUserShell = pkgs.zsh;
-programs.zsh.enable = true;
-programs.tmux.enable=true;
+  users.defaultUserShell = pkgs.zsh;
+  programs.zsh.enable = true;
+  programs.tmux.enable=true;
 
-services.postgresql = {
-  enable = true;
-  package = pkgs.postgresql_15;  # or your desired version
-  settings = {
-    listen_addresses =lib.mkForce "*";
-  };
-  authentication = '' 
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_15;  # or your desired version
+    settings = {
+      listen_addresses =lib.mkForce "*";
+    };
+    authentication = '' 
     host all all 0.0.0.0/0 md5
-  '';
-};
-networking.firewall.allowedTCPPorts = [ 5432 ];
+    '';
+  };
+  networking.firewall.allowedTCPPorts = [ 5432 ];
 
 
 #things needed for hyprland i guess and i was wrong i guess idk
@@ -257,21 +256,34 @@ xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 programs.waybar.enable = true;
 programs.neovim.enable = true;
 
-  services.gnome.gnome-keyring = {
-    enable = true;
+services.gnome.gnome-keyring = {
+  enable = true;
+};
+
+
+
+
+services.dbus.packages = [ pkgs.gcr ];
+services.pcscd.enable = true;
+programs.gnupg.agent = {
+  enable = true;
+  enableSSHSupport = true;
+  settings = {
+    default-cache-ttl = 600;
   };
+};
 
-
-
-
-  services.dbus.packages = [ pkgs.gcr ];
-  services.pcscd.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    settings = {
-      default-cache-ttl = 600;
-    };
-  };
+fonts.packages= with pkgs; [
+  nerdfonts
+  noto-fonts
+  noto-fonts-cjk
+  noto-fonts-emoji
+  liberation_ttf
+  fira-code
+  fira-code-symbols
+  mplus-outline-fonts.githubRelease
+  dina-font
+  proggyfonts
+];
 
 }

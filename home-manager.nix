@@ -94,6 +94,7 @@ in
     zls
 
     nerdfonts
+    dejavu_fonts
 
     obs-studio
 
@@ -115,6 +116,7 @@ in
     ./home-manager-config-files/vim.nix
     ./home-manager-config-files/neovim.nix
     ./home-manager-config-files/alacritty.nix
+    ./home-manager-config-files/kitty.nix
   ];
 
   programs.zsh = {
@@ -345,6 +347,7 @@ programs.neomutt = {
   enable = true;
   editor = "nvim";
 };
+
 
 }
 
