@@ -64,6 +64,10 @@ in
     ripgrep
     lazygit
 
+    dig
+    busybox
+    dnstop
+
 
     nmap
     nikto
@@ -173,19 +177,19 @@ programs.ssh= {
   extraConfig = ''
   Host *
   ForwardAgent yes
-  ForwardX11 no
+  ForwardX11 yes
   ForwardX11Trusted yes
   ServerAliveInterval 60
   ServerAliveCountMax 30
 
   Host stg
-  HostName REDACTED-HOST-STG
+  HostName 0.0.0.0
   User ubuntu
   Port 22
   IdentityFile ~/.ssh/staging.v2.pem
 
   Host prod
-  HostName REDACTED-HOST-PROD
+  HostName 0.0.0.0
   User ubuntu
   Port 22
   IdentityFile ~/.ssh/prod.v2.pem
