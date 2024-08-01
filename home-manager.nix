@@ -101,6 +101,8 @@ in
     alacritty-theme
 
     krusader
+    swayimg
+
     chatgpt-cli
 
   ];
@@ -117,6 +119,7 @@ in
     ./home-manager-config-files/neovim.nix
     ./home-manager-config-files/alacritty.nix
     ./home-manager-config-files/kitty.nix
+    ./home-manager-config-files/xdg.nix
   ];
 
   programs.zsh = {
@@ -287,20 +290,16 @@ services.hyprpaper = {
     '';
   };
 
+#   [Desktop Entry]
+# Name=swayimg
+# Comment=Image viewer for sway
+# Exec=swayimg %f
+# Icon=swayimg
+# Terminal=false
+# Type=Application
+# Categories=Graphics;Viewer;
 
-  xdg = {
-    enable = true;
-    desktopEntries = {
-      evolution = {
-        name="Evolution";
-        genericName = "Application";
-        exec = "evolution";
-        terminal = false;
-        categories = [ "Email" "Application" "Network" ];
-        mimeType = [ "text/html" "text/xml" ];
-      };
-    };
-  };
+
 
   programs.zoxide = {
     enable = true;
