@@ -37,6 +37,12 @@ in
           config = "colorscheme gruvbox";
         }
 
+        {
+          plugin = todo-comments-nvim;
+          config = toLua "require(\"todo-comments\").setup()";
+        }
+
+        
         nvim-cmp 
         {
           plugin = nvim-cmp;
@@ -119,8 +125,6 @@ in
 
         vim-nix
         vim-visual-multi
-
-
 
 
       # {
