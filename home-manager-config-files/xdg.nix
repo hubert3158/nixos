@@ -31,7 +31,7 @@
         "image/bmp" = [ "swayimg.desktop" ];
         "image/webp" = [ "swayimg.desktop" ];
         "image/tiff" = [ "swayimg.desktop" ];
-        "application/pdf" = [ ".desktop" ];
+        "application/pdf" = [ "microsoft-edge-stable.desktop" ];
         "x-scheme-handler/msteams"=["teams-for-linux.desktop"];
 
       };
