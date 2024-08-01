@@ -42,7 +42,6 @@ in
     # Add your user packages here
 
 
-    microsoft-edge
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.pycharm-professional
@@ -120,6 +119,7 @@ in
     ./home-manager-config-files/alacritty.nix
     ./home-manager-config-files/kitty.nix
     ./home-manager-config-files/xdg.nix
+    ./home-manager-config-files/ranger.nix
   ];
 
   programs.zsh = {
@@ -310,18 +310,6 @@ services.hyprpaper = {
     enableZshIntegration = true;
   };
 
-  programs.ranger = {
-  enable = true;
-  extraConfig = ''
-    set colorscheme solarized
-  '';
-     rifle = [
-      {
-        command = "${pkgs.neovim}/bin/nvim -- \"$@\"";
-        condition = "mime ^text";
-      }
-    ];
-};
 
 programs.eww = {
   enable = true;
