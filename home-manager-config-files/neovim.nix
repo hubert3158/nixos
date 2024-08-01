@@ -53,10 +53,16 @@ in
           config = toLuaFile ./nvim/plugin/which-key.lua;
         }
         {
-
           plugin = nvim-treesitter;
           config = toLuaFile ./nvim/plugin/treesitter.lua;
         }
+
+        {
+          plugin = surround-nvim;
+          config = toLuaFile ./nvim/plugin/surround.lua;
+        }
+
+        
 
 	# -- ensure_installed = { "c", "query", "lua", "java", "nix", "vimdoc", "luadoc", "vim", "markdown", "markdown_inline" },
           nvim-treesitter-parsers.vimdoc
@@ -113,6 +119,8 @@ in
 
         vim-nix
         vim-visual-multi
+
+
 
 
       # {
