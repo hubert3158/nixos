@@ -14,8 +14,9 @@ in
     "gwip" = "git commit -m \"wip\"";
     "v" = "nvim";
     "vi" = "nvim";
-    "cd" = "z";
     "r" = "ranger";
+    "cd" = "z";
+    "y" = "yazi";
     "f" = ''
     fzf \
     -i \
@@ -28,6 +29,7 @@ in
     '';
     "h" = "omz_history | fzf > selected";
   };
+
 
 
   wayland.windowManager.hyprland = {
@@ -101,6 +103,7 @@ in
 
     krusader
     swayimg
+    yazi  # ⚡️Blazing Fast Terminal File Manager 
 
     chatgpt-cli
 
@@ -119,6 +122,7 @@ in
     ./home-manager-config-files/alacritty.nix
     ./home-manager-config-files/kitty.nix
     ./home-manager-config-files/xdg.nix
+    ./home-manager-config-files/yazi.nix
     ./home-manager-config-files/ranger.nix
   ];
 
