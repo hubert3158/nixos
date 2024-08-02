@@ -20,6 +20,16 @@
         mimeType = [ "image/jpeg" "image/png" "image/gif" "image/bmp" "image/webp" "image/tiff" ];
         comment = "It opens images bro";
       };
+
+      nvim = {
+        name = "neovim";
+        genericName = "file editor";
+        exec = "nvim %f";
+        terminal = true;
+        categories = [ "TextEditor" "Utility" ];
+        mimeType = [ "text/plain"];
+        comment = "Its a beast bro";
+      };
     };
     mime = { enable = true; };
     mimeApps = {
@@ -33,7 +43,7 @@
         "image/tiff" = [ "swayimg.desktop" ];
         "application/pdf" = [ "microsoft-edge-stable.desktop" ];
         "x-scheme-handler/msteams"=["teams-for-linux.desktop"];
-
+        "text/plain"=["nvim.desktop"];
       };
     };
   };
