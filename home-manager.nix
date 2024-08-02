@@ -46,6 +46,7 @@ in
 
     google-chrome
     jetbrains.idea-ultimate
+    jetbrains.datagrip
     jetbrains.pycharm-professional
     onedrive
     vscode-extensions.vscjava.vscode-java-debug

@@ -95,7 +95,7 @@
 
     ntp
 
-
+    microsoft-edge
 
     pipewire
     wayland
