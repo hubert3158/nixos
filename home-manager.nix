@@ -110,6 +110,7 @@ in
     chatgpt-cli
 
     exiftool  #A tool to read, write and edit EXIF meta information
+    warp-terminal #Rust-based terminal.
   ];
   nixpkgs.config = {
     allowUnfree = true;
