@@ -250,6 +250,14 @@ services.dbus.enable  = true;
 environment.sessionVariables = {
   #Hint electron apps to use wayland
   NIXOS_OZONE_WL = "1";
+
+  EDITOR = "nvim";
+  PAGER = "less";
+  BROWSER = "firefox";
+  FILE_MANAGER = "ranger";
+  PDF_VIEWER = "zathura";
+  MUSIC_PLAYER = "mpv";
+  TERMINAL = "alacritty";
 };
 xdg.portal.enable = true;
 xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
