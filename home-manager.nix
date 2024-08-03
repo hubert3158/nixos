@@ -3,44 +3,45 @@
 let
   ewwConfigDir = builtins.toPath ./home-manager-config-files/eww;
 in
-{
-  home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
-  home.username="hubert";
-  home.homeDirectory="/home/hubert";
-  home.shellAliases = {
-    "gs" = "git status";
-    "gaa" = "git add .";
-    "gp" = "git push";
-    "gwip" = "git commit -m \"wip\"";
-    "v" = "nvim";
-    "vi" = "nvim";
-    "r" = "ranger";
-    "cd" = "z";
-    "y" = "yazi";
-    "f" = ''
-    fzf \
-    -i \
-    --margin 5% --padding 5% --border --preview 'cat {}' \
-    --bind 'enter:execute(nvim {})' \
-    --color bg:#222222,preview-bg:#333333
-    '';
-    "gr" = ''
-    git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
-    '';
-    "h" = "omz_history | fzf > selected";
-  };
+  {
+    home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
+    home.username="hubert";
+    home.homeDirectory="/home/hubert";
+    home.shellAliases = {
+      "gs" = "git status";
+      "gaa" = "git add .";
+      "gp" = "git push";
+      "gwip" = "git commit -m \"wip\"";
+      "v" = "nvim";
+      "vi" = "nvim";
+      "r" = "ranger";
+      "cd" = "z";
+      "y" = "yazi";
+      "open" = "xdg-open";
+      "f" = ''
+      fzf \
+      -i \
+      --margin 5% --padding 5% --border --preview 'cat {}' \
+      --bind 'enter:execute(nvim {})' \
+      --color bg:#222222,preview-bg:#333333
+      '';
+      "gr" = ''
+      git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
+      '';
+      "h" = "omz_history | fzf > selected";
+    };
 
 
 
-  wayland.windowManager.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    extraConfig = ''
-    source = ~/nixos/dotfiles/hypr/hyprland.conf
-    '';
-  };
+    wayland.windowManager.hyprland = {
+      enable = true;
+      xwayland.enable = true;
+      extraConfig = ''
+      source = ~/nixos/dotfiles/hypr/hyprland.conf
+      '';
+    };
 
-  home.packages = with pkgs; [
+    home.packages = with pkgs; [
     # Add your user packages here
 
 
@@ -108,6 +109,7 @@ in
 
     chatgpt-cli
 
+    exiftool  #A tool to read, write and edit EXIF meta information
   ];
   nixpkgs.config = {
     allowUnfree = true;
@@ -152,13 +154,14 @@ in
       zi() {
         zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
       }
-    '';
-  };
+      
+      '';
+    };
 
 
 
-  programs.wezterm = {
-    enable = true;
+    programs.wezterm = {
+      enable = true;
   # color_scheme = "Catppuccin Frappé (Gogh)",
   extraConfig = ''
   return {
@@ -306,41 +309,43 @@ services.hyprpaper = {
 
 
 
-  programs.zoxide = {
-    enable = true;
-    package = pkgs.zoxide;
-    options = [
+programs.zoxide = {
+  enable = true;
+  package = pkgs.zoxide;
+  options = [
         # "--no-aliases"
-    ];
-    enableZshIntegration = true;
-  };
+      ];
+      enableZshIntegration = true;
+    };
 
 
-programs.eww = {
-  enable = true;
-  package = pkgs.eww;
-  configDir = ./home-manager-config-files/eww;
-};
+    programs.eww = {
+      enable = true;
+      package = pkgs.eww;
+      configDir = ./home-manager-config-files/eww;
+    };
 
-services.gnome-keyring = {
-  enable = true;
-  components = [ "secrets"];
-};
-
-
-services.gpg-agent.enable = true;
-services.gpg-agent.enableZshIntegration = true;
-services.gpg-agent.enableSshSupport = true;
-
-services.gpg-agent.pinentryPackage = pkgs.pinentry-gnome3;
+    services.gnome-keyring = {
+      enable = true;
+      components = [ "secrets"];
+    };
 
 
-programs.neomutt = {
-  enable = true;
-  editor = "nvim";
-};
+    services.gpg-agent.enable = true;
+    services.gpg-agent.enableZshIntegration = true;
+    services.gpg-agent.enableSshSupport = true;
+
+    services.gpg-agent.pinentryPackage = pkgs.pinentry-gnome3;
 
 
-}
+    programs.neomutt = {
+      enable = true;
+      editor = "nvim";
+    };
+
+    programs.zathura.enable = true;     #pdf viewer
+    programs.mpv.enable = true;     #pdf viewer
+
+  }
 
 
