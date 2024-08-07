@@ -44,6 +44,7 @@ in
     home.packages = with pkgs; [
     # Add your user packages here
 
+    sshfs
 
     google-chrome
     jetbrains.idea-ultimate
