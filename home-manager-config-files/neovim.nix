@@ -41,7 +41,7 @@ in
           plugin = todo-comments-nvim;
           config = toLua "require(\"todo-comments\").setup()";
         }
-
+        
         
         nvim-cmp 
         {
@@ -68,6 +68,7 @@ in
           config = toLuaFile ./nvim/plugin/surround.lua;
         }
 
+        vim-sneak
         
 
 	# -- ensure_installed = { "c", "query", "lua", "java", "nix", "vimdoc", "luadoc", "vim", "markdown", "markdown_inline" },
@@ -121,7 +122,6 @@ in
         nvim-web-devicons
 
 
-        vim-sneak
 
         vim-nix
         vim-visual-multi
