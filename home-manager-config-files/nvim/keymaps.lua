@@ -1,5 +1,5 @@
 vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
-vim.g.maplocalleader = " " -- Same for `maplocalleader`
+vim.g.maplocalleader = "," -- Same for `maplocalleader`
 vim.opt.scrolloff = 6
 vim.opt.incsearch = true -- Do incremental searching. map Q gq
 vim.opt.relativenumber = true
@@ -33,8 +33,8 @@ vim.api.nvim_set_keymap("n", "<leader>l", ":tabnext<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<leader>h", ":tabprevious<CR>", { silent = true })
 
 -- vim.api.nvim_set_keymap("n", "<leader>r", ":Neoformat<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<leader>S", "<Plug>(Sneak-s)", { silent = true })
-vim.api.nvim_set_keymap("n", "<leader>s", "<Plug>(Sneak_S)", { silent = true })
+-- vim.api.nvim_set_keymap("n", "<leader>s", "<Plug>(Sneak_S)", { silent = true })
+-- vim.api.nvim_set_keymap("n", "<leader>s", "<Plug>(Sneak_S)", { silent = true })
 
 --- Vim fugitive
 -- vim.api.nvim_set_keymap("n", "<leader>gs", ":G status<CR>", { silent = true })

@@ -13,3 +13,27 @@
 --
 --
 -- 
+--
+--
+--
+-- Define a function
+local function greet(name)
+    return "Hello, " .. name .. "!"
+end
+
+-- Call the function
+local message = greet("Subash")
+print(message)
+
+-- Control structure example
+for i = 1, 5 do
+    print("Count: " .. i)
+end
+
+-- Table example
+local person = {name = "Subash", age = 30}
+
+-- Accessing table values
+print("Name: " .. person.name)
+print("Age: " .. person.age)
+
