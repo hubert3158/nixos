@@ -69,7 +69,7 @@ in
     lazygit
 
     dig
-    busybox
+    # busybox //set of tools and stuff but it will overwrite the version installed
     dnstop
 
 
@@ -112,6 +112,7 @@ in
 
     exiftool  #A tool to read, write and edit EXIF meta information
     warp-terminal #Rust-based terminal.
+
   ];
   nixpkgs.config = {
     allowUnfree = true;

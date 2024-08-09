@@ -18,6 +18,12 @@ in
 
       plugins = with pkgs.vimPlugins; [
 
+        
+        {
+          plugin = mason-nvim;
+          config = toLuaFile ./nvim/plugin/mason.lua;
+        }
+        mason-lspconfig-nvim
         {
           plugin = nvim-lspconfig;
           config = toLuaFile ./nvim/plugin/lsp.lua;

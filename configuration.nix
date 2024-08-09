@@ -93,6 +93,7 @@
     # cudaPackages_12_2 
 
 
+    gzip
     ntp
 
     microsoft-edge
