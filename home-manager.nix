@@ -157,6 +157,9 @@ in
       zi() {
         zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
       }
+      zia() {
+        zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide add {}
+      }
       
       '';
     };
