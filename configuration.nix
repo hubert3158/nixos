@@ -224,9 +224,11 @@ zoxide
   environment.shells = with pkgs; [ zsh ];
   environment.variables = {
     JAVA_HOME = "${pkgs.jdk21}/lib/openjdk";
+    JAVA_HOME11 = "${pkgs.jdk11}/lib/openjdk";
   };
   environment.shellInit = ''
   export JAVA_HOME=${pkgs.jdk21}/lib/openjdk
+  export JAVA_HOME11=${pkgs.jdk11}/lib/openjdk
   export PATH=${pkgs.jdk21}/bin:$PATH
   '';
   users.defaultUserShell = pkgs.zsh;

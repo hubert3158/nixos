@@ -23,7 +23,6 @@ in
           plugin = mason-nvim;
           config = toLuaFile ./nvim/plugin/mason.lua;
         }
-        mason-lspconfig-nvim
         {
           plugin = nvim-lspconfig;
           config = toLuaFile ./nvim/plugin/lsp.lua;
@@ -98,7 +97,11 @@ in
           plugin = nvim-dap;
           config = toLuaFile ./nvim/plugin/dap.lua;
         }
-        nvim-jdtls
+        
+        {
+          plugin = nvim-jdtls;
+          config = toLuaFile ./nvim/plugin/nvim-jdtls.lua;
+        }
         nvim-dap-ui
 
         {

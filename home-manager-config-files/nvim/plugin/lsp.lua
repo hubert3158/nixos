@@ -62,10 +62,58 @@ require("lspconfig").zls.setup({
 	capabilities = capabilities,
 })
 
+-- local lombok_path = vim.fn.stdpath("data") .. "/lombok.jar"  -- Adjust the path if necessary
+local lombok_path = "/home/hubert/nixos/dotfiles/lombok.jar"
+
+
+-- require("lspconfig").jdtls.setup({
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+-- })
+
+
+
+
 require("lspconfig").jdtls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "/etc/profiles/per-user/hubert/bin/jdtls" }, -- Update the path to your jdtls executable
+  root_dir = function(fname)
+    return require('lspconfig.util').root_pattern('pom.xml', 'build.gradle', '.git')(fname) or vim.loop.os_homedir()
+  end,
+  settings = {
+    java = {
+      signatureHelp = { enabled = true },
+      contentProvider = { preferred = 'fernflower' },
+      completion = {
+        favoriteStaticMembers = {
+          "org.hamcrest.MatcherAssert.assertThat",
+          "org.hamcrest.Matchers.*",
+          "org.hamcrest.CoreMatchers.*",
+          "org.junit.jupiter.api.Assertions.*",
+          "java.util.Objects.requireNonNull",
+          "java.util.Objects.requireNonNullElse",
+        }
+      },
+      project = {
+        referencedLibraries = {
+          lombok_path,
+        }
+      },
+    },
+  },
+  init_options = {
+    bundles = {
+      lombok_path,
+      vim.fn.glob('/nix/store/id0zrxghssr6mkzxaaphs9yy1sjn7f57-vscode-extension-vscjava-vscode-java-debug-0.55.2023121302/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.50.0.jar', true),
+    }
+  },
 })
+
+
+--
+--
+--
 
 -- require("lspconfig").jdtls.setup({
 --   on_attach = on_attach,
@@ -96,3 +144,4 @@ require("lspconfig").jdtls.setup({
 --     }
 --   },
 -- })
+
