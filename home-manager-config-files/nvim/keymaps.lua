@@ -6,6 +6,11 @@ vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.ignorecase = true
 
+vim.opt.tabstop = 4       -- Number of spaces that a <Tab> in the file counts for
+vim.opt.shiftwidth = 4    -- Number of spaces to use for each step of (auto)indent
+vim.opt.expandtab = true  -- Convert tabs to spaces
+
+
 
 
 vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true , desc = "find_files"})

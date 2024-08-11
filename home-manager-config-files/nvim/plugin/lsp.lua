@@ -62,6 +62,14 @@ require("lspconfig").zls.setup({
 	capabilities = capabilities,
 })
 
+require("lspconfig").tsserver.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+  cmd = { "/nix/store/18j7h4bc8i4hbq1l9i6qp60w87rikm7x-typescript-language-server-4.3.3/bin/typescript-language-server", "--stdio" }, -- Update the path to your jdtls executable
+})
+
+
+
 -- local lombok_path = vim.fn.stdpath("data") .. "/lombok.jar"  -- Adjust the path if necessary
 local lombok_path = "/home/hubert/nixos/dotfiles/lombok.jar"
 

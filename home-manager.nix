@@ -112,6 +112,9 @@
     exiftool  #A tool to read, write and edit EXIF meta information
     warp-terminal #Rust-based terminal.
 
+    typescript
+    nodePackages.typescript-language-server
+
   ];
   nixpkgs.config = {
     allowUnfree = true;
@@ -129,6 +132,7 @@
     ./home-manager-config-files/xdg.nix
     ./home-manager-config-files/yazi.nix
     ./home-manager-config-files/ranger.nix
+    # ./home-manager-config-files/node_packages.nix
   ];
 
   programs.zsh = {
