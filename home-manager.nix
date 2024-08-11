@@ -1,44 +1,44 @@
 
-{ pkgs, ... }:
-  {
-    home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
-    home.username="hubert";
-    home.homeDirectory="/home/hubert";
-    home.shellAliases = {
-      "gs" = "git status";
-      "gaa" = "git add .";
-      "gp" = "git push";
-      "gwip" = "git commit -m \"wip\"";
-      "v" = "nvim";
-      "vi" = "nvim";
-      "r" = "ranger";
-      "cd" = "z";
-      "y" = "yazi";
-      "open" = "xdg-open";
-      "f" = ''
-      fzf \
-      -i \
-      --margin 5% --padding 5% --border --preview 'cat {}' \
-      --bind 'enter:execute(nvim {})' \
-      --color bg:#222222,preview-bg:#333333
-      '';
-      "gr" = ''
-      git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
-      '';
-      "h" = "omz_history | fzf > selected";
-    };
+{config, pkgs, ... }:
+{
+  home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
+  home.username="hubert";
+  home.homeDirectory="/home/hubert";
+  home.shellAliases = {
+    "gs" = "git status";
+    "gaa" = "git add .";
+    "gp" = "git push";
+    "gwip" = "git commit -m \"wip\"";
+    "v" = "nvim";
+    "vi" = "nvim";
+    "r" = "ranger";
+    "cd" = "z";
+    "y" = "yazi";
+    "open" = "xdg-open";
+    "f" = ''
+    fzf \
+    -i \
+    --margin 5% --padding 5% --border --preview 'cat {}' \
+    --bind 'enter:execute(nvim {})' \
+    --color bg:#222222,preview-bg:#333333
+    '';
+    "gr" = ''
+    git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
+    '';
+    "h" = "omz_history | fzf > selected";
+  };
 
 
 
-    wayland.windowManager.hyprland = {
-      enable = true;
-      xwayland.enable = true;
-      extraConfig = ''
-      source = ~/nixos/dotfiles/hypr/hyprland.conf
-      '';
-    };
+  wayland.windowManager.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    extraConfig = ''
+    source = ~/nixos/dotfiles/hypr/hyprland.conf
+    '';
+  };
 
-    home.packages = with pkgs; [
+  home.packages = with pkgs; [
     # Add your user packages here
 
     sshfs
@@ -105,6 +105,8 @@
     swayimg
     yazi  # ⚡️Blazing Fast Terminal File Manager 
 
+    # rofi
+
     chatgpt-cli
 
     exiftool  #A tool to read, write and edit EXIF meta information
@@ -157,7 +159,7 @@
       zia() {
         zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide add {}
       }
-      
+
       '';
     };
 
@@ -346,8 +348,14 @@ programs.zoxide = {
       editor = "nvim";
     };
 
+
     programs.zathura.enable = true;     #pdf viewer
     programs.mpv.enable = true;     #pdf viewer
+
+    programs.rofi = {
+      enable = true;
+      theme = pkgs.rofi-theme-selector ;
+    };
 
   }
 

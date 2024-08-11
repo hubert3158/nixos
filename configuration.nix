@@ -118,7 +118,6 @@
     weston
     alacritty
     polkit
-    rofi
     grim
     slurp
     dmenu
@@ -174,6 +173,8 @@ evolution-ews
 pass
 age
 zoxide
+
+rofi
 
   i3  # tiling window manager for x11
   ];
