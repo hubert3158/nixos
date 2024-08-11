@@ -94,6 +94,7 @@
     bash-language-server
     zls
 
+
     nerdfonts
     dejavu_fonts
 

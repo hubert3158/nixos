@@ -80,6 +80,7 @@ in
           nvim-treesitter-parsers.vimdoc
           nvim-treesitter-parsers.vim
           nvim-treesitter-parsers.javascript
+          nvim-treesitter-parsers.typescript
           nvim-treesitter-parsers.json
           nvim-treesitter-parsers.jsonc
           nvim-treesitter-parsers.c
