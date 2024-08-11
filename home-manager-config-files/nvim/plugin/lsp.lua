@@ -1,8 +1,21 @@
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
 
   local bufmap = function(keys, func)
     vim.keymap.set('n', keys, func, { buffer = bufnr })
   end
+
+        -- Enable auto-formatting on save
+    if client.server_capabilities.documentFormattingProvider then
+        vim.api.nvim_command([[augroup Format]])
+        vim.api.nvim_command([[autocmd! * <buffer>]])
+        vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]])
+        vim.api.nvim_command([[augroup END]])
+    end
+
+    -- Additional key mappings for linting
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>l', '<cmd>EslintFixAll<CR>', { noremap = true, silent = true })
+
+  bufmap('<leader>l', "<cmd>EslintFixAll<CR>")
 
   bufmap('<leader>r', vim.lsp.buf.rename)
   bufmap('<leader>a', vim.lsp.buf.code_action)
@@ -61,6 +74,14 @@ require("lspconfig").zls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
+
+require("lspconfig").eslint.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    root_dir = require("lspconfig.util").find_package_json_ancestor,
+    cmd = {"/nix/store/yk4zgr1h15kbxbi0vn233a1d8zi5618w-eslint-9.5.0/bin/eslint"}
+})
+
 
 require("lspconfig").tsserver.setup({
 	on_attach = on_attach,

@@ -128,6 +128,7 @@
 
 
     nodePackages.nodemon
+    nodePackages.eslint
 
 
     vim 
@@ -178,6 +179,8 @@ zoxide
 rofi
 
   i3  # tiling window manager for x11
+
+  vscode-langservers-extracted # this needs to be global
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
