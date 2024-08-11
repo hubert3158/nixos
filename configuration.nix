@@ -175,6 +175,7 @@ pass
 age
 zoxide
 
+  i3  # tiling window manager for x11
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
