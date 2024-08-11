@@ -1,5 +1,7 @@
 {lib,config,pkgs,...}:
 {
+  programs.feh.enable = true;
+
   xsession = {
     enable = true;
     windowManager.i3= {
@@ -16,8 +18,14 @@ in lib.mkOptionDefault {
   "${modifier}+t" = "layout tabbed";
   # "${modifier}+shift + r" = "mode resize"; wrong syntax
    # "${modifier}+mod1+R" = "restart";
-};
+ };
+
+ startup = [
+   {
+     command = "feh --bg-scale ~/nixos/images/wallpaper.png";
+   }
+ ];
       };
+    };
   };
-};
 }
