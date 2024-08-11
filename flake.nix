@@ -33,7 +33,7 @@
                 };
               };
 
-              packages = import ./home-manager.nix { inherit pkgs; };
+              packages = import ./home-manager-work.nix { inherit pkgs; };
             in
               packages;
           }
@@ -64,9 +64,11 @@
                 };
               };
 
-              packages = import ./home-manager.nix { inherit pkgs; };
+              packages = import ./home-manager-home.nix { inherit pkgs; };
+              # packages1 = import ./home-manager-home.nix { inherit pkgs; };
             in
-              packages;
+            packages;
+            # // packages1;
           }
         ];
       };

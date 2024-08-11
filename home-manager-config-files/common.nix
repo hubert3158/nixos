@@ -1,6 +1,6 @@
+{pkgs,...}:
+{
 
-{ pkgs, ... }:
-  {
     home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
     home.username="hubert";
     home.homeDirectory="/home/hubert";
@@ -27,8 +27,6 @@
       '';
       "h" = "omz_history | fzf > selected";
     };
-
-
 
     wayland.windowManager.hyprland = {
       enable = true;
@@ -117,17 +115,6 @@
       "python-2.7.18.8"
     ];
   };
-
-  imports = [
-    ./home-manager-config-files/tmux.nix
-    ./home-manager-config-files/vim.nix
-    ./home-manager-config-files/neovim.nix
-    ./home-manager-config-files/alacritty.nix
-    ./home-manager-config-files/kitty.nix
-    ./home-manager-config-files/xdg.nix
-    ./home-manager-config-files/yazi.nix
-    ./home-manager-config-files/ranger.nix
-  ];
 
   programs.zsh = {
     enable = true;
@@ -322,11 +309,11 @@ programs.zoxide = {
     };
 
 
-    programs.eww = {
-      enable = true;
-      package = pkgs.eww;
-      configDir = ./home-manager-config-files/eww;
-    };
+    # programs.eww = {
+    #   enable = true;
+    #   package = pkgs.eww;
+    #   configDir = ./home-manager-config-files/eww;
+    # };
 
     services.gnome-keyring = {
       enable = true;
@@ -349,6 +336,14 @@ programs.zoxide = {
     programs.zathura.enable = true;     #pdf viewer
     programs.mpv.enable = true;     #pdf viewer
 
+    imports = [
+    ./tmux.nix
+    ./vim.nix
+    ./neovim.nix
+    ./alacritty.nix
+    ./kitty.nix
+    ./xdg.nix
+    ./yazi.nix
+    ./ranger.nix
+    ];
   }
-
-
