@@ -127,6 +127,7 @@
 
 
 
+    nodePackages.nodemon
 
 
     vim 
