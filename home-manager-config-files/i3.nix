@@ -24,6 +24,9 @@ in lib.mkOptionDefault {
    {
      command = "feh --bg-scale ~/nixos/images/wallpaper.png";
    }
+   {
+     command = "xrandr --output eDP-1 --off ";
+   }
  ];
       };
     };
