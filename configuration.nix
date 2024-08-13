@@ -181,6 +181,7 @@ rofi
   i3  # tiling window manager for x11
 
   vscode-langservers-extracted # this needs to be global
+  sourcekit-lsp  #Language Server Protocol implementation for Swift and C-based languages.
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
