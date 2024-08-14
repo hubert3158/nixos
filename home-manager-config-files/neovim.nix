@@ -25,6 +25,11 @@ in
         }
 
         {
+          plugin = yanky-nvim;
+          config = toLuaFile ./nvim/plugin/yanky.lua;
+        }
+
+        {
           plugin = mini-nvim;
           config = toLuaFile ./nvim/plugin/mini.lua;
         }
