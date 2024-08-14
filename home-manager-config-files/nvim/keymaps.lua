@@ -1,24 +1,30 @@
-vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
+vim.g.mapleader = " "      -- Make sure to set `mapleader` before lazy so your mappings are correct
 vim.g.maplocalleader = "," -- Same for `maplocalleader`
 vim.opt.scrolloff = 6
-vim.opt.incsearch = true -- Do incremental searching. map Q gq
+vim.opt.incsearch = true   -- Do incremental searching. map Q gq
 vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.ignorecase = true
 
-vim.opt.tabstop = 4       -- Number of spaces that a <Tab> in the file counts for
-vim.opt.shiftwidth = 4    -- Number of spaces to use for each step of (auto)indent
-vim.opt.expandtab = true  -- Convert tabs to spaces
+vim.opt.tabstop = 4      -- Number of spaces that a <Tab> in the file counts for
+vim.opt.shiftwidth = 4   -- Number of spaces to use for each step of (auto)indent
+vim.opt.expandtab = true -- Convert tabs to spaces
 
 
 
 
-vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true , desc = "find_files"})
-vim.api.nvim_set_keymap("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { noremap = true, silent = true, desc = "find_old_files" })
-vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true, desc = "live_grep" })
-vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { noremap = true, silent = true, desc = "find_buffers" })
-vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { noremap = true, silent = true, desc = "find_help_tags" })
-vim.api.nvim_set_keymap("n", "<leader>fs", "<cmd>Telescope builtin<CR>", { noremap = true, silent = true, desc = "[S]earch [S]elect Telescope" })
+vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>",
+    { noremap = true, silent = true, desc = "find_files" })
+vim.api.nvim_set_keymap("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>",
+    { noremap = true, silent = true, desc = "find_old_files" })
+vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>Telescope live_grep<CR>",
+    { noremap = true, silent = true, desc = "live_grep" })
+vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<CR>",
+    { noremap = true, silent = true, desc = "find_buffers" })
+vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope help_tags<CR>",
+    { noremap = true, silent = true, desc = "find_help_tags" })
+vim.api.nvim_set_keymap("n", "<leader>fs", "<cmd>Telescope builtin<CR>",
+    { noremap = true, silent = true, desc = "[S]earch [S]elect Telescope" })
 -- vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
@@ -65,13 +71,15 @@ vim.notify = require('notify')
 vim.notify("This is an error message", "error")
 require("notify")("check out LudoPinelli/comment-box.nvim  <>cbccbox")
 
-vim.api.nvim_set_keymap("n", "<leader>un", ":lua require('notify').dismiss({ silent = true, pending = true })<CR>", { noremap = true, silent = true, desc = "[U]nnotify [N]otify dismiss" })
+vim.api.nvim_set_keymap("n", "<leader>un", ":lua require('notify').dismiss({ silent = true, pending = true })<CR>",
+    { noremap = true, silent = true, desc = "[U]nnotify [N]otify dismiss" })
 
 
 
 
 --DAP
-vim.api.nvim_set_keymap('n', '<F4>', ":lua require('dapui').toggle()<CR>", { noremap = true, silent = true, desc = "show dap ui" })
+vim.api.nvim_set_keymap('n', '<F4>', ":lua require('dapui').toggle()<CR>",
+    { noremap = true, silent = true, desc = "show dap ui" })
 vim.api.nvim_set_keymap('n', '<F5>', ":lua require'dap'.continue()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F6>', ":lua require'dap'.disconnect()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F10>', ":lua require'dap'.step_over()<CR>", { noremap = true, silent = true })
@@ -80,29 +88,6 @@ vim.api.nvim_set_keymap('n', '<F12>', ":lua require'dap'.step_out()<CR>", { nore
 
 
 
-
---                                      ╭╮
---                                      │test│
---                                      ╰╯
---                                  ╭─────────╮
---                                  │ this is │
---                                  ╰─────────╯
---                                  
---
---
---
---          ╭─────────────────────────────────────────────────────────╮
---          │                        test test                        │
---          ╰─────────────────────────────────────────────────────────╯
-
-
-
-
-
-
-
-
-
-
-
-
+vim.api.nvim_set_keymap('n', "<leader>mo", ":lua require'mini.map'.open()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>mc", ":lua require'mini.map'.close()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>mt", ":lua require'mini.map'.toggle()<CR>", { noremap = true, silent = true })

@@ -18,6 +18,17 @@ in
 
       plugins = with pkgs.vimPlugins; [
 
+         
+        {
+          plugin = nvim-colorizer-lua;
+          config = toLua "require(\"colorizer\").setup()";
+        }
+
+        {
+          plugin = mini-nvim;
+          config = toLuaFile ./nvim/plugin/mini.lua;
+        }
+
         
         {
           plugin = mason-nvim;
@@ -68,10 +79,10 @@ in
           config = toLuaFile ./nvim/plugin/treesitter.lua;
         }
 
-        {
-          plugin = surround-nvim;
-          config = toLuaFile ./nvim/plugin/surround.lua;
-        }
+        # {
+        #   plugin = surround-nvim;
+        #   config = toLuaFile ./nvim/plugin/surround.lua;
+        # }
 
         vim-sneak
         
