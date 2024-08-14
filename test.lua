@@ -1,18 +1,17 @@
-
 -- This is a test file to test out features , it is a lua file because why not ?? jk , because i cannot check a lot of stuff on .txt file , lsp?? formatting??? bruh
 
 
 
 -- PERF:
 -- HACK: this is a trest
--- TODO: this is a trest
+-- TODO: this is a trest <--- todo comments
 -- NOTE:
 -- FIX:
 -- WARNING:
 --
+--#558817  <-- colorizer
 --
---
--- 
+-- (test) <--- suround
 --
 --
 --
@@ -31,9 +30,8 @@ for i = 1, 5 do
 end
 
 -- Table example
-local person = {name = "Subash", age = 30}
+local person = { name = "Subash", age = 30 }
 
 -- Accessing table values
 print("Name: " .. person.name)
 print("Age: " .. person.age)
-
