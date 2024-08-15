@@ -74,6 +74,7 @@ in
           plugin = telescope-nvim;
           config = toLuaFile ./nvim/plugin/telescope.lua;
         }
+        telescope-symbols-nvim
 
         {
           plugin = which-key-nvim ;
