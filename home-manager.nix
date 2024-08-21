@@ -86,7 +86,10 @@
 
     protonvpn-cli_2
 
-    (python312.withPackages (ps: with ps; [ reportlab ])) 
+    # (python312.withPackages (ps: with ps; [ reportlab openai])) 
+    openai
+
+
 
     lua-language-server
     jdt-language-server
@@ -167,6 +170,16 @@
 
       '';
     };
+
+
+  programs.python = {
+  enable = true;
+  package = pkgs.python312;
+  packages = ps: with ps; [
+    reportlab
+    openai
+  ];
+};
 
 
 

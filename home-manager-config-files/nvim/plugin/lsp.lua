@@ -110,6 +110,10 @@ local lombok_path = "/home/hubert/nixos/dotfiles/lombok.jar"
 -- })
 
 
+require 'lspconfig'.pyright.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
 
 
 require("lspconfig").jdtls.setup({
