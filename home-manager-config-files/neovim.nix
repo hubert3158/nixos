@@ -69,6 +69,8 @@ in
           plugin = nvim-cmp;
           config = toLuaFile ./nvim/plugin/cmp.lua;
         }
+        cmp_luasnip
+        cmp-nvim-lsp
 
         {
           plugin = telescope-nvim;
@@ -138,8 +140,6 @@ in
 
         telescope-fzf-native-nvim
 
-        cmp_luasnip
-        cmp-nvim-lsp
 
         luasnip
         friendly-snippets
