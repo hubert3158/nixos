@@ -73,7 +73,6 @@
     nmap
     nikto
     zap
-
     wireshark-qt
 
 
@@ -222,7 +221,7 @@ programs.ssh= {
   HostName staging.v2.smartmca.com
   User ubuntu
   Port 22
-  IdentityFile ~/.ssh/staging.v2.pem
+  IdentityFile ~/.ssh/subash
 
   Host prod
   HostName app.v2.smartmca.com
