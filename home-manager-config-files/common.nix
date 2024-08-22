@@ -84,7 +84,14 @@
 
     protonvpn-cli_2
 
-    (python312.withPackages (ps: with ps; [ reportlab ])) 
+    (python312.withPackages (ps: with ps; [ 
+      reportlab 
+      openai
+      pandas
+      pypdf
+      pypdf2
+      pymupdf
+    ])) 
 
     lua-language-server
     jdt-language-server
