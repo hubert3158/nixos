@@ -171,14 +171,14 @@
     };
 
 
-  programs.python = {
-  enable = true;
-  package = pkgs.python312;
-  packages = ps: with ps; [
-    reportlab
-    openai
-  ];
-};
+#   programs.python = {
+#   enable = true;
+#   package = pkgs.python312;
+#   packages = ps: with ps; [
+#     reportlab
+#     openai
+#   ];
+# };
 
 
 
