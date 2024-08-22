@@ -130,6 +130,7 @@
 
     nodePackages.nodemon
     nodePackages.eslint
+    nodePackages.serve
 
 
     vim 
@@ -184,8 +185,12 @@ rofi
   vscode-langservers-extracted # this needs to be global
   sourcekit-lsp  #Language Server Protocol implementation for Swift and C-based languages.
   sonarlint-ls
+<<<<<<< Updated upstream
   pyright  #Type checker for the Python language.
 
+=======
+  sonar-scanner-cli
+>>>>>>> Stashed changes
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
