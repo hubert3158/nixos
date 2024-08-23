@@ -40,6 +40,7 @@
 
   home.packages = with pkgs; [
     # Add your user packages here
+    gp.nvim
 
     sshfs
 

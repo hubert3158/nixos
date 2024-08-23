@@ -62,6 +62,8 @@
                     "microsoft-edge-stable"
                   ];
                 };
+                overlays = [ (import ./overlays/overlay.nix) ];
+
               };
 
               packages = import ./home-manager-home.nix { inherit pkgs; };
