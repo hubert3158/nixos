@@ -87,6 +87,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+
+    audit #Audit Library. eg ausyscall
+
+
+
+
     direnv
 
     autoAddDriverRunpath
