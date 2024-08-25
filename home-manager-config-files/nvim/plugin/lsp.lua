@@ -1,3 +1,5 @@
+local lspconfig = require 'lspconfig'
+
 local on_attach = function(client, bufnr)
     local bufmap = function(keys, func)
         vim.keymap.set('n', keys, func, { buffer = bufnr })
@@ -91,6 +93,29 @@ require("lspconfig").sourcekit.setup({ -- c++
     on_attach = on_attach,
     capabilities = capabilities,
 })
+
+
+require 'lspconfig'.clangd.setup { -- c
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
+
+-- lspconfig.ccls.setup {
+--     root_dir = function(fname)
+--         return lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")(fname) or
+--             lspconfig.util.path.dirname(fname)
+--     end,
+--     init_options = {
+--         index = {
+--             threads = 0,
+--         },
+--         clang = {
+--             excludeArgs = { "-frounding-math" },
+--         },
+--     }
+-- }
+
+
 
 require("lspconfig").tsserver.setup({
     on_attach = on_attach,
