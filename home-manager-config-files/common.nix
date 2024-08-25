@@ -181,14 +181,6 @@
   '';
 };
 
-programs.zellij = {
-  enable = true;
-enableZshIntegration = true;
-settings = {
-  theme = "custom";
-  themes.custom.fg = "#ffffff";
-};
-};
 
 
 
@@ -362,5 +354,6 @@ programs.zoxide = {
     ./xdg.nix
     ./yazi.nix
     ./ranger.nix
+    ./zellij.nix
     ];
   }
