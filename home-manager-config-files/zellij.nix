@@ -1,7 +1,7 @@
 {
   programs.zellij = {
     enable = true;
-    enableZshIntegration = true;
+    enableZshIntegration = false;
     settings = {
       theme = "dracula";
       themes.dracula = {

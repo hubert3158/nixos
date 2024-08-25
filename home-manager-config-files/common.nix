@@ -144,6 +144,12 @@
         "deno"
       ];
     };
+
+
+      # zellij attach --create local
+       # eval "$(/nix/store/2h1mvikc160c7i8kzvp9d289pvs1z6vx-zellij-0.40.1/bin/zellij attach --create local)"
+       # zellij attach --create local
+       initExtra = '' '';
     profileExtra= ''
       # Define the 'zi' function for interactive selection using fzf
       zi() {
@@ -152,6 +158,7 @@
       zia() {
         zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide add {}
       }
+
       
       '';
     };
