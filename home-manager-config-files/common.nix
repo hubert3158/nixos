@@ -123,6 +123,7 @@
     ];
   };
 
+
   programs.zsh = {
     enable = true;
     autosuggestion = {
@@ -178,6 +179,15 @@
     },
   }
   '';
+};
+
+programs.zellij = {
+  enable = true;
+enableZshIntegration = true;
+settings = {
+  theme = "custom";
+  themes.custom.fg = "#ffffff";
+};
 };
 
 

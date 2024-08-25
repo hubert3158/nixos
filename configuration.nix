@@ -193,7 +193,15 @@ rofi
   sonarlint-ls
   pyright  #Type checker for the Python language.
 
+
+  clang
+  ccls
+  libclang   #c , cpp , c++
+  glibc.dev  # installed dev , has c system headers like stdio.h
+
   sonar-scanner-cli
+
+  zellij
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
