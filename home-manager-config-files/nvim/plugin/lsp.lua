@@ -125,8 +125,6 @@ require("lspconfig").tsserver.setup({
 
 
 
--- local lombok_path = vim.fn.stdpath("data") .. "/lombok.jar"  -- Adjust the path if necessary
-local lombok_path = "/home/hubert/nixos/dotfiles/lombok.jar"
 
 
 -- require("lspconfig").jdtls.setup({
@@ -140,7 +138,14 @@ require 'lspconfig'.pyright.setup {
     capabilities = capabilities,
 }
 
+require 'lspconfig'.cssls.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
 
+
+-- local lombok_path = vim.fn.stdpath("data") .. "/lombok.jar"  -- Adjust the path if necessary
+local lombok_path = "/home/hubert/nixos/dotfiles/lombok.jar"
 require("lspconfig").jdtls.setup({
     on_attach = on_attach,
     capabilities = capabilities,
