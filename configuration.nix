@@ -139,6 +139,8 @@
     nodePackages.eslint
     nodePackages.serve
 
+    vscode-langservers-extracted
+
 
     vim 
     zoxide
