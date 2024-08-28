@@ -61,6 +61,6 @@
     };
     bluetooth.enable = true;
 };
-networking.firewall.allowedTCPPorts = [ 3000 8080];
+networking.firewall.allowedTCPPorts = [ 3000 8080 8081];
 services.intune.enable = true;
 }
