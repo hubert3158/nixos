@@ -91,6 +91,10 @@
       pypdf
       pypdf2
       pymupdf
+      pdf2image
+      pytesseract
+      flask
+
     ])) 
 
     lua-language-server

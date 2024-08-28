@@ -90,7 +90,10 @@
     cht-sh
 
     audit #Audit Library. eg ausyscall
-
+    ngrok
+    tesseract
+    poppler
+    poppler_utils
 
 
 
