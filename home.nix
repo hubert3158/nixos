@@ -46,4 +46,5 @@
     nvidiaPersistenced = true;
   };
 };
+networking.firewall.allowedTCPPorts = [ 3000 8080 8081 993 5678 5000];
 }
