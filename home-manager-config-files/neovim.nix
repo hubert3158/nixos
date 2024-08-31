@@ -17,6 +17,7 @@ in
       '';
 
       plugins = with pkgs.vimPlugins; [
+        vim-pug
 
          
         {
@@ -97,6 +98,7 @@ in
 
 	# -- ensure_installed = { "c", "query", "lua", "java", "nix", "vimdoc", "luadoc", "vim", "markdown", "markdown_inline" },
           nvim-treesitter-parsers.vimdoc
+          nvim-treesitter-parsers.pug
           nvim-treesitter-parsers.vim
           nvim-treesitter-parsers.javascript
           nvim-treesitter-parsers.typescript
