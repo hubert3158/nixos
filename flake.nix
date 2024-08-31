@@ -62,7 +62,7 @@
                     "microsoft-edge-stable"
                   ];
                 };
-                overlays = [ (import ./overlays/overlay.nix) ];
+                overlays = [ (import ./overlays/pug-lsp.nix) ];
 
               };
 
