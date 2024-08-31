@@ -143,6 +143,7 @@
     nodePackages.nodemon
     nodePackages.eslint
     nodePackages.serve
+    nodePackages.prettier
 
     vscode-langservers-extracted
 

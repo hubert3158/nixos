@@ -17,6 +17,12 @@ in
       '';
 
       plugins = with pkgs.vimPlugins; [
+
+        # plugin that allows you to integrate various external tools (like linters, formatters, diagnostics, etc.) 
+        # directly into Neovim's built-in Language Server Protocol (LSP) client. It acts as a bridge between Neovim's LSP
+        # and these external tools, enabling them to be used as if they were native LSP features.
+        null-ls-nvim
+
         vim-pug
 
          
