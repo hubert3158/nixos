@@ -98,6 +98,7 @@
 
 
 
+    go
     direnv
 
     autoAddDriverRunpath
