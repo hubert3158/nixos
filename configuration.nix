@@ -97,6 +97,7 @@
     poppler_utils
 
 
+    pnpm          # Fast, disk space efficient package manager for JavaScript
 
     go
     direnv
