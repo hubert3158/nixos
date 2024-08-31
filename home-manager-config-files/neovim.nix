@@ -24,6 +24,7 @@ in
         null-ls-nvim
 
         vim-pug
+        vim-tmux-navigator # seamless integration between vim and tmux to navigate the panes
 
          
         {
