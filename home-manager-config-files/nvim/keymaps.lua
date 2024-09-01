@@ -11,6 +11,11 @@ vim.opt.shiftwidth = 4   -- Number of spaces to use for each step of (auto)inden
 vim.opt.expandtab = true -- Convert tabs to spaces
 
 
+vim.api.nvim_create_autocmd("FocusLost", {
+    pattern = "*",
+    command = "silent! wa"
+})
+
 
 
 vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>",
