@@ -29,7 +29,17 @@ local on_attach = function(client, bufnr)
     bufmap('gd', vim.lsp.buf.definition)
     bufmap('gD', vim.lsp.buf.declaration)
     bufmap('gI', vim.lsp.buf.implementation)
+    bufmap('gl', vim.lsp.buf.implementation)
     bufmap('<leader>D', vim.lsp.buf.type_definition)
+
+    bufmap('gl', vim.diagnostic.open_float)                     -- Show diagnostics in a floating window
+    bufmap('[d', vim.diagnostic.goto_prev)                      -- Go to the previous diagnostic
+    bufmap(']d', vim.diagnostic.goto_next)                      -- Go to the next diagnostic
+    bufmap('<leader>lq', vim.diagnostic.setloclist)             -- Show all diagnostics in the location list
+    bufmap('<leader>lQ', vim.diagnostic.setqflist)              -- Show all diagnostics in the quickfix list
+    bufmap('<leader>ld', function()                             -- Toggle virtual text on/off
+        vim.diagnostic.config({ virtual_text = not vim.diagnostic.config().virtual_text })
+    end)
 
     bufmap('gr', require('telescope.builtin').lsp_references)
     bufmap('gs', require('telescope.builtin').lsp_document_symbols)
