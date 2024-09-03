@@ -146,6 +146,8 @@
     nodePackages.serve
     nodePackages.prettier
 
+    yarn
+
     vscode-langservers-extracted
 
 
