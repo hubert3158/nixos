@@ -35,6 +35,9 @@ local on_attach = function(client, bufnr)
     bufmap('gl', vim.diagnostic.open_float)                     -- Show diagnostics in a floating window
     bufmap('[d', vim.diagnostic.goto_prev)                      -- Go to the previous diagnostic
     bufmap(']d', vim.diagnostic.goto_next)                      -- Go to the next diagnostic
+    bufmap('[e', function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR }) end)
+    bufmap(']e', function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR }) end)
+
     bufmap('<leader>lq', vim.diagnostic.setloclist)             -- Show all diagnostics in the location list
     bufmap('<leader>lQ', vim.diagnostic.setqflist)              -- Show all diagnostics in the quickfix list
     bufmap('<leader>ld', function()                             -- Toggle virtual text on/off

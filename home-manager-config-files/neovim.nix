@@ -23,6 +23,7 @@ in
         # and these external tools, enabling them to be used as if they were native LSP features.
         null-ls-nvim
 
+        nvim-comment
         vim-pug
         vim-tmux-navigator # seamless integration between vim and tmux to navigate the panes
         nvim-ts-autotag # <div></div> etc
