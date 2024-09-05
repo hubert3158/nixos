@@ -352,6 +352,7 @@ programs.zoxide = {
       enable = true;
       editor = "nvim";
     };
+    programs.git-credential-oauth.enable = true;
 
     programs.zathura.enable = true;     #pdf viewer
     programs.mpv.enable = true;     #pdf viewer

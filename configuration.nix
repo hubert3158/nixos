@@ -90,6 +90,8 @@
     jupyter
     cht-sh
 
+    git-credential-manager
+
     audit #Audit Library. eg ausyscall
     ngrok
     tesseract
