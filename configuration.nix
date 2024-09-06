@@ -90,6 +90,10 @@
     jupyter
     cht-sh
 
+    dbeaver-bin
+
+
+    graphicsmagick
     git-credential-manager
 
     audit #Audit Library. eg ausyscall
