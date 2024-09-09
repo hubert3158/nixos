@@ -30,6 +30,10 @@ in
 
          
         {
+          plugin = trouble-nvim; # shows comments , diagnostic etc on sidebar
+          config = toLua "require(\"trouble\").setup()";
+        }
+        {
           plugin = nvim-colorizer-lua;
           config = toLua "require(\"colorizer\").setup()";
         }

@@ -96,3 +96,22 @@ vim.api.nvim_set_keymap('n', '<F12>', ":lua require'dap'.step_out()<CR>", { nore
 vim.api.nvim_set_keymap('n', "<leader>mo", ":lua require'mini.map'.open()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', "<leader>mc", ":lua require'mini.map'.close()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', "<leader>mt", ":lua require'mini.map'.toggle()<CR>", { noremap = true, silent = true })
+
+
+
+
+-- trouble.nvim
+vim.api.nvim_set_keymap('n', "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>xt", "<cmd>Trouble todo<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', "<leader>xT", "<cmd>TodoTelescope<cr>", { noremap = true, silent = true })
+
+
+
+
+
+
