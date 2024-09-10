@@ -87,6 +87,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    jq  #lightweight commandline json parser
+    fd  #Simple, fast and user-friendly alternative to find
     jupyter
     cht-sh
 
