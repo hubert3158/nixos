@@ -111,6 +111,7 @@ vim.api.nvim_set_keymap('n', "<leader>xt", "<cmd>Trouble todo<cr>", { noremap = 
 vim.api.nvim_set_keymap('n', "<leader>xT", "<cmd>TodoTelescope<cr>", { noremap = true, silent = true })
 
 
+vim.api.nvim_set_keymap('n', "<leader>cd", "<cmd>Telescope zoxide list<cr>", { noremap = true, silent = true })
 
 
 

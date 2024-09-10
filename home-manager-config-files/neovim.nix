@@ -23,6 +23,8 @@ in
         # and these external tools, enabling them to be used as if they were native LSP features.
         null-ls-nvim
 
+        telescope-zoxide #An extension for telescope.nvim that allows you operate zoxide within Neovim.
+
         nvim-comment
         vim-pug
         vim-tmux-navigator # seamless integration between vim and tmux to navigate the panes
