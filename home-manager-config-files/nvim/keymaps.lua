@@ -110,8 +110,16 @@ vim.api.nvim_set_keymap('n', "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { n
 vim.api.nvim_set_keymap('n', "<leader>xt", "<cmd>Trouble todo<cr>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', "<leader>xT", "<cmd>TodoTelescope<cr>", { noremap = true, silent = true })
 
-
 vim.api.nvim_set_keymap('n', "<leader>cd", "<cmd>Telescope zoxide list<cr>", { noremap = true, silent = true })
+
+
+vim.api.nvim_set_keymap('n', '<leader>sv', ':vsp<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>sh', ':sp<CR>', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<leader>bn', ':bnext<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>bp', ':bprevious<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>w=', ':vertical resize +5<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>w-', ':vertical resize -5<CR>', { noremap = true, silent = true })
 
 
 
