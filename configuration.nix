@@ -91,6 +91,8 @@
     fd  #Simple, fast and user-friendly alternative to find
     jupyter
     cht-sh
+    gnome-multi-writer
+
 
     dbeaver-bin
 
