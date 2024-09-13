@@ -216,6 +216,12 @@ programs.ssh= {
   User ubuntu
   Port 22
   IdentityFile ~/.ssh/prod.v2.pem
+
+  Host wellMed
+  HostName 0.0.0.0
+  User ubuntu
+  Port 22
+  IdentityFile ~/.ssh/wellMedApp.pem
   '';
 };
 
