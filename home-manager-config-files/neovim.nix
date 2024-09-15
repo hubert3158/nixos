@@ -29,6 +29,7 @@ in
         vim-pug
         vim-tmux-navigator # seamless integration between vim and tmux to navigate the panes
         nvim-ts-autotag # <div></div> etc
+        undotree  # as the name suggests 
 
          
         {
