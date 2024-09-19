@@ -31,6 +31,10 @@ in
         nvim-ts-autotag # <div></div> etc
         undotree  # as the name suggests 
 
+        {
+          plugin = neogen; #Neogen - Your Annotation Toolkit
+          config = toLua "require(\"neogen\").setup()";
+        }
          
         {
           plugin = trouble-nvim; # shows comments , diagnostic etc on sidebar
