@@ -43,12 +43,13 @@ vim.api.nvim_set_keymap('n', '<leader>fm', '<cmd>Telescope marks<CR>',
 -- NERDTree keybindings
 vim.api.nvim_set_keymap("n", "<leader>nn", ":NERDTreeFocus<CR>",
     { silent = true, desc = "Focus NERDTree" })
-vim.api.nvim_set_keymap("n", "<leader>n", ":NERDTreeFocus<CR>",
-    { silent = true, desc = "Focus NERDTree" })
 vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>",
     { silent = true, desc = "Toggle NERDTree" })
 vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFind<CR>",
     { silent = true, desc = "Find in NERDTree" })
+
+-- neogen
+vim.api.nvim_set_keymap("n", "<Leader>nc", ":lua require'neogen'.generate()<CR>", { noremap = true, silent = true ,desc=" [C]omment Documentation Generation"})
 
 -- Tab management
 vim.api.nvim_set_keymap("n", "<leader>t", ":tabnew<CR>",
@@ -237,6 +238,7 @@ vim.api.nvim_set_keymap('n', "<leader>mc", ":lua require'mini.map'.close()<CR>",
     { noremap = true, silent = true, desc = "Close Mini Map" })
 vim.api.nvim_set_keymap('n', "<leader>mt", ":lua require'mini.map'.toggle()<CR>",
     { noremap = true, silent = true, desc = "Toggle Mini Map" })
+
 
 
 
