@@ -114,12 +114,12 @@ require("lspconfig").eslint.setup({
     on_attach = on_attach,
     capabilities = capabilities,
     root_dir = require("lspconfig.util").find_package_json_ancestor(),
-    -- settings = {
-    --     eslint = {
-    --         configFile = "/home/hubert/node/eslint.config.js",
-    --     },
-    -- },
-    -- cmd = { "/nix/store/yk4zgr1h15kbxbi0vn233a1d8zi5618w-eslint-9.5.0/bin/eslint" },
+    settings = {
+        eslint = {
+            configFile = "/home/hubert/nixos/.eslint.config.json",
+        },
+    },
+    cmd = { "/nix/store/yk4zgr1h15kbxbi0vn233a1d8zi5618w-eslint-9.5.0/bin/eslint" },
 })
 
 
@@ -151,7 +151,7 @@ require 'lspconfig'.clangd.setup { -- c
 
 
 
-require("lspconfig").tsserver.setup({
+require("lspconfig").ts_ls.setup({
     on_attach = on_attach,
     capabilities = capabilities,
     cmd = { "/nix/store/18j7h4bc8i4hbq1l9i6qp60w87rikm7x-typescript-language-server-4.3.3/bin/typescript-language-server", "--stdio" }, -- Update the path to your jdtls executable
