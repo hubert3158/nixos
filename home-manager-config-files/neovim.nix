@@ -30,6 +30,14 @@ in
         vim-tmux-navigator # seamless integration between vim and tmux to navigate the panes
         nvim-ts-autotag # <div></div> etc
         undotree  # as the name suggests 
+        # yazi-nvim
+
+
+
+        # {
+        #   plugin = yazi-nvim; #cli file navigator
+        #   config = toLua "require(\"yazi\").setup()";
+        # }
 
         {
           plugin = neogen; #Neogen - Your Annotation Toolkit
