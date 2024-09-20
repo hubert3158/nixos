@@ -1,7 +1,7 @@
 {pkgs,...}:
 {
 
-    home.stateVersion = "24.05";  # Use the latest stable version number that aligns with your Home Manager version
+    home.stateVersion = "24.11";  # Use the latest stable version number that aligns with your Home Manager version
     home.username="hubert";
     home.homeDirectory="/home/hubert";
     home.shellAliases = {
@@ -90,7 +90,7 @@
       pandas
       pypdf
       pypdf2
-      pymupdf
+      # pymupdf # marked as broken for the latest version
       pdf2image
       pytesseract
       flask
