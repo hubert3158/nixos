@@ -239,6 +239,9 @@ vim.api.nvim_set_keymap('n', "<leader>mc", ":lua require'mini.map'.close()<CR>",
 vim.api.nvim_set_keymap('n', "<leader>mt", ":lua require'mini.map'.toggle()<CR>",
     { noremap = true, silent = true, desc = "Toggle Mini Map" })
 
+vim.api.nvim_set_keymap('n', "<leader>y", "<cmd> <require(\"yazi\").yazi()CR>",
+    { noremap = true, silent = true, desc = "Opnen [Y]azi" })
+
 
 
 
