@@ -35,3 +35,6 @@ local person = { name = "Subash", age = 30 }
 -- Accessing table values
 print("Name: " .. person.name)
 print("Age: " .. person.age)
+
+
+

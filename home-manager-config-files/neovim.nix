@@ -33,6 +33,7 @@ in
       lazygit-nvim
 
 
+      vim-prettier
 
         {
           plugin = yazi-nvim; #cli file navigator

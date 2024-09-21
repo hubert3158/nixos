@@ -77,20 +77,20 @@ require('lspconfig').lua_ls.setup {
     }
 }
 
-null_ls.setup({
-    sources = {
-        null_ls.builtins.formatting.prettier,
-    },
-    -- Format on save setup
-    on_attach = function(client)
-        if client.server_capabilities.documentFormattingProvider then
-            vim.api.nvim_command([[augroup Format]])
-            vim.api.nvim_command([[autocmd! * <buffer>]])
-            vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]])
-            vim.api.nvim_command([[augroup END]])
-        end
-    end,
-})
+-- null_ls.setup({
+--     sources = {
+--         null_ls.builtins.formatting.prettier,
+--     },
+--     -- Format on save setup
+--     on_attach = function(client)
+--         if client.server_capabilities.documentFormattingProvider then
+--             vim.api.nvim_command([[augroup Format]])
+--             vim.api.nvim_command([[autocmd! * <buffer>]])
+--             vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]])
+--             vim.api.nvim_command([[augroup END]])
+--         end
+--     end,
+-- })
 
 require('lspconfig').nil_ls.setup {
     on_attach = on_attach,
@@ -114,12 +114,12 @@ require("lspconfig").eslint.setup({
     on_attach = on_attach,
     capabilities = capabilities,
     root_dir = require("lspconfig.util").find_package_json_ancestor(),
-    settings = {
-        eslint = {
-            configFile = "/home/hubert/nixos/.eslint.config.json",
-        },
-    },
-    cmd = { "/nix/store/yk4zgr1h15kbxbi0vn233a1d8zi5618w-eslint-9.5.0/bin/eslint" },
+    -- settings = {
+    --     eslint = {
+    --         configFile = "/home/hubert/nixos/.eslint.config.json",
+    --     },
+    -- },
+    cmd = { "eslint" },
 })
 
 
