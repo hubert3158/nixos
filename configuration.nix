@@ -155,6 +155,7 @@
     nodePackages.eslint
     nodePackages.serve
     nodePackages.prettier
+    nodePackages.typescript-language-server
 
     yarn
 
