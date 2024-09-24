@@ -28,10 +28,6 @@ in
       neoformat #A (Neo)vim plugin for formatting code.
 
          
-        {
-        plugin = nvim-ts-autotag; # <div></div> etc
-        config = toLua "require(\"nvim-ts-autotag\").setup()";
-        }
 
         {
           plugin = yazi-nvim; #cli file navigator
@@ -50,6 +46,11 @@ in
         {
           plugin = nvim-colorizer-lua;
           config = toLua "require(\"colorizer\").setup()";
+        }
+
+        {
+        plugin = nvim-ts-autotag; # <div></div> etc
+          config = toLuaFile ./nvim/plugin/tsAutotag.lua;
         }
 
         {
