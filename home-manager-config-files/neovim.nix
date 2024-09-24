@@ -120,8 +120,7 @@ in
         #   config = toLuaFile ./nvim/plugin/surround.lua;
         # }
 
-        vim-sneak
-        
+        # vim-sneak
 
 	# -- ensure_installed = { "c", "query", "lua", "java", "nix", "vimdoc", "luadoc", "vim", "markdown", "markdown_inline" },
           nvim-treesitter-parsers.vimdoc
