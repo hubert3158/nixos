@@ -41,7 +41,7 @@ vim.api.nvim_set_keymap('n', '<leader>fm', '<cmd>Telescope marks<CR>',
     { noremap = true, silent = true, desc = "Find Marks" })
 
 -- NERDTree keybindings
-vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFocus<CR>",
+vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFind<CR>",
     { silent = true, desc = "Focus NERDTree" })
 vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>",
     { silent = true, desc = "Toggle NERDTree" })
