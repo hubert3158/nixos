@@ -1,6 +1,5 @@
 local lspconfig = require 'lspconfig'
 
-local null_ls = require("null-ls")
 
 local on_attach = function(client, bufnr)
     local bufmap = function(keys, func)
@@ -76,21 +75,6 @@ require('lspconfig').lua_ls.setup {
         },
     }
 }
-
--- null_ls.setup({
---     sources = {
---         null_ls.builtins.formatting.prettier,
---     },
---     -- Format on save setup
---     on_attach = function(client)
---         if client.server_capabilities.documentFormattingProvider then
---             vim.api.nvim_command([[augroup Format]])
---             vim.api.nvim_command([[autocmd! * <buffer>]])
---             vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]])
---             vim.api.nvim_command([[augroup END]])
---         end
---     end,
--- })
 
 require('lspconfig').nil_ls.setup {
     on_attach = on_attach,

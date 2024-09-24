@@ -18,22 +18,20 @@ in
 
       plugins = with pkgs.vimPlugins; [
 
-        # plugin that allows you to integrate various external tools (like linters, formatters, diagnostics, etc.) 
-        # directly into Neovim's built-in Language Server Protocol (LSP) client. It acts as a bridge between Neovim's LSP
-        # and these external tools, enabling them to be used as if they were native LSP features.
-        null-ls-nvim
-
         telescope-zoxide #An extension for telescope.nvim that allows you operate zoxide within Neovim.
 
         nvim-comment
         vim-pug
         vim-tmux-navigator # seamless integration between vim and tmux to navigate the panes
-        nvim-ts-autotag # <div></div> etc
         undotree  # as the name suggests 
       lazygit-nvim
+      neoformat #A (Neo)vim plugin for formatting code.
 
-
-      vim-prettier
+         
+        {
+        plugin = nvim-ts-autotag; # <div></div> etc
+        config = toLua "require(\"nvim-ts-autotag\").setup()";
+        }
 
         {
           plugin = yazi-nvim; #cli file navigator

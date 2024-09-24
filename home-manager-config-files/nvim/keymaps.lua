@@ -41,12 +41,14 @@ vim.api.nvim_set_keymap('n', '<leader>fm', '<cmd>Telescope marks<CR>',
     { noremap = true, silent = true, desc = "Find Marks" })
 
 -- NERDTree keybindings
-vim.api.nvim_set_keymap("n", "<leader>nn", ":NERDTreeFocus<CR>",
+vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFocus<CR>",
     { silent = true, desc = "Focus NERDTree" })
 vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>",
     { silent = true, desc = "Toggle NERDTree" })
-vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFind<CR>",
-    { silent = true, desc = "Find in NERDTree" })
+
+-- NeoFormat keybinding
+vim.api.nvim_set_keymap("n", "<leader>nn", ":Neoformat<CR>",
+    { silent = true, desc = "[N]eo[F]ormat" })
 
 -- neogen
 vim.api.nvim_set_keymap("n", "<Leader>nc", ":lua require'neogen'.generate()<CR>", { noremap = true, silent = true ,desc=" [C]omment Documentation Generation"})
