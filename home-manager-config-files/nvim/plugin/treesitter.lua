@@ -1,4 +1,4 @@
-local parser_install_dir = vim.fn.expand('/home/hubert/temp')
+-- local parser_install_dir = vim.fn.expand('/home/hubert/temp')
 
 require('nvim-treesitter.configs').setup {
 
