@@ -206,6 +206,8 @@ evolution-ews
 pass
 age
 zoxide
+     cmatrix
+    cowsay
 
 rofi
 
