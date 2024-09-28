@@ -87,6 +87,11 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+
+    #AI
+    libstdcxx5  #needed
+
+
     jq  #lightweight commandline json parser
     fd  #Simple, fast and user-friendly alternative to find
     jupyter
@@ -106,6 +111,8 @@
     poppler
     poppler_utils
 
+
+    brave
 
     pnpm          # Fast, disk space efficient package manager for JavaScript
 

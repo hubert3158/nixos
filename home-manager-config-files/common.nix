@@ -95,6 +95,14 @@
       pytesseract
       flask
 
+
+      #for ai
+      huggingface-hub
+      torch
+      transformers
+      torchvision
+      # verovio
+
     ])) 
 
     lua-language-server
