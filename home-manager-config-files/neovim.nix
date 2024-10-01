@@ -98,13 +98,14 @@ in
         }
         
         
-        nvim-cmp 
-        {
-          plugin = nvim-cmp;
-          config = toLuaFile ./nvim/plugin/cmp.lua;
-        }
-        cmp_luasnip
-        cmp-nvim-lsp
+      #using super maven for now
+        # nvim-cmp 
+        # {
+        #   plugin = nvim-cmp;
+        #   config = toLuaFile ./nvim/plugin/cmp.lua;
+        # }
+        # cmp_luasnip
+        # cmp-nvim-lsp
 
         {
           plugin = telescope-nvim;
