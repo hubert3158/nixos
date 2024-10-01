@@ -91,17 +91,10 @@
       pypdf
       pypdf2
       # pymupdf # marked as broken for the latest version
+      pdfplumber
       pdf2image
       pytesseract
       flask
-
-
-      #for ai
-      huggingface-hub
-      torch
-      transformers
-      torchvision
-      # verovio
 
     ])) 
 
