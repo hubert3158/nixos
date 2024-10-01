@@ -27,7 +27,12 @@ in
       lazygit-nvim
       neoformat #A (Neo)vim plugin for formatting code.
 
-         
+       #ai
+          {
+          plugin = supermaven-nvim; #cli file navigator
+          config = toLua "require(\"supermaven-nvim\").setup({})";
+        }
+
 
         {
           plugin = yazi-nvim; #cli file navigator
