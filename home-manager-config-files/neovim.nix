@@ -18,6 +18,7 @@ in
 
       plugins = with pkgs.vimPlugins; [
 
+
         telescope-zoxide #An extension for telescope.nvim that allows you operate zoxide within Neovim.
 
         nvim-comment
@@ -120,6 +121,8 @@ in
           plugin = nvim-treesitter;
           config = toLuaFile ./nvim/plugin/treesitter.lua;
         }
+
+      nvim-treesitter-textobjects
 
         # {
         #   plugin = surround-nvim;
