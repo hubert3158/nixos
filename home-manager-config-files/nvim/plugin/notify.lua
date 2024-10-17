@@ -1,4 +1,3 @@
-
 require("notify").setup({
   keys = {
     {

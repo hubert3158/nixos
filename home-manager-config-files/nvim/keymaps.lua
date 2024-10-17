@@ -2,6 +2,10 @@
 vim.g.mapleader = " "      -- Make sure to set `mapleader` before lazy so your mappings are correct
 vim.g.maplocalleader = "," -- Same for `maplocalleader`
 
+--theme
+vim.o.background = "dark" -- or "light" for light mode
+vim.cmd([[colorscheme gruvbox]])
+
 -- General settings
 vim.opt.scrolloff = 6
 vim.opt.incsearch = true   -- Do incremental searching
@@ -19,6 +23,8 @@ vim.api.nvim_create_autocmd("FocusLost", {
     pattern = "*",
     command = "silent! wa"
 })
+
+--extra
 
 -- Telescope keybindings
 vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>",
