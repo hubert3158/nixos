@@ -167,29 +167,7 @@ local lombok_path = "/home/hubert/nixos/dotfiles/lombok.jar"
 require("lspconfig").jdtls.setup({
     on_attach = on_attach,
     capabilities = capabilities,
-    -- cmd = { "/etc/profiles/per-user/hubert/bin/jdtls" }, -- Update the path to your jdtls executable
-    cmd = {
-        "java",
-        "-javaagent:/home/hubert/nixos/dotfiles/lombok.jar", -- Update this path to your Lombok JAR
-        "-Declipse.application=org.eclipse.jdt.ls.core.id1",
-        "-Dosgi.bundles.defaultStartLevel=4",
-        "-Declipse.product=org.eclipse.jdt.ls.core.product",
-        "-Dlog.protocol=true",
-        "-Dlog.level=ALL",
-        "-Xms1g",
-        "-Xmx2G",
-        "--add-modules=ALL-SYSTEM",
-        "--add-opens",
-        "java.base/java.util=ALL-UNNAMED",
-        "--add-opens",
-        "java.base/java.lang=ALL-UNNAMED",
-        "-jar",
-        "/nix/store/301k2jhjanl6rr96b9yy9qzcrhjbwgmz-jdt-language-server-1.36.0/share/java/jdtls/plugins/org.eclipse.equinox.launcher_1.6.800.v20240513-1750.jar",
-        "-configuration",
-        "/home/hubert/.jdtls_config",
-        "-data",
-        "/home/hubert/IdeaProjects/web/influx-mca-web"
-    },
+    cmd = { "/etc/profiles/per-user/hubert/bin/jdtls" }, -- Update the path to your jdtls executable
 
     root_dir = function(fname)
         return require('lspconfig.util').root_pattern('pom.xml', 'build.gradle', '.git')(fname) or
