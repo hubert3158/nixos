@@ -147,8 +147,7 @@
     dmenu
     lightdm
     wofi
-    gnome.gnome-keyring
-
+    gnome-keyring
 
 
     nodePackages.nodemon
