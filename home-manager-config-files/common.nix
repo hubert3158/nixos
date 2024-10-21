@@ -52,7 +52,7 @@
     zls
 
     discord
-    pgadmin4
+    # pgadmin4
     pavucontrol
     helix
     zsh-autocomplete
@@ -366,8 +366,8 @@ programs.zoxide = {
 
     imports = [
     ./tmux.nix
-    ./vim.nix
-    ./neovim.nix
+    #./vim.nix
+    # ./neovim.nix
     ./alacritty.nix
     ./kitty.nix
     ./xdg.nix
