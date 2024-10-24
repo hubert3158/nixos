@@ -5,6 +5,13 @@
 { config, pkgs,lib, ... }:
 
 {
+  nixpkgs.overlays = [
+  (self: super: {
+    noto-fonts-cjk = super.noto-fonts-cjk-sans;
+    # utillinux = super.util-linux;
+  })
+];
+
 # Include the results of the hardware scan.
 
   # Bootloader.
