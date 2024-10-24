@@ -52,7 +52,7 @@
     zls
 
     discord
-    # pgadmin4
+    pgadmin4
     pavucontrol
     helix
     zsh-autocomplete
