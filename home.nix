@@ -6,27 +6,19 @@
 
 {
 
-  ## Configure keymap in X11
-  services.xserver = {
-    xkb.layout = "us";
-    xkb.variant = "";
-  };
 
   programs.hyprland.enable  = true;
+
    services.xserver = {
     enable = true;
     desktopManager.xfce.enable = true;
     windowManager.i3.enable = true;
+    videoDrivers = [ "nvidia" ];
+    xkb.layout = "us";
+    xkb.variant = "";
   };
-
 
   services.displayManager.sddm.enable = true;
-
-  services.xserver = {
-    videoDrivers = [ "nvidia" ];
-  };
-
-
 
   hardware = {
     graphics = {
