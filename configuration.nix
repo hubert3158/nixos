@@ -231,6 +231,7 @@ rofi
   sonar-scanner-cli
 
   zellij
+  slack
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
