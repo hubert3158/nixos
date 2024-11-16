@@ -287,6 +287,7 @@ rofi
   export JAVA_HOME=${pkgs.jdk21}/lib/openjdk
   export JAVA_HOME11=${pkgs.jdk11}/lib/openjdk
   export PATH=${pkgs.jdk21}/bin:$PATH
+  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   '';
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
