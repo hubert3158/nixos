@@ -162,6 +162,7 @@
     nodePackages.serve
     nodePackages.prettier
     nodePackages.typescript-language-server
+    nodePackages.pm2
 
     yarn
 
