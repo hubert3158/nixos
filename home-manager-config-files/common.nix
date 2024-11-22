@@ -230,6 +230,14 @@ programs.ssh= {
   Port 22
   IdentityFile ~/.ssh/automated_submission.pem
 
+
+  Host dev
+  HostName 0.0.0.0
+  User ubuntu
+  Port 22
+  IdentityFile ~/.ssh/dev_server.pem
+
+
   '';
 };
 
