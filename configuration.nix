@@ -325,6 +325,7 @@ xdg.portal.enable = true;
 xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
 programs.waybar.enable = true;
+
 programs.neovim.enable = true;
 
 services.gnome.gnome-keyring = {
