@@ -79,7 +79,6 @@
     extraGroups = [ "networkmanager" "wheel" "docker" "wireshark" "postgres" "video"];
     packages = with pkgs; [
       kdePackages.kate
-      kdiff3
       thunderbird
     ];
   };
