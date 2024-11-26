@@ -45,6 +45,7 @@
     jetbrains.idea-ultimate
     jetbrains.datagrip
     jetbrains.pycharm-professional
+    jetbrains-toolbox
     onedrive
     vscode-extensions.vscjava.vscode-java-debug
 
@@ -222,7 +223,6 @@ programs.ssh= {
   HostName 100.29.157.104
   User ubuntu
   Port 22
-  IdentityFile ~/.ssh/wellMedApp.pem
 
   Host submission
   HostName ec2-3-85-4-197.compute-1.amazonaws.com
