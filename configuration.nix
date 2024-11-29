@@ -7,7 +7,7 @@
 {
   nixpkgs.overlays = [
   (self: super: {
-    noto-fonts-cjk = super.noto-fonts-cjk-sans;
+     noto-fonts-cjk = super.noto-fonts-cjk-sans;
     # utillinux = super.util-linux;
   })
 ];
@@ -94,7 +94,9 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+
   environment.systemPackages = with pkgs; [
+
     jq  #lightweight commandline json parser
     fd  #Simple, fast and user-friendly alternative to find
     jupyter
@@ -230,6 +232,7 @@ rofi
   libclang   #c , cpp , c++
   glibc.dev  # installed dev , has c system headers like stdio.h
 
+
   sonar-scanner-cli
 
   zellij
@@ -347,7 +350,8 @@ programs.gnupg.agent = {
 };
 
 fonts.packages= with pkgs; [
-  nerdfonts
+    nerd-fonts.fira-code
+
   noto-fonts
   noto-fonts-cjk
   noto-fonts-emoji
