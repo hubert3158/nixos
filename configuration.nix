@@ -237,6 +237,7 @@ rofi
 
   zellij
   slack
+
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
