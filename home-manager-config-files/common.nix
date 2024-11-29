@@ -76,7 +76,6 @@
     wireshark-qt
 
 
-
     obsidian
     pandoc
     texlive.combined.scheme-full
@@ -105,7 +104,6 @@
     bash-language-server
     zls
 
-    nerdfonts
     dejavu_fonts
 
     obs-studio

@@ -4,7 +4,7 @@
     font = {
       name = "FiraCode Nerd Font";
       size = 14;
-      package = pkgs.nerdfonts;
+      package = pkgs.nerd-fonts.fira-code;
     };
     settings = {
       scrollback_lines = 10000;
