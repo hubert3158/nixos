@@ -39,6 +39,8 @@
     home.packages = with pkgs; [
     # Add your user packages here
     android-studio
+    android-tools
+
 
     sshfs
 
