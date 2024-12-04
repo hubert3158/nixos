@@ -44,6 +44,8 @@
 
     sshfs
 
+    figlet
+
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.datagrip
