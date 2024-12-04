@@ -36,6 +36,9 @@ local person = { name = "Subash", age = 30 }
 print("Name: " .. person.name)
 print("Age: " .. person.age)
 
+--          +---------------------------------------------------------+
+--          |                This is comment box test                 |
+--          +---------------------------------------------------------+
 
 
 

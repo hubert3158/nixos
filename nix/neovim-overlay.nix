@@ -21,6 +21,7 @@ with final.pkgs.lib; let
   all-plugins = with pkgs.vimPlugins; [
     telescope-zoxide
     nvim-comment
+    comment-box-nvim
     vim-pug
     vim-tmux-navigator
     undotree
