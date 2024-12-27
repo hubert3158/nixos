@@ -38,6 +38,9 @@
 
     home.packages = with pkgs; [
     # Add your user packages here
+
+    jprofiler
+
     android-studio
     android-tools
 

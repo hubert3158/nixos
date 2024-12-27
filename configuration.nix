@@ -18,6 +18,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Enable perf_event_paranoid and kptr_restrict, for jprofiler
+  boot.kernel.sysctl = {
+  "kernel.perf_event_paranoid" = 1;
+  "kernel.kptr_restrict" = 0;
+};
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
