@@ -28,7 +28,11 @@
       "h" = "omz_history | fzf > selected";
     };
 
+
     wayland.windowManager.hyprland = {
+  # If you use the Home Manager module, make sure to disable the systemd integration, as it conflicts with uwsm.
+  # https://wiki.hyprland.org/Useful-Utilities/Systemd-start/
+    systemd.enable = false;
       enable = true;
       xwayland.enable = true;
      extraConfig = '' source = ~/nixos/dotfiles/hypr/hyprland.conf '';
