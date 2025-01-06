@@ -94,6 +94,9 @@
   # Install firefox.
   programs.firefox.enable = true;
   programs.steam.enable = true;
+  programs.hyprland.withUWSM  = true;
+
+
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

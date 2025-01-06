@@ -13,6 +13,7 @@
 
       # Set Dracula background
       background = "#282a36";
+      background_image = "~/nixos/images/kitty-wallpaper.jpg";
       foreground = "#f8f8f2";
       selection_background = "#44475a";
       selection_foreground = "#f8f8f2";
