@@ -40,15 +40,20 @@
     xkb.variant = "";
   };
 
+  services.displayManager.sddm = {
+    enable = true;
+    wayland = {
+      enable = true;
+     };
+    };
+
   programs.hyprland.enable  = true;
    services.xserver = {
-    enable = true;
+    enable = false;
     desktopManager.xfce.enable = true;
     windowManager.i3.enable = true;
   };
 
-
-  services.displayManager.sddm.enable = true;
 
   hardware = {
     graphics = {
