@@ -86,7 +86,7 @@
 
     obsidian
     pandoc
-    texlive.combined.scheme-full
+    #texlive.combined.scheme-full
     mdbook-pdf
 
 
