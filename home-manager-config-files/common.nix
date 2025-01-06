@@ -78,7 +78,7 @@
 
     obsidian
     pandoc
-    texlive.combined.scheme-full
+   # texlive.combined.scheme-full
     mdbook-pdf
 
 
@@ -222,7 +222,6 @@ programs.ssh= {
   HostName 100.29.157.104
   User ubuntu
   Port 22
-  IdentityFile ~/.ssh/wellMedApp.pem
 
   Host submission
   HostName ec2-3-85-4-197.compute-1.amazonaws.com
