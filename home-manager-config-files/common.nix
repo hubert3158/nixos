@@ -41,6 +41,9 @@
     home.packages = with pkgs; [
     # Add your user packages here
 
+    eclipse-mat
+
+
     jprofiler
 
     android-studio
