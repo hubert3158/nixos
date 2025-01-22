@@ -30,6 +30,15 @@
         mimeType = [ "text/plain"];
         comment = "Its a beast bro";
       };
+      workspacesclient = {
+        name = "AWS Workspaces Client";
+        genericName = "AWS Workspaces Client";
+        exec = "workspacesclient";
+        terminal = false;
+        categories = [ "Network" "Utility" ];
+        mimeType = [ "text/plain" ];
+        comment = "needed at work bro";
+      };
     };
     mime = { enable = true; };
     mimeApps = {
