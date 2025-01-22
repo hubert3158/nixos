@@ -40,6 +40,8 @@
 
     home.packages = with pkgs; [
     # Add your user packages here
+    freerdp
+    openvpn
     aws-workspaces
 
     eclipse-mat
