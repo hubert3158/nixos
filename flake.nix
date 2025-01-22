@@ -28,6 +28,9 @@
           ./hardware-configuration-work.nix
           home-manager.nixosModules.home-manager
           {
+             nixpkgs.config.permittedInsecurePackages = [
+              "openssl-1.1.1w"
+            ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
@@ -60,6 +63,9 @@
           ./hardware-configuration-home.nix
           home-manager.nixosModules.home-manager
           {
+             nixpkgs.config.permittedInsecurePackages = [
+              "openssl-1.1.1w"
+            ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";

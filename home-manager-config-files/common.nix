@@ -40,6 +40,7 @@
 
     home.packages = with pkgs; [
     # Add your user packages here
+    aws-workspaces
 
     eclipse-mat
 
