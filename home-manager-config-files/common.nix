@@ -15,6 +15,8 @@
       "cd" = "z";
       "y" = "yazi";
       "open" = "xdg-open";
+      "lww" = "hyprctl dispatch exec waybar";
+
       "f" = ''
       fzf \
       -i \
@@ -46,6 +48,12 @@
 
     eclipse-mat
 
+    btop
+
+    #fun
+    cmatrix
+    neofetch
+    frotz
 
     jprofiler
 
@@ -169,7 +177,9 @@
       # zellij attach --create local
        # eval "$(/nix/store/2h1mvikc160c7i8kzvp9d289pvs1z6vx-zellij-0.40.1/bin/zellij attach --create local)"
        # zellij attach --create local
-       initExtra = '' '';
+    initExtra = ''
+      neofetch
+    '';
     profileExtra= ''
       # Define the 'zi' function for interactive selection using fzf
       zi() {
