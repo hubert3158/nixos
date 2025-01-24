@@ -68,7 +68,7 @@
     google-chrome
     jetbrains.idea-ultimate
     jetbrains.datagrip
-    jetbrains.pycharm-professional
+    # jetbrains.pycharm-professional
     jetbrains-toolbox
     onedrive
     vscode-extensions.vscjava.vscode-java-debug
