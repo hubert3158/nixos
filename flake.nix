@@ -6,9 +6,10 @@
     home-manager.url = "github:nix-community/home-manager";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
+  nixvim.url = "github:nix-community/nixvim";
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, gen-luarc, ... }: let
+  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, gen-luarc,nixvim, ... }: let
     supportedSystems = [
       "x86_64-linux"
       "aarch64-linux"
@@ -17,7 +18,7 @@
     ];
 
     # Import the neovim overlay
-    neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
+    # neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
   in {
     nixosConfigurations = {
       work = nixpkgs.lib.nixosSystem {
@@ -43,13 +44,13 @@
                     "microsoft-edge-stable"
                   ];
                 };
-                overlays = [neovim-overlay];
+                # overlays = [neovim-overlay];
               };
               packages = import ./home-manager-work.nix { inherit pkgs; };
             in
               packages // {
                 # Add nvim from the overlay to the user's packages
-                home.packages = [ pkgs.nvim-pkg ];
+                # home.packages = [ pkgs.nvim-pkg ];
               };
           }
         ];
@@ -78,40 +79,17 @@
                     "microsoft-edge-stable"
                   ];
                 };
-                overlays = [neovim-overlay];
+                # overlays = [neovim-overlay];
               };
               packages = import ./home-manager-home.nix { inherit pkgs; };
             in
               packages // {
                 # Add nvim from the overlay to the user's packages
-                home.packages = [ pkgs.nvim-pkg ];
+                # home.packages = [ pkgs.nvim-pkg ];
               };
           }
         ];
       };
-    };
-
-    devShells = {
-      work = flake-utils.lib.eachSystem supportedSystems (system: let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [
-            neovim-overlay
-            gen-luarc.overlays.default
-          ];
-        };
-      in pkgs.mkShell {
-        name = "nvim-devShell";
-        buildInputs = with pkgs; [
-          lua-language-server
-          nil
-          stylua
-          luajitPackages.luacheck
-        ];
-        shellHook = ''
-          ln -fs ${pkgs.nvim-luarc-json} .luarc.json
-        '';
-      });
     };
   };
 }
