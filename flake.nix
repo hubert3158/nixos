@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration with Home Manager and Neovim";
+  description = "NixOS configuration with Home Manager and Neovim using nixvim";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -7,25 +7,19 @@
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     flake-parts.url = "github:hercules-ci/flake-parts";
-  nixvim = {
-    url = "github:nix-community/nixvim";
-    # If you are not running an unstable channel of nixpkgs, select the corresponding branch of nixvim.
-    # url = "github:nix-community/nixvim/nixos-24.11";
-
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, gen-luarc,nixvim,flake-parts, ... }: let
+  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, gen-luarc, nixvim, flake-parts, ... }: let
     supportedSystems = [
       "x86_64-linux"
       "aarch64-linux"
       "x86_64-darwin"
       "aarch64-darwin"
     ];
-
-    # Import the neovim overlay
-    # neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
   in {
     nixosConfigurations = {
       work = nixpkgs.lib.nixosSystem {
@@ -36,7 +30,7 @@
           ./hardware-configuration-work.nix
           home-manager.nixosModules.home-manager
           {
-             nixpkgs.config.permittedInsecurePackages = [
+            nixpkgs.config.permittedInsecurePackages = [
               "openssl-1.1.1w"
             ];
             home-manager.useGlobalPkgs = true;
@@ -51,13 +45,25 @@
                     "microsoft-edge-stable"
                   ];
                 };
-                # overlays = [neovim-overlay];
               };
               packages = import ./home-manager-work.nix { inherit pkgs; };
+              nixvimLib = nixvim.lib."x86_64-linux";
+              nixvim' = nixvim.legacyPackages."x86_64-linux";
+              nixvimModule = {
+                inherit pkgs;
+                module = import ./config; # Import the entire config folder
+                extraSpecialArgs = {
+                  # Add any extra arguments you need for the module
+                  exampleArg = "exampleValue";
+                };
+              };
+              nvim = nixvim'.makeNixvimWithModule nixvimModule;
             in
               packages // {
-                # Add nvim from the overlay to the user's packages
-                # home.packages = [ pkgs.nvim-pkg ];
+                # Add nvim from nixvim
+                home.packages = with pkgs; [
+                  nvim
+                ];
               };
           }
         ];
@@ -71,7 +77,7 @@
           ./hardware-configuration-home.nix
           home-manager.nixosModules.home-manager
           {
-             nixpkgs.config.permittedInsecurePackages = [
+            nixpkgs.config.permittedInsecurePackages = [
               "openssl-1.1.1w"
             ];
             home-manager.useGlobalPkgs = true;
@@ -86,13 +92,25 @@
                     "microsoft-edge-stable"
                   ];
                 };
-                # overlays = [neovim-overlay];
               };
               packages = import ./home-manager-home.nix { inherit pkgs; };
+              nixvimLib = nixvim.lib."x86_64-linux";
+              nixvim' = nixvim.legacyPackages."x86_64-linux";
+              nixvimModule = {
+                inherit pkgs;
+                module = import ./config; # Import the entire config folder
+                extraSpecialArgs = {
+                  # Add any extra arguments you need for the module
+                  exampleArg = "exampleValue";
+                };
+              };
+              nvim = nixvim'.makeNixvimWithModule nixvimModule;
             in
               packages // {
-                # Add nvim from the overlay to the user's packages
-                # home.packages = [ pkgs.nvim-pkg ];
+                # Add nvim from nixvim
+                home.packages = with pkgs; [
+                  nvim
+                ];
               };
           }
         ];
