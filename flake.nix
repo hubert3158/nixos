@@ -6,10 +6,17 @@
     home-manager.url = "github:nix-community/home-manager";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
-  nixvim.url = "github:nix-community/nixvim";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+  nixvim = {
+    url = "github:nix-community/nixvim";
+    # If you are not running an unstable channel of nixpkgs, select the corresponding branch of nixvim.
+    # url = "github:nix-community/nixvim/nixos-24.11";
+
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, gen-luarc,nixvim, ... }: let
+  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, gen-luarc,nixvim,flake-parts, ... }: let
     supportedSystems = [
       "x86_64-linux"
       "aarch64-linux"
