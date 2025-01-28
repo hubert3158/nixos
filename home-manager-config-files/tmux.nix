@@ -34,7 +34,7 @@ set -g @catppuccin_directory_text "#{pane_current_path}"
 	];
 	extraConfig = ''
 		set -g mouse on
-		set-option -sa terminal-features ',xterm-kitty:allow-passthrough'
+		set-option -g allow-passthrough all
 
 	'';
 };
