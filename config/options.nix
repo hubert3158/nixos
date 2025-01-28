@@ -1,4 +1,4 @@
-{self, ...}: {
+{ self, ... }: {
   globalOpts = {
     # Line numbers
     number = true;
@@ -10,10 +10,11 @@
     # Enable mouse
     mouse = "a";
 
-    # Search
+    # Search settings
     ignorecase = true;
     smartcase = true;
-  
+    incsearch = true; # Do incremental searching
+
     # Configure how new splits should be opened
     splitright = true;
     splitbelow = true;
@@ -22,18 +23,18 @@
     # NOTE: .__raw here means that this field is raw lua code
     listchars.__raw = "{ tab = '» ', trail = '·', nbsp = '␣' }";
 
-    # Tab defaults (might get overwritten by an LSP server)
-    tabstop = 4;
-    shiftwidth = 4;
+    # Tab & indentation settings
+    tabstop = 4;      # Number of spaces a <Tab> counts for
+    shiftwidth = 4;   # Number of spaces for each step of (auto)indent
     softtabstop = 0;
-    expandtab = true;
+    expandtab = true; # Convert tabs to spaces
     smarttab = true;
 
     # System clipboard support, needs xclip/wl-clipboard
     clipboard = {
       providers = {
         wl-copy.enable = true; # Wayland 
-        xsel.enable = true; # For X11
+        xsel.enable = true;    # For X11
       };
       register = "unnamedplus";
     };
@@ -41,8 +42,7 @@
     # Save undo history
     undofile = true;
 
-
-    # Highlight the current line for cursor
+    # Cursor settings
     cursorline = true;
 
     # Show line and column when searching
@@ -52,9 +52,14 @@
     gdefault = true;
 
     # Start scrolling when the cursor is X lines away from the top/bottom
-    scrolloff = 5;
+    scrolloff = 6;
   };
 
+  # Set leader keys
+  globals.mapleader = " ";
+  globals.maplocalleader = ",";
+
+  # User-defined commands
   userCommands = {
     Q.command = "q";
     Q.bang = true;
@@ -66,22 +71,20 @@
     W.bang = true;
   };
 
-  globals.mapleader = " ";
-
+  # Auto-save when focus is lost
   autoCmd = [
+    {
+      event = [ "FocusLost" ];
+      pattern = [ "*" ];
+      command = "silent! wa";
+    }
     {
       event = [ "VimEnter" ];
       callback = { __raw = "function() if vim.fn.argv(0) == '' then require('telescope.builtin').find_files() end end"; };
     }
   ];
-  #autoCmd = [
-  #  {
-  #    event = [ "BufEnter" "BufWinEnter" ];
-  #    pattern = [ "*.md" "*.mdx" ];
-  #    command = "MarkdownPreviewToggle";
-  #  }
-  #];
 
+  # Highlight settings
   highlight = {
     Comment.fg = "#ff00ff";
     Comment.bg = "#000000";
@@ -89,3 +92,4 @@
     Comment.bold = true;
   };
 }
+
