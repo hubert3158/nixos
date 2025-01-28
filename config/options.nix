@@ -78,10 +78,10 @@
       pattern = [ "*" ];
       command = "silent! wa";
     }
-    {
-      event = [ "VimEnter" ];
-      callback = { __raw = "function() if vim.fn.argv(0) == '' then require('telescope.builtin').find_files() end end"; };
-    }
+    # {
+    #   event = [ "VimEnter" ];
+    #   callback = { __raw = "function() if vim.fn.argv(0) == '' then require('telescope.builtin').find_files() end end"; };
+    # }
   ];
 
   # Highlight settings
