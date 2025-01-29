@@ -3,10 +3,6 @@ local fn = vim.fn
 local opt = vim.o
 local g = vim.g
 
-vim.cmd [[
-  highlight Normal guibg=NONE ctermbg=NONE
-  highlight NonText guibg=NONE ctermbg=NONE
-]]
 
 
 -- <leader> key. Defaults to `\`. Some people prefer space.
