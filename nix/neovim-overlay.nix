@@ -70,10 +70,10 @@ with final.pkgs.lib; let
       plugin = noice-nvim;
       config = "lua << EOF\nrequire(\"noice\").setup()\nEOF\n";
     }
-    # {
-    #   plugin = gruvbox-nvim;
-    #   config = "colorscheme gruvbox";
-    # }
+    {
+      plugin = gruvbox-nvim;
+      config = "colorscheme gruvbox";
+    }
     {
       plugin = todo-comments-nvim;
       config = "lua << EOF\nrequire(\"todo-comments\").setup()\nEOF\n";

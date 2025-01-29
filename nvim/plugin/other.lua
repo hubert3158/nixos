@@ -5,7 +5,12 @@ require("lualine").setup({
 })
 
 -- Colorscheme
--- vim.cmd("colorscheme gruvbox")
+vim.cmd("colorscheme gruvbox")
+
+vim.cmd [[
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight NonText guibg=NONE ctermbg=NONE
+]]
 
 -- Comment
 require("Comment").setup()
