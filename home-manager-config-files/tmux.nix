@@ -32,9 +32,13 @@ set -g @catppuccin_directory_text "#{pane_current_path}"
 			'';
 		}
 	];
-	extraConfig = ''
+
+    	extraConfig = ''
 		set -g mouse on
+		set-option -g allow-passthrough all
+
 	'';
+
 };
 }
 
