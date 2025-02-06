@@ -48,6 +48,8 @@
 
     eclipse-mat
 
+    openssl
+
     btop
 
     #fun
