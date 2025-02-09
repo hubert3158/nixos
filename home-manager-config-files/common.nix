@@ -42,8 +42,8 @@
 
     home.packages = with pkgs; [
     # Add your user packages here
-    freerdp
     openvpn
+    freerdp
     aws-workspaces
 
     eclipse-mat
@@ -121,6 +121,7 @@
       pdf2image
       pytesseract
       flask
+      posting
 
     ])) 
 
