@@ -29,6 +29,9 @@
       '';
       "h" = "omz_history | fzf > selected";
     };
+  home.sessionVariables = {
+  PATH = "$HOME/.local/bin:$PATH";
+};
 
 
     wayland.windowManager.hyprland = {
@@ -42,6 +45,7 @@
 
     home.packages = with pkgs; [
     # Add your user packages here
+
     freerdp
     openvpn
     aws-workspaces
@@ -110,7 +114,9 @@
 
     protonvpn-cli_2
 
+    pipx
     (python312.withPackages (ps: with ps; [ 
+
       reportlab 
       openai
       pandas
@@ -194,7 +200,6 @@
       
       '';
     };
-
 
 
     programs.wezterm = {
@@ -428,4 +433,5 @@ programs.zoxide = {
     ./ranger.nix
     ./zellij.nix
     ];
+
   }
