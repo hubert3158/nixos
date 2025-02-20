@@ -39,6 +39,9 @@ vim.opt.incsearch = true   -- Do incremental searching
 vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.ignorecase = true
+vim.opt.foldmethod ="marker"
+vim.opt.foldmarker="// region,// endregion,/* region */,/* endregion */,# region,# endregion"
+
 
 -- Indentation settings
 vim.opt.tabstop = 4      -- Number of spaces that a <Tab> in the file counts for
