@@ -16,6 +16,10 @@
       "y" = "yazi";
       "open" = "xdg-open";
       "lww" = "hyprctl dispatch exec waybar";
+      "ls" = "eza --icons --group-directories-first --git --header --long --time-style=iso --color=always";
+      "ll" = "eza -l --icons --group-directories-first --git --header --time-style=iso --color=always";
+      "la" = "eza -la --icons --group-directories-first --git --header --time-style=iso --color=always";
+      "lt" = "eza --tree --icons --level=2 --group-directories-first --git --time-style=iso --color=always";
 
       "f" = ''
       fzf \
@@ -159,6 +163,12 @@
     ];
   };
 
+  programs.eza = {
+  enable = true;
+  colors = "always";
+  enableZshIntegration = true;
+  icons = "always";
+};
 
   programs.zsh = {
     enable = true;
