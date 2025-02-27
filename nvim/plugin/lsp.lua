@@ -94,16 +94,12 @@ require("lspconfig").zls.setup({
     capabilities = capabilities,
 })
 
+
 require("lspconfig").eslint.setup({
     on_attach = on_attach,
     capabilities = capabilities,
-    root_dir = require("lspconfig.util").find_package_json_ancestor(),
-    -- settings = {
-    --     eslint = {
-    --         configFile = "/home/hubert/nixos/.eslint.config.json",
-    --     },
-    -- },
-    cmd = { "eslint" },
+    root_dir = require("lspconfig").util.find_package_json_ancestor, -- Corrected
+    cmd = { "npx", "eslint", "--stdio" }, -- Ensures ESLint uses local version
 })
 
 
