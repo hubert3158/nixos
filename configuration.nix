@@ -338,7 +338,7 @@ environment.sessionVariables = {
 xdg.portal.enable = true;
 xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
-programs.waybar.enable = true;
+# programs.waybar.enable = true;
 
 programs.neovim.enable = true;
 
