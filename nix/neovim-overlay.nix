@@ -125,6 +125,7 @@ with final.pkgs.lib; let
     lualine-nvim
     vim-nix
     vim-visual-multi
+    nvim-lint
   ];
 
   extraPackages = with pkgs; [
