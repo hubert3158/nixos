@@ -8,7 +8,8 @@ require("mason").setup(
             },
         },
         ensure_installed = {
-            "json-lsp"
+            "json-lsp",
+            "nginx-language-server"
         },
     }
 
