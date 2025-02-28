@@ -213,67 +213,7 @@ require("lspconfig").jdtls.setup({
     },
 })
 
---
--- require('lspconfig').sonarlint_ls = {
---     default_config = {
---         cmd = { "sonarlint-ls" },
---         filetypes = { "javascript", "typescript", "python", "java", "php" }, -- Add more filetypes as needed
---         root_dir = require('lspconfig').util.root_pattern(".git", "sonar-project.properties", ".sonarlint"),
---         settings = {
---             -- Optional SonarLint-specific settings
---             -- sonarlint = {
---             --     rules = {
---             --         -- Add custom rules or rule settings here
---             --     },
---             -- },
---         },
---         init_options = {
---             -- Initialization options, if required
---         },
---     },
--- }
---
--- -- Finally, set it up like any other LSP server
--- require('lspconfig').sonarlint_ls.setup({
---     on_attach = on_attach,       -- Your custom on_attach function
---     capabilities = capabilities, -- Your custom capabilities
--- })
-
-
-
-
-
-
---
---
---
-
--- require("lspconfig").jdtls.setup({
---   on_attach = on_attach,
---   capabilities = capabilities,
---   cmd = { "/etc/profiles/per-user/hubert/bin/jdtls" }, -- Update the path to your jdtls executable
---   root_dir = function(fname)
---     return require('lspconfig.util').root_pattern('pom.xml', 'build.gradle', '.git')(fname) or vim.loop.os_homedir()
---   end,
---   settings = {
---     java = {
---       signatureHelp = { enabled = true },
---       contentProvider = { preferred = 'fernflower' },
---       completion = {
---         favoriteStaticMembers = {
---           "org.hamcrest.MatcherAssert.assertThat",
---           "org.hamcrest.Matchers.*",
---           "org.hamcrest.CoreMatchers.*",
---           "org.junit.jupiter.api.Assertions.*",
---           "java.util.Objects.requireNonNull",
---           "java.util.Objects.requireNonNullElse",
---         }
---       }
---     }
---   },
---   init_options = {
---     bundles = {
---       vim.fn.glob('/nix/store/id0zrxghssr6mkzxaaphs9yy1sjn7f57-vscode-extension-vscjava-vscode-java-debug-0.55.2023121302/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.50.0.jar', true),
---     }
---   },
--- })
+require'lspconfig'.jsonls.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
