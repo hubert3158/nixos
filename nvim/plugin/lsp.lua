@@ -98,20 +98,23 @@ require("lspconfig").zls.setup({
 require("lspconfig").eslint.setup({
     on_attach = function(client, bufnr)
         -- Ensure keybindings and other LSP-specific features work
-        if on_attach then
+        if type(on_attach) == "function" then
             on_attach(client, bufnr)
         end
 
         -- Auto-fix ESLint issues before saving the file
         vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
-            command = "EslintFixAll",
+            callback = function()
+                vim.lsp.buf.format({ async = false }) -- Use LSP's built-in formatting
+            end,
         })
     end,
-    capabilities = capabilities,
+    capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
     root_dir = require("lspconfig").util.find_package_json_ancestor,
-    cmd = { "npx", "vscode-eslint-language-server", "--stdio" },
+    cmd = { "vscode-eslint-language-server", "--stdio" },
 })
+
 
 
 

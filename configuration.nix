@@ -176,9 +176,11 @@
     nodePackages.typescript-language-server
     nodePackages.pm2
 
+    eslint_d
+    vscode-langservers-extracted
+
     yarn
 
-    vscode-langservers-extracted
 
 
     vim 

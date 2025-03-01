@@ -1,5 +1,5 @@
 require('lint').linters_by_ft = {
-  markdown = {'eslint_d'},
+  markdown = {'markdownlint'},
 typescript = {'eslint_d'},
     javascript = {'eslint_d'},
 }
