@@ -83,6 +83,12 @@ vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>",
 -- NeoFormat keybinding
 vim.api.nvim_set_keymap("n", "<leader>nn", ":Neoformat<CR>",
     { silent = true, desc = "[N]eo[F]ormat" })
+--Neovim lint 
+vim.keymap.set("n", "<leader>nl", function()
+    require("lint").try_lint()
+end, { desc = "[N]eo[F]ormat and [L]int", silent = true })
+
+
 
 -- neogen
 vim.api.nvim_set_keymap("n", "<Leader>nc", ":lua require'neogen'.generate()<CR>", { noremap = true, silent = true ,desc=" [C]omment Documentation Generation"})
@@ -495,15 +501,15 @@ vim.g.sqlite_clib_path = require('luv').os_getenv('LIBSQLITE')
 require('user.mason')
 require('user.nvimLint')
 
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function()
-
-    -- try_lint without arguments runs the linters defined in `linters_by_ft`
-    -- for the current filetype
-    require("lint").try_lint()
-
-    -- You can call `try_lint` with a linter name or a list of names to always
-    -- run specific linters, independent of the `linters_by_ft` configuration
-    -- require("lint").try_lint("cspell")
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+--   callback = function()
+--
+--     -- try_lint without arguments runs the linters defined in `linters_by_ft`
+--     -- for the current filetype
+--     require("lint").try_lint()
+--
+--     -- You can call `try_lint` with a linter name or a list of names to always
+--     -- run specific linters, independent of the `linters_by_ft` configuration
+--     -- require("lint").try_lint("cspell")
+--   end,
+-- })

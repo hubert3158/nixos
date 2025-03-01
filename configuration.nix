@@ -171,6 +171,7 @@
 
     nodePackages.nodemon
     nodePackages.eslint
+    nodePackages.jsonlint
     nodePackages.serve
     nodePackages.prettier
     nodePackages.typescript-language-server
