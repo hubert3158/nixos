@@ -112,7 +112,7 @@ require("lspconfig").eslint.setup({
     end,
     capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
     root_dir = require("lspconfig").util.find_package_json_ancestor,
-    cmd = { "vscode-eslint-language-server", "--stdio" },
+    -- cmd = { "vscode-eslint-language-server", "--stdio" },
 })
 
 
