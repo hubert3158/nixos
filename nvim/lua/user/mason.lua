@@ -10,6 +10,8 @@ require("mason").setup(
         ensure_installed = {
             "jsonls",
             "eslint_d",
+            "markdownlint",
+            "jsonlint",
         },
     }
 
