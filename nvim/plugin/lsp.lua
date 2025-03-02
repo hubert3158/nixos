@@ -216,10 +216,10 @@ require("lspconfig").jdtls.setup({
     },
 })
 
-require'lspconfig'.jsonls.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-}
+-- require'lspconfig'.jsonls.setup { // this has been replaced by conform
+--     on_attach = on_attach,
+--     capabilities = capabilities,
+-- }
 require'lspconfig'.nginx_language_server.setup{
     on_attach = on_attach,
     capabilities = capabilities,
