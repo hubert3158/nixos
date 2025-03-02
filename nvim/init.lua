@@ -81,12 +81,13 @@ vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>",
     { silent = true, desc = "Toggle NERDTree" })
 
 -- NeoFormat keybinding
-vim.api.nvim_set_keymap("n", "<leader>nn", ":Neoformat<CR>",
-    { silent = true, desc = "[N]eo[F]ormat" })
---Neovim lint 
-vim.keymap.set("n", "<leader>nl", function()
-    require("lint").try_lint()
-end, { desc = "[N]eo[F]ormat and [L]int", silent = true })
+vim.api.nvim_set_keymap("n", "<leader>nn", ":lua print('Formatting...'); require('conform').format()<CR>",
+    { noremap = true, silent = true, desc = "[N]eo[F]ormat (Replaced with Conform)" })
+
+
+vim.api.nvim_set_keymap("n", "<leader>nl", ":lua require('lint').try_lint()<CR>", 
+    { noremap = true, silent = true, desc = "[N]vim-[L]int Run" })
+
 
 
 
@@ -500,16 +501,23 @@ vim.g.sqlite_clib_path = require('luv').os_getenv('LIBSQLITE')
 
 require('user.mason')
 require('user.nvimLint')
+require('user.conform')
 
--- vim.api.nvim_create_autocmd({ "BufWritePost" }, {
---   callback = function()
---
---     -- try_lint without arguments runs the linters defined in `linters_by_ft`
---     -- for the current filetype
---     require("lint").try_lint()
---
---     -- You can call `try_lint` with a linter name or a list of names to always
---     -- run specific linters, independent of the `linters_by_ft` configuration
---     -- require("lint").try_lint("cspell")
---   end,
--- })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function(args)
+    require("conform").format({ bufnr = args.buf })
+  end,
+})
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+
+    -- try_lint without arguments runs the linters defined in `linters_by_ft`
+    -- for the current filetype
+    require("lint").try_lint()
+
+    -- You can call `try_lint` with a linter name or a list of names to always
+    -- run specific linters, independent of the `linters_by_ft` configuration
+    -- require("lint").try_lint("cspell")
+  end,
+})

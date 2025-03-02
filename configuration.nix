@@ -176,11 +176,14 @@
     nodePackages.prettier
     nodePackages.typescript-language-server
     nodePackages.pm2
+    prettierd
 
     eslint_d
     vscode-langservers-extracted
     nginx-language-server
-
+    htmlhint
+    sourcekit-lsp  #Language Server Protocol implementation for Swift and C-based languages.
+    sonarlint-ls
 
     yarn
 
@@ -235,9 +238,6 @@ rofi
 
   i3  # tiling window manager for x11
 
-  vscode-langservers-extracted # this needs to be global
-  sourcekit-lsp  #Language Server Protocol implementation for Swift and C-based languages.
-  sonarlint-ls
   pyright  #Type checker for the Python language.
 
 

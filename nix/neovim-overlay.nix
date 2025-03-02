@@ -26,7 +26,7 @@ with final.pkgs.lib; let
     vim-tmux-navigator
     undotree
     lazygit-nvim
-    neoformat
+    # neoformat # replaced with conform
 
     # Custom plugin configurations
     {
@@ -126,6 +126,7 @@ with final.pkgs.lib; let
     vim-nix
     vim-visual-multi
     nvim-lint
+    conform-nvim
   ];
 
   extraPackages = with pkgs; [
