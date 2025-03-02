@@ -179,6 +179,8 @@
 
     eslint_d
     vscode-langservers-extracted
+    nginx-language-server
+
 
     yarn
 
