@@ -184,6 +184,9 @@
     htmlhint
     sourcekit-lsp  #Language Server Protocol implementation for Swift and C-based languages.
     sonarlint-ls
+    semgrep
+
+
 
     yarn
 
