@@ -199,7 +199,7 @@ vim.api.nvim_set_keymap('n', '<leader>ln', ':set relativenumber!<CR>',
     { noremap = true, silent = true, desc = "Toggle Relative Line Numbers" })
 
 -- Clear search highlighting
-vim.api.nvim_set_keymap('n', '<leader>c', ':nohlsearch<CR>',
+vim.api.nvim_set_keymap('n', '<leader>cc', ':nohlsearch<CR>',
     { noremap = true, silent = true, desc = "Clear Search Highlighting" })
 
 -- Open config file
@@ -264,7 +264,7 @@ vim.api.nvim_set_keymap('n', "<leader>cl", "<cmd>Trouble lsp toggle focus=false 
 vim.api.nvim_set_keymap('n', "<leader>xL", "<cmd>Trouble loclist toggle<cr>",
     { noremap = true, silent = true, desc = "Toggle Location List (Trouble)" })
 vim.api.nvim_set_keymap('n', "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",
-    { noremap = true, silent = true, desc = "Toggle Quickfix List (Trouble)" })
+    { noremap = true, silent = true, desc = "Toggle Quickfix List (Troule)" })
 vim.api.nvim_set_keymap('n', "<leader>xt", "<cmd>Trouble todo<cr>",
     { noremap = true, silent = true, desc = "Show TODOs (Trouble)" })
 vim.api.nvim_set_keymap('n', "<leader>xT", "<cmd>TodoTelescope<cr>",
