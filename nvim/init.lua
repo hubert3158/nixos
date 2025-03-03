@@ -290,6 +290,10 @@ vim.api.nvim_set_keymap('n', "<leader>gg", ":LazyGit<CR>",
     { noremap = true, silent = true, desc = "Lazy [[G]]it" })
 
 
+-- vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
+-- vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
+
+
 
 -- vim.g.mapleader = " "      -- Make sure to set `mapleader` before lazy so your mappings are correct
 -- vim.g.maplocalleader = "," -- Same for `maplocalleader`
@@ -502,6 +506,7 @@ vim.g.sqlite_clib_path = require('luv').os_getenv('LIBSQLITE')
 require('user.mason')
 require('user.nvimLint')
 require('user.conform')
+require('user.neoscroll')
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
