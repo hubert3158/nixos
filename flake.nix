@@ -30,6 +30,7 @@
           {
              nixpkgs.config.permittedInsecurePackages = [
               "openssl-1.1.1w"
+               "emacs-29.4"
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -65,6 +66,7 @@
           {
              nixpkgs.config.permittedInsecurePackages = [
               "openssl-1.1.1w"
+               "emacs-29.4"
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

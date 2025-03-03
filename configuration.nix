@@ -197,7 +197,10 @@
     lsof
     wget 
     xclip
-    konsole
+    kdePackages.konsole
+    kdePackages.dolphin
+    kdePackages.breeze-icons
+
     curl
     git
     zsh
@@ -224,8 +227,6 @@
     fzf
     nodejs_22
     ranger
-    dolphin
-    breeze-icons
 
     inotify-tools # help watch a file and reload when it changes
 # gtkmm3 
