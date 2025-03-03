@@ -127,6 +127,7 @@ with final.pkgs.lib; let
     vim-visual-multi
     nvim-lint
     conform-nvim
+    neoscroll-nvim
   ];
 
   extraPackages = with pkgs; [
