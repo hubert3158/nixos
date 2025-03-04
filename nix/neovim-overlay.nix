@@ -26,6 +26,8 @@ with final.pkgs.lib; let
     vim-tmux-navigator
     undotree
     lazygit-nvim
+    plenary-nvim
+    harpoon2
     # neoformat # replaced with conform
 
     # Custom plugin configurations
@@ -91,6 +93,7 @@ with final.pkgs.lib; let
     {
       plugin = which-key-nvim;
     }
+    
        nvim-treesitter
     nvim-treesitter-textobjects
     nvim-treesitter-parsers.vimdoc
