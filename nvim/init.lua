@@ -507,6 +507,7 @@ require('user.mason')
 require('user.nvimLint')
 require('user.conform')
 require('user.neoscroll')
+require('user.harpoon')
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
