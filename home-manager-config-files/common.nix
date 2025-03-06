@@ -289,6 +289,12 @@ programs.ssh= {
   User ubuntu
   Port 22
   IdentityFile ~/.ssh/demo.pem
+
+  Host REDACTED-BT
+  HostName REDACTED-HOST-BT
+  User ubuntu
+  Port 22
+  IdentityFile ~/.ssh/REDACTED-BT.pem
   '';
 };
 
