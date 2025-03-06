@@ -289,6 +289,12 @@ programs.ssh= {
   User ubuntu
   Port 22
   IdentityFile ~/.ssh/demo.pem
+
+  Host bluetangles
+  HostName bluetangles.com
+  User ubuntu
+  Port 22
+  IdentityFile ~/.ssh/bluetangles.pem
   '';
 };
 
