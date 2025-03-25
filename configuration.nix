@@ -192,6 +192,10 @@
     sonarlint-ls
     semgrep
 
+    vscode-js-debug
+    vscode-extensions.firefox-devtools.vscode-firefox-debug
+
+
 
 
     yarn

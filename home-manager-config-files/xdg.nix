@@ -39,6 +39,16 @@
         mimeType = [ "text/plain" ];
         comment = "needed at work bro";
       };
+          chromeDebugMode = {
+      name = "Chrome Debug Mode";
+      genericName = "Chrome Debug Mode";
+      exec = "google-chrome-stable --remote-debugging-port=9222 --no-first-run --new-instance";
+      terminal = false;
+      categories = [ "Network" ]; 
+      mimeType = [ "text/plain" ];
+      comment = "needed at work bro";
+    };
+
     };
     mime = { enable = true; };
     mimeApps = {
