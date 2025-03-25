@@ -182,6 +182,7 @@
     nodePackages.prettier
     nodePackages.typescript-language-server
     nodePackages.pm2
+    nodePackages.ts-node
     prettierd
 
     eslint_d

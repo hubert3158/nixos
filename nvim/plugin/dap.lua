@@ -14,24 +14,61 @@ dap.listeners.before.event_exited["dapui_config"] = function()
     dapui.close()
 end
 
-dap.adapters.firefox = {
-  type = 'executable',
-  command = 'node',
-  args = {'/nix/store/fczhm3sb9mh44v4zgzlmlms6jaicxbrs-vscode-extension-firefox-devtools-vscode-firefox-debug-2.9.10/share/vscode/extensions/firefox-devtools.vscode-firefox-debug/dist/adapter.bundle.js'},
-}
-
-dap.configurations.typescript = {
-  {
-  name = 'Debug with Firefox',
-  type = 'firefox',
-  request = 'launch',
-  reAttach = true,
-  url = 'http://localhost:3000',
-  webRoot = '${workspaceFolder}',
-  firefoxExecutable = '/run/current-system/sw/bin/firefox'
+-- Debug Adapter for Node.js
+dap.adapters["pwa-node"] = {
+  type = "server",
+  host = "localhost",
+  port = "${port}",
+  executable = {
+    command = "/nix/store/1lvskcxsbgisxqabkwfnchqicw4w5l7l-vscode-js-debug-1.97.1/bin/js-debug",
+    args = {"${port}"},
   }
 }
 
-dap.configurations.javascript = dap.configurations.typescript
-dap.configurations.typescriptreact = dap.configurations.javascript
+-- Debug Configuration for JavaScript & TypeScript
+dap.configurations.javascript = {
+  -- Launch JavaScript file
+  {
+    type = "pwa-node",
+    request = "launch",
+    name = "Launch JavaScript File",
+    program = "${file}",
+    cwd = "${workspaceFolder}",
+  },
+  -- Attach to running Node.js process
+  {
+    type = "pwa-node",
+    request = "attach",
+    name = "Attach to Running JS Process",
+    port = 8082,
+    cwd = "${workspaceFolder}",
+  },
+}
+
+-- Debug Configuration for TypeScript
+dap.configurations.typescript = {
+  -- Launch TypeScript file with ts-node
+  {
+    type = "pwa-node",
+    request = "launch",
+    name = "Launch TypeScript File",
+    program = "${file}",
+    cwd = "${workspaceFolder}",
+    runtimeExecutable = "ts-node",
+    runtimeArgs = {"--loader", "ts-node/esm"},
+    sourceMaps = true,
+    protocol = "inspector",
+  },
+  -- Attach to running ts-node process
+  {
+    type = "pwa-node",
+    request = "attach",
+    name = "Attach to Running TS Process",
+    port = 8082,
+    cwd = "${workspaceFolder}",
+  },
+}
+
+-- Apply the same configurations for TypeScript React
+dap.configurations.typescriptreact = dap.configurations.typescript
 
