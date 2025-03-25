@@ -290,6 +290,30 @@ vim.api.nvim_set_keymap('n', "<leader>gg", ":LazyGit<CR>",
     { noremap = true, silent = true, desc = "Lazy [[G]]it" })
 
 
+
+-- DAP (Debug Adapter Protocol) UI toggling, continue, disconnect, stepping, and breakpoints
+vim.api.nvim_set_keymap('n', 'et', ":lua require('dapui').toggle()<CR>", { noremap = true, silent = true, desc = "Toggle DAP UI" })
+vim.api.nvim_set_keymap('n', 'ec', ":lua require('dap').continue()<CR>", { noremap = true, silent = true, desc = "DAP Continue" })
+vim.api.nvim_set_keymap('n', 'ed', ":lua require('dap').disconnect()<CR>", { noremap = true, silent = true, desc = "DAP Disconnect" })
+vim.api.nvim_set_keymap('n', 'es', ":lua require('dap').step_over()<CR>", { noremap = true, silent = true, desc = "DAP Step Over" })
+vim.api.nvim_set_keymap('n', 'ei', ":lua require('dap').step_into()<CR>", { noremap = true, silent = true, desc = "DAP Step Into" })
+vim.api.nvim_set_keymap('n', 'eo', ":lua require('dap').step_out()<CR>", { noremap = true, silent = true, desc = "DAP Step Out" })
+
+-- Breakpoints: toggle breakpoint, conditional breakpoint, and clear all breakpoints
+vim.api.nvim_set_keymap('n', 'eb', ":lua require('dap').toggle_breakpoint()<CR>", { noremap = true, silent = true, desc = "Toggle Breakpoint" })
+vim.api.nvim_set_keymap('n', 'eB', ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", { noremap = true, silent = true, desc = "Set Conditional Breakpoint" })
+vim.api.nvim_set_keymap('n', 'eC', ":lua require('dap').clear_breakpoints()<CR>", { noremap = true, silent = true, desc = "Clear All Breakpoints" })
+
+-- Open DAP REPL
+vim.api.nvim_set_keymap('n', 'er', ":lua require('dap').repl.open()<CR>", { noremap = true, silent = true, desc = "Open DAP REPL" })
+
+
+
+
+
+
+
+
 -- vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
 -- vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
 
@@ -343,19 +367,7 @@ vim.api.nvim_set_keymap('n', "<leader>gg", ":LazyGit<CR>",
 -- vim.api.nvim_set_keymap("n", "<leader>un", ":lua require('notify').dismiss({ silent = true, pending = true })<CR>",
 --     { noremap = true, silent = true, desc = "Dismiss Notifications" })
 --
--- -- DAP (Debug Adapter Protocol)
--- vim.api.nvim_set_keymap('n', '<F4>', ":lua require('dapui').toggle()<CR>",
---     { noremap = true, silent = true, desc = "Toggle DAP UI" })
--- vim.api.nvim_set_keymap('n', '<F5>', ":lua require'dap'.continue()<CR>",
---     { noremap = true, silent = true, desc = "DAP Continue" })
--- vim.api.nvim_set_keymap('n', '<F6>', ":lua require'dap'.disconnect()<CR>",
---     { noremap = true, silent = true, desc = "DAP Disconnect" })
--- vim.api.nvim_set_keymap('n', '<F10>', ":lua require'dap'.step_over()<CR>",
---     { noremap = true, silent = true, desc = "DAP Step Over" })
--- vim.api.nvim_set_keymap('n', '<F11>', ":lua require'dap'.step_into()<CR>",
---     { noremap = true, silent = true, desc = "DAP Step Into" })
--- vim.api.nvim_set_keymap('n', '<F12>', ":lua require'dap'.step_out()<CR>",
---     { noremap = true, silent = true, desc = "DAP Step Out" })
+--
 --
 -- vim.api.nvim_set_keymap('n', "<leader>mo", ":lua require'mini.map'.open()<CR>",
 --     { noremap = true, silent = true, desc = "Open Mini Map" })

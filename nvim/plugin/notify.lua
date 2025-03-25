@@ -1,28 +1,23 @@
+local notify = require("notify")
 
-require("notify").setup({
-  keys = {
-    {
-      "<leader>un",
-      function()
-        require("notify").dismiss({ silent = true, pending = true })
-      end,
-      desc = "Dismiss All Notifications",
-    },
-  },
-  opts = {
+notify.setup({
     stages = "static",
     timeout = 3000,
     max_height = function()
-      return math.floor(vim.o.lines * 0.75)
+        return math.floor(vim.o.lines * 0.75)
     end,
     max_width = function()
-      return math.floor(vim.o.columns * 0.75)
+        return math.floor(vim.o.columns * 0.75)
     end,
     on_open = function(win)
-      vim.api.nvim_win_set_config(win, { zindex = 100 })
+        vim.api.nvim_win_set_config(win, { zindex = 100 })
     end,
-  },
-  init = function()
-    -- when noice is not enabled, install notify on VeryLazy
-  end,
+    priority = 10, -- ✅ Ensure priority is set to a valid number
 })
+
+-- Register keybindings separately
+vim.api.nvim_set_keymap("n", "<leader>un",
+    ":lua require('notify').dismiss({ silent = true, pending = true })<CR>",
+    { noremap = true, silent = true, desc = "Dismiss All Notifications" }
+)
+
