@@ -24,6 +24,11 @@ dap.adapters["pwa-node"] = {
     args = {"${port}"},
   }
 }
+dap.adapters.firefox = {
+  type = 'executable',
+  command = 'node',
+  args = {'/nix/store/fczhm3sb9mh44v4zgzlmlms6jaicxbrs-vscode-extension-firefox-devtools-vscode-firefox-debug-2.9.10/share/vscode/extensions/firefox-devtools.vscode-firefox-debug/dist/adapter.bundle.js'},
+}
 
 -- Debug Configuration for JavaScript & TypeScript
 dap.configurations.javascript = {
@@ -43,6 +48,15 @@ dap.configurations.javascript = {
     port = 9229,
     cwd = "${workspaceFolder}",
   },
+  {
+  name = 'Debug with Firefox',
+  type = 'firefox',
+  request = 'launch',
+  reAttach = true,
+  url = 'http://localhost:3000',
+  webRoot = '${workspaceFolder}',
+  firefoxExecutable = '/run/current-system/sw/bin/firefox'
+  }
 }
 
 -- Debug Configuration for TypeScript
@@ -70,6 +84,15 @@ dap.configurations.typescript = {
   },
 }
 
--- Apply the same configurations for TypeScript React
-dap.configurations.typescriptreact = dap.configurations.typescript
+dap.configurations.typescriptreact = {
+      {
+  name = 'Debug with Firefox',
+  type = 'firefox',
+  request = 'launch',
+  reAttach = true,
+  url = 'http://localhost:3000',
+  webRoot = '${workspaceFolder}',
+  firefoxExecutable = '/run/current-system/sw/bin/firefox'
+  }
+}
 
