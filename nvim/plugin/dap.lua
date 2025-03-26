@@ -40,7 +40,7 @@ dap.configurations.javascript = {
     type = "pwa-node",
     request = "attach",
     name = "Attach to Running JS Process",
-    port = 8082,
+    port = 9229,
     cwd = "${workspaceFolder}",
   },
 }
@@ -57,6 +57,7 @@ dap.configurations.typescript = {
     runtimeExecutable = "ts-node",
     runtimeArgs = {"--loader", "ts-node/esm"},
     sourceMaps = true,
+    skipFiles = { '<node_internals>/**', 'node_modules/**' },
     protocol = "inspector",
   },
   -- Attach to running ts-node process
@@ -64,7 +65,7 @@ dap.configurations.typescript = {
     type = "pwa-node",
     request = "attach",
     name = "Attach to Running TS Process",
-    port = 8082,
+    port = 9229,
     cwd = "${workspaceFolder}",
   },
 }
