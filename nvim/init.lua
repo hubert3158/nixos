@@ -40,7 +40,7 @@ vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.ignorecase = true
 vim.opt.foldmethod ="marker"
-vim.opt.foldmarker="// region,// endregion,/* region */,/* endregion */,# region,# endregion"
+vim.opt.foldmarker="// region,// endregion,/* region */,/* endregion */,# region,# endregion,//region,//endregion"
 
 
 -- Indentation settings
