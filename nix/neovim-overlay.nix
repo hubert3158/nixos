@@ -55,9 +55,14 @@ with final.pkgs.lib; let
       plugin = treewalker-nvim;
       config = "lua << EOF\nrequire(\"treewalker\").setup()\nEOF\n";
     }
+    {
+      plugin = smear-cursor-nvim;
+      config = "lua << EOF\nrequire(\"smear_cursor\").setup()\nEOF\n";
+    }
        
        twilight-nvim
        nvim-ts-autotag
+       
     {
       plugin = yanky-nvim;
     }
