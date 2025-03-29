@@ -119,15 +119,15 @@ vim.api.nvim_set_keymap('n', '<leader>sv', ':vsp<CR>',
 vim.api.nvim_set_keymap('n', '<leader>sh', ':sp<CR>',
     { noremap = true, silent = true, desc = "Horizontal Split" })
 
--- -- Window navigation
--- vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h',
---     { noremap = true, silent = true, desc = "Move to Left Window" })
--- vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j',
---     { noremap = true, silent = true, desc = "Move to Lower Window" })
--- vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k',
---     { noremap = true, silent = true, desc = "Move to Upper Window" })
--- vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l',
---     { noremap = true, silent = true, desc = "Move to Right Window" })
+-- Window navigation
+vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h',
+    { noremap = true, silent = true, desc = "Move to Left Window" })
+vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j',
+    { noremap = true, silent = true, desc = "Move to Lower Window" })
+vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k',
+    { noremap = true, silent = true, desc = "Move to Upper Window" })
+vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l',
+    { noremap = true, silent = true, desc = "Move to Right Window" })
 
 -- Window resizing
 vim.api.nvim_set_keymap('n', '<C-Up>', ':resize -2<CR>',
