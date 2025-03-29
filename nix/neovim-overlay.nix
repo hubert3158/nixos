@@ -96,6 +96,7 @@ with final.pkgs.lib; let
       plugin = todo-comments-nvim;
       config = "lua << EOF\nrequire(\"todo-comments\").setup()\nEOF\n";
     }
+    codesnap-nvim
     nvim-cmp
     {
       plugin = nvim-cmp;
