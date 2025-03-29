@@ -27,7 +27,6 @@ opt.foldmarker="// region,// endregion,/* region */,/* endregion */,# region,# e
 -- Search down into subfolders
 opt.path = vim.o.path .. '**'
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-opt.colorcolumn = '100'
 
 -- Indentation settings
 opt.tabstop = 4      -- Number of spaces that a <Tab> in the file counts for
