@@ -67,8 +67,8 @@
 
     jprofiler
 
-    android-studio
-    android-tools
+    # android-studio
+    # android-tools
 
 
     sshfs
