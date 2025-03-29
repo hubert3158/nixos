@@ -62,8 +62,7 @@ with final.pkgs.lib; let
       plugin = smartcolumn-nvim;
       config = "lua << EOF\nrequire(\"smartcolumn\").setup()\nEOF\n";
     }
-       
-       
+    copilot-vim
     {
       plugin = yanky-nvim;
     }
@@ -127,6 +126,7 @@ with final.pkgs.lib; let
     nvim-treesitter-parsers.markdown_inline
     nvim-treesitter-parsers.yuck
     nvim-treesitter-parsers.zig
+    nvim-treesitter-parsers.yaml
       nvim-dap
       nvim-jdtls
     nvim-dap-ui

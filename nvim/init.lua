@@ -372,4 +372,5 @@ require('user.conform')
 require('user.neoscroll')
 require('user.harpoon')
 require('user.codeSnap')
+require('user.codeCompanion')
 
