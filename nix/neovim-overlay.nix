@@ -23,7 +23,7 @@ with final.pkgs.lib; let
     nvim-comment
     comment-box-nvim
     vim-pug
-    vim-tmux-navigator
+    # vim-tmux-navigator
     undotree
     lazygit-nvim
     plenary-nvim
@@ -51,6 +51,11 @@ with final.pkgs.lib; let
       plugin = nvim-colorizer-lua;
       config = "lua << EOF\nrequire(\"colorizer\").setup()\nEOF\n";
     }
+    {
+      plugin = treewalker-nvim;
+      config = "lua << EOF\nrequire(\"treewalker\").setup()\nEOF\n";
+    }
+       
        twilight-nvim
        nvim-ts-autotag
     {

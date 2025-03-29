@@ -119,15 +119,15 @@ vim.api.nvim_set_keymap('n', '<leader>sv', ':vsp<CR>',
 vim.api.nvim_set_keymap('n', '<leader>sh', ':sp<CR>',
     { noremap = true, silent = true, desc = "Horizontal Split" })
 
--- Window navigation
-vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h',
-    { noremap = true, silent = true, desc = "Move to Left Window" })
-vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j',
-    { noremap = true, silent = true, desc = "Move to Lower Window" })
-vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k',
-    { noremap = true, silent = true, desc = "Move to Upper Window" })
-vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l',
-    { noremap = true, silent = true, desc = "Move to Right Window" })
+-- -- Window navigation
+-- vim.api.nvim_set_keymap('n', '<C-h>', '<C-w>h',
+--     { noremap = true, silent = true, desc = "Move to Left Window" })
+-- vim.api.nvim_set_keymap('n', '<C-j>', '<C-w>j',
+--     { noremap = true, silent = true, desc = "Move to Lower Window" })
+-- vim.api.nvim_set_keymap('n', '<C-k>', '<C-w>k',
+--     { noremap = true, silent = true, desc = "Move to Upper Window" })
+-- vim.api.nvim_set_keymap('n', '<C-l>', '<C-w>l',
+--     { noremap = true, silent = true, desc = "Move to Right Window" })
 
 -- Window resizing
 vim.api.nvim_set_keymap('n', '<C-Up>', ':resize -2<CR>',
@@ -154,7 +154,7 @@ vim.api.nvim_set_keymap('n', '<A-k>', ':m .-2<CR>==',
 --     { noremap = true, silent = true, desc = "Move Line Up in Insert Mode" })
 vim.api.nvim_set_keymap('v', '<A-j>', ":m '>+1<CR>gv=gv",
     { noremap = true, silent = true, desc = "Move Selection Down" })
-vim.api.nvim_set_keymap('v', '<A-k>', ":m '<-2<CR>gv=gv",
+    vim.api.nvim_set_keymap('v', '<A-k>', ":m '<-2<CR>gv=gv",
     { noremap = true, silent = true, desc = "Move Selection Up" })
 
 -- Better indenting
@@ -311,10 +311,31 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   end,
 })
 
+-- treewalker 
+-- movement (Normal Mode)
+vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>Treewalker Up<cr>', { noremap = true, silent = true, desc = "Treewalker Up" })
+vim.api.nvim_set_keymap('n', '<C-j>', '<cmd>Treewalker Down<cr>', { noremap = true, silent = true, desc = "Treewalker Down" })
+vim.api.nvim_set_keymap('n', '<C-h>', '<cmd>Treewalker Left<cr>', { noremap = true, silent = true, desc = "Treewalker Left" })
+vim.api.nvim_set_keymap('n', '<C-l>', '<cmd>Treewalker Right<cr>', { noremap = true, silent = true, desc = "Treewalker Right" })
+
+-- movement (Visual Mode)
+vim.api.nvim_set_keymap('v', '<C-k>', '<cmd>Treewalker Up<cr>', { noremap = true, silent = true, desc = "Treewalker Up" })
+vim.api.nvim_set_keymap('v', '<C-j>', '<cmd>Treewalker Down<cr>', { noremap = true, silent = true, desc = "Treewalker Down" })
+vim.api.nvim_set_keymap('v', '<C-h>', '<cmd>Treewalker Left<cr>', { noremap = true, silent = true, desc = "Treewalker Left" })
+vim.api.nvim_set_keymap('v', '<C-l>', '<cmd>Treewalker Right<cr>', { noremap = true, silent = true, desc = "Treewalker Right" })
+
+-- swapping (Normal Mode)
+vim.api.nvim_set_keymap('n', '<C-S-k>', '<cmd>Treewalker SwapUp<cr>', { noremap = true, silent = true, desc = "Treewalker SwapUp" })
+vim.api.nvim_set_keymap('n', '<C-S-j>', '<cmd>Treewalker SwapDown<cr>', { noremap = true, silent = true, desc = "Treewalker SwapDown" })
+vim.api.nvim_set_keymap('n', '<C-S-h>', '<cmd>Treewalker SwapLeft<cr>', { noremap = true, silent = true, desc = "Treewalker SwapLeft" })
+vim.api.nvim_set_keymap('n', '<C-S-l>', '<cmd>Treewalker SwapRight<cr>', { noremap = true, silent = true, desc = "Treewalker SwapRight" })
+
 
 -- Miscellaneous keybindings
 vim.api.nvim_set_keymap('n', "<leader>mm", ":lua require'mini.map'.toggle()<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [M]ini Map [T]oggle" })
 vim.api.nvim_set_keymap('n', "<leader>mt", "<cmd>Twilight<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [T]wilight"})
+vim.api.nvim_set_keymap('n', "<leader>mt", "<cmd>Twilight<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [T]wilight"})
+
 
 
 
