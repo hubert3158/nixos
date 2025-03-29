@@ -391,4 +391,5 @@ require('user.nvimLint')
 require('user.conform')
 require('user.neoscroll')
 require('user.harpoon')
+require('user.codeSnap')
 
