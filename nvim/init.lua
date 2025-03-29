@@ -310,26 +310,6 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   end,
 })
 
--- treewalker 
--- movement (Normal Mode)
-vim.api.nvim_set_keymap('n', '<C-k>', '<cmd>Treewalker Up<cr>', { noremap = true, silent = true, desc = "Treewalker Up" })
-vim.api.nvim_set_keymap('n', '<C-j>', '<cmd>Treewalker Down<cr>', { noremap = true, silent = true, desc = "Treewalker Down" })
-vim.api.nvim_set_keymap('n', '<C-h>', '<cmd>Treewalker Left<cr>', { noremap = true, silent = true, desc = "Treewalker Left" })
-vim.api.nvim_set_keymap('n', '<C-l>', '<cmd>Treewalker Right<cr>', { noremap = true, silent = true, desc = "Treewalker Right" })
-
--- movement (Visual Mode)
-vim.api.nvim_set_keymap('v', '<C-k>', '<cmd>Treewalker Up<cr>', { noremap = true, silent = true, desc = "Treewalker Up" })
-vim.api.nvim_set_keymap('v', '<C-j>', '<cmd>Treewalker Down<cr>', { noremap = true, silent = true, desc = "Treewalker Down" })
-vim.api.nvim_set_keymap('v', '<C-h>', '<cmd>Treewalker Left<cr>', { noremap = true, silent = true, desc = "Treewalker Left" })
-vim.api.nvim_set_keymap('v', '<C-l>', '<cmd>Treewalker Right<cr>', { noremap = true, silent = true, desc = "Treewalker Right" })
-
--- swapping (Normal Mode)
-vim.api.nvim_set_keymap('n', '<C-S-k>', '<cmd>Treewalker SwapUp<cr>', { noremap = true, silent = true, desc = "Treewalker SwapUp" })
-vim.api.nvim_set_keymap('n', '<C-S-j>', '<cmd>Treewalker SwapDown<cr>', { noremap = true, silent = true, desc = "Treewalker SwapDown" })
-vim.api.nvim_set_keymap('n', '<C-S-h>', '<cmd>Treewalker SwapLeft<cr>', { noremap = true, silent = true, desc = "Treewalker SwapLeft" })
-vim.api.nvim_set_keymap('n', '<C-S-l>', '<cmd>Treewalker SwapRight<cr>', { noremap = true, silent = true, desc = "Treewalker SwapRight" })
-
-
 -- Miscellaneous keybindings
 vim.api.nvim_set_keymap('n', "<leader>mm", ":lua require'mini.map'.toggle()<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [M]ini Map [T]oggle" })
 vim.api.nvim_set_keymap('n', "<leader>mt", "<cmd>Twilight<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [T]wilight"})
