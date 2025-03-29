@@ -51,6 +51,7 @@ with final.pkgs.lib; let
       plugin = nvim-colorizer-lua;
       config = "lua << EOF\nrequire(\"colorizer\").setup()\nEOF\n";
     }
+       twilight-nvim
        nvim-ts-autotag
     {
       plugin = yanky-nvim;

@@ -3,50 +3,41 @@ local fn = vim.fn
 local opt = vim.o
 local g = vim.g
 
+-- Set leader keys
+g.mapleader = " "      -- Make sure to set `mapleader` before lazy so your mappings are correct
+g.maplocalleader = "," -- Same for `maplocalleader`
+g.editorconfig = true
+-- let sqlite.lua (which some plugins depend on) know where to find sqlite
+g.sqlite_clib_path = require('luv').os_getenv('LIBSQLITE')
+-- Native plugins
 
+cmd.filetype('plugin', 'indent', 'on')
+cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
 
--- <leader> key. Defaults to `\`. Some people prefer space.
--- g.mapleader = ' '
--- g.maplocalleader = ' '
-
+-- General settings
 opt.compatible = false
+opt.scrolloff = 6
+opt.incsearch = true   -- Do incremental searching
+opt.relativenumber = true
+opt.number = true
+opt.ignorecase = true
+opt.foldmethod ="marker"
+opt.foldmarker="// region,// endregion,/* region */,/* endregion */,# region,# endregion,//region,//endregion"
+
+-- Search down into subfolders
+opt.path = vim.o.path .. '**'
+opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+opt.colorcolumn = '100'
+
+-- Indentation settings
+opt.tabstop = 4      -- Number of spaces that a <Tab> in the file counts for
+opt.shiftwidth = 4   -- Number of spaces to use for each step of (auto)indent
+opt.expandtab = true -- Convert tabs to spaces
 
 -- Enable true colour support
 if fn.has('termguicolors') then
   opt.termguicolors = true
 end
-
--- See :h <option> to see what the options do
-
--- Search down into subfolders
-opt.path = vim.o.path .. '**'
-
-
-
-
-
-
-
-
-
--- Set leader keys
-vim.g.mapleader = " "      -- Make sure to set `mapleader` before lazy so your mappings are correct
-vim.g.maplocalleader = "," -- Same for `maplocalleader`
-
--- General settings
-vim.opt.scrolloff = 6
-vim.opt.incsearch = true   -- Do incremental searching
-vim.opt.relativenumber = true
-vim.opt.number = true
-vim.opt.ignorecase = true
-vim.opt.foldmethod ="marker"
-vim.opt.foldmarker="// region,// endregion,/* region */,/* endregion */,# region,# endregion,//region,//endregion"
-
-
--- Indentation settings
-vim.opt.tabstop = 4      -- Number of spaces that a <Tab> in the file counts for
-vim.opt.shiftwidth = 4   -- Number of spaces to use for each step of (auto)indent
-vim.opt.expandtab = true -- Convert tabs to spaces
 
 -- Auto-save when focus is lost
 vim.api.nvim_create_autocmd("FocusLost", {
@@ -274,13 +265,6 @@ vim.api.nvim_set_keymap('n', "<leader>xT", "<cmd>TodoTelescope<cr>",
 vim.api.nvim_set_keymap('n', "<leader>cd", "<cmd>Telescope zoxide list<cr>",
     { noremap = true, silent = true, desc = "Zoxide Directory Jump" })
 
--- Mini.map keybindings
-vim.api.nvim_set_keymap('n', "<leader>mo", ":lua require'mini.map'.open()<CR>",
-    { noremap = true, silent = true, desc = "Open Mini Map" })
-vim.api.nvim_set_keymap('n', "<leader>mc", ":lua require'mini.map'.close()<CR>",
-    { noremap = true, silent = true, desc = "Close Mini Map" })
-vim.api.nvim_set_keymap('n', "<leader>mt", ":lua require'mini.map'.toggle()<CR>",
-    { noremap = true, silent = true, desc = "Toggle Mini Map" })
 
 --yazi
 vim.api.nvim_set_keymap('n', "<leader>y", ":lua require'yazi'.yazi()<CR>",
@@ -308,156 +292,33 @@ vim.api.nvim_set_keymap('n', 'eC', ":lua require('dap').clear_breakpoints()<CR>"
 vim.api.nvim_set_keymap('n', 'er', ":lua require('dap').repl.open()<CR>", { noremap = true, silent = true, desc = "Open DAP REPL" })
 
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function(args)
+    require("conform").format({ bufnr = args.buf })
+  end,
+})
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+
+    -- try_lint without arguments runs the linters defined in `linters_by_ft`
+    -- for the current filetype
+    require("lint").try_lint()
+
+    -- You can call `try_lint` with a linter name or a list of names to always
+    -- run specific linters, independent of the `linters_by_ft` configuration
+    -- require("lint").try_lint("cspell")
+  end,
+})
 
 
+-- Miscellaneous keybindings
+vim.api.nvim_set_keymap('n', "<leader>mmt", ":lua require'mini.map'.toggle()<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [M]ini Map [T]oggle" })
+vim.api.nvim_set_keymap('n', "<leader>mtt", "<cmd>Twilight<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [T]wilight"})
 
 
-
-
--- vim.keymap.set("n", "<C-d>", "<C-d>zz", { noremap = true, silent = true })
--- vim.keymap.set("n", "<C-u>", "<C-u>zz", { noremap = true, silent = true })
-
-
-
--- vim.g.mapleader = " "      -- Make sure to set `mapleader` before lazy so your mappings are correct
--- vim.g.maplocalleader = "," -- Same for `maplocalleader`
--- vim.opt.scrolloff = 6
--- vim.opt.incsearch = true   -- Do incremental searching. map Q gq
--- vim.opt.relativenumber = true
--- vim.opt.number = true
--- vim.opt.ignorecase = true
---
--- vim.opt.tabstop = 4      -- Number of spaces that a <Tab> in the file counts for
--- vim.opt.shiftwidth = 4   -- Number of spaces to use for each step of (auto)indent
--- vim.opt.expandtab = true -- Convert tabs to spaces
---
--- vim.api.nvim_create_autocmd("FocusLost", {
---     pattern = "*",
---     command = "silent! wa"
--- })
---
--- vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<CR>",
---     { noremap = true, silent = true, desc = "Find Files" })
--- vim.api.nvim_set_keymap("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>",
---     { noremap = true, silent = true, desc = "Find Old Files" })
--- vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>Telescope live_grep<CR>",
---     { noremap = true, silent = true, desc = "Live Grep" })
--- vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<CR>",
---     { noremap = true, silent = true, desc = "Find Buffers" })
--- vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope help_tags<CR>",
---     { noremap = true, silent = true, desc = "Find Help Tags" })
--- vim.api.nvim_set_keymap("n", "<leader>fs", "<cmd>Telescope builtin<CR>",
---     { noremap = true, silent = true, desc = "Search Telescope Builtins" })
---
--- vim.api.nvim_set_keymap("n", "<leader>nn", ":NERDTreeFocus<CR>", { silent = true, desc = "Focus NERDTree" })
--- vim.api.nvim_set_keymap("n", "<leader>n", ":NERDTreeFocus<CR>", { silent = true, desc = "Focus NERDTree" })
--- vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>", { silent = true, desc = "Toggle NERDTree" })
--- vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFind<CR>", { silent = true, desc = "Find in NERDTree" })
---
--- vim.api.nvim_set_keymap("n", "<leader>t", ":tabnew<CR>", { silent = true, desc = "New Tab" })
--- vim.api.nvim_set_keymap("n", "<leader>q", ":q<CR>", { silent = true, desc = "Quit" })
--- vim.api.nvim_set_keymap("n", "<leader>l", ":tabnext<CR>", { silent = true, desc = "Next Tab" })
--- vim.api.nvim_set_keymap("n", "<leader>h", ":tabprevious<CR>", { silent = true, desc = "Previous Tab" })
---
--- -- notify
--- vim.notify = require('notify')
--- vim.notify("This is an error message", "error")
--- require("notify")("check out LudoPinelli/comment-box.nvim  <>cbccbox")
---
--- vim.api.nvim_set_keymap("n", "<leader>un", ":lua require('notify').dismiss({ silent = true, pending = true })<CR>",
---     { noremap = true, silent = true, desc = "Dismiss Notifications" })
---
---
---
--- vim.api.nvim_set_keymap('n', "<leader>mo", ":lua require'mini.map'.open()<CR>",
---     { noremap = true, silent = true, desc = "Open Mini Map" })
--- vim.api.nvim_set_keymap('n', "<leader>mc", ":lua require'mini.map'.close()<CR>",
---     { noremap = true, silent = true, desc = "Close Mini Map" })
--- vim.api.nvim_set_keymap('n', "<leader>mt", ":lua require'mini.map'.toggle()<CR>",
---     { noremap = true, silent = true, desc = "Toggle Mini Map" })
---
--- -- trouble.nvim
--- vim.api.nvim_set_keymap('n', "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",
---     { noremap = true, silent = true, desc = "Toggle Diagnostics (Trouble)" })
--- vim.api.nvim_set_keymap('n', "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
---     { noremap = true, silent = true, desc = "Toggle Diagnostics for Buffer (Trouble)" })
--- vim.api.nvim_set_keymap('n', "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",
---     { noremap = true, silent = true, desc = "Toggle Symbols (Trouble)" })
--- vim.api.nvim_set_keymap('n', "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
---     { noremap = true, silent = true, desc = "Toggle LSP (Trouble)" })
--- vim.api.nvim_set_keymap('n', "<leader>xL", "<cmd>Trouble loclist toggle<cr>",
---     { noremap = true, silent = true, desc = "Toggle Location List (Trouble)" })
--- vim.api.nvim_set_keymap('n', "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",
---     { noremap = true, silent = true, desc = "Toggle Quickfix List (Trouble)" })
--- vim.api.nvim_set_keymap('n', "<leader>xt", "<cmd>Trouble todo<cr>",
---     { noremap = true, silent = true, desc = "Show TODOs (Trouble)" })
--- vim.api.nvim_set_keymap('n', "<leader>xT", "<cmd>TodoTelescope<cr>",
---     { noremap = true, silent = true, desc = "Search TODOs with Telescope" })
---
--- vim.api.nvim_set_keymap('n', "<leader>cd", "<cmd>Telescope zoxide list<cr>",
---     { noremap = true, silent = true, desc = "Zoxide Directory Jump" })
---
--- vim.api.nvim_set_keymap('n', '<leader>sv', ':vsp<CR>',
---     { noremap = true, silent = true, desc = "Vertical Split" })
--- vim.api.nvim_set_keymap('n', '<leader>sh', ':sp<CR>',
---     { noremap = true, silent = true, desc = "Horizontal Split" })
---
--- vim.api.nvim_set_keymap('n', '<leader>bn', ':bnext<CR>',
---     { noremap = true, silent = true, desc = "Next Buffer" })
--- vim.api.nvim_set_keymap('n', '<leader>bp', ':bprevious<CR>',
---     { noremap = true, silent = true, desc = "Previous Buffer" })
--- vim.api.nvim_set_keymap('n', '<leader>w=', ':vertical resize +5<CR>',
---     { noremap = true, silent = true, desc = "Increase Window Width" })
--- vim.api.nvim_set_keymap('n', '<leader>w-', ':vertical resize -5<CR>',
---     { noremap = true, silent = true, desc = "Decrease Window Width" })
---
--- vim.api.nvim_set_keymap('n', '<leader><F5>', ':UndotreeToggle<CR>',
---     { noremap = true, silent = true, desc = "Toggle Undo Tree" })
---
--- vim.api.nvim_set_keymap('n', '<leader>1', ':1gt<CR>',
---     { noremap = true, silent = true, desc = "Go to Tab 1" })
--- vim.api.nvim_set_keymap('n', '<leader>2', ':2gt<CR>',
---     { noremap = true, silent = true, desc = "Go to Tab 2" })
--- vim.api.nvim_set_keymap('n', '<leader>3', ':3gt<CR>',
---     { noremap = true, silent = true, desc = "Go to Tab 3" })
--- vim.api.nvim_set_keymap('n', '<leader>4', ':4gt<CR>',
---     { noremap = true, silent = true, desc = "Go to Tab 4" })
--- vim.api.nvim_set_keymap('n', '<leader>5', ':5gt<CR>',
---     { noremap = true, silent = true, desc = "Go to Tab 5" })
--- vim.api.nvim_set_keymap('n', '<leader>6', ':6gt<CR>',
---     { noremap = true, silent = true, desc = "Go to Tab 5" })
--- vim.api.nvim_set_keymap('n', '<leader>7', ':7gt<CR>',
---     { noremap = true, silent = true, desc = "Go to Tab 5" })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
 -- Configure Neovim diagnostic messages
-
 local function prefix_diagnostic(prefix, diagnostic)
   return string.format(prefix .. ' %s', diagnostic.message)
 end
@@ -504,16 +365,6 @@ vim.diagnostic.config {
   },
 }
 
-g.editorconfig = true
-
-vim.opt.colorcolumn = '100'
-
--- Native plugins
-cmd.filetype('plugin', 'indent', 'on')
-cmd.packadd('cfilter') -- Allows filtering the quickfix list with :cfdo
-
--- let sqlite.lua (which some plugins depend on) know where to find sqlite
-vim.g.sqlite_clib_path = require('luv').os_getenv('LIBSQLITE')
 
 require('user.mason')
 require('user.nvimLint')
@@ -521,21 +372,3 @@ require('user.conform')
 require('user.neoscroll')
 require('user.harpoon')
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*",
-  callback = function(args)
-    require("conform").format({ bufnr = args.buf })
-  end,
-})
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function()
-
-    -- try_lint without arguments runs the linters defined in `linters_by_ft`
-    -- for the current filetype
-    require("lint").try_lint()
-
-    -- You can call `try_lint` with a linter name or a list of names to always
-    -- run specific linters, independent of the `linters_by_ft` configuration
-    -- require("lint").try_lint("cspell")
-  end,
-})
