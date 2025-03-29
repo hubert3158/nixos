@@ -313,8 +313,8 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 
 
 -- Miscellaneous keybindings
-vim.api.nvim_set_keymap('n', "<leader>mmt", ":lua require'mini.map'.toggle()<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [M]ini Map [T]oggle" })
-vim.api.nvim_set_keymap('n', "<leader>mtt", "<cmd>Twilight<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [T]wilight"})
+vim.api.nvim_set_keymap('n', "<leader>mm", ":lua require'mini.map'.toggle()<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [M]ini Map [T]oggle" })
+vim.api.nvim_set_keymap('n', "<leader>mt", "<cmd>Twilight<CR>", { noremap = true, silent = true, desc = "[M]isscellineous [T]wilight"})
 
 
 
