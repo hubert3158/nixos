@@ -62,6 +62,11 @@ with final.pkgs.lib; let
        
        twilight-nvim
        nvim-ts-autotag
+    {
+      plugin = smartcolumn-nvim;
+      config = "lua << EOF\nrequire(\"smartcolumn\").setup()\nEOF\n";
+    }
+       
        
     {
       plugin = yanky-nvim;
