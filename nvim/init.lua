@@ -85,8 +85,8 @@ vim.api.nvim_set_keymap("n", "<leader>nl", ":lua require('lint').try_lint()<CR>"
 vim.api.nvim_set_keymap("n", "<Leader>nc", ":lua require'neogen'.generate()<CR>", { noremap = true, silent = true ,desc=" [C]omment Documentation Generation"})
 
 -- Tab management
-vim.api.nvim_set_keymap("n", "<leader>t", ":tabnew<CR>",
-    { silent = true, desc = "New Tab" })
+-- vim.api.nvim_set_keymap("n", "<leader>t", ":tabnew<CR>",
+--     { silent = true, desc = "New Tab" })
 vim.api.nvim_set_keymap("n", "<leader>q", ":q<CR>",
     { silent = true, desc = "Quit" })
 vim.api.nvim_set_keymap("n", "<leader>l", ":tabnext<CR>",
@@ -247,9 +247,9 @@ vim.api.nvim_set_keymap('n', "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>"
     { noremap = true, silent = true, desc = "Toggle Diagnostics (Trouble)" })
 vim.api.nvim_set_keymap('n', "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
     { noremap = true, silent = true, desc = "Toggle Diagnostics for Buffer (Trouble)" })
-vim.api.nvim_set_keymap('n', "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",
+vim.api.nvim_set_keymap('n', "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>",
     { noremap = true, silent = true, desc = "Toggle Symbols (Trouble)" })
-vim.api.nvim_set_keymap('n', "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+vim.api.nvim_set_keymap('n', "<leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
     { noremap = true, silent = true, desc = "Toggle LSP (Trouble)" })
 vim.api.nvim_set_keymap('n', "<leader>xL", "<cmd>Trouble loclist toggle<cr>",
     { noremap = true, silent = true, desc = "Toggle Location List (Trouble)" })
