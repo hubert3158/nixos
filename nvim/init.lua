@@ -143,10 +143,10 @@ vim.api.nvim_set_keymap('n', '<leader>w-', ':vertical resize -5<CR>',
     { noremap = true, silent = true, desc = "Decrease Window Width" })
 
 -- Move text up and down
-vim.api.nvim_set_keymap('n', '<A-j>', ':m .+1<CR>==',
-    { noremap = true, silent = true, desc = "Move Line Down" })
-vim.api.nvim_set_keymap('n', '<A-k>', ':m .-2<CR>==',
-    { noremap = true, silent = true, desc = "Move Line Up" })
+-- vim.api.nvim_set_keymap('n', '<A-j>', ':m .+1<CR>==',
+--     { noremap = true, silent = true, desc = "Move Line Down" })
+-- vim.api.nvim_set_keymap('n', '<A-k>', ':m .-2<CR>==',
+--     { noremap = true, silent = true, desc = "Move Line Up" })
 -- vim.api.nvim_set_keymap('i', '<A-j>', '<Esc>:m .+1<CR>==gi',
 --     { noremap = true, silent = true, desc = "Move Line Down in Insert Mode" })
 -- vim.api.nvim_set_keymap('i', '<A-k>', '<Esc>:m .-2<CR>==gi',
