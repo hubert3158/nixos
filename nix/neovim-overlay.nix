@@ -62,7 +62,6 @@ with final.pkgs.lib; let
       plugin = smartcolumn-nvim;
       config = "lua << EOF\nrequire(\"smartcolumn\").setup()\nEOF\n";
     }
-    copilot-vim
     {
       plugin = yanky-nvim;
     }
@@ -93,6 +92,7 @@ with final.pkgs.lib; let
     }
     codesnap-nvim
     codecompanion-nvim
+    copilot-vim
     nvim-cmp
     {
       plugin = nvim-cmp;

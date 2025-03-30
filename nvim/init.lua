@@ -377,4 +377,5 @@ require('user.neoscroll')
 require('user.harpoon')
 require('user.codeSnap')
 require('user.codeCompanion')
+require('user.twilight')
 
