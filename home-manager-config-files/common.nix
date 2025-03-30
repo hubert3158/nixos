@@ -52,11 +52,10 @@
 
     freerdp
     openvpn
-    aws-workspaces
+    # aws-workspaces
 
     eclipse-mat
 
-    openssl
 
     btop
 
