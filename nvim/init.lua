@@ -3,6 +3,10 @@ local fn = vim.fn
 local opt = vim.o
 local g = vim.g
 
+-- Temporary supression of deprecated functions
+vim.tbl_islist = vim.islist or vim.tbl_islist
+
+
 -- Set leader keys
 g.mapleader = " "      -- Make sure to set `mapleader` before lazy so your mappings are correct
 g.maplocalleader = "," -- Same for `maplocalleader`
