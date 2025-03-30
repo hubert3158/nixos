@@ -120,6 +120,7 @@
 
 
     dbeaver-bin
+    wpsoffice
 
 
     graphicsmagick
