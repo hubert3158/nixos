@@ -193,6 +193,7 @@
     sourcekit-lsp  #Language Server Protocol implementation for Swift and C-based languages.
     sonarlint-ls
     semgrep
+    stylua
 
     vscode-js-debug
     vscode-extensions.firefox-devtools.vscode-firefox-debug
