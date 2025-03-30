@@ -6,115 +6,154 @@
     home-manager.url = "github:nix-community/home-manager";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
+    # Consider adding your neovim overlay source as an input if it's external
+    # neovim-overlay-src.url = "github:your/neovim-overlay-repo"; # Example
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, gen-luarc, ... }: let
-    supportedSystems = [
-      "x86_64-linux"
-      "aarch64-linux"
-      "x86_64-darwin"
-      "aarch64-darwin"
-    ];
+  outputs = inputs @ { self, nixpkgs, home-manager, flake-utils, gen-luarc, ... }:
+  let
+    # Define the overlay once
+    neovimOverlay = import ./nix/neovim-overlay.nix { inherit inputs; }; # Pass inputs if needed by the overlay
 
-    # Import the neovim overlay
-    neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
-  in {
+    # Define common home-manager settings
+    commonHomeManagerSettings = { pkgs, lib, ... }: {
+      home-manager.useUserPackages = true;
+      home-manager.backupFileExtension = "backup";
+      # Add nvim from the (now global) overlay to the user's packages
+      # This assumes nvim-pkg is the attribute name exposed by your overlay
+      home-manager.users.hubert.home.packages = [ pkgs.nvim-pkg ];
+    };
+
+    # Define system-specific global nixpkgs configuration
+    nixpkgsConfigWork = { lib, ... }: {
+      nixpkgs.overlays = [ neovimOverlay ];
+      nixpkgs.config = {
+        allowUnfree = true;
+        # Use lib.getName for safer package name checking
+        allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+          "microsoft-edge-stable"
+        ];
+        permittedInsecurePackages = [
+          "emacs-29.4"
+        ];
+      };
+    };
+
+    # Define system-specific global nixpkgs configuration (can be same as work if desired)
+    nixpkgsConfigHome = { lib, ... }: {
+      nixpkgs.overlays = [ neovimOverlay ];
+      nixpkgs.config = {
+        allowUnfree = true;
+        allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+          "microsoft-edge-stable"
+        ];
+        permittedInsecurePackages = [
+          "emacs-29.4"
+        ];
+      };
+    };
+
+  in
+  {
+    # NixOS Configurations
     nixosConfigurations = {
       work = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        # Special arguments passed to modules
+        specialArgs = { inherit inputs; }; # Pass inputs if needed in your modules
         modules = [
+          # Global Nixpkgs config for this system
+          nixpkgsConfigWork
+
+          # Core configurations
           ./configuration.nix
           ./work.nix
           ./hardware-configuration-work.nix
+
+          # Home Manager module
           home-manager.nixosModules.home-manager
+
+          # Home Manager user configuration
           {
-             nixpkgs.config.permittedInsecurePackages = [
-              "openssl-1.1.1w"
-               "emacs-29.4"
-            ];
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.hubert = let
-              pkgs = import nixpkgs {
-                system = "x86_64-linux";
-                config = {
-                  allowUnfree = true;
-                  allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
-                    "microsoft-edge-stable"
-                  ];
-                };
-                overlays = [neovim-overlay];
-              };
-              packages = import ./home-manager-work.nix { inherit pkgs; };
-            in
-              packages // {
-                # Add nvim from the overlay to the user's packages
-                home.packages = [ pkgs.nvim-pkg ];
-              };
+            # Import common settings
+            imports = [ commonHomeManagerSettings ];
+
+            # Import user-specific settings for 'work'
+            # This file should be a function accepting { pkgs, lib, config, ... }
+            home-manager.users.hubert = import ./home-manager-work.nix;
           }
         ];
       };
 
       home = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
         modules = [
+          # Global Nixpkgs config for this system
+          nixpkgsConfigHome
+
+          # Core configurations
           ./configuration.nix
           ./home.nix
           ./hardware-configuration-home.nix
+
+          # Home Manager module
           home-manager.nixosModules.home-manager
+
+          # Home Manager user configuration
           {
-             nixpkgs.config.permittedInsecurePackages = [
-              "openssl-1.1.1w"
-               "emacs-29.4"
-            ];
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.hubert = let
-              pkgs = import nixpkgs {
-                system = "x86_64-linux";
-                config = {
-                  allowUnfree = true;
-                  allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
-                    "microsoft-edge-stable"
-                  ];
-                };
-                overlays = [neovim-overlay];
-              };
-              packages = import ./home-manager-home.nix { inherit pkgs; };
-            in
-              packages // {
-                # Add nvim from the overlay to the user's packages
-                home.packages = [ pkgs.nvim-pkg ];
-              };
+            # Import common settings
+            imports = [ commonHomeManagerSettings ];
+
+            # Import user-specific settings for 'home'
+            # This file should be a function accepting { pkgs, lib, config, ... }
+            home-manager.users.hubert = import ./home-manager-home.nix;
           }
         ];
       };
     };
 
-    devShells = {
-      work = flake-utils.lib.eachSystem supportedSystems (system: let
+    # Development Shells
+    devShells = flake-utils.lib.eachDefaultSystem (system:
+      let
+        # Create a pkgs instance specifically for the dev shell if needed
+        # Apply overlays needed only for development here
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
-            neovim-overlay
+            neovimOverlay # Include if needed in dev shell
             gen-luarc.overlays.default
           ];
+          # Add dev-specific nixpkgs config if necessary
+          # config = { ... };
         };
-      in pkgs.mkShell {
-        name = "nvim-devShell";
-        buildInputs = with pkgs; [
-          lua-language-server
-          nil
-          stylua
-          luajitPackages.luacheck
-        ];
-        shellHook = ''
-          ln -fs ${pkgs.nvim-luarc-json} .luarc.json
-        '';
-      });
-    };
+      in
+      {
+        default = pkgs.mkShell {
+          name = "nvim-devShell";
+          # Packages available in the shell
+          buildInputs = with pkgs; [
+            lua-language-server
+            nil # Nix Language Server
+            stylua # Lua formatter
+            luajitPackages.luacheck # Lua linter
+            # Add other dev tools if needed
+          ];
+          # Shell initialization hook
+          shellHook = ''
+            # Generate .luarc.json for lua-language-server based on nvim config
+            # Ensure nvim-luarc-json attribute exists in pkgs (provided by gen-luarc overlay)
+            if [ -f "${pkgs.nvim-luarc-json}" ]; then
+              ln -fs "${pkgs.nvim-luarc-json}" .luarc.json
+              echo "Created symlink for .luarc.json"
+            else
+              echo "Warning: nvim-luarc-json not found in pkgs."
+            fi
+            echo "Entered nvim-devShell"
+          '';
+        };
+      }
+    );
   };
 }
 
