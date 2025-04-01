@@ -37,6 +37,10 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"supermaven-nvim\").setup({})\nEOF\n";
     }
     {
+      plugin = refactoring-nvim;
+      config = "lua << EOF\nrequire(\"refactoring\").setup({})\nEOF\n";
+    }
+    {
       plugin = yazi-nvim;
       config = "lua << EOF\nrequire(\"yazi\").setup()\nEOF\n";
     }
