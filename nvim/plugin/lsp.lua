@@ -1,72 +1,38 @@
-local lspconfig = require("lspconfig")
-
 local on_attach = function(client, bufnr)
 	local bufmap = function(keys, func)
 		vim.keymap.set("n", keys, func, { buffer = bufnr })
 	end
 
-	-- Enable auto-formatting on save
-	-- if client.server_capabilities.documentFormattingProvider then
-	--     vim.api.nvim_command([[augroup Format]])
-	--     vim.api.nvim_command([[autocmd! * <buffer>]])
-	--     vim.api.nvim_command([[autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })]])
-	--     vim.api.nvim_command([[augroup END]])
-	-- end
-	--
-	--
-	--
+	-- Core LSP Navigation & Information
+	bufmap("gd", vim.lsp.buf.definition) -- Go to definition
+	bufmap("gD", vim.lsp.buf.declaration) -- Go to declaration
+	bufmap("gi", vim.lsp.buf.implementation) -- Go to implementation
+	bufmap("<leader>D", vim.lsp.buf.type_definition) -- Go to type definition
+	bufmap("K", vim.lsp.buf.hover) -- Show hover information
 
-	-- Additional key mappings for linting
-	-- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>l', '<cmd>EslintFixAll<CR>', { noremap = true, silent = true })
-	-- bufmap('<leader>l', "<cmd>EslintFixAll<CR>")
-
-	-- bufmap('<leader>r', vim.lsp.buf.rename)
-	-- bufmap('<leader>a', vim.lsp.buf.code_action)
-
-	bufmap("gd", vim.lsp.buf.definition)
-	bufmap("gD", vim.lsp.buf.declaration)
-	bufmap("gI", vim.lsp.buf.implementation)
-	bufmap("gl", vim.lsp.buf.implementation)
-	bufmap("<leader>D", vim.lsp.buf.type_definition)
-
-	bufmap("gl", vim.diagnostic.open_float) -- Show diagnostics in a floating window
-
+	-- Diagnostics
+	bufmap("gl", vim.diagnostic.open_float) -- Show diagnostics in a floating window (Overwrites previous 'gl')
 	bufmap("[d", function()
 		vim.diagnostic.jump({ count = -1, float = true })
 	end) -- Go to the previous diagnostic
-
 	bufmap("]d", function()
 		vim.diagnostic.jump({ count = 1, float = true })
 	end) -- Go to the next diagnostic
-
 	bufmap("[e", function()
 		vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
 	end) -- Go to the previous error diagnostic
-
 	bufmap("]e", function()
 		vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
 	end) -- Go to the next error diagnostic
 
-	bufmap("<leader>lq", vim.diagnostic.setloclist) -- Show all diagnostics in the location list
-	bufmap("<leader>lQ", vim.diagnostic.setqflist) -- Show all diagnostics in the quickfix list
-	bufmap("<leader>ld", function() -- Toggle virtual text on/off
-		vim.diagnostic.config({ virtual_text = not vim.diagnostic.config().virtual_text })
-	end)
-
-	-- bufmap('gr', require('telescope.builtin').lsp_references)
+	-- Telescope Integration
 	bufmap("gs", require("telescope.builtin").lsp_document_symbols)
 
-	-- the following can be achieve by <leader>fs then chose the builtin you want
-	-- bufmap('<leader>s', require('telescope.builtin').lsp_document_symbols)
-	-- bufmap('<leader>S', require('telescope.builtin').lsp_dynamic_workspace_symbols)
-
-	bufmap("K", vim.lsp.buf.hover)
-
+	-- Formatting
 	vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
 		vim.lsp.buf.format()
 	end, {})
 end
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
@@ -95,10 +61,10 @@ require("lspconfig").html.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
--- require("lspconfig").bashls.setup({
--- 	on_attach = on_attach,
--- 	capabilities = capabilities,
--- })
+require("lspconfig").bashls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
 
 require("lspconfig").zls.setup({
 	on_attach = on_attach,
@@ -135,31 +101,11 @@ require("lspconfig").clangd.setup({ -- c
 	capabilities = capabilities,
 })
 
--- lspconfig.ccls.setup {
---     root_dir = function(fname)
---         return lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git")(fname) or
---             lspconfig.util.path.dirname(fname)
---     end,
---     init_options = {
---         index = {
---             threads = 0,
---         },
---         clang = {
---             excludeArgs = { "-frounding-math" },
---         },
---     }
--- }
-
 require("lspconfig").ts_ls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 	cmd = { "typescript-language-server", "--stdio" },
 })
-
--- require("lspconfig").jdtls.setup({
---     on_attach = on_attach,
---     capabilities = capabilities,
--- })
 
 require("lspconfig").pyright.setup({
 	on_attach = on_attach,
@@ -213,10 +159,10 @@ require("lspconfig").jdtls.setup({
 	},
 })
 
--- require'lspconfig'.jsonls.setup { // this has been replaced by conform
---     on_attach = on_attach,
---     capabilities = capabilities,
--- }
+require("lspconfig").jsonls.setup({ -- this has been replaced by conform
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
 require("lspconfig").nginx_language_server.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
