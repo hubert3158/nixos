@@ -31,7 +31,12 @@ with final.pkgs.lib; let
     rest-nvim
     # neoformat # replaced with conform
 
+    
     # Custom plugin configurations
+    {
+      plugin = lazydev-nvim;
+      config = "lua << EOF\nrequire(\"lazydev\").setup({})\nEOF\n";
+    }
     {
       plugin = supermaven-nvim;
       config = "lua << EOF\nrequire(\"supermaven-nvim\").setup({})\nEOF\n";
