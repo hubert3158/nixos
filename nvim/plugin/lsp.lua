@@ -7,11 +7,9 @@ local on_attach = function(client, bufnr)
 	bufmap("gd", vim.lsp.buf.definition) -- Go to definition
 	bufmap("gD", vim.lsp.buf.declaration) -- Go to declaration
 	bufmap("gi", vim.lsp.buf.implementation) -- Go to implementation
-	bufmap("<leader>D", vim.lsp.buf.type_definition) -- Go to type definition
 	bufmap("K", vim.lsp.buf.hover) -- Show hover information
 
 	-- Diagnostics
-	bufmap("gl", vim.diagnostic.open_float) -- Show diagnostics in a floating window (Overwrites previous 'gl')
 	bufmap("[d", function()
 		vim.diagnostic.jump({ count = -1, float = true })
 	end) -- Go to the previous diagnostic
