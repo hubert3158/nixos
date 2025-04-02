@@ -139,7 +139,6 @@ with final.pkgs.lib; let
     vim-devicons
     nvim-web-devicons
     nerdtree
-    neodev-nvim
     nvim-notify
     telescope-fzf-native-nvim
     luasnip
