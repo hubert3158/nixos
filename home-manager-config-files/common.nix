@@ -20,7 +20,7 @@
       "ll" = "eza -l --icons --group-directories-first --git --header --time-style=iso --color=always";
       "la" = "eza -la --icons --group-directories-first --git --header --time-style=iso --color=always";
       "lt" = "eza --tree --icons --level=2 --group-directories-first --git --time-style=iso --color=always";
-
+      "ss" = "sleep 2 && grim -g \"\$(slurp)\" - | tee ~/Pictures/screenshot-\$(date +%Y%m%d-%H%M%S).png | wl-copy";
       "f" = ''
       fzf \
       -i \
@@ -92,6 +92,8 @@
     zsh-autocomplete
     mtr
     flameshot
+    grim
+    slurp
     postman
     teams-for-linux
     ripgrep
@@ -265,7 +267,7 @@ programs.ssh= {
   Port 22
 
   Host submission
-  HostName ec2-3-85-4-197.compute-1.amazonaws.com
+  HostName 35.153.23.89
   User ubuntu
   Port 22
   IdentityFile ~/.ssh/automated_submission.pem
