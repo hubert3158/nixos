@@ -194,6 +194,7 @@
     sonarlint-ls
     semgrep
     stylua
+    sqls
 
     vscode-js-debug
     vscode-extensions.firefox-devtools.vscode-firefox-debug
