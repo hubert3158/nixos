@@ -50,6 +50,8 @@
     home.packages = with pkgs; [
     # Add your user packages here
 
+    pgadmin
+
     freerdp
     openvpn
     # aws-workspaces
