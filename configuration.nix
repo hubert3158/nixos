@@ -239,6 +239,7 @@
     tree
     sqlite
     fzf
+    skim
     nodejs_22
     ranger
 
