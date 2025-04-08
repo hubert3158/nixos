@@ -109,13 +109,31 @@ require("lspconfig").cssls.setup({
 	capabilities = capabilities,
 })
 
--- local lombok_path = vim.fn.stdpath("data") .. "/lombok.jar"  -- Adjust the path if necessary
+require("lspconfig").jsonls.setup({ -- this has been replaced by conform
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+require("lspconfig").nginx_language_server.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+require("lspconfig").sqlls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
 local lombok_path = "/home/hubert/nixos/dotfiles/lombok.jar"
+
 require("lspconfig").jdtls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-	cmd = { "/etc/profiles/per-user/hubert/bin/jdtls" }, -- Update the path to your jdtls executable
-
+	cmd = {
+		"/etc/profiles/per-user/hubert/bin/jdtls",
+		"-javaagent:" .. lombok_path,
+		-- For older Java versions, you might need the bootclasspath flag.
+		-- On newer Java versions, this flag might not be necessary or may require additional options.
+		"-Xbootclasspath/a:" .. lombok_path,
+	},
 	root_dir = function(fname)
 		return require("lspconfig.util").root_pattern("pom.xml", "build.gradle", ".git")(fname) or vim.loop.os_homedir()
 	end,
@@ -134,32 +152,17 @@ require("lspconfig").jdtls.setup({
 				},
 			},
 			project = {
-				referencedLibraries = {
-					lombok_path,
-				},
+				referencedLibraries = { lombok_path },
 			},
 		},
 	},
 	init_options = {
+		-- Remove the lombok_path from here. Only include bundles that are actual extension/plugin jars.
 		bundles = {
-			lombok_path,
-			vim.fn.glob(
-				"/nix/store/id0zrxghssr6mkzxaaphs9yy1sjn7f57-vscode-extension-vscjava-vscode-java-debug-0.55.2023121302/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.50.0.jar",
-				true
-			),
+			-- vim.fn.glob(
+			-- 	"/nix/store/id0zrxghssr6mkzxaaphs9yy1sjn7f57-vscode-extension-vscjava-vscode-java-debug-0.55.2023121302/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.50.0.jar",
+			-- 	true
+			-- ),
 		},
 	},
-})
-
-require("lspconfig").jsonls.setup({ -- this has been replaced by conform
-	on_attach = on_attach,
-	capabilities = capabilities,
-})
-require("lspconfig").nginx_language_server.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
-})
-require("lspconfig").sqlls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
 })
