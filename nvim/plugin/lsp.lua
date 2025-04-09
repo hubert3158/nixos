@@ -156,7 +156,7 @@ require("lspconfig").jdtls.setup({
 	init_options = {
 		bundles = {
 			vim.fn.glob(
-				"/nix/store/id0zrxghssr6mkzxaaphs9yy1sjn7f57-vscode-extension-vscjava-vscode-java-debug-0.55.2023121302/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.50.0.jar",
+				"/nix/store/gbynwg6ggkfypyg8r7y51sjz16qz6d4q-vscode-extension-vscjava-vscode-java-debug-0.58.2025022807/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.53.1.jar",
 				true
 			),
 		},
