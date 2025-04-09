@@ -130,9 +130,6 @@ require("lspconfig").jdtls.setup({
 	cmd = {
 		"/etc/profiles/per-user/hubert/bin/jdtls",
 		"-javaagent:" .. lombok_path,
-		-- For older Java versions, you might need the bootclasspath flag.
-		-- On newer Java versions, this flag might not be necessary or may require additional options.
-		"-Xbootclasspath/a:" .. lombok_path,
 	},
 	root_dir = function(fname)
 		return require("lspconfig.util").root_pattern("pom.xml", "build.gradle", ".git")(fname) or vim.loop.os_homedir()
@@ -157,12 +154,11 @@ require("lspconfig").jdtls.setup({
 		},
 	},
 	init_options = {
-		-- Remove the lombok_path from here. Only include bundles that are actual extension/plugin jars.
 		bundles = {
-			-- vim.fn.glob(
-			-- 	"/nix/store/id0zrxghssr6mkzxaaphs9yy1sjn7f57-vscode-extension-vscjava-vscode-java-debug-0.55.2023121302/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.50.0.jar",
-			-- 	true
-			-- ),
+			vim.fn.glob(
+				"/nix/store/id0zrxghssr6mkzxaaphs9yy1sjn7f57-vscode-extension-vscjava-vscode-java-debug-0.55.2023121302/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.50.0.jar",
+				true
+			),
 		},
 	},
 })
