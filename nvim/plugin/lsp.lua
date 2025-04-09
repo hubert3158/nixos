@@ -162,3 +162,62 @@ require("lspconfig").jdtls.setup({
 		},
 	},
 })
+
+---- not working bro
+-- local lombok_path = "/home/hubert/.m2/repository/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar"
+-- local root_dir = require("lspconfig.util").root_pattern("pom.xml", "build.gradle", ".git")
+-- local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+-- local workspace_dir = vim.fn.stdpath("cache") .. "/jdtls-workspace/" .. project_name
+--
+-- require("lspconfig").jdtls.setup({
+-- 	on_attach = on_attach,
+-- 	capabilities = capabilities,
+-- 	cmd = {
+-- 		"/etc/profiles/per-user/hubert/bin/jdtls",
+-- 		"-javaagent:" .. lombok_path,
+-- 		"--jvm-arg=-Xmx1G",
+-- 		"-data",
+-- 		workspace_dir,
+-- 	},
+-- 	root_dir = root_dir,
+-- 	settings = {
+-- 		java = {
+-- 			signatureHelp = { enabled = true },
+-- 			contentProvider = { preferred = "fernflower" },
+-- 			completion = {
+-- 				favoriteStaticMembers = {
+-- 					"org.hamcrest.MatcherAssert.assertThat",
+-- 					"org.hamcrest.Matchers.*",
+-- 					"org.hamcrest.CoreMatchers.*",
+-- 					"org.junit.jupiter.api.Assertions.*",
+-- 					"java.util.Objects.requireNonNull",
+-- 					"java.util.Objects.requireNonNullElse",
+-- 				},
+-- 			},
+-- 			configuration = {
+-- 				updateBuildConfiguration = "automatic",
+-- 				runtimes = {
+-- 					{
+-- 						name = "JavaSE-11",
+-- 						path = "/nix/store/mycb2cm8w4qww2nxa7vlggfwrdcp7lpi-openjdk-11.0.25+9/lib/openjdk",
+-- 						default = true,
+-- 					},
+-- 				},
+-- 			},
+-- 			project = {
+-- 				referencedLibraries = {
+-- 					lombok_path,
+-- 				},
+-- 			},
+-- 		},
+-- 	},
+-- 	init_options = {
+-- 		workspace = workspace_dir,
+-- 		bundles = {
+-- 			vim.fn.glob(
+-- 				"/nix/store/gbynwg6ggkfypyg8r7y51sjz16qz6d4q-vscode-extension-vscjava-vscode-java-debug-0.58.2025022807/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.53.1.jar",
+-- 				true
+-- 			),
+-- 		},
+-- 	},
+-- })
