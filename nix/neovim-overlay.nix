@@ -29,6 +29,7 @@ with final.pkgs.lib; let
     plenary-nvim
     harpoon2
     rest-nvim
+    nvim-ufo
     # neoformat # replaced with conform
 
     

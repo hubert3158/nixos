@@ -24,8 +24,10 @@ opt.incsearch = true -- Do incremental searching
 opt.relativenumber = true
 opt.number = true
 opt.ignorecase = true
-opt.foldmethod = "marker"
-opt.foldmarker = "// region,// endregion,/* region */,/* endregion */,# region,# endregion,//region,//endregion"
+opt.foldcolumn = "1" -- '0' is not bad
+opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+opt.foldlevelstart = 99
+opt.foldenable = true
 
 -- Search down into subfolders
 opt.path = vim.o.path .. "**"
@@ -615,3 +617,4 @@ require("user.harpoon")
 require("user.codeSnap")
 require("user.codeCompanion")
 require("user.twilight")
+require("user.nvimUfo")
