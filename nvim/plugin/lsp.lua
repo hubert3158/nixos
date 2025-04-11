@@ -22,6 +22,10 @@ local on_attach = function(client, bufnr)
 	bufmap("]e", function()
 		vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
 	end) -- Go to the next error diagnostic
+	-- Show diagnostic float at cursor
+	bufmap("<leader>e", function()
+		vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
+	end)
 
 	-- Telescope Integration
 	bufmap("gs", require("telescope.builtin").lsp_document_symbols)
