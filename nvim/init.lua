@@ -397,6 +397,13 @@ vim.api.nvim_set_keymap(
 )
 vim.api.nvim_set_keymap(
 	"n",
+	"<leader>xw",
+	"<cmd>Trouble diagnostics toggle focus=false<cr>",
+	{ noremap = true, silent = true, desc = "Workspace Diagnostics (Trouble)" }
+)
+
+vim.api.nvim_set_keymap(
+	"n",
 	"<leader>xT",
 	"<cmd>TodoTelescope<cr>",
 	{ noremap = true, silent = true, desc = "Search TODOs with Telescope" }
