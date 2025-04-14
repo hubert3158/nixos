@@ -281,12 +281,6 @@ programs.ssh= {
   Port 22
   IdentityFile ~/.ssh/dev_server.pem
 
-  Host submission
-  HostName ec2-3-85-4-197.compute-1.amazonaws.com
-  User ubuntu
-  Port 22
-  IdentityFile ~/.ssh/automated_submission.pem
-
   Host demo
   HostName 35.153.23.89
   User ubuntu

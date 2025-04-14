@@ -385,7 +385,7 @@ programs.gnupg.agent = {
 
 fonts.packages= with pkgs; [
     nerd-fonts.fira-code
-
+    corefonts
   noto-fonts
   noto-fonts-cjk
   noto-fonts-emoji
