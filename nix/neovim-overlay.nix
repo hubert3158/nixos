@@ -28,11 +28,11 @@ with final.pkgs.lib; let
     lazygit-nvim
     plenary-nvim
     harpoon2
-    rest-nvim
+    
     nvim-ufo
     # neoformat # replaced with conform
+kulala-nvim
 
-    
     # Custom plugin configurations
     {
       plugin = lazydev-nvim;
