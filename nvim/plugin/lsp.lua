@@ -128,7 +128,7 @@ require("lspconfig").sqlls.setup({
 
 -- jdtls config for multi-module Maven + Lombok
 local home = os.getenv("HOME")
-local lombok = home .. "/.m2/repository/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar"
+local lombok = home .. "/nixos/dotfiles/lombok-1.18.38.jar"
 
 require("lspconfig").jdtls.setup({
 	cmd = {
@@ -149,7 +149,7 @@ require("lspconfig").jdtls.setup({
 			configuration = {
 				updateBuildConfiguration = "automatic",
 				runtimes = {
-					{ name = "JavaSE-11", path = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7" },
+					-- { name = "JavaSE-11", path = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7" },
 				},
 				-- enable annotation processing for all modules
 				annotationProcessing = {
