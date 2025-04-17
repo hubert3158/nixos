@@ -625,23 +625,43 @@ vim.diagnostic.config({
 vim.keymap.set("n", "<leader>ks", function()
 	local kulala = require("kulala")
 	kulala.run()
-end, { noremap = true, silent = true, desc = "Run HTTP request under cursor" })
+end, { noremap = true, silent = true, desc = "Execute HTTP request under cursor" })
 
 vim.keymap.set("n", "<leader>ka", function()
 	local kulala = require("kulala")
 	kulala.run_all()
-end, { noremap = true, silent = true, desc = "Run all HTTP requests in file" })
+end, { noremap = true, silent = true, desc = "Execute all HTTP requests in file" })
 
 vim.keymap.set("n", "<leader>kr", function()
 	local kulala = require("kulala")
 	kulala.replay()
-end, { noremap = true, silent = true, desc = "Replay the http request" })
+end, { noremap = true, silent = true, desc = "Replay last HTTP request" })
 
 vim.keymap.set("n", "<leader>kb", function()
 	local kulala = require("kulala.ui")
 	kulala.show_body()
-end, { noremap = true, silent = true, desc = "show body" })
+end, { noremap = true, silent = true, desc = "Display response body" })
 vim.keymap.set("n", "<leader>kh", function()
 	local kulala = require("kulala.ui")
 	kulala.show_headers()
-end, { noremap = true, silent = true, desc = "show headers" })
+end, { noremap = true, silent = true, desc = "Display response headers" })
+
+vim.keymap.set("n", "<leader>kS", function()
+	require("kulala").scratchpad()
+end, { noremap = true, silent = true, desc = "Open HTTP request scratchpad" })
+
+vim.keymap.set("n", "<leader>ko", function()
+	require("kulala").open()
+end, { noremap = true, silent = true, desc = "Open request in new buffer" })
+
+vim.keymap.set("n", "<leader>kt", function()
+	require("kulala").toggle_view()
+end, { noremap = true, silent = true, desc = "Toggle between request/response views" })
+
+vim.keymap.set("n", "<leader>kf", function()
+	require("kulala").search()
+end, { noremap = true, silent = true, desc = "Search for HTTP endpoints" })
+
+vim.keymap.set("n", "<leader>kc", function()
+	require("kulala").copy()
+end, { noremap = true, silent = true, desc = "Copy HTTP command to clipboard" })
