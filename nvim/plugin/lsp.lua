@@ -83,7 +83,7 @@ require("lspconfig").eslint.setup({
 		})
 	end,
 	capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
-	root_dir = require("lspconfig").util.find_package_json_ancestor,
+	root_dir = vim.fs.dirname(vim.fs.find("package.json", { path = startpath, upward = true })[1]),
 	-- cmd = { "vscode-eslint-language-server", "--stdio" },
 })
 
@@ -127,7 +127,6 @@ require("lspconfig").sqlls.setup({
 })
 
 -- jdtls config for multi-module Maven + Lombok
-local util = require("lspconfig.util")
 local home = os.getenv("HOME")
 local lombok = home .. "/.m2/repository/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar"
 
@@ -139,7 +138,9 @@ require("lspconfig").jdtls.setup({
 	},
 
 	-- Always use the Git repo root (aggregator pom) as workspace
-	root_dir = util.find_git_ancestor,
+	root_dir = function(startpath)
+		return vim.fs.dirname(vim.fs.find(".git", { path = startpath, upward = true })[1])
+	end,
 
 	settings = {
 		java = {
