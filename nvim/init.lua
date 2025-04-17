@@ -49,6 +49,17 @@ vim.api.nvim_create_autocmd("FocusLost", {
 	command = "silent! wa",
 })
 
+require("user.mason")
+require("user.nvimLint")
+require("user.conform")
+require("user.neoscroll")
+require("user.harpoon")
+require("user.codeSnap")
+require("user.codeCompanion")
+require("user.twilight")
+require("user.nvimUfo")
+require("user.kulala")
+
 -- Telescope keybindings
 vim.api.nvim_set_keymap(
 	"n",
@@ -609,12 +620,111 @@ vim.diagnostic.config({
 	},
 })
 
-require("user.mason")
-require("user.nvimLint")
-require("user.conform")
-require("user.neoscroll")
-require("user.harpoon")
-require("user.codeSnap")
-require("user.codeCompanion")
-require("user.twilight")
-require("user.nvimUfo")
+-- Kulala HTTP Client Keybindings
+-- Robust configuration for making HTTP requests within Neovim
+-- Helper function to safely call Kulala functions with error handling
+local function safe_kulala_call(func_name, ...)
+	local status, err = pcall(function(...)
+		local kulala = require("kulala")
+		if type(kulala[func_name]) ~= "function" then
+			error("Function '" .. func_name .. "' not found in kulala module")
+		end
+		return kulala[func_name](...)
+	end, ...)
+
+	if not status then
+		vim.notify("Kulala error: " .. tostring(err), vim.log.levels.ERROR)
+	end
+end
+
+-- Define all keybindings using the modern vim.keymap.set API
+local kulala_mappings = {
+	-- Core HTTP request functionality
+	{
+		mode = "n",
+		lhs = "<leader>kr",
+		rhs = function()
+			safe_kulala_call("run")
+		end,
+		desc = "Run HTTP request under cursor",
+	},
+
+	{
+		mode = "n",
+		lhs = "<leader>ka",
+		rhs = function()
+			safe_kulala_call("run_all")
+		end,
+		desc = "Run all HTTP requests in file",
+	},
+
+	-- Response management
+	{
+		mode = "n",
+		lhs = "<leader>kl",
+		rhs = function()
+			safe_kulala_call("show_last_response")
+		end,
+		desc = "Show last HTTP response",
+	},
+
+	{
+		mode = "n",
+		lhs = "<leader>ks",
+		rhs = function()
+			safe_kulala_call("save_last_response")
+		end,
+		desc = "Save last HTTP response to file",
+	},
+
+	-- Configuration
+	{
+		mode = "n",
+		lhs = "<leader>ke",
+		rhs = function()
+			safe_kulala_call("set_env")
+		end,
+		desc = "Configure environment variables",
+	},
+
+	{
+		mode = "n",
+		lhs = "<leader>kd",
+		rhs = function()
+			safe_kulala_call("toggle_debug")
+		end,
+		desc = "Toggle debug mode",
+	},
+
+	-- Additional useful mappings
+	{
+		mode = "n",
+		lhs = "<leader>kh",
+		rhs = function()
+			safe_kulala_call("show_history")
+		end,
+		desc = "Show request history",
+	},
+
+	{
+		mode = "n",
+		lhs = "<leader>kc",
+		rhs = function()
+			safe_kulala_call("clear_cache")
+		end,
+		desc = "Clear request cache",
+	},
+
+	{
+		mode = "n",
+		lhs = "<leader>ki",
+		rhs = function()
+			safe_kulala_call("request_info")
+		end,
+		desc = "Show detailed info about request",
+	},
+}
+-- Register all mappings with silent and noremap by default
+for _, mapping in ipairs(kulala_mappings) do
+	vim.keymap.set(mapping.mode, mapping.lhs, mapping.rhs, { noremap = true, silent = true, desc = mapping.desc })
+end
