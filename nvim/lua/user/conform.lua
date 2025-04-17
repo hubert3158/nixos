@@ -9,6 +9,7 @@ require("conform").setup({
 
 		typescript = { "prettierd", "prettier", stop_after_first = true },
 		json = { "prettierd", "prettier", stop_after_first = true },
-        sql = { "sqlformat" },
+		sql = { "sqlformat" },
+		nix = { "alejandra" },
 	},
 })

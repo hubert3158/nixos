@@ -191,20 +191,17 @@
     nginx-language-server
     htmlhint
     sourcekit-lsp  #Language Server Protocol implementation for Swift and C-based languages.
-    sonarlint-ls
-    semgrep
-    stylua
-    sqls
+    sonarlint-ls #SonarLint Language Server
+    semgrep #Static analysis tool for finding bugs and enforcing code standards.
+    stylua #lua formatter
+    alejandra #nix formatter
+    sqls #sql language server
+    kulala-fmt #http formatter
 
-    vscode-js-debug
-    vscode-extensions.firefox-devtools.vscode-firefox-debug
+    vscode-js-debug #JavaScript Debugger for Visual Studio Code
+    vscode-extensions.firefox-devtools.vscode-firefox-debug #Firefox Debugger for Visual Studio Code
 
-
-
-
-    yarn
-
-
+    yarn 
 
     vim 
     zoxide
