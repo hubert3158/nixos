@@ -622,7 +622,7 @@ vim.diagnostic.config({
 
 -- Kulala HTTP Client Keybindings
 -- Robust configuration for making HTTP requests within Neovim
-vim.keymap.set("n", "<leader>kr", function()
+vim.keymap.set("n", "<leader>ks", function()
 	local kulala = require("kulala")
 	kulala.run()
 end, { noremap = true, silent = true, desc = "Run HTTP request under cursor" })
@@ -631,3 +631,17 @@ vim.keymap.set("n", "<leader>ka", function()
 	local kulala = require("kulala")
 	kulala.run_all()
 end, { noremap = true, silent = true, desc = "Run all HTTP requests in file" })
+
+vim.keymap.set("n", "<leader>kr", function()
+	local kulala = require("kulala")
+	kulala.replay()
+end, { noremap = true, silent = true, desc = "Replay the http request" })
+
+vim.keymap.set("n", "<leader>kb", function()
+	local kulala = require("kulala.ui")
+	kulala.show_body()
+end, { noremap = true, silent = true, desc = "show body" })
+vim.keymap.set("n", "<leader>kh", function()
+	local kulala = require("kulala.ui")
+	kulala.show_headers()
+end, { noremap = true, silent = true, desc = "show headers" })
