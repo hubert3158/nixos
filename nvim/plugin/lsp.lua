@@ -126,102 +126,48 @@ require("lspconfig").sqlls.setup({
 	capabilities = capabilities,
 })
 
-local lombok_path = "/home/hubert/nixos/dotfiles/lombok.jar"
+-- jdtls config for multi-module Maven + Lombok
+local util = require("lspconfig.util")
+local home = os.getenv("HOME")
+local lombok = home .. "/.m2/repository/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar"
 
 require("lspconfig").jdtls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
 	cmd = {
 		"/etc/profiles/per-user/hubert/bin/jdtls",
-		"-javaagent:" .. lombok_path,
+		"-data",
+		vim.fn.expand("~/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")),
 	},
-	root_dir = function(fname)
-		return require("lspconfig.util").root_pattern("pom.xml", "build.gradle", ".git")(fname) or vim.loop.os_homedir()
-	end,
+
+	-- Always use the Git repo root (aggregator pom) as workspace
+	root_dir = util.find_git_ancestor,
+
 	settings = {
 		java = {
 			signatureHelp = { enabled = true },
 			contentProvider = { preferred = "fernflower" },
-			completion = {
-				favoriteStaticMembers = {
-					"org.hamcrest.MatcherAssert.assertThat",
-					"org.hamcrest.Matchers.*",
-					"org.hamcrest.CoreMatchers.*",
-					"org.junit.jupiter.api.Assertions.*",
-					"java.util.Objects.requireNonNull",
-					"java.util.Objects.requireNonNullElse",
+			configuration = {
+				updateBuildConfiguration = "automatic",
+				runtimes = {
+					{ name = "JavaSE-11", path = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7" },
+				},
+				-- enable annotation processing for all modules
+				annotationProcessing = {
+					enabled = true,
+					factoryPath = { lombok },
+					generatedSourcesOutputDirectory = "target/generated-sources/annotations",
 				},
 			},
-			project = {
-				referencedLibraries = { lombok_path },
-			},
 		},
 	},
-	init_options = {
-		bundles = {
-			vim.fn.glob(
-				"/nix/store/gbynwg6ggkfypyg8r7y51sjz16qz6d4q-vscode-extension-vscjava-vscode-java-debug-0.58.2025022807/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.53.1.jar",
-				true
-			),
-		},
-	},
-})
 
----- not working bro
--- local lombok_path = "/home/hubert/.m2/repository/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar"
--- local root_dir = require("lspconfig.util").root_pattern("pom.xml", "build.gradle", ".git")
--- local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
--- local workspace_dir = vim.fn.stdpath("cache") .. "/jdtls-workspace/" .. project_name
---
--- require("lspconfig").jdtls.setup({
--- 	on_attach = on_attach,
--- 	capabilities = capabilities,
--- 	cmd = {
--- 		"/etc/profiles/per-user/hubert/bin/jdtls",
--- 		"-javaagent:" .. lombok_path,
--- 		"--jvm-arg=-Xmx1G",
--- 		"-data",
--- 		workspace_dir,
--- 	},
--- 	root_dir = root_dir,
--- 	settings = {
--- 		java = {
--- 			signatureHelp = { enabled = true },
--- 			contentProvider = { preferred = "fernflower" },
--- 			completion = {
--- 				favoriteStaticMembers = {
--- 					"org.hamcrest.MatcherAssert.assertThat",
--- 					"org.hamcrest.Matchers.*",
--- 					"org.hamcrest.CoreMatchers.*",
--- 					"org.junit.jupiter.api.Assertions.*",
--- 					"java.util.Objects.requireNonNull",
--- 					"java.util.Objects.requireNonNullElse",
--- 				},
--- 			},
--- 			configuration = {
--- 				updateBuildConfiguration = "automatic",
--- 				runtimes = {
--- 					{
--- 						name = "JavaSE-11",
--- 						path = "/nix/store/mycb2cm8w4qww2nxa7vlggfwrdcp7lpi-openjdk-11.0.25+9/lib/openjdk",
--- 						default = true,
--- 					},
--- 				},
--- 			},
--- 			project = {
--- 				referencedLibraries = {
--- 					lombok_path,
--- 				},
--- 			},
--- 		},
--- 	},
--- 	init_options = {
--- 		workspace = workspace_dir,
--- 		bundles = {
--- 			vim.fn.glob(
--- 				"/nix/store/gbynwg6ggkfypyg8r7y51sjz16qz6d4q-vscode-extension-vscjava-vscode-java-debug-0.58.2025022807/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.53.1.jar",
--- 				true
--- 			),
--- 		},
--- 	},
--- })
+	init_options = {
+		vmargs = {
+			"-javaagent:" .. lombok,
+			"-Xbootclasspath/a:" .. lombok,
+		},
+		bundles = {},
+	},
+
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
