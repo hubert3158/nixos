@@ -127,7 +127,10 @@ require("lspconfig").sqlls.setup({
 })
 
 local home = os.getenv("HOME")
+
+-- Paths
 local lombok = home .. "/.m2/repository/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar"
+local java_11 = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7"
 local workspace_dir = vim.fn.expand("~/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
 
 require("lspconfig").jdtls.setup({
@@ -147,12 +150,34 @@ require("lspconfig").jdtls.setup({
 		java = {
 			signatureHelp = { enabled = true },
 			contentProvider = { preferred = "fernflower" },
+			errors = {
+				incompleteClasspath = {
+					severity = "ignore",
+				},
+			},
 			configuration = {
 				updateBuildConfiguration = "automatic",
+				runtimes = {
+					{
+						name = "JavaSE-11",
+						path = java_11,
+					},
+				},
 				annotationProcessing = {
 					enabled = true,
 					factoryPath = { lombok },
 					generatedSourcesOutputDirectory = "target/generated-sources/annotations",
+				},
+
+				-- ✨ Fix module build dependency messages
+				project = {
+					referencedLibraries = {
+						"common/target/classes",
+						"*/target/classes",
+					},
+				},
+				maven = {
+					downloadSources = true,
 				},
 			},
 		},
