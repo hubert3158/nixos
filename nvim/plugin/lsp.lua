@@ -168,6 +168,7 @@ require("lspconfig").jdtls.setup({
 				},
 				maven = {
 					downloadSources = true,
+					downloadJavadocs = true,
 				},
 			},
 		},
