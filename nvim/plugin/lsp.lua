@@ -126,58 +126,100 @@ require("lspconfig").sqlls.setup({
 	capabilities = capabilities,
 })
 
+-- jdtls + Lombok setup for Neovim (multi-module Maven + Lombok + proper workspace import)
 local home = os.getenv("HOME")
+local jdtls = require("jdtls")
+local fmt = string.format
 
--- Paths
--- local lombok = home .. "/.m2/repository/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar"
--- local lombok = home .. "/nixos/dotfiles/lombok-1.18.26.jar"
+-- Paths & JDK installations
 local lombok = home .. "/nixos/dotfiles/lombok-1.18.38.jar"
--- local java_11 = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7"
-local java_11 = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7/lib/openjdk"
-local workspace_dir = vim.fn.expand("~/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
+local jdk11 = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7/lib/openjdk"
+local jdk21 = "/nix/store/55qm2mvhmv7n2n6yzym1idrvnlwia73z-openjdk-21.0.5+11/lib/openjdk"
 
-require("lspconfig").jdtls.setup({
-	cmd = {
-		"jdtls",
-		"--jvm-arg=-javaagent:" .. lombok,
-		"--jvm-arg=-Xbootclasspath/a:" .. lombok,
-		"-data",
-		workspace_dir,
-	},
+-- Diagnostics config
+do
+	vim.diagnostic.config({
+		virtual_text = { prefix = "●", spacing = 2 },
+		signs = true,
+		underline = true,
+		update_in_insert = false,
+	})
+end
 
-	root_dir = function(startpath)
-		return vim.fs.dirname(vim.fs.find(".git", { path = startpath, upward = true })[1])
-	end,
+-- Define root by looking for parent aggregator POM first, then Git
+local root_dir = jdtls.setup.find_root({ "pom.xml", ".git" })
+if not root_dir then
+	return
+end
 
+-- Build list of workspace folders: include root and modules
+local project_name = vim.fn.fnamemodify(root_dir, ":t")
+local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
+local modules = vim.fn.glob(root_dir .. "/*/pom.xml", true, true)
+local workspace_folders = { { name = project_name, uri = vim.uri_from_fname(root_dir) } }
+for _, pom in ipairs(modules) do
+	local module_dir = vim.fn.fnamemodify(pom, ":h")
+	table.insert(
+		workspace_folders,
+		{ name = vim.fn.fnamemodify(module_dir, ":t"), uri = vim.uri_from_fname(module_dir) }
+	)
+end
+
+-- JDTLS command
+local cmd = {
+	"jdtls",
+	fmt("--jvm-arg=-Dosgi.java.home=%s", jdk21),
+	fmt("--jvm-arg=--add-modules=ALL-SYSTEM"),
+	fmt("--jvm-arg=-javaagent:%s", lombok),
+	fmt("--jvm-arg=-Xbootclasspath/a:%s", lombok),
+	"-data",
+	workspace_dir,
+}
+
+-- LSP configuration
+local config = {
+	cmd = cmd,
+	root_dir = root_dir,
+	init_options = { bundles = {} },
 	settings = {
 		java = {
-			signatureHelp = { enabled = true },
-			contentProvider = { preferred = "fernflower" },
+			home = jdk21,
+			import = { -- enable maven import
+				enabled = true,
+				maven = { downloadSources = true, downloadJavadoc = true },
+			},
 			configuration = {
-				updateBuildConfiguration = "automatic",
+				updateBuildConfiguration = "interactive",
 				runtimes = {
-					{
-						name = "JavaSE-11",
-						path = java_11,
-					},
+					{ name = "JavaSE-11", path = jdk11 },
+					{ name = "JavaSE-21", path = jdk21 },
 				},
-				annotationProcessing = {
-					enabled = true,
-					factoryPath = { lombok },
-					generatedSourcesOutputDirectory = "target/generated-sources/annotations",
-				},
-				maven = {
-					downloadSources = true,
-					downloadJavadocs = true,
-				},
+				checkProjectCompliance = false,
+			},
+			project = { referencedLibraries = { lombok } },
+			annotationProcessing = {
+				enabled = true,
+				factoryPath = { lombok },
+				generatedSourcesOutputDirectory = "target/generated-sources/annotations",
 			},
 		},
 	},
+	on_attach = function(client, bufnr)
+		-- Keymaps
+		local function nmap(lhs, fn)
+			vim.keymap.set("n", lhs, fn, { buffer = bufnr, silent = true, noremap = true })
+		end
+		nmap("gd", vim.lsp.buf.definition)
+		nmap("gr", vim.lsp.buf.references)
+		nmap("K", vim.lsp.buf.hover)
+	end,
+	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+}
 
-	init_options = {
-		bundles = {},
-	},
-
-	on_attach = on_attach,
-	capabilities = capabilities,
+-- Auto-start/attach for Java files
+vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+	pattern = "*.java",
+	callback = function()
+		jdtls.start_or_attach(config)
+	end,
 })
