@@ -129,7 +129,8 @@ require("lspconfig").sqlls.setup({
 local home = os.getenv("HOME")
 
 -- Paths
-local lombok = home .. "/.m2/repository/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar"
+-- local lombok = home .. "/.m2/repository/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar"
+local lombok = home .. "/nixos/dotfiles/lombok-1.18.26.jar"
 local java_11 = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7"
 local workspace_dir = vim.fn.expand("~/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
 
