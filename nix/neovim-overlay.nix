@@ -15,7 +15,7 @@ with final.pkgs.lib; let
   pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
   # This is the helper function that builds the Neovim derivation.
-  mkNeovim = pkgs.callPackage ./mkNeovim.nix { inherit pkgs-wrapNeovim; };
+  mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
 
   # Replace plugins with user's custom plugins and configuration.
   all-plugins = with pkgs.vimPlugins; [
@@ -28,21 +28,20 @@ with final.pkgs.lib; let
     lazygit-nvim
     plenary-nvim
     harpoon2
-    
+
     nvim-ufo
     # neoformat # replaced with conform
     kulala-nvim
-    
 
     # Custom plugin configurations
     {
       plugin = lazydev-nvim;
       config = "lua << EOF\nrequire(\"lazydev\").setup({})\nEOF\n";
     }
-    {
-      plugin = supermaven-nvim;
-      config = "lua << EOF\nrequire(\"supermaven-nvim\").setup({})\nEOF\n";
-    }
+    # {
+    #   plugin = supermaven-nvim;
+    #   config = "lua << EOF\nrequire(\"supermaven-nvim\").setup({})\nEOF\n";
+    # }
     {
       plugin = refactoring-nvim;
       config = "lua << EOF\nrequire(\"refactoring\").setup({})\nEOF\n";
@@ -67,9 +66,9 @@ with final.pkgs.lib; let
       plugin = smear-cursor-nvim;
       config = "lua << EOF\nrequire(\"smear_cursor\").setup()\nEOF\n";
     }
-       
-       twilight-nvim
-       nvim-ts-autotag
+
+    twilight-nvim
+    nvim-ts-autotag
     {
       plugin = smartcolumn-nvim;
       config = "lua << EOF\nrequire(\"smartcolumn\").setup()\nEOF\n";
@@ -118,8 +117,8 @@ with final.pkgs.lib; let
     {
       plugin = which-key-nvim;
     }
-    
-       nvim-treesitter
+
+    nvim-treesitter
     nvim-treesitter-textobjects
     nvim-treesitter-parsers.vimdoc
     nvim-treesitter-parsers.pug
@@ -139,8 +138,8 @@ with final.pkgs.lib; let
     nvim-treesitter-parsers.yuck
     nvim-treesitter-parsers.zig
     nvim-treesitter-parsers.yaml
-      nvim-dap
-      nvim-jdtls
+    nvim-dap
+    nvim-jdtls
     nvim-dap-ui
     dashboard-nvim
     vim-devicons
@@ -162,7 +161,6 @@ with final.pkgs.lib; let
     lua-language-server
     nil # nix LSP
   ];
-
 in {
   # This is the neovim derivation
   nvim-pkg = mkNeovim {
@@ -175,4 +173,3 @@ in {
     plugins = all-plugins;
   };
 }
-
