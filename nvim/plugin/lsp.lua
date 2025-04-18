@@ -126,18 +126,19 @@ require("lspconfig").sqlls.setup({
 	capabilities = capabilities,
 })
 
--- jdtls config for multi-module Maven + Lombok
 local home = os.getenv("HOME")
 local lombok = home .. "/nixos/dotfiles/lombok-1.18.38.jar"
+local workspace_dir = vim.fn.expand("~/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
 
 require("lspconfig").jdtls.setup({
 	cmd = {
-		"/etc/profiles/per-user/hubert/bin/jdtls",
+		"jdtls",
+		"--jvm-arg=-javaagent:" .. lombok,
+		"--jvm-arg=-Xbootclasspath/a:" .. lombok,
 		"-data",
-		vim.fn.expand("~/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")),
+		workspace_dir,
 	},
 
-	-- Always use the Git repo root (aggregator pom) as workspace
 	root_dir = function(startpath)
 		return vim.fs.dirname(vim.fs.find(".git", { path = startpath, upward = true })[1])
 	end,
@@ -148,10 +149,6 @@ require("lspconfig").jdtls.setup({
 			contentProvider = { preferred = "fernflower" },
 			configuration = {
 				updateBuildConfiguration = "automatic",
-				runtimes = {
-					-- { name = "JavaSE-11", path = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7" },
-				},
-				-- enable annotation processing for all modules
 				annotationProcessing = {
 					enabled = true,
 					factoryPath = { lombok },
@@ -162,10 +159,6 @@ require("lspconfig").jdtls.setup({
 	},
 
 	init_options = {
-		vmargs = {
-			"-javaagent:" .. lombok,
-			"-Xbootclasspath/a:" .. lombok,
-		},
 		bundles = {},
 	},
 
