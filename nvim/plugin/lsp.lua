@@ -126,7 +126,7 @@ require("lspconfig").sqlls.setup({
 	capabilities = capabilities,
 })
 
--- jdtls + Lombok setup for Neovim (multi-module Maven + Lombok + proper workspace import)
+-- jdtls + Lombok setup for Neovim (multi-module Maven via aggregator POM)
 local home = os.getenv("HOME")
 local jdtls = require("jdtls")
 local fmt = string.format
@@ -137,35 +137,24 @@ local jdk11 = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7/lib
 local jdk21 = "/nix/store/55qm2mvhmv7n2n6yzym1idrvnlwia73z-openjdk-21.0.5+11/lib/openjdk"
 
 -- Diagnostics config
-do
-	vim.diagnostic.config({
-		virtual_text = { prefix = "●", spacing = 2 },
-		signs = true,
-		underline = true,
-		update_in_insert = false,
-	})
-end
+vim.diagnostic.config({
+	virtual_text = { prefix = "●", spacing = 2 },
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+})
 
--- Define root by looking for parent aggregator POM first, then Git
+-- Determine project root: prefer aggregator POM, fallback to Git
 local root_dir = jdtls.setup.find_root({ "pom.xml", ".git" })
 if not root_dir then
 	return
 end
 
--- Build list of workspace folders: include root and modules
+-- Workspace directory for Eclipse data
 local project_name = vim.fn.fnamemodify(root_dir, ":t")
 local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
-local modules = vim.fn.glob(root_dir .. "/*/pom.xml", true, true)
-local workspace_folders = { { name = project_name, uri = vim.uri_from_fname(root_dir) } }
-for _, pom in ipairs(modules) do
-	local module_dir = vim.fn.fnamemodify(pom, ":h")
-	table.insert(
-		workspace_folders,
-		{ name = vim.fn.fnamemodify(module_dir, ":t"), uri = vim.uri_from_fname(module_dir) }
-	)
-end
 
--- JDTLS command
+-- JDTLS command: use JDK21 and Lombok, ensure -data is present
 local cmd = {
 	"jdtls",
 	fmt("--jvm-arg=-Dosgi.java.home=%s", jdk21),
@@ -176,7 +165,7 @@ local cmd = {
 	workspace_dir,
 }
 
--- LSP configuration
+-- LSP configuration for Java
 local config = {
 	cmd = cmd,
 	root_dir = root_dir,
@@ -184,10 +173,7 @@ local config = {
 	settings = {
 		java = {
 			home = jdk21,
-			import = { -- enable maven import
-				enabled = true,
-				maven = { downloadSources = true, downloadJavadoc = true },
-			},
+			import = { enabled = true, maven = { downloadSources = true, downloadJavadoc = true } },
 			configuration = {
 				updateBuildConfiguration = "interactive",
 				runtimes = {
@@ -205,7 +191,7 @@ local config = {
 		},
 	},
 	on_attach = function(client, bufnr)
-		-- Keymaps
+		-- Buffer-local keymaps
 		local function nmap(lhs, fn)
 			vim.keymap.set("n", lhs, fn, { buffer = bufnr, silent = true, noremap = true })
 		end
@@ -216,7 +202,7 @@ local config = {
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
 }
 
--- Auto-start/attach for Java files
+-- Auto-start or attach JDTLS for Java files
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
 	pattern = "*.java",
 	callback = function()
