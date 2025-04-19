@@ -214,9 +214,22 @@ local config = {
 }
 
 -- Auto-start or attach JDTLS for Java files
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-	pattern = "*.java",
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "java",
 	callback = function()
-		jdtls.start_or_attach(config)
+		-- Ensure this only runs once per buffer
+		local bufnr = vim.api.nvim_get_current_buf()
+		if vim.b[bufnr].jdtls_attached then
+			return
+		end
+		vim.b[bufnr].jdtls_attached = true
+
+		-- Check if we're inside a valid project
+		if not config.root_dir then
+			vim.notify("No project root found for JDTLS", vim.log.levels.WARN)
+			return
+		end
+
+		require("jdtls").start_or_attach(config)
 	end,
 })
