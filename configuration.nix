@@ -1,18 +1,20 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs,lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   nixpkgs.overlays = [
-  (self: super: {
-     noto-fonts-cjk = super.noto-fonts-cjk-sans;
-    # utillinux = super.util-linux;
-  })
-];
+    (self: super: {
+      noto-fonts-cjk = super.noto-fonts-cjk-sans;
+      # utillinux = super.util-linux;
+    })
+  ];
 
-# Include the results of the hardware scan.
+  # Include the results of the hardware scan.
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -20,9 +22,9 @@
 
   # Enable perf_event_paranoid and kptr_restrict, for jprofiler
   boot.kernel.sysctl = {
-  "kernel.perf_event_paranoid" = 1;
-  "kernel.kptr_restrict" = 0;
-};
+    "kernel.perf_event_paranoid" = 1;
+    "kernel.kptr_restrict" = 0;
+  };
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -34,13 +36,11 @@
   # Enable networking
   networking.networkmanager.enable = true;
   networking.nameservers = [
-  "1.1.1.1"  # Cloudflare
-  "1.0.0.1"  # Cloudflare secondary
-  "8.8.8.8"  # Google
-  "8.8.4.4"  # Google secondary
-];
-
-
+    "1.1.1.1" # Cloudflare
+    "1.0.0.1" # Cloudflare secondary
+    "8.8.8.8" # Google
+    "8.8.4.4" # Google secondary
+  ];
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -90,7 +90,7 @@
   users.users.hubert = {
     isNormalUser = true;
     description = "hubert";
-    extraGroups = [ "networkmanager" "wheel" "docker" "wireshark" "postgres" "video"];
+    extraGroups = ["networkmanager" "wheel" "docker" "wireshark" "postgres" "video"];
     packages = with pkgs; [
       kdePackages.kate
       # thunderbird
@@ -100,9 +100,7 @@
   # Install firefox.
   programs.firefox.enable = true;
   programs.steam.enable = true;
-  programs.hyprland.withUWSM  = true;
-
-
+  programs.hyprland.withUWSM = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -111,17 +109,16 @@
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
-
-    jq  #lightweight commandline json parser
-    fd  #Simple, fast and user-friendly alternative to find
+    jq #lightweight commandline json parser
+    fd #Simple, fast and user-friendly alternative to find
     jupyter
     cht-sh
     gnome-multi-writer
 
+    eclipses.eclipse-jee
 
     dbeaver-bin
     wpsoffice
-
 
     graphicsmagick
     git-credential-manager
@@ -132,16 +129,14 @@
     poppler
     poppler_utils
 
-
-    pnpm          # Fast, disk space efficient package manager for JavaScript
+    pnpm # Fast, disk space efficient package manager for JavaScript
 
     go
     direnv
 
     autoAddDriverRunpath
     autoFixElfFiles
-    # cudaPackages_12_2 
-
+    # cudaPackages_12_2
 
     gzip
     ntp
@@ -157,14 +152,14 @@
     xdg-desktop-portal-wlr
     waybar
     swaybg
-    swayidle                          # These are things needed for hyprland i guess lumaooooooooo
+    swayidle # These are things needed for hyprland i guess lumaooooooooo
     swaylock
     mako
     hyprland
     hyprpaper
     hyprlock
     egl-wayland
-    xorg.xrandr    
+    xorg.xrandr
     weston
     alacritty
     polkit
@@ -174,7 +169,6 @@
     lightdm
     wofi
     gnome-keyring
-
 
     nodePackages.nodemon
     nodePackages.eslint
@@ -190,7 +184,7 @@
     vscode-langservers-extracted
     nginx-language-server
     htmlhint
-    sourcekit-lsp  #Language Server Protocol implementation for Swift and C-based languages.
+    sourcekit-lsp #Language Server Protocol implementation for Swift and C-based languages.
     sonarlint-ls #SonarLint Language Server
     semgrep #Static analysis tool for finding bugs and enforcing code standards.
     stylua #lua formatter
@@ -201,12 +195,12 @@
     vscode-js-debug #JavaScript Debugger for Visual Studio Code
     vscode-extensions.firefox-devtools.vscode-firefox-debug #Firefox Debugger for Visual Studio Code
 
-    yarn 
+    yarn
 
-    vim 
+    vim
     zoxide
     lsof
-    wget 
+    wget
     xclip
     kdePackages.konsole
     kdePackages.dolphin
@@ -222,12 +216,11 @@
     jdk11
     jdk21
     gcc
-    gnumake 
+    gnumake
     nix-index
     util-linux
     zip
     unzip
-
 
     gnupg
     pinentry-all
@@ -241,37 +234,33 @@
     ranger
 
     inotify-tools # help watch a file and reload when it changes
-# gtkmm3 
-# upower
-# cacert
-evolution
-evolution-ews
-pass
-age
-zoxide
+    # gtkmm3
+    # upower
+    # cacert
+    evolution
+    evolution-ews
+    pass
+    age
+    zoxide
 
-rofi
+    rofi
 
-  i3  # tiling window manager for x11
+    i3 # tiling window manager for x11
 
-  pyright  #Type checker for the Python language.
+    pyright #Type checker for the Python language.
 
+    clang
+    ccls
+    libclang #c , cpp , c++
+    glibc.dev # installed dev , has c system headers like stdio.h
 
-  clang
-  ccls
-  libclang   #c , cpp , c++
-  glibc.dev  # installed dev , has c system headers like stdio.h
+    sonar-scanner-cli
 
-
-  sonar-scanner-cli
-
-  zellij
-  slack
-
+    zellij
+    slack
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -287,9 +276,8 @@ rofi
       ExecStart = "/home/hubert/nixos/home-manager-config-files/waybar/createSymlink.sh";
       RemainAfterExit = true;
     };
-    wantedBy = [ "default.target" ];
+    wantedBy = ["default.target"];
   };
-
 
   # List services that you want to enable:
 
@@ -312,86 +300,79 @@ rofi
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
-
-
-  environment.shells = with pkgs; [ zsh ];
+  environment.shells = with pkgs; [zsh];
   environment.variables = {
     JAVA_HOME = "${pkgs.jdk21}/lib/openjdk";
     JAVA_HOME11 = "${pkgs.jdk11}/lib/openjdk";
   };
   environment.shellInit = ''
-  export JAVA_HOME=${pkgs.jdk21}/lib/openjdk
-  export JAVA_HOME11=${pkgs.jdk11}/lib/openjdk
-  export PATH=${pkgs.jdk21}/bin:$PATH
-  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+    export JAVA_HOME=${pkgs.jdk21}/lib/openjdk
+    export JAVA_HOME11=${pkgs.jdk11}/lib/openjdk
+    export PATH=${pkgs.jdk21}/bin:$PATH
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   '';
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
-  programs.tmux.enable=true;
+  programs.tmux.enable = true;
 
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_15;  # or your desired version
+    package = pkgs.postgresql_15; # or your desired version
     settings = {
-      listen_addresses =lib.mkForce "*";
+      listen_addresses = lib.mkForce "*";
     };
-    authentication = '' 
-    host all all 0.0.0.0/0 md5
+    authentication = ''
+      host all all 0.0.0.0/0 md5
     '';
   };
-  networking.firewall.allowedTCPPorts = [ 5432 ];
+  networking.firewall.allowedTCPPorts = [5432];
 
+  #things needed for hyprland i guess and i was wrong i guess idk
+  services.dbus.enable = true;
+  environment.sessionVariables = {
+    #Hint electron apps to use wayland
+    NIXOS_OZONE_WL = "1";
 
-#things needed for hyprland i guess and i was wrong i guess idk
-services.dbus.enable  = true;
-environment.sessionVariables = {
-  #Hint electron apps to use wayland
-  NIXOS_OZONE_WL = "1";
-
-  EDITOR = "nvim";
-  PAGER = "less";
-  BROWSER = "firefox";
-  FILE_MANAGER = "ranger";
-  PDF_VIEWER = "zathura";
-  MUSIC_PLAYER = "mpv";
-  TERMINAL = "alacritty";
-};
-xdg.portal.enable = true;
-xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-
-# programs.waybar.enable = true;
-
-programs.neovim.enable = true;
-
-services.gnome.gnome-keyring = {
-  enable = true;
-};
-
-
-
-
-services.dbus.packages = [ pkgs.gcr ];
-services.pcscd.enable = true;
-programs.gnupg.agent = {
-  enable = true;
-  enableSSHSupport = true;
-  settings = {
-    default-cache-ttl = 600;
+    EDITOR = "nvim";
+    PAGER = "less";
+    BROWSER = "firefox";
+    FILE_MANAGER = "ranger";
+    PDF_VIEWER = "zathura";
+    MUSIC_PLAYER = "mpv";
+    TERMINAL = "alacritty";
   };
-};
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
-fonts.packages= with pkgs; [
+  # programs.waybar.enable = true;
+
+  programs.neovim.enable = true;
+
+  services.gnome.gnome-keyring = {
+    enable = true;
+  };
+
+  services.dbus.packages = [pkgs.gcr];
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    settings = {
+      default-cache-ttl = 600;
+    };
+  };
+
+  fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     corefonts
-  noto-fonts
-  noto-fonts-cjk
-  noto-fonts-emoji
-  liberation_ttf
-  fira-code
-  fira-code-symbols
-  mplus-outline-fonts.githubRelease
-  dina-font
-  proggyfonts
-];
-
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
+  ];
 }
