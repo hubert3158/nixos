@@ -188,6 +188,9 @@ local config = {
 					downloadJavadoc = true,
 				},
 			},
+			autoBuild = {
+				enabled = true,
+			},
 			configuration = {
 				compiler = {
 					apt = {
