@@ -143,14 +143,6 @@ local bundles = {
 	javax_annotation,
 }
 
--- Diagnostics config
-vim.diagnostic.config({
-	virtual_text = { prefix = "●", spacing = 2 },
-	signs = true,
-	underline = true,
-	update_in_insert = false,
-})
-
 -- Determine project root: prefer aggregator POM, fallback to Git
 local root_dir = jdtls.setup.find_root({ "pom.xml", ".git" })
 if not root_dir then
@@ -217,16 +209,8 @@ local config = {
 			},
 		},
 	},
-	on_attach = function(client, bufnr)
-		-- Buffer-local keymaps
-		local function nmap(lhs, fn)
-			vim.keymap.set("n", lhs, fn, { buffer = bufnr, silent = true, noremap = true })
-		end
-		nmap("gd", vim.lsp.buf.definition)
-		nmap("gr", vim.lsp.buf.references)
-		nmap("K", vim.lsp.buf.hover)
-	end,
-	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+	on_attach = on_attach,
+	capabilities = capabilities,
 }
 
 -- Auto-start or attach JDTLS for Java files
