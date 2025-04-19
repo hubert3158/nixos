@@ -133,8 +133,15 @@ local fmt = string.format
 
 -- Paths & JDK installations
 local lombok = home .. "/nixos/dotfiles/lombok-1.18.38.jar"
+-- local jakarta_annotation = home .. "/nixos/dotfiles/jakarta.annotation-api-1.3.5.jar"
+local javax_annotation = home .. "/nixos/dotfiles/javax.annotation-api-1.3.2.jar"
 local jdk11 = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7/lib/openjdk"
 local jdk21 = "/nix/store/55qm2mvhmv7n2n6yzym1idrvnlwia73z-openjdk-21.0.5+11/lib/openjdk"
+
+-- Define the bundles
+local bundles = {
+	javax_annotation,
+}
 
 -- Diagnostics config
 vim.diagnostic.config({
@@ -154,13 +161,14 @@ end
 local project_name = vim.fn.fnamemodify(root_dir, ":t")
 local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
 
--- JDTLS command: use JDK21 and Lombok, ensure -data is present
+-- Use JDK21 to run JDTLS with proper module setup
 local cmd = {
 	"jdtls",
 	fmt("--jvm-arg=-Dosgi.java.home=%s", jdk21),
-	fmt("--jvm-arg=--add-modules=ALL-SYSTEM"),
+	"--jvm-arg=--add-opens=java.base/java.lang=ALL-UNNAMED",
+	"--jvm-arg=--add-opens=java.base/java.util=ALL-UNNAMED",
 	fmt("--jvm-arg=-javaagent:%s", lombok),
-	fmt("--jvm-arg=-Xbootclasspath/a:%s", lombok),
+	"--jvm-arg=-Djdt.ls.lombokSupport=true",
 	"-data",
 	workspace_dir,
 }
@@ -169,12 +177,28 @@ local cmd = {
 local config = {
 	cmd = cmd,
 	root_dir = root_dir,
-	init_options = { bundles = {} },
+	init_options = { bundles = bundles },
 	settings = {
 		java = {
 			home = jdk21,
-			import = { enabled = true, maven = { downloadSources = true, downloadJavadoc = true } },
+			import = {
+				enabled = true,
+				maven = {
+					downloadSources = true,
+					downloadJavadoc = true,
+				},
+			},
 			configuration = {
+				compiler = {
+					apt = {
+						enabled = true,
+						options = { "-Xlint:-processing" },
+					},
+					annotationProcessing = {
+						enabled = false,
+						args = { "-proc:none" },
+					},
+				},
 				updateBuildConfiguration = "interactive",
 				runtimes = {
 					{ name = "JavaSE-11", path = jdk11 },
@@ -182,7 +206,7 @@ local config = {
 				},
 				checkProjectCompliance = false,
 			},
-			project = { referencedLibraries = { lombok } },
+			project = { referencedLibraries = { lombok, javax_annotation } },
 			annotationProcessing = {
 				enabled = true,
 				factoryPath = { lombok },
