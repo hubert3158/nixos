@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.kitty = {
     enable = true;
     font = {
@@ -7,6 +7,8 @@
       package = pkgs.nerd-fonts.fira-code;
     };
     settings = {
+      shell = "${pkgs.zsh}/bin/zsh --login";
+
       scrollback_lines = 10000;
       enable_audio_bell = false;
       update_check_interval = 0;
@@ -49,4 +51,3 @@
     };
   };
 }
-
