@@ -11,5 +11,6 @@ require("conform").setup({
 		json = { "prettierd", "prettier", stop_after_first = true },
 		sql = { "sqlformat" },
 		nix = { "alejandra" },
+		java = { "google-java-format" },
 	},
 })
