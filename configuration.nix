@@ -191,6 +191,8 @@
     alejandra #nix formatter
     sqls #sql language server
     kulala-fmt #http formatter
+    astyle #Source code indenter, formatter, and beautifier for C, C++, C# and Java.
+    google-java-format
 
     vscode-js-debug #JavaScript Debugger for Visual Studio Code
     vscode-extensions.firefox-devtools.vscode-firefox-debug #Firefox Debugger for Visual Studio Code

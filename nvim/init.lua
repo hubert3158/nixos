@@ -471,6 +471,25 @@ vim.api.nvim_set_keymap(
 	":lua require('dap').step_out()<CR>",
 	{ noremap = true, silent = true, desc = "DAP Step Out" }
 )
+-- DAP Widgets (under <leader>d prefix)
+vim.api.nvim_set_keymap(
+	"n",
+	"eh",
+	":lua require('dap.ui.widgets').hover()<CR>",
+	{ noremap = true, silent = true, desc = "DAP Hover Variable" }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"es",
+	":lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>",
+	{ noremap = true, silent = true, desc = "DAP Show Scopes" }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"ef",
+	":lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.frames)<CR>",
+	{ noremap = true, silent = true, desc = "DAP Show Frames" }
+)
 
 vim.api.nvim_set_keymap(
 	"n",
