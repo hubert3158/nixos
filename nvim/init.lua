@@ -474,45 +474,45 @@ vim.api.nvim_set_keymap(
 -- DAP Widgets (under <leader>d prefix)
 vim.api.nvim_set_keymap(
 	"n",
-	"eh",
+	"<leader>eh",
 	":lua require('dap.ui.widgets').hover()<CR>",
 	{ noremap = true, silent = true, desc = "DAP Hover Variable" }
 )
 vim.api.nvim_set_keymap(
 	"n",
-	"es",
+	"<leader>es",
 	":lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.scopes)<CR>",
 	{ noremap = true, silent = true, desc = "DAP Show Scopes" }
 )
 vim.api.nvim_set_keymap(
 	"n",
-	"ef",
+	"<leader>ef",
 	":lua local widgets=require('dap.ui.widgets');widgets.centered_float(widgets.frames)<CR>",
 	{ noremap = true, silent = true, desc = "DAP Show Frames" }
 )
 
 vim.api.nvim_set_keymap(
 	"n",
-	"ed",
+	"<leader>ed",
 	":lua require('dap').disconnect()<CR>",
 	{ noremap = true, silent = true, desc = "DAP Disconnect" }
 )
 -- Breakpoints: toggle breakpoint, conditional breakpoint, and clear all breakpoints
 vim.api.nvim_set_keymap(
 	"n",
-	"eb",
+	"<leader>eb",
 	":lua require('dap').toggle_breakpoint()<CR>",
 	{ noremap = true, silent = true, desc = "Toggle Breakpoint" }
 )
 vim.api.nvim_set_keymap(
 	"n",
-	"eB",
+	"<leader>eB",
 	":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
 	{ noremap = true, silent = true, desc = "Set Conditional Breakpoint" }
 )
 vim.api.nvim_set_keymap(
 	"n",
-	"eC",
+	"<leader>eC",
 	":lua require('dap').clear_breakpoints()<CR>",
 	{ noremap = true, silent = true, desc = "Clear All Breakpoints" }
 )
@@ -520,7 +520,7 @@ vim.api.nvim_set_keymap(
 -- Open DAP REPL
 vim.api.nvim_set_keymap(
 	"n",
-	"er",
+	"<leader>er",
 	":lua require('dap').repl.open()<CR>",
 	{ noremap = true, silent = true, desc = "Open DAP REPL" }
 )
