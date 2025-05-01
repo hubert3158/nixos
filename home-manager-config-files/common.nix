@@ -187,7 +187,7 @@
     # zellij attach --create local
     # eval "$(/nix/store/2h1mvikc160c7i8kzvp9d289pvs1z6vx-zellij-0.40.1/bin/zellij attach --create local)"
     # zellij attach --create local
-    initExtra = ''
+    initContent = ''
       neofetch
     '';
     profileExtra = ''
@@ -420,7 +420,7 @@
   services.gpg-agent.enableZshIntegration = true;
   services.gpg-agent.enableSshSupport = true;
 
-  services.gpg-agent.pinentryPackage = pkgs.pinentry-gnome3;
+  services.gpg-agent.pinentry.package = pkgs.pinentry-gnome3;
 
   programs.neomutt = {
     enable = true;
