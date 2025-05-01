@@ -185,7 +185,7 @@
     nginx-language-server
     htmlhint
     sourcekit-lsp #Language Server Protocol implementation for Swift and C-based languages.
-    sonarlint-ls #SonarLint Language Server
+    # sonarlint-ls #SonarLint Language Server
     semgrep #Static analysis tool for finding bugs and enforcing code standards.
     stylua #lua formatter
     alejandra #nix formatter
