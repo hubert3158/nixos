@@ -72,6 +72,7 @@
     figlet
 
     google-chrome
+    brave
     jetbrains.idea-ultimate
     jetbrains.datagrip
     # jetbrains.pycharm-professional
