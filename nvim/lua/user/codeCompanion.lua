@@ -31,6 +31,17 @@ require("codecompanion").setup({
 				},
 			})
 		end,
+		gemini = function()
+			return require("codecompanion.adapters").extend("gemini", {
+				env = {
+					api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/gemini.gpg",
+				},
+				params = {
+					model = "gemini-2.5-flash-preview-04-17",
+					temperature = 0.1,
+				},
+			})
+		end,
 	},
 	cache = {
 		enabled = true,
