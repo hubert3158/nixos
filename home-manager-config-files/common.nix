@@ -45,6 +45,7 @@
 
   home.packages = with pkgs; [
     # Add your user packages here
+    wrk #HTTP benchmarking tool.
     keychain
 
     pgadmin
