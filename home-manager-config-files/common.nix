@@ -89,7 +89,6 @@
     helix
     zsh-autocomplete
     mtr
-    flameshot
     grim
     slurp
     postman

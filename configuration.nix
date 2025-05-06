@@ -109,6 +109,7 @@
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
+    flameshot
     jq #lightweight commandline json parser
     fd #Simple, fast and user-friendly alternative to find
     jupyter
