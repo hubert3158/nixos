@@ -2,9 +2,9 @@
   programs.kitty = {
     enable = true;
     font = {
-      name = "FiraCode Nerd Font";
+      name = "Monofur Nerd Font";
       size = 14;
-      package = pkgs.nerd-fonts.fira-code;
+      package = pkgs.nerd-fonts.monofur;
     };
     settings = {
       shell = "${pkgs.zsh}/bin/zsh --login";
