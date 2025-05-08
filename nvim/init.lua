@@ -16,6 +16,12 @@ g.sqlite_clib_path = require("luv").os_getenv("LIBSQLITE")
 
 cmd.filetype("plugin", "indent", "on")
 cmd.packadd("cfilter") -- Allows filtering the quickfix list with :cfdo
+-- Colorscheme
+cmd("colorscheme gruvbox")
+cmd([[
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight NonText guibg=NONE ctermbg=NONE
+]])
 
 -- General settings
 opt.compatible = false
