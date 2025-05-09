@@ -41,7 +41,37 @@
     "8.8.8.8" # Google
     "8.8.4.4" # Google secondary
   ];
+  fileSystems."/nix/store" = {
+    device = "/dev/disk/by-uuid/9c498fa9-290c-44ef-914f-aa0987369009";
+    fsType = "ext4";
+    options = ["defaults"];
+  };
 
+  # Display manager and keymap
+  services.xserver = {
+    enable = true;
+    xkb.layout = "us";
+    xkb.variant = "";
+  };
+  services.displayManager.sddm.enable = true;
+
+  programs.hyprland.enable = true;
+
+  hardware = {
+    graphics = {
+      enable = true;
+      extraPackages = with pkgs; [
+        vaapiIntel
+        vaapiVdpau
+        libvdpau
+      ];
+    };
+    bluetooth.enable = true;
+  };
+
+  networking.firewall.allowedTCPPorts = [3000 8080 8081 993 5678 5000 8083];
+
+  # services.intune.enable = true;
   # Set your time zone.
   time.timeZone = "America/New_York";
 
@@ -328,8 +358,6 @@
       host all all 0.0.0.0/0 md5
     '';
   };
-  networking.firewall.allowedTCPPorts = [5432];
-
   #things needed for hyprland i guess and i was wrong i guess idk
   services.dbus.enable = true;
   environment.sessionVariables = {
