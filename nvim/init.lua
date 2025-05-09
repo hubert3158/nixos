@@ -51,6 +51,18 @@ vim.api.nvim_create_autocmd("FocusLost", {
 	command = "silent! wa",
 })
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	callback = function(args)
+		require("conform").format({ bufnr = args.buf })
+	end,
+})
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+	callback = function()
+		require("lint").try_lint()
+	end,
+})
+
 require("user.mason")
 require("user.nvimLint")
 require("user.conform")
@@ -123,18 +135,12 @@ vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFind<CR>", { silent = true,
 vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>", { silent = true, desc = "Toggle NERDTree" })
 
 -- NeoFormat keybinding
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>nn",
-	":lua print('Formatting...'); require('conform').format()<CR>",
-	{ noremap = true, silent = true, desc = "[N]eo[F]ormat (Replaced with Conform)" }
-)
 
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>nl",
-	":lua require('lint').try_lint()<CR>",
-	{ noremap = true, silent = true, desc = "[N]vim-[L]int Run" }
+	"<leader>nn",
+	":lua print('Linting and Formatting...'); require('lint').try_lint(); require('conform').format({ async = false, lsp_fallback = true })<CR>",
+	{ noremap = true, silent = false, desc = "Lint then Format with Conform" }
 )
 
 -- neogen
@@ -526,24 +532,6 @@ vim.api.nvim_set_keymap(
 	":lua require('dap').repl.open()<CR>",
 	{ noremap = true, silent = true, desc = "Open DAP REPL" }
 )
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = "*",
-	callback = function(args)
-		require("conform").format({ bufnr = args.buf })
-	end,
-})
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-	callback = function()
-		-- try_lint without arguments runs the linters defined in `linters_by_ft`
-		-- for the current filetype
-		require("lint").try_lint()
-
-		-- You can call `try_lint` with a linter name or a list of names to always
-		-- run specific linters, independent of the `linters_by_ft` configuration
-		-- require("lint").try_lint("cspell")
-	end,
-})
 
 -- Miscellaneous keybindings
 vim.api.nvim_set_keymap(
