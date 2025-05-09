@@ -1,4 +1,5 @@
-local on_attach = function(client, bufnr)
+local util = require("lspconfig.util")
+local general_on_attach = function(client, bufnr)
 	local bufmap = function(keys, func)
 		vim.keymap.set("n", keys, func, { buffer = bufnr })
 	end
@@ -30,15 +31,13 @@ local on_attach = function(client, bufnr)
 	-- Telescope Integration
 	bufmap("gs", require("telescope.builtin").lsp_document_symbols)
 end
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+local general_capabilities = vim.lsp.protocol.make_client_capabilities()
+general_capabilities = require("cmp_nvim_lsp").default_capabilities(general_capabilities)
 
 require("lspconfig").lua_ls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
-	root_dir = function()
-		return vim.loop.cwd()
-	end,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
+	root_dir = util.root_pattern(".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git"),
 	cmd = { "lua-language-server" },
 	settings = {
 		Lua = {
@@ -49,72 +48,85 @@ require("lspconfig").lua_ls.setup({
 })
 
 require("lspconfig").html.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 require("lspconfig").bashls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 
 require("lspconfig").zls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 
 require("lspconfig").eslint.setup({
+	-- This 'on_attach' is specific to ESLint
 	on_attach = function(client, bufnr)
-		-- Ensure keybindings and other LSP-specific features work
-		if type(on_attach) == "function" then
-			on_attach(client, bufnr)
-		end
+		general_on_attach(client, bufnr)
+
+		-- 2. Add ESLint-specific behavior
+		print("ESLint specific on_attach: Setting up EslintFixAll for buffer: " .. bufnr) -- For debugging
+
+		-- It's good practice to put autocommands in a group so they can be cleared.
+		-- Create a unique group name per buffer to avoid issues if the buffer is reloaded.
+		local augroup_name = "LspEslintFixOnSave_" .. bufnr
+		vim.api.nvim_create_augroup(augroup_name, { clear = true })
+
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			group = augroup_name,
+			buffer = bufnr,
+			command = "EslintFixAll",
+			desc = "Run EslintFixAll on save for this buffer (ESLint LSP)",
+		})
 	end,
-	capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
-	root_dir = vim.fs.dirname(vim.fs.find("package.json", { path = startpath, upward = true })[1]),
+	capabilities = general_capabilities,
+	-- Any other ESLint specific settings can go here
+	-- settings = { ... }
 })
 
 require("lspconfig").sourcekit.setup({ -- c++
-	on_attach = on_attach,
-	capabilities = capabilities,
+	capabilities = general_capabilities,
 })
 
 require("lspconfig").clangd.setup({ -- c
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 
 require("lspconfig").ts_ls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 	cmd = { "typescript-language-server", "--stdio" },
 })
 
 require("lspconfig").pyright.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 
 require("lspconfig").cssls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 
 require("lspconfig").jsonls.setup({ -- this has been replaced by conform
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 require("lspconfig").nginx_language_server.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 
 require("lspconfig").nil_ls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 require("lspconfig").sqlls.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 })
 
 -- jdtls + Lombok setup for Neovim (multi-module Maven via aggregator POM)
@@ -200,8 +212,8 @@ local config = {
 			},
 		},
 	},
-	on_attach = on_attach,
-	capabilities = capabilities,
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 }
 
 -- Auto-start or attach JDTLS for Java files
