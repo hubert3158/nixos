@@ -91,7 +91,7 @@
 
             # Import user-specific settings for 'work'
             # This file should be a function accepting { pkgs, lib, config, ... }
-            home-manager.users.hubert = import ./home-manager-work.nix;
+            home-manager.users.hubert = import home-manager-config-files/common.nix;
           }
         ];
       };
@@ -120,7 +120,7 @@
 
             # Import user-specific settings for 'home'
             # This file should be a function accepting { pkgs, lib, config, ... }
-            home-manager.users.hubert = import ./home-manager-home.nix;
+            home-manager.users.hubert = import home-manager-config-files/common.nix;
           }
         ];
       };
