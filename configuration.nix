@@ -223,6 +223,7 @@
     semgrep # Static analysis
     sqls # SQL Language Server
     hadolint # Dockerfile linter (keep if you use it for linting)
+    nil
 
     # === Formatters ===
     stylua # Lua

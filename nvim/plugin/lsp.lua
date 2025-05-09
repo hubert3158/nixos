@@ -107,6 +107,11 @@ require("lspconfig").nginx_language_server.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 })
+
+require("lspconfig").nil_ls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
 require("lspconfig").sqlls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
