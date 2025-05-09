@@ -34,6 +34,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  nix.settings.download-buffer-size = 104857600; # 100MB
   networking.nameservers = [
     "1.1.1.1" # Cloudflare
     "1.0.0.1" # Cloudflare secondary
