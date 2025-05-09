@@ -1,7 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-    {
+{
   config,
   pkgs,
   lib,
@@ -201,32 +201,67 @@
     wofi
     gnome-keyring
 
+    nodejs # Base Node.js (or a specific version like nodejs-18_x)
     nodePackages.nodemon
     nodePackages.eslint
     nodePackages.jsonlint
     nodePackages.serve
-    nodePackages.prettier
+    nodePackages.prettier # Prettier CLI
     nodePackages.typescript-language-server
     nodePackages.pm2
     nodePackages.ts-node
-    prettierd
+    nodePackages.htmlhint # HTML linter
 
+    # === Daemons ===
+    prettierd
     eslint_d
-    vscode-langservers-extracted
+
+    # === Language Servers & Other Linters ===
+    vscode-langservers-extracted # LSP for HTML, CSS, JSON, ESLint
     nginx-language-server
-    htmlhint
-    sourcekit-lsp #Language Server Protocol implementation for Swift and C-based languages.
-    # sonarlint-ls #SonarLint Language Server
-    semgrep #Static analysis tool for finding bugs and enforcing code standards.
-    stylua #lua formatter
-    alejandra #nix formatter
-    sqls #sql language server
-    kulala-fmt #http formatter
-    astyle #Source code indenter, formatter, and beautifier for C, C++, C# and Java.
-    google-java-format #Java code formatter, based on Google Java Style Guide.
-    pgformatter #PostgreSQL SQL formatter
-    isort #Python utility for sorting imports
-    black #Python code formatter
+    sourcekit-lsp # LSP for Swift and C-based languages
+    semgrep # Static analysis
+    sqls # SQL Language Server
+    hadolint # Dockerfile linter (keep if you use it for linting)
+
+    # === Formatters ===
+    stylua # Lua
+    alejandra # Nix
+    kulala-fmt # HTTP
+    # astyle # C, C++, C#, Java formatter (clang-format is often preferred for C/C++)
+    google-java-format # Java
+    pgformatter # Provides pg_format for PostgreSQL
+    shfmt # Shell scripts
+    taplo # TOML
+    dfmt # Dockerfile formatter (recommended over hadolint for formatting)
+    sqlfluff # SQL formatter/linter
+
+    # --- C/C++ ---
+    rocmPackages_5.llvm.clang-tools-extra
+
+    # --- Go ---
+    go # Base Go installation (provides gofmt)
+    gotools # Provides goimports
+
+    # --- Python ---
+    python3 # Or a specific version like python311
+    python3Packages.isort
+    python3Packages.black
+
+    # --- Rust ---
+    # Option 1: Install rustup and manage toolchain components (rustfmt, rust-analyzer) via rustup
+    # rustup
+    # After installing rustup, run:
+    # rustup default stable (or nightly)
+    # rustup component add rustfmt
+    # rustup component add rust-analyzer
+
+    # Option 2: Install components directly via Nix (simpler if you don't need rustup's flexibility)
+    rustfmt
+    rust-analyzer # Rust LSP (often bundles or ensures rustfmt is found)
+
+    # --- Terraform ---
+    terraform # Provides terraform fmt
 
     vscode-js-debug #JavaScript Debugger for Visual Studio Code
     vscode-extensions.firefox-devtools.vscode-firefox-debug #Firefox Debugger for Visual Studio Code
