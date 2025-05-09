@@ -1,7 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{
+    {
   config,
   pkgs,
   lib,
@@ -223,7 +223,10 @@
     sqls #sql language server
     kulala-fmt #http formatter
     astyle #Source code indenter, formatter, and beautifier for C, C++, C# and Java.
-    google-java-format
+    google-java-format #Java code formatter, based on Google Java Style Guide.
+    pgformatter #PostgreSQL SQL formatter
+    isort #Python utility for sorting imports
+    black #Python code formatter
 
     vscode-js-debug #JavaScript Debugger for Visual Studio Code
     vscode-extensions.firefox-devtools.vscode-firefox-debug #Firefox Debugger for Visual Studio Code
