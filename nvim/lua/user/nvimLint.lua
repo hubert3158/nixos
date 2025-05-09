@@ -1,9 +1,38 @@
-require('lint').linters_by_ft = {
-  markdown = {'markdownlint'},
-    json = {'jsonlint'},
-    html = {'htmlhint'},
-    typescript = {'eslint'},
-    javascript = {'eslint'},
-    typescriptreact = {'eslint'},
-    javascriptreact = {'eslint'},
+require("lint").linters_by_ft = {
+	markdown = { "markdownlint" }, -- No specific markdown LSP in your list; markdownlint is standard.
+	yaml = { "yamllint" }, -- No specific YAML LSP in your list; yamllint is standard.
+	dockerfile = { "hadolint" }, -- No specific Dockerfile LSP in your list; hadolint is standard.
+
+	-- 2. Linters that strongly complement your existing LSPs.
+
+	html = { "htmlhint" }, -- `htmlhint` offers more rules than basic `vscode-html-ls`.
+	css = { "stylelint" }, -- `stylelint` is much more powerful for CSS/SCSS/Less than `vscode-css-ls`.
+	scss = { "stylelint" },
+	less = { "stylelint" },
+
+	python = { "flake8" }, -- `flake8` is a standard complement to `pyright` (LSP) for style/bugs.
+
+	sh = { "shellcheck" }, -- `shellcheck` is more comprehensive than `bashls` alone.
+	bash = { "shellcheck" },
+
+	typescript = { "eslint_d" },
+	javascript = { "eslint_d" },
+	typescriptreact = { "eslint_d" },
+	javascriptreact = { "eslint_d" },
+
+	-- For Go: If you add `gopls` (Go LSP), it's very comprehensive.
+	-- `golangci-lint` is a great meta-linter if `gopls` isn't used or if you want its specific aggregation.
+	-- If you use `gopls` and it provides good linting, you can comment this out.
+	go = { "golangci-lint" },
+
+	-- For Terraform: If you add `terraform-ls`, it provides linting.
+	-- `tflint` is a powerful dedicated linter that can complement or replace LSP linting.
+	-- If `terraform-ls` is good, you might comment this out.
+	terraform = { "tflint" },
+
+	-- For JSON: `jsonls` (LSP) provides validation. `jsonlint` is also a validator.
+	-- This is a bit redundant but harmless. You could comment this out if `jsonls` is sufficient.
+	json = { "jsonlint" },
+
+	sql = { "sqlfluff" }, -- (Uncomment if you install and want to use sqlfluff for linting)
 }
