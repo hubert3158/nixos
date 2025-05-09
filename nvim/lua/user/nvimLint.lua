@@ -15,24 +15,7 @@ require("lint").linters_by_ft = {
 	sh = { "shellcheck" }, -- `shellcheck` is more comprehensive than `bashls` alone.
 	bash = { "shellcheck" },
 
-	typescript = { "eslint_d" },
-	javascript = { "eslint_d" },
-	typescriptreact = { "eslint_d" },
-	javascriptreact = { "eslint_d" },
-
-	-- For Go: If you add `gopls` (Go LSP), it's very comprehensive.
-	-- `golangci-lint` is a great meta-linter if `gopls` isn't used or if you want its specific aggregation.
-	-- If you use `gopls` and it provides good linting, you can comment this out.
-	go = { "golangci-lint" },
-
-	-- For Terraform: If you add `terraform-ls`, it provides linting.
-	-- `tflint` is a powerful dedicated linter that can complement or replace LSP linting.
-	-- If `terraform-ls` is good, you might comment this out.
 	terraform = { "tflint" },
-
-	-- For JSON: `jsonls` (LSP) provides validation. `jsonlint` is also a validator.
-	-- This is a bit redundant but harmless. You could comment this out if `jsonls` is sufficient.
-	json = { "jsonlint" },
 
 	sql = { "sqlfluff" }, -- (Uncomment if you install and want to use sqlfluff for linting)
 }
