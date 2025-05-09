@@ -257,8 +257,9 @@
     # rustup component add rust-analyzer
 
     # Option 2: Install components directly via Nix (simpler if you don't need rustup's flexibility)
-    rustfmt
+    rustfmt # Rust code formatter
     rust-analyzer # Rust LSP (often bundles or ensures rustfmt is found)
+    rustup # Rust toolchain manager (optional, but useful for managing toolchains)
 
     # --- Terraform ---
     terraform # Provides terraform fmt

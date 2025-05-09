@@ -129,6 +129,11 @@ require("lspconfig").sqlls.setup({
 	capabilities = general_capabilities,
 })
 
+require("lspconfig").rust_analyzer.setup({
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
+})
+
 -- jdtls + Lombok setup for Neovim (multi-module Maven via aggregator POM)
 local home = os.getenv("HOME")
 local jdtls = require("jdtls")
