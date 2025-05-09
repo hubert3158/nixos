@@ -32,7 +32,7 @@ require("conform").setup({
 		nix = { "alejandra" },
 		java = { "google-java-format" },
 		toml = { "taplo" },
-		dockerfile = { "hadolint" },
+		dockerfile = { "dfmt" },
 		terraform = { "terraform_fmt" },
 	},
 
