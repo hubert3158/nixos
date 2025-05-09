@@ -23,17 +23,12 @@ local on_attach = function(client, bufnr)
 		vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
 	end) -- Go to the next error diagnostic
 	-- Show diagnostic float at cursor
-	bufmap("<leader>e", function()
+	bufmap("<leader>ee", function()
 		vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
 	end)
 
 	-- Telescope Integration
 	bufmap("gs", require("telescope.builtin").lsp_document_symbols)
-
-	-- Formatting
-	vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-		vim.lsp.buf.format()
-	end, {})
 end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
@@ -73,18 +68,9 @@ require("lspconfig").eslint.setup({
 		if type(on_attach) == "function" then
 			on_attach(client, bufnr)
 		end
-
-		-- Auto-fix ESLint issues before saving the file
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			buffer = bufnr,
-			callback = function()
-				vim.lsp.buf.format({ async = false }) -- Use LSP's built-in formatting
-			end,
-		})
 	end,
 	capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
 	root_dir = vim.fs.dirname(vim.fs.find("package.json", { path = startpath, upward = true })[1]),
-	-- cmd = { "vscode-eslint-language-server", "--stdio" },
 })
 
 require("lspconfig").sourcekit.setup({ -- c++
