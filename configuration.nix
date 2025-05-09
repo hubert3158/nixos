@@ -69,7 +69,7 @@
     bluetooth.enable = true;
   };
 
-  networking.firewall.allowedTCPPorts = [3000 8080 8081 993 5678 5000 8083];
+  networking.firewall.allowedTCPPorts = [3000 8080 8081 993 5678 5432 5000 8083 8085 9990];
 
   # services.intune.enable = true;
   # Set your time zone.
