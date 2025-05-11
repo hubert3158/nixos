@@ -105,9 +105,6 @@ with final.pkgs.lib; let
     codecompanion-nvim
     copilot-vim
     nvim-cmp
-    {
-      plugin = nvim-cmp;
-    }
     cmp_luasnip
     cmp-nvim-lsp
     {
@@ -125,6 +122,8 @@ with final.pkgs.lib; let
     nvim-treesitter-parsers.vim
     nvim-treesitter-parsers.javascript
     nvim-treesitter-parsers.typescript
+    nvim-treesitter-parsers.tsx
+    nvim-treesitter-parsers.csv
     nvim-treesitter-parsers.json
     nvim-treesitter-parsers.jsonc
     nvim-treesitter-parsers.c

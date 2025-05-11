@@ -436,11 +436,11 @@
     ./tmux.nix
     #./vim.nix
     # ./neovim.nix
-    ./alacritty.nix
+    # ./alacritty.nix
     ./kitty.nix
     ./xdg.nix
     ./yazi.nix
     ./ranger.nix
-    ./zellij.nix
+    # ./zellij.nix
   ];
 }
