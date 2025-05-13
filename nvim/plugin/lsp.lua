@@ -32,7 +32,9 @@ local general_on_attach = function(client, bufnr)
 	bufmap("gs", require("telescope.builtin").lsp_document_symbols)
 end
 local general_capabilities = vim.lsp.protocol.make_client_capabilities()
-general_capabilities = require("blink.cmp").get_lsp_capabilities()
+general_capabilities = require("blink.cmp").get_lsp_capabilities({
+	textDocument = { completion = { completionItem = { snippetSupport = false } } },
+})
 
 require("lspconfig").lua_ls.setup({
 	on_attach = general_on_attach,

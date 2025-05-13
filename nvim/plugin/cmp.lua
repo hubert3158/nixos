@@ -1,6 +1,5 @@
 local cmp = require("blink.cmp")
 local luasnip = require("luasnip")
--- Load friendly snippets
 require("luasnip.loaders.from_vscode").lazy_load()
 luasnip.config.setup({})
 
