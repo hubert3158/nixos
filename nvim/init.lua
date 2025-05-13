@@ -52,6 +52,13 @@ vim.api.nvim_create_autocmd("FocusLost", {
 	command = "silent! wa",
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "sql", "DBUIQuery" },
+	callback = function()
+		vim.bo.omnifunc = "" -- prevent fallback to SQLComplete
+	end,
+})
+
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	callback = function(args)

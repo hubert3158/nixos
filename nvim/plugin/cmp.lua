@@ -27,6 +27,12 @@ cmp.setup({
 			"omni",
 			"cmdline",
 		},
+		per_filetype = {
+			sql = { "snippets", "dadbod", "buffer" },
+		},
+		providers = {
+			dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+		},
 	},
 
 	fuzzy = { implementation = "prefer_rust_with_warning" },
