@@ -101,6 +101,8 @@ with final.pkgs.lib; let
       plugin = todo-comments-nvim;
       config = "lua << EOF\nrequire(\"todo-comments\").setup()\nEOF\n";
     }
+
+    blink-cmp
     codesnap-nvim
     codecompanion-nvim
     copilot-vim
