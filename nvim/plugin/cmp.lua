@@ -16,6 +16,14 @@ cmp.setup({
 		preset = "luasnip",
 	},
 	sources = {
-		default = { "lsp", "path", "buffer", "snippets" },
+		default = {
+			"lsp",
+			"path",
+			"buffer",
+			"snippets",
+			"codecompanion", -- from codecompanion.providers.completion.blink
+			"omni", -- from vim's 'omnifunc'
+			"cmdline", -- command-line source
+		},
 	},
 })
