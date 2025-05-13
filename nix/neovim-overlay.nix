@@ -105,6 +105,7 @@ with final.pkgs.lib; let
     cmp_luasnip
     luasnip
     friendly-snippets
+    vim-snippets
 
     blink-cmp
     codesnap-nvim
