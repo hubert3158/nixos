@@ -29,6 +29,10 @@ with final.pkgs.lib; let
     plenary-nvim
     harpoon2
 
+    vim-dadbod
+    vim-dadbod-ui
+    vim-dadbod-completion
+
     nvim-ufo
     # neoformat # replaced with conform
     kulala-nvim
