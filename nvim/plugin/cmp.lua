@@ -15,15 +15,19 @@ cmp.setup({
 	snippets = {
 		preset = "luasnip",
 	},
+	completion = { documentation = { auto_show = true } },
+	signature = { enabled = true },
 	sources = {
 		default = {
 			"lsp",
 			"path",
 			"buffer",
 			"snippets",
-			"codecompanion", -- from codecompanion.providers.completion.blink
-			"omni", -- from vim's 'omnifunc'
-			"cmdline", -- command-line source
+			"codecompanion",
+			"omni",
+			"cmdline",
 		},
 	},
+
+	fuzzy = { implementation = "prefer_rust_with_warning" },
 })
