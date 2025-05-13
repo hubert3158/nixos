@@ -32,7 +32,7 @@ local general_on_attach = function(client, bufnr)
 	bufmap("gs", require("telescope.builtin").lsp_document_symbols)
 end
 local general_capabilities = vim.lsp.protocol.make_client_capabilities()
-general_capabilities = require("cmp_nvim_lsp").default_capabilities(general_capabilities)
+general_capabilities = require("blink.cmp").get_lsp_capabilities()
 
 require("lspconfig").lua_ls.setup({
 	on_attach = general_on_attach,
@@ -86,7 +86,7 @@ require("lspconfig").eslint.setup({
 	-- settings = { ... }
 })
 
-require("lspconfig").sourcekit.setup({ -- c++
+require("lspconfig").sourcekit.setup({ -- c++lsp
 	capabilities = general_capabilities,
 })
 
