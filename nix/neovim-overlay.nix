@@ -102,12 +102,15 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"todo-comments\").setup()\nEOF\n";
     }
 
+    cmp_luasnip
+    luasnip
+    friendly-snippets
+
     blink-cmp
     codesnap-nvim
     codecompanion-nvim
     copilot-vim
     nvim-cmp
-    cmp_luasnip
     cmp-nvim-lsp
     {
       plugin = telescope-nvim;
@@ -148,7 +151,6 @@ with final.pkgs.lib; let
     nerdtree
     nvim-notify
     telescope-fzf-native-nvim
-    luasnip
     friendly-snippets
     lualine-nvim
     vim-nix
