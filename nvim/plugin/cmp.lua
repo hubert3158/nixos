@@ -15,6 +15,14 @@ cmp.setup({
 	snippets = {
 		preset = "luasnip",
 	},
+	cmdline = {
+		completion = {
+			trigger = { show_on_blocked_trigger_characters = {}, show_on_x_blocked_trigger_characters = {} },
+			list = { selection = { preselect = true, auto_insert = true } },
+			menu = { auto_show = true },
+			ghost_text = { enabled = true },
+		},
+	},
 	completion = { documentation = { auto_show = true } },
 	signature = { enabled = true },
 	sources = {

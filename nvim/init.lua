@@ -13,6 +13,7 @@ g.editorconfig = true
 -- let sqlite.lua (which some plugins depend on) know where to find sqlite
 g.sqlite_clib_path = require("luv").os_getenv("LIBSQLITE")
 g.copilot_enabled = false
+g.mkdp_browser = "microsoft-edge"
 -- Native plugins
 
 cmd.filetype("plugin", "indent", "on")
@@ -556,9 +557,9 @@ vim.api.nvim_set_keymap(
 )
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>mt",
-	"<cmd>Twilight<CR>",
-	{ noremap = true, silent = true, desc = "[M]isscellineous [T]wilight" }
+	"<leader>ma",
+	"<cmd>MarkdownPreviewToggle<CR>",
+	{ noremap = true, silent = true, desc = "[M]isscellineous m[A]rkdown " }
 )
 
 -- refactor
