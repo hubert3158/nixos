@@ -9,7 +9,6 @@ require("lint").linters_by_ft = {
 	css = { "stylelint" }, -- `stylelint` is much more powerful for CSS/SCSS/Less than `vscode-css-ls`.
 	scss = { "stylelint" },
 	less = { "stylelint" },
-
 	python = { "flake8" }, -- `flake8` is a standard complement to `pyright` (LSP) for style/bugs.
 
 	sh = { "shellcheck" }, -- `shellcheck` is more comprehensive than `bashls` alone.

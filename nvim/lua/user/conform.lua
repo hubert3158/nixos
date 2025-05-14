@@ -23,6 +23,7 @@ require("conform").setup({
 		rust = { "rustfmt" },
 		c = { "clang-format" },
 		cpp = { "clang-format" },
+		xml = { "xmllint" },
 		-- cs = { "csharpier" }, -- if you do C#
 		-- php = { "php-cs-fixer" }, -- if you do PHP
 		-- ruby = { "rubocop" }, -- if you do Ruby
