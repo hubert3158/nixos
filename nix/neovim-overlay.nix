@@ -36,6 +36,7 @@ with final.pkgs.lib; let
     nvim-ufo
     # neoformat # replaced with conform
     kulala-nvim
+    markdown-preview-nvim
 
     # Custom plugin configurations
     {
