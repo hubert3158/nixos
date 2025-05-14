@@ -220,6 +220,8 @@
     sqls # SQL Language Server
     hadolint # Dockerfile linter (keep if you use it for linting)
     markdownlint-cli # markdown linter
+    libxml2 #XML parsing library for C.
+
     nil
 
     # === Formatters ===
