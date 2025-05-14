@@ -129,6 +129,7 @@ with final.pkgs.lib; let
     nvim-treesitter
     nvim-treesitter-textobjects
     nvim-treesitter-parsers.vimdoc
+    nvim-treesitter-parsers.rust
     nvim-treesitter-parsers.pug
     nvim-treesitter-parsers.vim
     nvim-treesitter-parsers.javascript
