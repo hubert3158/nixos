@@ -334,6 +334,8 @@
 
     zellij
     slack
+
+    qpdf
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
