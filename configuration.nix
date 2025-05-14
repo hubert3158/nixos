@@ -286,6 +286,7 @@
     maven
     jdk11
     jdk21
+    jdk24
     gcc
     gnumake
     nix-index
@@ -375,18 +376,22 @@
 
   environment.shells = with pkgs; [zsh];
   environment.variables = {
-    JAVA_HOME = "${pkgs.jdk21}/lib/openjdk";
+    JAVA_HOME = "${pkgs.jdk24}/lib/openjdk";
     JAVA_HOME11 = "${pkgs.jdk11}/lib/openjdk";
+    JAVA_HOME21 = "${pkgs.jdk21}/lib/openjdk";
+    JAVA_HOME24 = "${pkgs.jdk24}/lib/openjdk";
   };
+
   environment.shellInit = ''
-    export JAVA_HOME=${pkgs.jdk21}/lib/openjdk
-    export JAVA_HOME11=${pkgs.jdk11}/lib/openjdk
-    export PATH=${pkgs.jdk21}/bin:$PATH
+    export PATH=$JAVA_HOME/bin:$PATH
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   '';
+
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
   programs.tmux.enable = true;
+  programs.java.enable = true;
+  programs.java.package = pkgs.jdk24;
 
   services.postgresql = {
     enable = true;
