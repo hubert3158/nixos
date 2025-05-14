@@ -30,6 +30,14 @@
       git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
     '';
     "h" = "omz_history | fzf > selected";
+    "clean-hm" = "nix-env -v --delete-generations +10 --profile ~/.local/state/nix/profiles/home-manager && nix-collect-garbage -v -d";
+    "clean-system" = "sudo nix-env -v --delete-generations +10 --profile /nix/var/nix/profiles/system && sudo nix-collect-garbage -v -d";
+    "clean-all" = ''
+      nix-env -v --delete-generations +10 --profile ~/.local/state/nix/profiles/home-manager && \
+      sudo nix-env -v --delete-generations +10 --profile /nix/var/nix/profiles/system && \
+      sudo nix-collect-garbage -v -d && \
+      sudo nix-store --optimise
+    '';
   };
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$PATH";
