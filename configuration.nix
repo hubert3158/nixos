@@ -267,6 +267,7 @@
 
     vscode-js-debug #JavaScript Debugger for Visual Studio Code
     vscode-extensions.firefox-devtools.vscode-firefox-debug #Firefox Debugger for Visual Studio Code
+    qutebrowser
 
     yarn
 
