@@ -200,7 +200,7 @@ local config = {
 						options = { "-Xlint:-processing" },
 					},
 					annotationProcessing = {
-						enabled = false,
+						enabled = true,
 						args = { "-proc:none" },
 					},
 				},
