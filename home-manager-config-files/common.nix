@@ -13,7 +13,6 @@
     "cd" = "z";
     "y" = "yazi";
     "open" = "xdg-open";
-    "lww" = "hyprctl dispatch exec waybar";
     "l" = "eza --icons --group-directories-first --git --header --time-style=iso --color=always";
     "ll" = "eza -l --icons --group-directories-first --git --header --time-style=iso --color=always";
     "la" = "eza -la --icons --group-directories-first --git --header --time-style=iso --color=always";
@@ -376,11 +375,6 @@
         "HDMI-A-1,~/nixos/images/wallpaper.png"
       ];
     };
-  };
-
-  programs.waybar = {
-    enable = true;
-    package = pkgs.waybar;
   };
 
   programs.wofi = {
