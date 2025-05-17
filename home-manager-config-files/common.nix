@@ -412,12 +412,6 @@
     enableZshIntegration = true;
   };
 
-  # programs.eww = {
-  #   enable = true;
-  #   package = pkgs.eww;
-  #   configDir = ./home-manager-config-files/eww;
-  # };
-
   services.gnome-keyring = {
     enable = true;
     components = ["secrets"];
@@ -437,11 +431,6 @@
 
   programs.zathura.enable = true; #pdf viewer
   programs.mpv.enable = true; #pdf viewer
-
-  programs.eww = {
-    enable = true;
-    enableZshIntegration = true;
-  };
 
   imports = [
     ./tmux.nix
