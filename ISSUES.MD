@@ -8,7 +8,6 @@ trace: warning: cudaPackages.autoFixElfFiles is deprecated, use pkgs.autoFixElfF
 trace: warning: cudaPackages.autoAddDriverRunpath is deprecated, use pkgs.autoAddDriverRunpath instead
 trace: warning: cudaPackages.autoAddOpenGLRunpathHook is deprecated, use pkgs.autoAddDriverRunpathHook instead
 trace: warning: cudaPackages.autoFixElfFiles is deprecated, use pkgs.autoFixElfFiles instead
-trace: warning: eww now can build for X11 and wayland simultaneously, so `eww-wayland` is deprecated, use the normal `eww` package instead.
 * legacyPackages.x86_64-linux.kate (23.08.5)
   Advanced text editor
 
