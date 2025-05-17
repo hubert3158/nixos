@@ -177,7 +177,6 @@
     xwayland
     xdg-desktop-portal
     xdg-desktop-portal-wlr
-    waybar
     swaybg
     swayidle # These are things needed for hyprland i guess lumaooooooooo
     swaylock
@@ -423,7 +422,7 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
-  # programs.waybar.enable = true;
+  programs.waybar.enable = true;
 
   programs.neovim.enable = true;
 
