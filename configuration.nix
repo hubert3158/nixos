@@ -334,6 +334,26 @@
     slack
 
     qpdf
+
+    #added for waybar
+    clang-tools
+    gobject-introspection
+    libdbusmenu-gtk3
+    libevdev
+    fmt
+    gtk3
+    gtkmm3
+    libinput
+    jsoncpp
+    libmpdclient
+    libnl
+    libpulseaudio
+    libsigcxx
+    spdlog
+    wayland
+    wayland-protocols
+    scdoc
+    libxkbcommon
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
