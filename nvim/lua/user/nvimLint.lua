@@ -6,9 +6,6 @@ require("lint").linters_by_ft = {
 	-- 2. Linters that strongly complement your existing LSPs.
 
 	html = { "htmlhint" }, -- `htmlhint` offers more rules than basic `vscode-html-ls`.
-	css = { "stylelint" }, -- `stylelint` is much more powerful for CSS/SCSS/Less than `vscode-css-ls`.
-	scss = { "stylelint" },
-	less = { "stylelint" },
 	python = { "flake8" }, -- `flake8` is a standard complement to `pyright` (LSP) for style/bugs.
 
 	sh = { "shellcheck" }, -- `shellcheck` is more comprehensive than `bashls` alone.
