@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   home.stateVersion = "24.11"; # Use the latest stable version number that aligns with your Home Manager version
   home.username = "hubert";
   home.homeDirectory = "/home/hubert";
@@ -433,6 +437,11 @@
 
   programs.zathura.enable = true; #pdf viewer
   programs.mpv.enable = true; #pdf viewer
+
+  programs.eww = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 
   imports = [
     ./tmux.nix
