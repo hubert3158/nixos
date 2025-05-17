@@ -334,26 +334,6 @@
     slack
 
     qpdf
-
-    #added for waybar
-    clang-tools
-    gobject-introspection
-    libdbusmenu-gtk3
-    libevdev
-    fmt
-    gtk3
-    gtkmm3
-    libinput
-    jsoncpp
-    libmpdclient
-    libnl
-    libpulseaudio
-    libsigcxx
-    spdlog
-    wayland
-    wayland-protocols
-    scdoc
-    libxkbcommon
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
@@ -365,15 +345,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  systemd.user.services.waybar-symlinks = {
-    description = "Create Waybar configuration symlinks";
-    serviceConfig = {
-      ExecStart = "/home/hubert/nixos/home-manager-config-files/waybar/createSymlink.sh";
-      RemainAfterExit = true;
-    };
-    wantedBy = ["default.target"];
-  };
 
   # List services that you want to enable:
 
@@ -441,8 +412,6 @@
   };
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
-
-  programs.waybar.enable = true;
 
   programs.neovim.enable = true;
 
