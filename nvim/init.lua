@@ -545,6 +545,12 @@ vim.api.nvim_set_keymap(
 -- Miscellaneous keybindings
 vim.api.nvim_set_keymap(
 	"n",
+	"<leader>rr",
+	"<cmd>:!!<CR>",
+	{ noremap = true, silent = true, desc = "[[R]]erun last shell command" }
+)
+vim.api.nvim_set_keymap(
+	"n",
 	"<leader>mm",
 	":lua require'mini.map'.toggle()<CR>",
 	{ noremap = true, silent = true, desc = "[M]isscellineous [M]ini Map [T]oggle" }
