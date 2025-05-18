@@ -3,7 +3,7 @@
     enable = true;
     font = {
       name = "Monofur Nerd Font";
-      size = 14;
+      size = 18;
       package = pkgs.nerd-fonts.monofur;
     };
     settings = {
