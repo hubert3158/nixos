@@ -335,6 +335,7 @@
     slack
 
     qpdf
+    bat
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
