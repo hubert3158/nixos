@@ -135,6 +135,7 @@
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
+    entr
     ffmpeg
     flameshot
     jq #lightweight commandline json parser
