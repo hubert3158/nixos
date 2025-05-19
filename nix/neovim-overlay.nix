@@ -106,6 +106,10 @@ with final.pkgs.lib; let
       plugin = todo-comments-nvim;
       config = "lua << EOF\nrequire(\"todo-comments\").setup()\nEOF\n";
     }
+    {
+      plugin = debugprint-nvim;
+      config = "lua << EOF\nrequire(\"debugprint\").setup()\nEOF\n";
+    }
 
     cmp_luasnip
     luasnip
