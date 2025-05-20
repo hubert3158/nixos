@@ -239,7 +239,7 @@
     # mdformat # Markdown formatter -> currently using prettier
 
     # --- C/C++ ---
-    rocmPackages_5.llvm.clang-tools-extra
+    rocmPackages.llvm.clang-tools
 
     # --- Go ---
     go # Base Go installation (provides gofmt)
