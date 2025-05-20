@@ -169,6 +169,7 @@ with final.pkgs.lib; let
     nvim-lint
     conform-nvim
     neoscroll-nvim
+    vim-slime
   ];
 
   extraPackages = with pkgs; [

@@ -14,6 +14,7 @@ g.editorconfig = true
 g.sqlite_clib_path = require("luv").os_getenv("LIBSQLITE")
 g.copilot_enabled = false
 g.mkdp_browser = "microsoft-edge"
+g.slime_target = "tmux"
 -- Native plugins
 
 cmd.filetype("plugin", "indent", "on")
