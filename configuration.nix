@@ -170,8 +170,6 @@
     gzip
     ntp
 
-    microsoft-edge
-
     pipewire
     wayland
     wayland-protocols
@@ -421,6 +419,8 @@
   services.gnome.gnome-keyring = {
     enable = true;
   };
+
+  services.flatpak.enable = true;
 
   services.dbus.packages = [pkgs.gcr];
   services.pcscd.enable = true;
