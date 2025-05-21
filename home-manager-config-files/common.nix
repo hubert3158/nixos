@@ -10,6 +10,8 @@
     "gs" = "git status";
     "gaa" = "git add .";
     "gp" = "git push";
+    "gl" = "git pull";
+    "gd" = "git diff";
     "gwip" = "git commit -m \"wip\"";
     "v" = "nvim";
     "vi" = "nvim";
@@ -409,6 +411,14 @@
     enable = true;
     editor = "nvim";
   };
+
+  programs.nix-index = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+  };
+
   programs.git-credential-oauth.enable = true;
 
   programs.zathura.enable = true; #pdf viewer

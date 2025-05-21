@@ -53,6 +53,7 @@
   services.envfs.enable = true;
 
   programs.hyprland.enable = true;
+  programs.command-not-found.enable = false;
 
   hardware = {
     graphics = {
