@@ -50,6 +50,7 @@
     xkb.variant = "";
   };
   services.displayManager.sddm.enable = true;
+  services.envfs.enable = true;
 
   programs.hyprland.enable = true;
 
