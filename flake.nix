@@ -38,7 +38,6 @@
         # Use lib.getName for safer package name checking
         allowUnfreePredicate = pkg:
           builtins.elem (lib.getName pkg) [
-            "microsoft-edge-stable"
           ];
         permittedInsecurePackages = [
           "emacs-29.4"
@@ -55,7 +54,6 @@
         allowUnfree = true;
         allowUnfreePredicate = pkg:
           builtins.elem (lib.getName pkg) [
-            "microsoft-edge-stable"
           ];
         permittedInsecurePackages = [
           "emacs-29.4"

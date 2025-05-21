@@ -1,11 +1,10 @@
-{config, ... }:
-{
+{config, ...}: {
   programs.ranger = {
-  enable = true;
-  extraConfig = ''
-    set colorscheme solarized
-  '';
-     rifle = [
+    enable = true;
+    extraConfig = ''
+      set colorscheme solarized
+    '';
+    rifle = [
       {
         command = "${config.home.profileDirectory}/bin/nvim -- \"$@\"";
         condition = "mime ^text";
@@ -15,9 +14,9 @@
         condition = "mime ^image";
       }
       {
-        command = "${config.home.profileDirectory}/bin/microsoft-edge-stable -- \"$@\"";
+        command = "${config.home.profileDirectory}/bin/microsoft-edge -- \"$@\"";
         condition = "mime ^pdf";
       }
     ];
-};
+  };
 }

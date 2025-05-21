@@ -103,7 +103,7 @@
     mtr
     grim
     slurp
-    postman
+    # postman
     teams-for-linux
     ripgrep
     lazygit
