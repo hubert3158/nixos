@@ -203,24 +203,6 @@
       neofetch
     '';
     profileExtra = ''
-      echo ">>> Loading SSH keys via keychain..."
-
-      # Dynamically find all valid SSH private keys
-      KEYS=$(find ~/.ssh -type f \
-        ! -name "*.pub" \
-        ! -name "known_hosts*" \
-        ! -name "*.pem" \
-        -exec sh -c '
-          for key; do
-            ssh-keygen -lf "$key" >/dev/null 2>&1 && echo "$key"
-          done
-        ' _ {} +)
-
-      echo ">>> Detected SSH keys: $KEYS"
-
-      # Force keychain to reuse agent and re-evaluate all valid keys
-      eval "$(keychain --eval --quiet --agents ssh --inherit any $KEYS)"
-
       # Zoxide helpers
       zi() {
         zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
