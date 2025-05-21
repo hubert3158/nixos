@@ -420,6 +420,7 @@
     # ./neovim.nix
     # ./alacritty.nix
     ./kitty.nix
+    ./fish.nix
     ./xdg.nix
     ./yazi.nix
     ./ranger.nix
