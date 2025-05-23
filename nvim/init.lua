@@ -13,7 +13,7 @@ g.editorconfig = true
 -- let sqlite.lua (which some plugins depend on) know where to find sqlite
 g.sqlite_clib_path = require("luv").os_getenv("LIBSQLITE")
 g.copilot_enabled = false
-g.mkdp_browser = "microsoft-edge"
+g.mkdp_browser = "com.microsoft.Edge"
 g.slime_target = "tmux"
 -- Native plugins
 

@@ -337,6 +337,8 @@
 
     qpdf
     bat
+    usbutils
+    balena-cli
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
