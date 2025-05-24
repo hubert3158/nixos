@@ -6,7 +6,7 @@
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
-      # set -g fish_greeting "brusssssskiii"
+      set -g fish_greeting ""
       set -Ux EDITOR nvim
       set -Ux VISUAL nvim
       set -Ux PAGER less
