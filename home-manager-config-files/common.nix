@@ -353,14 +353,14 @@
       splash = false;
       splash_offset = 2.0;
 
-      preload = ["~/nixos/images/wallpaper.png" ""];
+      preload = ["~/nixos/images/kitty-wallpaper.jpg" ""];
 
       wallpaper = [
-        "DP-1,~/nixos/images/wallpaper.png"
-        "DP-2,~/nixos/images/wallpaper.png"
-        "DP-3,~/nixos/images/wallpaper.png"
-        "eDP-1,~/nixos/images/wallpaper.png"
-        "HDMI-A-1,~/nixos/images/wallpaper.png"
+        "DP-1,~/nixos/images/kitty-wallpaper.jpg"
+        "DP-2,~/nixos/images/kitty-wallpaper.jpg"
+        "DP-3,~/nixos/images/kitty-wallpaper.jpg"
+        "eDP-1,~/nixos/images/kitty-wallpaper.jpg"
+        "HDMI-A-1,~/nixos/images/kitty-wallpaper.jpg"
       ];
     };
   };
