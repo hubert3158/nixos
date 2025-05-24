@@ -12,7 +12,7 @@
       "font-style-bold" = "false";
       "shell-integration" = "fish";
       "theme" = "Arthur";
-      "background-opacity" = 0.7;
+      "background-opacity" = 0.9;
     };
   };
 }
