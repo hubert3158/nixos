@@ -372,7 +372,7 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
-  environment.shells = with pkgs; [zsh];
+  environment.shells = with pkgs; [fish];
   environment.variables = {
     JAVA_HOME = "${pkgs.jdk24}/lib/openjdk";
     JAVA_HOME11 = "${pkgs.jdk11}/lib/openjdk";
@@ -385,8 +385,9 @@
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   '';
 
-  users.defaultUserShell = pkgs.zsh;
+  users.defaultUserShell = pkgs.fish;
   programs.zsh.enable = true;
+  programs.fish.enable = true;
   programs.tmux.enable = true;
   programs.java.enable = true;
   programs.java.package = pkgs.jdk24;
