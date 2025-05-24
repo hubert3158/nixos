@@ -430,6 +430,7 @@
     # ./neovim.nix
     # ./alacritty.nix
     ./kitty.nix
+    ./ghostty.nix
     ./fish.nix
     ./xdg.nix
     ./yazi.nix
