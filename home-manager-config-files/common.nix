@@ -353,14 +353,10 @@
       splash = false;
       splash_offset = 2.0;
 
-      preload = ["~/nixos/images/kitty-wallpaper.jpg" ""];
+      preload = ["/home/hubert/nixos/images/kitty-wallpaper.jpg"];
 
       wallpaper = [
-        "DP-1,~/nixos/images/kitty-wallpaper.jpg"
-        "DP-2,~/nixos/images/kitty-wallpaper.jpg"
-        "DP-3,~/nixos/images/kitty-wallpaper.jpg"
-        "eDP-1,~/nixos/images/kitty-wallpaper.jpg"
-        "HDMI-A-1,~/nixos/images/kitty-wallpaper.jpg"
+        "HDMI-A-1,/home/hubert/nixos/images/kitty-wallpaper.jpg"
       ];
     };
   };
