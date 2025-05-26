@@ -177,33 +177,22 @@
 
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
+
     autosuggestion = {
       enable = true;
       highlight = "fg=red,bold,underline";
     };
-    enableCompletion = true;
 
-    oh-my-zsh = {
-      enable = true;
-      theme = "robbyrussell";
-      plugins = [
-        "git"
-        "npm"
-        "history"
-        "node"
-        "rust"
-        "deno"
-      ];
-    };
+    oh-my-zsh.enable = false;
 
-    # zellij attach --create local
-    # eval "$(/nix/store/2h1mvikc160c7i8kzvp9d289pvs1z6vx-zellij-0.40.1/bin/zellij attach --create local)"
-    # zellij attach --create local
     initContent = ''
-      neofetch
+      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+      source ~/nixos/dotfiles/p10k.zsh
+
     '';
+
     profileExtra = ''
-      # Zoxide helpers
       zi() {
         zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
       }
@@ -439,6 +428,16 @@
     editor = "nvim";
   };
 
+  programs.starship = {
+    enable = false;
+    settings = {
+      add_newline = true;
+      character = {
+        success_symbol = "[➜](bold green)";
+        error_symbol = "[✗](bold red)";
+      };
+    };
+  };
   programs.nix-index = {
     enable = true;
     enableZshIntegration = true;

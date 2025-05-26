@@ -339,6 +339,7 @@
     bat
     usbutils
     balena-cli
+    zsh-powerlevel10k
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
