@@ -363,14 +363,47 @@
 
   programs.wofi = {
     enable = true;
+    settings = {
+      allow_markup = true;
+      allow_images = true;
+      width = "30%";
+    };
     style = ''
-      * {
-        font-family: monospace;
+            * {
+        font-family: Monofur Nerd Font;
+        font-size: 1.5rem;
       }
 
-      window {
-        background-color: #7c818c;
+      #outer-box {
+        background-color: #001d2e;
       }
+
+      #input {
+        color: white;
+        background-color: black;
+      }
+
+      #entry {
+        background-color: #001d2e;
+      }
+
+      #text {
+        color: blanchedalmond;
+      }
+
+      #img {
+        width: 10px;
+        height: 10px;
+        background-color: black;
+      }
+      #entry:selected {
+        background-color: black;
+      }
+      #text:selected {
+        color: mediumseagreen;
+        background-color: black;
+      }
+
     '';
   };
 
