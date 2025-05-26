@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   home.stateVersion = "24.11"; # Use the latest stable version number that aligns with your Home Manager version
   home.username = "hubert";
   home.homeDirectory = "/home/hubert";
@@ -17,13 +13,15 @@
     "vi" = "nvim";
     "r" = "ranger";
     "cd" = "z";
+    "cat" = "bat";
     "y" = "yazi";
     "open" = "xdg-open";
     "l" = "eza --icons --group-directories-first --git --header --time-style=iso --color=always";
     "ll" = "eza -l --icons --group-directories-first --git --header --time-style=iso --color=always";
     "la" = "eza -la --icons --group-directories-first --git --header --time-style=iso --color=always";
     "lt" = "eza --tree --icons --level=2 --group-directories-first --git --time-style=iso --color=always";
-    "ss" = "sleep 2 && grim -g \"\$(slurp)\" - | tee ~/Pictures/screenshot-\$(date +%Y%m%d-%H%M%S).png | wl-copy";
+    # "ss" = "sleep 2 && grim -g \"\$(slurp)\" - | tee ~/Pictures/screenshot-\$(date +%Y%m%d-%H%M%S).png | wl-copy";
+    "ss" = "sleep 2 && flameshot gui";
     "f" = ''
       fzf \
       -i \
