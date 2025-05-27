@@ -5,6 +5,7 @@
 }: {
   programs.kitty = {
     enable = true;
+    enableGitIntegration = true;
 
     font = {
       name = "Monofur Nerd Font";
@@ -13,7 +14,7 @@
     };
 
     settings = {
-      shell = "${pkgs.zsh}/bin/zsh --login";
+      shell = "${pkgs.fish}/bin/fish --login";
 
       scrollback_lines = 10000;
       enable_audio_bell = false;
@@ -37,6 +38,8 @@
     shellIntegration = {
       mode = "default";
       enableZshIntegration = true;
+      enableFishIntegration = true;
+      enableBashIntegration = true;
     };
   };
 }
