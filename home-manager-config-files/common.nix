@@ -429,7 +429,7 @@
   };
 
   programs.starship = {
-    enable = false;
+    enable = true;
     settings = {
       add_newline = true;
       character = {
