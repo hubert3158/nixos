@@ -184,12 +184,9 @@
       highlight = "fg=red,bold,underline";
     };
 
-    oh-my-zsh.enable = false;
+    oh-my-zsh.enable = true;
 
     initContent = ''
-      source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-      source ~/nixos/dotfiles/p10k.zsh
-
     '';
 
     profileExtra = ''
@@ -201,6 +198,17 @@
         zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide add {}
       }
     '';
+  };
+
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = true;
+      character = {
+        success_symbol = "[➜](bold green)";
+        error_symbol = "[✗](bold red)";
+      };
+    };
   };
 
   programs.wezterm = {
@@ -428,16 +436,6 @@
     editor = "nvim";
   };
 
-  programs.starship = {
-    enable = true;
-    settings = {
-      add_newline = true;
-      character = {
-        success_symbol = "[➜](bold green)";
-        error_symbol = "[✗](bold red)";
-      };
-    };
-  };
   programs.nix-index = {
     enable = true;
     enableZshIntegration = true;
