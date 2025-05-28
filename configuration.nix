@@ -340,6 +340,10 @@
     usbutils
     balena-cli
     zsh-powerlevel10k
+    wikiman
+    w3m
+    tldr
+    tealdeer #rust imp of tldr
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
