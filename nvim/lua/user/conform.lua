@@ -39,7 +39,7 @@ require("conform").setup({
 
 	-- Optional: Global format options
 	format_on_save = {
-		timeout_ms = 500,
+		timeout_ms = 5000,
 		lsp_fallback = true, -- Fallback to LSP formatting if conform fails
 	},
 
