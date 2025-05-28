@@ -14,7 +14,7 @@
     };
 
     settings = {
-      shell = "${pkgs.fish}/bin/fish --login";
+      shell = "${pkgs.zsh}/bin/zsh --login";
 
       scrollback_lines = 10000;
       enable_audio_bell = false;
