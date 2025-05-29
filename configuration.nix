@@ -336,7 +336,6 @@
     slack
 
     qpdf
-    bat
     usbutils
     balena-cli
     zsh-powerlevel10k
