@@ -342,8 +342,9 @@
     zsh-powerlevel10k
     wikiman
     w3m
-    tldr
+    #tldr
     tealdeer #rust imp of tldr
+    parallel
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
