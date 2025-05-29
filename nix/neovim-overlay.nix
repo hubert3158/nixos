@@ -32,6 +32,7 @@ with final.pkgs.lib; let
     vim-dadbod
     vim-dadbod-ui
     vim-dadbod-completion
+    fugitive
 
     nvim-ufo
     # neoformat # replaced with conform
@@ -39,6 +40,11 @@ with final.pkgs.lib; let
     markdown-preview-nvim
 
     # Custom plugin configurations
+
+    {
+      plugin = gitsigns-nvim;
+      config = "lua << EOF\nrequire(\"gitsigns\").setup({})\nEOF\n";
+    }
     {
       plugin = lazydev-nvim;
       config = "lua << EOF\nrequire(\"lazydev\").setup({})\nEOF\n";
