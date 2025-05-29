@@ -11,6 +11,7 @@
     "gwip" = "git commit -m \"wip\"";
     "v" = "nvim";
     "vi" = "nvim";
+    "man" = "batman";
     "r" = "ranger";
     "cd" = "z";
     "cat" = "bat";
