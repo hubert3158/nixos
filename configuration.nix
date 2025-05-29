@@ -341,6 +341,7 @@
     balena-cli
     zsh-powerlevel10k
     w3m
+    wikiman
     tealdeer #rust imp of tldr
     parallel
   ];
