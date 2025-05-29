@@ -340,9 +340,7 @@
     usbutils
     balena-cli
     zsh-powerlevel10k
-    wikiman
     w3m
-    #tldr
     tealdeer #rust imp of tldr
     parallel
   ];
