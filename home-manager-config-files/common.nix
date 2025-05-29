@@ -290,10 +290,20 @@
 
   programs.git = {
     enable = true;
+    delta = {
+      enable = true;
+      options = {
+        features = "decorations";
+        syntax-theme = "Monokai Extended";
+        line-numbers = true;
+        side-by-side = true;
+      };
+    };
     extraConfig = {
       user.name = "Subash Acharya";
       user.email = "hubert3158@gmail.com";
       core.editor = "vim";
+      # core.pager = "bat --paging=always --style=changes,header"; //using delta
       diff.tool = "vimdiff";
       difftool.prompt = false;
       alias.co = "checkout";
@@ -444,9 +454,20 @@
   };
 
   programs.git-credential-oauth.enable = true;
-
   programs.zathura.enable = true; #pdf viewer
   programs.mpv.enable = true; #pdf viewer
+
+  programs.bat = {
+    enable = true;
+    extraPackages = with pkgs.bat-extras; [
+      batdiff
+      batgrep
+      batman
+      batpipe
+      batwatch
+      prettybat
+    ];
+  };
 
   imports = [
     ./tmux.nix
