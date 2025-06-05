@@ -344,6 +344,8 @@
     tealdeer #rust imp of tldr
     parallel
     prisma
+    prisma-engines
+    openssl
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
@@ -386,8 +388,13 @@
   };
 
   environment.shellInit = ''
-    export PATH=$JAVA_HOME/bin:$PATH
-    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        export PATH=$JAVA_HOME/bin:$PATH
+        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+        export PRISMA_SCHEMA_ENGINE_BINARY='/nix/store/zvhb5bj7xbwr55avrimyv7pzxxyw9skj-prisma-engines-6.7.0/bin/schema-engine'
+    export PRISMA_QUERY_ENGINE_BINARY='/nix/store/zvhb5bj7xbwr55avrimyv7pzxxyw9skj-prisma-engines-6.7.0/bin/query-engine'
+    export PRISMA_QUERY_ENGINE_LIBRARY='/nix/store/zvhb5bj7xbwr55avrimyv7pzxxyw9skj-prisma-engines-6.7.0/lib/libquery_engine.node'
+
   '';
 
   users.defaultUserShell = pkgs.zsh;
