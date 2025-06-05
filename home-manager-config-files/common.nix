@@ -286,6 +286,13 @@
       User ubuntu
       Port 22
       IdentityFile ~/.ssh/REDACTED-BT.pem
+
+      Host rules-engine
+      HostName 0.0.0.0
+      User ubuntu
+      Port 22
+      IdentityFile ~/.ssh/rules_engine.pem
+
     '';
   };
 
