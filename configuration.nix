@@ -343,6 +343,7 @@
     wikiman
     tealdeer #rust imp of tldr
     parallel
+    prisma-engines
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;

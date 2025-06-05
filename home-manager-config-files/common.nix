@@ -286,6 +286,13 @@
       User ubuntu
       Port 22
       IdentityFile ~/.ssh/bluetangles.pem
+
+      Host rules-engine
+      HostName 54.166.84.96
+      User ubuntu
+      Port 22
+      IdentityFile ~/.ssh/rules_engine.pem
+
     '';
   };
 
