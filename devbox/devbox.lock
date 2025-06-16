@@ -38,70 +38,12 @@
       "source": "devbox-search",
       "version": "3.9.0"
     },
-    "nodejs@12.22.9": {
-      "last_modified": "2022-02-09T15:24:27Z",
+    "nodejs@10.21.0": {
+      "last_modified": "2020-07-14T01:56:14Z",
       "plugin_version": "0.0.2",
-      "resolved": "github:NixOS/nixpkgs/98bb5b77c8c6666824a4c13d23befa1e07210ef1#nodejs-12_x",
+      "resolved": "github:NixOS/nixpkgs/aca0bbe791c220f8360bd0dd8e9dce161253b341#nodejs-10_x",
       "source": "devbox-search",
-      "version": "12.22.9",
-      "systems": {
-        "aarch64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/22lnzmpdgaczhl9s2fl6kzg0z18xcgpf-nodejs-12.22.9",
-              "default": true
-            },
-            {
-              "name": "libv8",
-              "path": "/nix/store/jaz1dka7spmks9dzl5ss4aazbx0mx8hh-nodejs-12.22.9-libv8"
-            }
-          ],
-          "store_path": "/nix/store/22lnzmpdgaczhl9s2fl6kzg0z18xcgpf-nodejs-12.22.9"
-        },
-        "aarch64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/cbvbcbyn5farn2j184filhv52nqypp0j-nodejs-12.22.9",
-              "default": true
-            },
-            {
-              "name": "libv8",
-              "path": "/nix/store/8wazwqj8vbrian4rfbaw1vk4an00jf91-nodejs-12.22.9-libv8"
-            }
-          ],
-          "store_path": "/nix/store/cbvbcbyn5farn2j184filhv52nqypp0j-nodejs-12.22.9"
-        },
-        "x86_64-darwin": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/1w2jmiwzv2h7gaqg8kg7agl92wwa12m9-nodejs-12.22.9",
-              "default": true
-            },
-            {
-              "name": "libv8",
-              "path": "/nix/store/zf1avl30n86z70vgjjhnmz58p5mhw71l-nodejs-12.22.9-libv8"
-            }
-          ],
-          "store_path": "/nix/store/1w2jmiwzv2h7gaqg8kg7agl92wwa12m9-nodejs-12.22.9"
-        },
-        "x86_64-linux": {
-          "outputs": [
-            {
-              "name": "out",
-              "path": "/nix/store/2swgky9z2c01zl36wbz2j64vy8aihpr5-nodejs-12.22.9",
-              "default": true
-            },
-            {
-              "name": "libv8",
-              "path": "/nix/store/wg9h8qbyaxd12nwxhx495d26518i7j5x-nodejs-12.22.9-libv8"
-            }
-          ],
-          "store_path": "/nix/store/2swgky9z2c01zl36wbz2j64vy8aihpr5-nodejs-12.22.9"
-        }
-      }
+      "version": "10.21.0"
     },
     "python2@latest": {
       "last_modified": "2024-07-07T07:43:47Z",
