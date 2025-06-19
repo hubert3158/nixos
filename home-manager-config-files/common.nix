@@ -138,6 +138,7 @@
         pdfplumber
         pdf2image
         pytesseract
+        requests
         flask
       ]))
 
