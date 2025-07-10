@@ -347,6 +347,7 @@
     prisma-engines
     openssl
     sshpass
+    postman
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
