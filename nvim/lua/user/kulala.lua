@@ -1,1 +1,1 @@
--- require("kulala").setup({})
+require("kulala").setup({})
