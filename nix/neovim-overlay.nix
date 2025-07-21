@@ -158,6 +158,8 @@ with final.pkgs.lib; let
     nvim-treesitter-parsers.markdown_inline
     nvim-treesitter-parsers.yuck
     nvim-treesitter-parsers.zig
+    nvim-treesitter-parsers.http
+    nvim-treesitter-parsers.graphql
     nvim-treesitter-parsers.yaml
     nvim-dap
     nvim-jdtls
