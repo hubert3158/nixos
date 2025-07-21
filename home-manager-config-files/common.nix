@@ -86,10 +86,14 @@
 
     google-chrome
     brave
-    jetbrains.idea-ultimate
-    jetbrains.datagrip
-    # jetbrains.pycharm-professional
-    jetbrains-toolbox
+    (jetbrains.datagrip.override {
+      jdk = pkgs.openjdk21;
+    })
+    (jetbrains.idea-ultimate.override {
+      jdk = pkgs.openjdk21;
+    })
+
+    # jetbrains-toolbox
     onedrive
     vscode-extensions.vscjava.vscode-java-debug
 

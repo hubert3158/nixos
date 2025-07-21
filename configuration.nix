@@ -343,8 +343,8 @@
     wikiman
     tealdeer #rust imp of tldr
     parallel
-    prisma
-    prisma-engines
+    # prisma
+    # prisma-engines
     openssl
     sshpass
     postman
