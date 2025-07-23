@@ -1,0 +1,101 @@
+{
+  "name": "nixos-config-workspace",
+  "version": "1.0.0",
+  "system_prompt": "You are an expert in NixOS configuration. Use the provided context to answer questions or assist with configuration tasks.",
+  "groups": [
+    {
+      "name": "Current",
+      "system_prompt": "Focus on core NixOS system configuration files.",
+      "data": [
+        "flake_nix",
+        "mkneovim_nix",
+        "neovim_overlay_nix",
+        "kulala_no_parsers_lua",
+        "treesitter_lua",
+        "default_overlay"
+      ]
+    },
+    {
+      "name": "System Configuration",
+      "system_prompt": "Focus on core NixOS system configuration files.",
+      "data": ["flake_nix", "configuration_nix", "hardware_configuration_nix"]
+    },
+    {
+      "name": "Home Manager/User Configuration",
+      "system_prompt": "Focus on user and Home Manager configuration files.",
+      "data": ["home_nix"]
+    },
+    {
+      "name": "Neovim Configuration",
+      "system_prompt": "Focus on Neovim configuration files.",
+      "data": ["nvim_folder"]
+    },
+    {
+      "name": "Custom Packages/Overlays",
+      "system_prompt": "Focus on custom Nix overlays and package definitions.",
+      "data": ["overlays_folder"]
+    },
+    {
+      "name": "Scripts/Utilities",
+      "system_prompt": "Focus on utility scripts.",
+      "data": ["scripts_folder"]
+    },
+    {
+      "name": "Shared Modules/Library Code",
+      "system_prompt": "Focus on shared Nix modules and library code.",
+      "data": ["nix_folder"]
+    }
+  ],
+  "data": {
+    "flake_nix": {
+      "type": "file",
+      "path": "flake.nix",
+      "description": "Top-level Nix flake configuration file."
+    },
+    "configuration_nix": {
+      "type": "file",
+      "path": "configuration.nix",
+      "description": "Main NixOS system configuration file."
+    },
+    "hardware_configuration_nix": {
+      "type": "file",
+      "path": "hardware-configuration.nix",
+      "description": "Hardware-specific NixOS configuration."
+    },
+    "home_nix": {
+      "type": "file",
+      "path": "home.nix",
+      "description": "Home Manager user configuration file."
+    },
+    "nvim_folder": {
+      "type": "file",
+      "path": "nvim/",
+      "description": "All Neovim configuration files."
+    },
+    "mkneovim_nix": {
+      "type": "file",
+      "path": "nix/mkneovim.nix",
+      "description": "Nix expression for building or configuring Neovim."
+    },
+    "default_overlay": {
+      "type": "file",
+      "path": "overlays/default.nix",
+      "description": "Nix expression for building or configuring Neovim."
+    },
+    "neovim_overlay_nix": {
+      "type": "file",
+      "path": "nix/neovim-overlay.nix",
+      "description": "Custom Nix overlay for Neovim."
+    },
+    "kulala_no_parsers_lua": {
+      "type": "file",
+      "path": "nvim/plugin/kulala-no-parsers.lua",
+      "description": "Lua script related to Neovim, possibly for disabling parsers."
+    },
+    "treesitter_lua": {
+      "type": "file",
+      "path": "nvim/plugin/treesitter.lua",
+      "description": "Lua configuration for Neovim Treesitter."
+    }
+  }
+}
