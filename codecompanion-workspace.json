@@ -10,9 +10,9 @@
         "flake_nix",
         "mkneovim_nix",
         "neovim_overlay_nix",
-        "kulala_no_parsers_lua",
         "treesitter_lua",
-        "default_overlay"
+        "default_overlay",
+        "kulala_lua"
       ]
     },
     {
@@ -74,7 +74,7 @@
     },
     "mkneovim_nix": {
       "type": "file",
-      "path": "nix/mkneovim.nix",
+      "path": "nix/mkNeovim.nix",
       "description": "Nix expression for building or configuring Neovim."
     },
     "default_overlay": {
@@ -95,6 +95,11 @@
     "treesitter_lua": {
       "type": "file",
       "path": "nvim/plugin/treesitter.lua",
+      "description": "Lua configuration for Neovim Treesitter."
+    },
+    "kulala_lua": {
+      "type": "file",
+      "path": "nvim/lua/user/kulala.lua",
       "description": "Lua configuration for Neovim Treesitter."
     }
   }
