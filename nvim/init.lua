@@ -696,7 +696,7 @@ end, { noremap = true, silent = true, desc = "Copy HTTP command to clipboard" })
 vim.keymap.set(
 	"n",
 	"<leader>cc",
-	":CodeCompanionChat<CR>",
+	":CodeCompanionChat anthropic<CR>",
 	{ noremap = true, silent = true, desc = "Code Companion Chat" }
 )
 vim.keymap.set(
