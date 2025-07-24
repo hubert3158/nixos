@@ -1,1 +1,1 @@
-require("kulala").setup({})
+-- look for treesitter.lua
