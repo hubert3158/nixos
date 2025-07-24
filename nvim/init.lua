@@ -298,7 +298,7 @@ vim.api.nvim_set_keymap(
 -- Clear search highlighting
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>cc",
+	"<leader>ch",
 	":nohlsearch<CR>",
 	{ noremap = true, silent = true, desc = "Clear Search Highlighting" }
 )
@@ -690,3 +690,18 @@ end, { noremap = true, silent = true, desc = "Search for HTTP endpoints" })
 vim.keymap.set("n", "<leader>kc", function()
 	require("kulala").copy()
 end, { noremap = true, silent = true, desc = "Copy HTTP command to clipboard" })
+
+-- Codecompanion
+
+vim.keymap.set(
+	"n",
+	"<leader>cc",
+	":CodeCompanionChat<CR>",
+	{ noremap = true, silent = true, desc = "Code Companion Chat" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>ca",
+	":CodeCompanionActions<CR>",
+	{ noremap = true, silent = true, desc = "Code Companion actions" }
+)
