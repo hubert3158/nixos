@@ -3,10 +3,6 @@
 -- Define the directory for storing Treesitter parsers (still needed by nvim-treesitter itself)
 local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter-parsers"
 
-require("kulala").setup({
-	parser_install_dir = parser_install_dir,
-})
-
 -- Configure nvim-treesitter
 require("nvim-treesitter.configs").setup({
 	modules = {},
@@ -117,4 +113,7 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
+require("kulala").setup({
+	parser_install_dir = parser_install_dir,
+})
 print("nvim-treesitter configuration loaded.")
