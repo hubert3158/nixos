@@ -3,6 +3,31 @@
 -- Define the directory for storing Treesitter parsers (still needed by nvim-treesitter itself)
 local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter-parsers"
 
+-- Workaround: nvim-treesitter tries to compile the kulala_http parser inside
+-- the plugin directory, which is read-only on Nix installations. Copy the
+-- parser sources to a writable directory and override kulala's helper
+-- function so that it uses the writable location instead of the plugin path.
+local fs = require("kulala.utils.fs")
+local orig_get_plugin_path = fs.get_plugin_path
+local ts_src = orig_get_plugin_path({ "..", "tree-sitter" })
+local ts_dst = parser_install_dir .. "/kulala-tree-sitter"
+
+if vim.fn.isdirectory(ts_dst) == 0 then
+  vim.fn.mkdir(ts_dst, "p")
+  vim.fn.system({ "cp", "-r", ts_src .. "/.", ts_dst })
+end
+
+fs.get_plugin_path = function(paths)
+  if paths and paths[1] == ".." and paths[2] == "tree-sitter" then
+    local rest = {}
+    for i = 3, #paths do
+      rest[#rest + 1] = paths[i]
+    end
+    return vim.fs.normalize(ts_dst .. "/" .. table.concat(rest, "/"))
+  end
+  return orig_get_plugin_path(paths)
+end
+
 -- Configure nvim-treesitter
 require("nvim-treesitter.configs").setup({
 	modules = {},
