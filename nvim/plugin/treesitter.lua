@@ -1,67 +1,59 @@
--- Or wherever you configure your plugins
+-- Fix Kulala Treesitter for NixOS (treesitter.lua)
 
--- Define the directory for storing Treesitter parsers (still needed by nvim-treesitter itself)
-local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter-parsers"
+-- Use Neovim config dir for parsers
+local parser_install_dir = vim.fn.stdpath("config") .. "/treesitter-parsers"
+-- Prepend to runtimepath so Treesitter finds our parsers
+vim.opt.runtimepath:prepend(parser_install_dir)
 
--- Workaround: nvim-treesitter tries to compile the kulala_http parser inside
--- the plugin directory, which is read-only on Nix installations. Copy the
--- parser sources to a writable directory and override kulala's helper
--- function so that it uses the writable location instead of the plugin path.
+-- Workaround: copy Kulala's bundled grammar to writable config dir
 local fs = require("kulala.utils.fs")
 local orig_get_plugin_path = fs.get_plugin_path
-local ts_src = orig_get_plugin_path({ "..", "tree-sitter" })
-local ts_dst = parser_install_dir .. "/kulala-tree-sitter"
+local plugin_src = orig_get_plugin_path({ "..", "tree-sitter" })
+local local_src = parser_install_dir .. "/kulala_http"
+vim.fn.mkdir(local_src, "p")
+vim.fn.system({ "cp", "-r", plugin_src .. "/.", local_src })
 
-if vim.fn.isdirectory(ts_dst) == 0 then
-  vim.fn.mkdir(ts_dst, "p")
-  vim.fn.system({ "cp", "-r", ts_src .. "/.", ts_dst })
-end
-
+-- Override Kulala's fs.get_plugin_path for grammar lookups
 fs.get_plugin_path = function(paths)
-  if paths and paths[1] == ".." and paths[2] == "tree-sitter" then
-    local rest = {}
-    for i = 3, #paths do
-      rest[#rest + 1] = paths[i]
-    end
-    return vim.fs.normalize(ts_dst .. "/" .. table.concat(rest, "/"))
-  end
-  return orig_get_plugin_path(paths)
+	if paths and paths[1] == ".." and paths[2] == "tree-sitter" then
+		local sub = vim.list_slice(paths, 3)
+		return vim.fs.normalize(local_src .. "/" .. table.concat(sub, "/"))
+	end
+	return orig_get_plugin_path(paths)
 end
 
--- Configure nvim-treesitter
+-- Inject custom HTTP parser (used by Kulala) into Treesitter
+---@type table<string, {install_info: table<string, any>, filetype: string}>
+local configs = require("nvim-treesitter.parsers").get_parser_configs()
+configs.http = {
+	install_info = {
+		url = local_src,
+		files = { "src/parser.c" },
+		generate_requires_npm = false,
+		requires_generate_from_grammar = false,
+	},
+	filetype = "http",
+}
+
+-- Configure nvim-treesitter with full user settings
 require("nvim-treesitter.configs").setup({
 	modules = {},
 	ensure_installed = {},
-	-- Specify the installation directory for parsers
 	parser_install_dir = parser_install_dir,
-
-	-- Install parsers synchronously (blocking Neovim)
 	sync_install = false,
+	auto_install = false,
+	ignore_install = { "http" },
 
-	-- Automatically install missing parsers when opening a buffer
-	-- Set to false if NixOS handles *all* parser installations reliably
-	auto_install = false, -- Changed to false based on NixOS handling
-
-	-- List of parsers to ignore installing (can be "all")
-	ignore_install = {}, -- Keep empty or list specific parsers if needed
-
-	-- Configure highlighting
 	highlight = {
 		enable = true,
-		-- Disable highlighting for specific languages if needed
-		-- disable = { "c", "rust" },
 		additional_vim_regex_highlighting = false,
 	},
 
-	-- Configure indentation based on Treesitter
 	indent = {
 		enable = true,
-		-- disable = { "yaml" },
 	},
 
-	-- Configure Treesitter textobjects
 	textobjects = {
-		-- Textobject selection module
 		select = {
 			enable = true,
 			lookahead = true,
@@ -88,8 +80,6 @@ require("nvim-treesitter.configs").setup({
 			},
 			include_surrounding_whitespace = true,
 		},
-
-		-- Textobject movement module
 		move = {
 			enable = true,
 			set_jumps = true,
@@ -124,8 +114,6 @@ require("nvim-treesitter.configs").setup({
 				["[A"] = { query = "@parameter.inner", desc = "Previous argument end" },
 			},
 		},
-
-		-- LSP interop module for textobjects
 		lsp_interop = {
 			enable = true,
 			border = "rounded",
@@ -138,7 +126,6 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
-require("kulala").setup({
-	parser_install_dir = parser_install_dir,
-})
-print("nvim-treesitter configuration loaded.")
+-- Initialize Kulala with our parser path
+require("kulala").setup({ parser_install_dir = parser_install_dir })
+print("nvim-treesitter + kulala fixed for NixOS (using http parser)")
