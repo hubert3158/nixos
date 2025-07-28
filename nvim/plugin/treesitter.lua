@@ -3,6 +3,21 @@
 -- Define the directory for storing Treesitter parsers (still needed by nvim-treesitter itself)
 local parser_install_dir = vim.fn.stdpath("data") .. "/treesitter-parsers"
 
+-- If the KULALA_HTTP_PARSER environment variable is set, register the
+-- prebuilt parser directly with nvim-treesitter.  This avoids attempts to
+-- compile the parser inside the read-only Nix store.
+local kulala_parser = os.getenv("KULALA_HTTP_PARSER")
+if kulala_parser then
+  local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+  parser_config.kulala_http = {
+    install_info = {
+      url = kulala_parser,
+      files = {"src/parser.c"},
+    },
+    filetype = "kulala_http",
+  }
+end
+
 -- Configure nvim-treesitter
 require("nvim-treesitter.configs").setup({
 	modules = {},
