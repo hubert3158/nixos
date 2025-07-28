@@ -29,8 +29,9 @@ with lib;
     withPython3 ? true, # Build Neovim with Python 3 support?
     withRuby ? false, # Build Neovim with Ruby support?
     withNodeJs ? true, # Build Neovim with NodeJS support?
-    withSqlite ? true, # Add sqlite? This is a dependency for some plugins
-    # You probably don't want to create vi or vim aliases
+  withSqlite ? true, # Add sqlite? This is a dependency for some plugins
+  kulalaParser ? null, # prebuilt kulala_http tree-sitter grammar
+  # You probably don't want to create vi or vim aliases
     # if the appName is something different than "nvim"
     # Add a "vi" binary to the build output as an alias?
     viAlias ? appName == null || appName == "nvim",
@@ -168,6 +169,8 @@ with lib;
       # Set the LIBSQLITE environment variable if sqlite is enabled
       ++ (optional withSqlite
         ''--set LIBSQLITE "${pkgs.sqlite.out}/lib/libsqlite3.so"'')
+      ++ (optional (kulalaParser != null)
+        ''--set KULALA_HTTP_PARSER "${kulalaParser}"'')
     );
 
     luaPackages = neovim-unwrapped.lua.pkgs;
