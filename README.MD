@@ -70,3 +70,7 @@ in {
 
 With the parser built during the Nix build, Neovim no longer tries to compile
 it at runtime and the read‑only store is not an issue.
+
+This repository includes the above setup.  The Neovim wrapper exposes the parser
+path via the `KULALA_HTTP_PARSER` environment variable and
+`nvim/plugin/treesitter.lua` registers the parser if that variable is present.

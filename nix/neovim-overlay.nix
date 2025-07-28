@@ -17,6 +17,20 @@ with final.pkgs.lib; let
   # This is the helper function that builds the Neovim derivation.
   mkNeovim = pkgs.callPackage ./mkNeovim.nix {inherit pkgs-wrapNeovim;};
 
+  # Pre-build the kulala_http tree-sitter grammar so nvim doesn't try
+  # to compile it in the read-only store
+  treesitter-kulala-http = pkgs.tree-sitter.buildGrammar {
+    language = "kulala_http";
+    version = "5.3.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "mistweaverco";
+      repo = "kulala.nvim";
+      rev = "902fc21e8a3fee7ccace37784879327baa6d1ece";
+      hash = "sha256-whQpwZMEvD62lgCrnNryrEvfSwLJJ+IqVCywTq78Vf8=";
+    };
+    location = "lua/tree-sitter";
+  };
+
   # Replace plugins with user's custom plugins and configuration.
   all-plugins = with pkgs.vimPlugins; [
     telescope-zoxide
@@ -189,10 +203,13 @@ in {
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
     inherit extraPackages;
+    kulalaParser = treesitter-kulala-http;
   };
 
   # This can be symlinked in the devShell's shellHook
   nvim-luarc-json = final.mk-luarc-json {
     plugins = all-plugins;
   };
+
+  treesitter-kulala-http = treesitter-kulala-http;
 }
