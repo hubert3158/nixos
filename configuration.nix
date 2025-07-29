@@ -348,6 +348,7 @@
     openssl
     sshpass
     postman
+    libreoffice
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
