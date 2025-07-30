@@ -63,6 +63,7 @@
         "x-scheme-handler/msteams" = ["teams-for-linux.desktop"];
         "text/plain" = ["nvim.desktop"];
         "text/markdown" = ["google-chrome-stable.desktop"];
+        "text/csv" = ["libreoffice-calc.desktop"];
       };
     };
   };
