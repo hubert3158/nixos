@@ -249,6 +249,7 @@
     python3 # Or a specific version like python311
     python3Packages.isort
     python3Packages.black
+    python3Packages.flake8
 
     # --- Rust ---
     # Option 1: Install rustup and manage toolchain components (rustfmt, rust-analyzer) via rustup
