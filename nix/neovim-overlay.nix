@@ -78,6 +78,31 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"smear_cursor\").setup()\nEOF\n";
     }
 
+      {
+        plugin = toggleterm-nvim;
+        config = "lua << EOF\nrequire(\"toggleterm\").setup()\nEOF\n";
+      }
+      {
+        plugin = nvim-tree-lua;
+        config = "lua << EOF\nrequire(\"nvim-tree\").setup()\nEOF\n";
+      }
+      {
+        plugin = auto-session;
+        config = "lua << EOF\nrequire(\"auto-session\").setup()\nEOF\n";
+      }
+      {
+        plugin = nvim-spectre;
+        config = "lua << EOF\nrequire(\"spectre\").setup()\nEOF\n";
+      }
+      {
+        plugin = git-conflict-nvim;
+        config = "lua << EOF\nrequire(\"git-conflict\").setup()\nEOF\n";
+      }
+      {
+        plugin = nvim-bqf;
+        config = "lua << EOF\nrequire(\"bqf\").setup()\nEOF\n";
+      }
+
     {
       plugin = fidget-nvim;
       config = "lua << EOF\nrequire(\"fidget\").setup()\nEOF\n";
