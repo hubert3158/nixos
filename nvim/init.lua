@@ -84,6 +84,40 @@ require("user.twilight")
 require("user.nvimUfo")
 require("user.kulala")
 
+-- -- Enhanced UI and aesthetic configurations
+-- local function safe_setup(module)
+--     local ok, err = pcall(require, module)
+--     if not ok then
+--         vim.notify("Failed to load " .. module .. ": " .. err, vim.log.levels.WARN)
+--     else
+--         if ok.setup then
+--             ok.setup()
+--         end
+--     end
+-- end
+
+-- Core enhancements (most likely to work)
+safe_setup("user.colorscheme")
+safe_setup("user.visual-enhancements")
+safe_setup("user.lualine")
+safe_setup("user.bufferline")
+safe_setup("user.telescope")
+safe_setup("user.nvim-tree")
+safe_setup("user.indent-blankline")
+safe_setup("user.notify")
+safe_setup("user.which-key")
+
+-- Optional enhancements (may not be available)
+safe_setup("user.noice")
+safe_setup("user.mini")
+safe_setup("user.rainbow-delimiters")
+safe_setup("user.dressing")
+safe_setup("user.scrollbar")
+safe_setup("user.alpha")
+safe_setup("user.satellite")
+safe_setup("user.highlight-colors")
+safe_setup("user.dashboard")
+
 -- Telescope keybindings
 vim.api.nvim_set_keymap(
 	"n",

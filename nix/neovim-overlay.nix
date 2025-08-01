@@ -22,6 +22,16 @@ with final.pkgs.lib; let
     telescope-zoxide
     nvim-comment
     comment-box-nvim
+      # Enhanced visual plugins
+      gruvbox-material
+      alpha-nvim
+      rainbow-delimiters-nvim
+      nvim-highlight-colors
+      dressing-nvim
+      nvim-scrollbar
+      satellite-nvim
+      lazy-nvim
+      
     vim-pug
     vim-tmux-navigator
     undotree
