@@ -78,6 +78,23 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"smear_cursor\").setup()\nEOF\n";
     }
 
+    {
+      plugin = fidget-nvim;
+      config = "lua << EOF\nrequire(\"fidget\").setup()\nEOF\n";
+    }
+    {
+      plugin = barbecue-nvim;
+      config = "lua << EOF\nrequire(\"barbecue\").setup()\nEOF\n";
+    }
+    {
+      plugin = indent-blankline-nvim;
+      config = "lua << EOF\nrequire(\"ibl\").setup()\nEOF\n";
+    }
+    {
+      plugin = bufferline-nvim;
+      config = "lua << EOF\nrequire(\"bufferline\").setup()\nEOF\n";
+    }
+
     twilight-nvim
     nvim-ts-autotag
     {
