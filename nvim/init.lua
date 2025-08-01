@@ -165,8 +165,8 @@ vim.api.nvim_set_keymap(
 -- vim.api.nvim_set_keymap("n", "<leader>t", ":tabnew<CR>",
 --     { silent = true, desc = "New Tab" })
 vim.api.nvim_set_keymap("n", "<leader>q", ":q<CR>", { silent = true, desc = "Quit" })
-vim.api.nvim_set_keymap("n", "<leader>l", ":tabnext<CR>", { silent = true, desc = "Next Tab" })
-vim.api.nvim_set_keymap("n", "<leader>h", ":tabprevious<CR>", { silent = true, desc = "Previous Tab" })
+vim.api.nvim_set_keymap("n", "<leader>l", ":bnext<CR>", { silent = true, desc = "next Buffer" })
+vim.api.nvim_set_keymap("n", "<leader>h", ":bprev<CR>", { silent = true, desc = "Previous Buffer" })
 vim.api.nvim_set_keymap("n", "<leader>1", "1gt<CR>", { noremap = true, silent = true, desc = "Go to Tab 1" })
 vim.api.nvim_set_keymap("n", "<leader>2", "2gt<CR>", { noremap = true, silent = true, desc = "Go to Tab 2" })
 vim.api.nvim_set_keymap("n", "<leader>3", "3gt<CR>", { noremap = true, silent = true, desc = "Go to Tab 3" })
@@ -290,9 +290,9 @@ vim.api.nvim_set_keymap(
 -- Toggle relative line numbers
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>ln",
+	"<leader>tl",
 	":set relativenumber!<CR>",
-	{ noremap = true, silent = true, desc = "Toggle Relative Line Numbers" }
+	{ noremap = true, silent = true, desc = "[T]oggle Relative Line Numbers" }
 )
 
 -- Clear search highlighting
