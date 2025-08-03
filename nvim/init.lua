@@ -54,6 +54,10 @@ vim.api.nvim_create_autocmd("FocusLost", {
 	command = "silent! wa",
 })
 
+-- Set timeout for key sequences
+opt.timeoutlen = 300 -- Reduce timeout for faster key response
+opt.ttimeoutlen = 10 -- Very short timeout for terminal key codes
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "sql", "DBUIQuery" },
 	callback = function()
@@ -76,7 +80,7 @@ vim.api.nvim_create_autocmd({ "BufWritePost" }, {
 require("user.mason")
 require("user.nvimLint")
 require("user.conform")
-require("user.neoscroll")
+-- require("user.neoscroll")
 require("user.harpoon")
 require("user.codeSnap")
 require("user.codeCompanion")
@@ -85,16 +89,16 @@ require("user.nvimUfo")
 require("user.kulala")
 
 -- -- Enhanced UI and aesthetic configurations
--- local function safe_setup(module)
---     local ok, err = pcall(require, module)
---     if not ok then
---         vim.notify("Failed to load " .. module .. ": " .. err, vim.log.levels.WARN)
---     else
---         if ok.setup then
---             ok.setup()
---         end
---     end
--- end
+local function safe_setup(module)
+	local ok, result = pcall(require, module)
+	if not ok then
+		vim.notify("Failed to load " .. module .. ": " .. result, vim.log.levels.WARN)
+	else
+		if result.setup then
+			result.setup()
+		end
+	end
+end
 
 -- Core enhancements (most likely to work)
 safe_setup("user.colorscheme")
@@ -254,13 +258,13 @@ vim.api.nvim_set_keymap(
 )
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>w=",
+	"<leader>wr=",
 	":vertical resize +5<CR>",
 	{ noremap = true, silent = true, desc = "Increase Window Width" }
 )
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>w-",
+	"<leader>wr-",
 	":vertical resize -5<CR>",
 	{ noremap = true, silent = true, desc = "Decrease Window Width" }
 )
@@ -367,7 +371,7 @@ vim.api.nvim_set_keymap("n", "<leader>gp", ":Git push<CR>", { noremap = true, si
 -- Toggle wrap mode
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>wr",
+	"<leader>tw",
 	":set wrap!<CR>",
 	{ noremap = true, silent = true, desc = "Toggle Wrap Mode" }
 )
@@ -491,6 +495,46 @@ vim.api.nvim_set_keymap(
 )
 
 vim.api.nvim_set_keymap("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true, desc = "Lazy [[G]]it" })
+
+-- Terminal mode settings for lazygit
+vim.api.nvim_create_autocmd("TermOpen", {
+	pattern = "*",
+	callback = function()
+		-- Disable tmux navigator in terminal mode
+		vim.b.tmux_navigator_disable = 1
+
+		-- Enter insert mode automatically in terminal
+		vim.cmd("startinsert")
+
+		-- Set terminal-specific options
+		vim.opt_local.number = false
+		vim.opt_local.relativenumber = false
+		vim.opt_local.signcolumn = "no"
+	end,
+})
+
+-- Lazygit specific terminal fixes
+vim.api.nvim_create_autocmd("TermOpen", {
+	pattern = "*",
+	callback = function()
+		-- Completely disable tmux navigator and other interfering plugins
+		vim.b.tmux_navigator_disable = 1
+		vim.b.tmux_navigator_save_on_switch = 0
+		
+		-- Don't override any navigation keys - let terminal apps handle them
+		-- This prevents conflicts with lazygit's own key handling
+	end,
+})
+
+-- Terminal exit mappings
+vim.api.nvim_create_autocmd("TermOpen", {
+	pattern = "*",
+	callback = function()
+		-- Only set up exit keys, don't interfere with navigation
+		vim.keymap.set("t", "<C-q>", "<C-\\><C-n><C-w>q", { buffer = true, silent = true, desc = "Close terminal" })
+		vim.keymap.set("t", "<C-t>", "<C-\\><C-n>", { buffer = true, silent = true, desc = "Exit terminal mode" })
+	end,
+})
 
 -- DAP (Debug Adapter Protocol) UI toggling, continue, disconnect, stepping, and breakpoints
 vim.api.nvim_set_keymap(

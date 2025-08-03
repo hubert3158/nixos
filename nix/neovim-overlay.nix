@@ -83,10 +83,10 @@ with final.pkgs.lib; let
       plugin = nvim-colorizer-lua;
       config = "lua << EOF\nrequire(\"colorizer\").setup()\nEOF\n";
     }
-    {
-      plugin = smear-cursor-nvim;
-      config = "lua << EOF\nrequire(\"smear_cursor\").setup()\nEOF\n";
-    }
+      {
+        plugin = smear-cursor-nvim;
+        config = "lua << EOF\nrequire(\"smear_cursor\").setup()\nEOF\n";
+      }
 
       {
         plugin = toggleterm-nvim;
@@ -228,7 +228,6 @@ with final.pkgs.lib; let
     vim-visual-multi
     nvim-lint
     conform-nvim
-    neoscroll-nvim
     vim-slime
   ];
 
