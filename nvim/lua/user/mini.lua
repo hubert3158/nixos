@@ -68,9 +68,9 @@ function M.setup()
     end
     
     -- Mini.pairs for auto-pairing brackets
-    local pairs = safe_require('mini.pairs')
-    if pairs then
-        pairs.setup({
+    local mini_pairs = safe_require('mini.pairs')
+    if mini_pairs then
+        mini_pairs.setup({
             modes = { insert = true, command = false, terminal = false },
             skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
             skip_ts = { 'string' },
