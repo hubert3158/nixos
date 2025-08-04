@@ -70,6 +70,22 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"trouble\").setup()\nEOF\n";
     }
     {
+      plugin = toggleterm-nvim;
+      config = "lua << EOF\nrequire(\"toggleterm\").setup()\nEOF\n";
+    }
+    {
+      plugin = auto-session;
+      config = "lua << EOF\nrequire(\"auto-session\").setup()\nEOF\n";
+    }
+    {
+      plugin = nvim-spectre;
+      config = "lua << EOF\nrequire(\"spectre\").setup()\nEOF\n";
+    }
+    {
+      plugin = git-conflict-nvim;
+      config = "lua << EOF\nrequire(\"git-conflict\").setup()\nEOF\n";
+    }
+    {
       plugin = nvim-colorizer-lua;
       config = "lua << EOF\nrequire(\"colorizer\").setup()\nEOF\n";
     }
@@ -184,7 +200,7 @@ with final.pkgs.lib; let
     dashboard-nvim
     vim-devicons
     nvim-web-devicons
-    nerdtree
+    nvim-tree-lua
     nvim-notify
     telescope-fzf-native-nvim
     friendly-snippets
