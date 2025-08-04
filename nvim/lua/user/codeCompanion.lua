@@ -14,6 +14,7 @@ require("codecompanion").setup({
 					api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/anthropic.gpg",
 				},
 				params = {
+					model = "claude-sonnet-4-0",
 					temperature = 0.1, -- More deterministic responses
 					max_tokens = 4000, -- Longer response capability
 					top_p = 0.9,
