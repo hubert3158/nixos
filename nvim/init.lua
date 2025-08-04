@@ -258,7 +258,6 @@ vim.api.nvim_set_keymap("v", ">", ">gv", { noremap = true, silent = true, desc =
 
 -- Save and Quit shortcuts
 vim.api.nvim_set_keymap("n", "<leader>w", ":w<CR>", { noremap = true, silent = true, desc = "Save File" })
-vim.api.nvim_set_keymap("n", "<leader>qa", ":qa!<CR>", { noremap = true, silent = true, desc = "Quit All" })
 
 -- Copy to system clipboard
 vim.api.nvim_set_keymap("v", "<leader>y", '"+y', { noremap = true, silent = true, desc = "Yank to System Clipboard" })
@@ -267,20 +266,6 @@ vim.api.nvim_set_keymap(
 	"<leader>Y",
 	'gg"+yG',
 	{ noremap = true, silent = true, desc = "Yank Entire Buffer to Clipboard" }
-)
-
--- Paste from system clipboard
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>p",
-	'"+p',
-	{ noremap = true, silent = true, desc = "Paste from System Clipboard" }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>P",
-	'"+P',
-	{ noremap = true, silent = true, desc = "Paste Before from System Clipboard" }
 )
 
 -- Search and replace
@@ -305,20 +290,6 @@ vim.api.nvim_set_keymap(
 	"<leader>ch",
 	":nohlsearch<CR>",
 	{ noremap = true, silent = true, desc = "Clear Search Highlighting" }
-)
-
--- Open config file
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ve",
-	":e $MYVIMRC<CR>",
-	{ noremap = true, silent = true, desc = "Edit Neovim Config" }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>vs",
-	":source $MYVIMRC<CR>",
-	{ noremap = true, silent = true, desc = "Source Neovim Config" }
 )
 
 -- Toggle spell check
