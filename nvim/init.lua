@@ -3,9 +3,6 @@ local fn = vim.fn
 local opt = vim.o
 local g = vim.g
 
--- Temporary supression of deprecated functions
-vim.tbl_islist = vim.islist or vim.tbl_islist
-
 -- Set leader keys
 g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 g.maplocalleader = "," -- Same for `maplocalleader`
@@ -83,6 +80,10 @@ require("user.codeCompanion")
 require("user.twilight")
 require("user.nvimUfo")
 require("user.kulala")
+require("user.spectre")
+require("user.nvim-tree")
+require("user.auto-session")
+require("user.git-conflict")
 
 -- Telescope keybindings
 vim.api.nvim_set_keymap(
@@ -140,9 +141,13 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "Find Marks" }
 )
 
--- NERDTree keybindings
-vim.api.nvim_set_keymap("n", "<leader>nf", ":NERDTreeFind<CR>", { silent = true, desc = "Focus NERDTree" })
-vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>", { silent = true, desc = "Toggle NERDTree" })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>nf",
+	":NvimTreeFindFileToggle<CR>",
+	{ silent = true, desc = "Find file in nvim-tree" }
+)
+vim.api.nvim_set_keymap("n", "<leader>nt", ":NvimTreeToggle<CR>", { silent = true, desc = "Toggle nvim-tree" })
 
 -- NeoFormat keybinding
 
