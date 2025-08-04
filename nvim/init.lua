@@ -3,7 +3,6 @@ local fn = vim.fn
 local opt = vim.o
 local g = vim.g
 
--- Set leader keys
 g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappings are correct
 g.maplocalleader = "," -- Same for `maplocalleader`
 g.editorconfig = true
@@ -84,8 +83,8 @@ require("user.spectre")
 require("user.nvim-tree")
 require("user.auto-session")
 require("user.git-conflict")
+require("user.visual-enhancements").setup()
 
--- Telescope keybindings
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>ff",
@@ -649,6 +648,189 @@ vim.diagnostic.config({
 		prefix = "",
 	},
 })
+
+-- Enhanced Visual Configuration for Professional Look
+
+-- Better colorscheme setup with enhanced contrast
+vim.cmd([[
+  colorscheme gruvbox
+  highlight Normal guibg=NONE ctermbg=NONE
+  highlight SignColumn guibg=NONE ctermbg=NONE
+  highlight LineNr guibg=NONE ctermbg=NONE
+  highlight CursorLineNr guibg=NONE ctermbg=NONE
+  highlight GitSignsAdd guibg=NONE
+  highlight GitSignsChange guibg=NONE
+  highlight GitSignsDelete guibg=NONE
+]])
+
+-- Enhanced UI settings for professional look
+opt.pumheight = 15 -- Limit completion menu height
+opt.pumblend = 10 -- Transparency for completion menu
+opt.cmdheight = 1 -- Command line height
+opt.showtabline = 2 -- Always show tabline
+opt.laststatus = 3 -- Global statusline
+opt.winblend = 10 -- Transparency for floating windows
+opt.cursorline = true -- Highlight current line
+opt.signcolumn = "yes:2" -- Always show sign column with space for 2 signs
+opt.colorcolumn = "80,120" -- Visual guide columns
+opt.list = true -- Show invisible characters
+opt.listchars = "tab:→ ,trail:·,extends:›,precedes:‹,nbsp:␣"
+
+opt.foldtext = ""
+opt.fillchars = "fold: ,foldopen:▾,foldsep: ,foldclose:▸,stl: ,eob: "
+
+-- Better cursor and scrolling
+opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
+opt.scrolloff = 8
+opt.sidescrolloff = 8
+
+-- Professional diagnostic configuration
+vim.diagnostic.config({
+	virtual_text = {
+		spacing = 4,
+		source = "if_many",
+		prefix = "●",
+		format = function(diagnostic)
+			local severity_icons = {
+				[vim.diagnostic.severity.ERROR] = " ",
+				[vim.diagnostic.severity.WARN] = " ",
+				[vim.diagnostic.severity.INFO] = " ",
+				[vim.diagnostic.severity.HINT] = "󰌶 ",
+			}
+			local icon = severity_icons[diagnostic.severity] or "■ "
+			return icon .. diagnostic.message
+		end,
+	},
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.INFO] = " ",
+			[vim.diagnostic.severity.HINT] = "󰌶 ",
+		},
+	},
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+	float = {
+		focusable = false,
+		style = "minimal",
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+		suffix = "",
+		format = function(diagnostic)
+			return string.format("%s: %s", diagnostic.source or "LSP", diagnostic.message)
+		end,
+	},
+})
+
+-- Enhanced LSP UI
+local border_style = "rounded"
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+	border = border_style,
+	title = "Hover",
+})
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+	border = border_style,
+	title = "Signature Help",
+})
+
+-- Better completion menu styling
+vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { bg = "NONE", strikethrough = true, fg = "#808080" })
+vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { bg = "NONE", fg = "#569CD6" })
+vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { link = "CmpItemAbbrMatch" })
+vim.api.nvim_set_hl(0, "CmpItemKindVariable", { bg = "NONE", fg = "#9CDCFE" })
+vim.api.nvim_set_hl(0, "CmpItemKindInterface", { link = "CmpItemKindVariable" })
+vim.api.nvim_set_hl(0, "CmpItemKindText", { link = "CmpItemKindVariable" })
+vim.api.nvim_set_hl(0, "CmpItemKindFunction", { bg = "NONE", fg = "#C586C0" })
+vim.api.nvim_set_hl(0, "CmpItemKindMethod", { link = "CmpItemKindFunction" })
+vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { bg = "NONE", fg = "#D4D4D4" })
+vim.api.nvim_set_hl(0, "CmpItemKindProperty", { link = "CmpItemKindKeyword" })
+vim.api.nvim_set_hl(0, "CmpItemKindUnit", { link = "CmpItemKindKeyword" })
+
+-- Professional window separators
+vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#3c3836", bg = "NONE" })
+
+-- Enhanced telescope styling
+local telescope_border_hl = {
+	TelescopeBorder = { fg = "#5f875f" },
+	TelescopePromptBorder = { fg = "#ff9500" },
+	TelescopeResultsBorder = { fg = "#5f875f" },
+	TelescopePreviewBorder = { fg = "#5f875f" },
+}
+
+for hl, col in pairs(telescope_border_hl) do
+	vim.api.nvim_set_hl(0, hl, col)
+end
+
+-- Better indent guides
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "mason" },
+	callback = function()
+		vim.b.indent_blankline_enabled = false
+	end,
+})
+
+-- Professional startup screen enhancement
+vim.api.nvim_create_autocmd("User", {
+	pattern = "LazyVimStarted",
+	callback = function()
+		local stats = require("lazy").stats()
+		local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+		print("⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms")
+	end,
+})
+
+-- Enhanced buffer line styling (if using bufferline)
+vim.api.nvim_set_hl(0, "BufferLineIndicatorSelected", { fg = "#ff9500" })
+vim.api.nvim_set_hl(0, "BufferLineFill", { bg = "#1d2021" })
+
+-- Professional fold styling
+vim.api.nvim_set_hl(0, "Folded", { bg = "#3c3836", fg = "#a89984", italic = true })
+vim.api.nvim_set_hl(0, "FoldColumn", { bg = "NONE", fg = "#665c54" })
+
+-- Enhanced visual selection
+vim.api.nvim_set_hl(0, "Visual", { bg = "#504945" })
+
+-- Better search highlighting
+vim.api.nvim_set_hl(0, "IncSearch", { bg = "#fe8019", fg = "#1d2021", bold = true })
+vim.api.nvim_set_hl(0, "Search", { bg = "#fabd2f", fg = "#1d2021" })
+
+-- Professional cursor line
+vim.api.nvim_set_hl(0, "CursorLine", { bg = "#32302f" })
+vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#fe8019", bold = true })
+
+-- Enhanced git signs colors
+vim.api.nvim_set_hl(0, "GitSignsAdd", { fg = "#b8bb26" })
+vim.api.nvim_set_hl(0, "GitSignsChange", { fg = "#fabd2f" })
+vim.api.nvim_set_hl(0, "GitSignsDelete", { fg = "#fb4934" })
+
+-- Professional notification styling
+if pcall(require, "notify") then
+	require("notify").setup({
+		background_colour = "#1d2021",
+		timeout = 3000,
+		max_height = function()
+			return math.floor(vim.o.lines * 0.75)
+		end,
+		max_width = function()
+			return math.floor(vim.o.columns * 0.75)
+		end,
+		stages = "fade_in_slide_out",
+		render = "compact",
+		icons = {
+			ERROR = " ",
+			WARN = " ",
+			INFO = " ",
+			DEBUG = " ",
+			TRACE = "✎ ",
+		},
+	})
+	vim.notify = require("notify")
+end
 
 -- Kulala HTTP Client Keybindings
 -- Robust configuration for making HTTP requests within Neovim

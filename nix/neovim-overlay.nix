@@ -106,10 +106,7 @@ with final.pkgs.lib; let
       plugin = indent-blankline-nvim;
       config = "lua << EOF\nrequire(\"ibl\").setup()\nEOF\n";
     }
-    {
-      plugin = bufferline-nvim;
-      config = "lua << EOF\nrequire(\"bufferline\").setup()\nEOF\n";
-    }
+    bufferline-nvim
 
     twilight-nvim
     nvim-ts-autotag
