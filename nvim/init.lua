@@ -80,7 +80,7 @@ require("user.twilight")
 require("user.nvimUfo")
 require("user.kulala")
 require("user.spectre")
-require("user.nvim-tree")
+require("user.neo-tree")
 require("user.auto-session")
 require("user.git-conflict")
 require("user.visual-enhancements").setup()
@@ -143,10 +143,10 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>nf",
-	":NvimTreeFindFileToggle<CR>",
-	{ silent = true, desc = "Find file in nvim-tree" }
+	":Neotree reveal<CR>",
+	{ silent = true, desc = "Find file in neo-tree" }
 )
-vim.api.nvim_set_keymap("n", "<leader>nt", ":NvimTreeToggle<CR>", { silent = true, desc = "Toggle nvim-tree" })
+vim.api.nvim_set_keymap("n", "<leader>nt", ":Neotree toggle<CR>", { silent = true, desc = "Toggle neo-tree" })
 
 -- NeoFormat keybinding
 

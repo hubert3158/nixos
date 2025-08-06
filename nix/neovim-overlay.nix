@@ -197,7 +197,12 @@ with final.pkgs.lib; let
     dashboard-nvim
     vim-devicons
     nvim-web-devicons
-    nvim-tree-lua
+    nui-nvim
+    neo-tree-nvim
+    {
+      plugin = nvim-window-picker;
+      config = "lua << EOF\nrequire(\"window-picker\").setup()\nEOF\n";
+    }
     nvim-notify
     telescope-fzf-native-nvim
     friendly-snippets
