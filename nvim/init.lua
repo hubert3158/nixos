@@ -84,6 +84,8 @@ require("user.neo-tree")
 require("user.auto-session")
 require("user.git-conflict")
 require("user.visual-enhancements").setup()
+require("user.todo-comments")
+require("user.debugprint")
 
 vim.api.nvim_set_keymap(
 	"n",
@@ -140,12 +142,7 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "Find Marks" }
 )
 
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>nf",
-	":Neotree reveal<CR>",
-	{ silent = true, desc = "Find file in neo-tree" }
-)
+vim.api.nvim_set_keymap("n", "<leader>nf", ":Neotree reveal<CR>", { silent = true, desc = "Find file in neo-tree" })
 vim.api.nvim_set_keymap("n", "<leader>nt", ":Neotree toggle<CR>", { silent = true, desc = "Toggle neo-tree" })
 
 -- NeoFormat keybinding
@@ -414,6 +411,12 @@ vim.api.nvim_set_keymap(
 	"<cmd>TodoTelescope<cr>",
 	{ noremap = true, silent = true, desc = "Search TODOs with Telescope" }
 )
+
+vim.keymap.set("n", "<leader>xd", function()
+	require("telescope").extensions["todo-comments"].todo({
+		default_text = "DEV",
+	})
+end, { noremap = true, silent = true, desc = "Search 'DEV' in TODOs" })
 
 -- Zoxide integration
 vim.api.nvim_set_keymap(

@@ -138,15 +138,8 @@ with final.pkgs.lib; let
       plugin = gruvbox-nvim;
       config = "colorscheme gruvbox";
     }
-    {
-      plugin = todo-comments-nvim;
-      config = "lua << EOF\nrequire(\"todo-comments\").setup()\nEOF\n";
-    }
-    {
-      plugin = debugprint-nvim;
-      config = "lua << EOF\nrequire(\"debugprint\").setup()\nEOF\n";
-    }
-
+    debugprint-nvim
+    todo-comments-nvim
     luasnip
     friendly-snippets
     vim-snippets
