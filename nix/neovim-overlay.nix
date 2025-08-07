@@ -147,7 +147,6 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"debugprint\").setup()\nEOF\n";
     }
 
-    cmp_luasnip
     luasnip
     friendly-snippets
     vim-snippets
@@ -156,8 +155,6 @@ with final.pkgs.lib; let
     codesnap-nvim
     codecompanion-nvim
     copilot-vim
-    nvim-cmp
-    cmp-nvim-lsp
     {
       plugin = telescope-nvim;
     }
