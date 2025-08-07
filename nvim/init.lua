@@ -414,9 +414,9 @@ vim.api.nvim_set_keymap(
 
 vim.keymap.set("n", "<leader>xd", function()
 	require("telescope").extensions["todo-comments"].todo({
-		default_text = "DEV",
+		default_text = "DEBUGPRINT",
 	})
-end, { noremap = true, silent = true, desc = "Search 'DEV' in TODOs" })
+end, { noremap = true, silent = true, desc = "Search 'DEBUGPRINT' in TODOs" })
 
 -- Zoxide integration
 vim.api.nvim_set_keymap(
