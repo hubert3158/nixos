@@ -185,7 +185,6 @@ with final.pkgs.lib; let
     nvim-jdtls
     nvim-dap-ui
     dashboard-nvim
-    vim-devicons
     nvim-web-devicons
     nui-nvim
     neo-tree-nvim
@@ -195,7 +194,6 @@ with final.pkgs.lib; let
     }
     nvim-notify
     telescope-fzf-native-nvim
-    friendly-snippets
     lualine-nvim
     vim-nix
     vim-visual-multi
