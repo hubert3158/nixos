@@ -196,6 +196,10 @@ with final.pkgs.lib; let
       plugin = nvim-window-picker;
       config = "lua << EOF\nrequire(\"window-picker\").setup()\nEOF\n";
     }
+    {
+      plugin = typescript-tools-nvim;
+      config = "lua << EOF\nrequire(\"typescript-tools\").setup({})\nEOF\n";
+    }
     nvim-notify
     telescope-fzf-native-nvim
     lualine-nvim

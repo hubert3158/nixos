@@ -204,7 +204,6 @@
     nodePackages.jsonlint
     nodePackages.serve
     nodePackages.prettier # Prettier CLI
-    nodePackages.typescript-language-server
     nodePackages.pm2
     nodePackages.ts-node
     nodePackages.htmlhint # HTML linter
