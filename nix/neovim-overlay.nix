@@ -46,6 +46,10 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"gitsigns\").setup({})\nEOF\n";
     }
     {
+      plugin = aerial-nvim;
+      config = "lua << EOF\nrequire(\"aerial\").setup()\nEOF\n";
+    }
+    {
       plugin = lazydev-nvim;
       config = "lua << EOF\nrequire(\"lazydev\").setup({})\nEOF\n";
     }

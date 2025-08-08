@@ -866,3 +866,13 @@ vim.keymap.set(
 	":CodeCompanionActions<CR>",
 	{ noremap = true, silent = true, desc = "Code Companion actions" }
 )
+
+-- Aerial (code outline) keybindings
+vim.keymap.set(
+	"n",
+	"<leader>a",
+	"<cmd>AerialToggle!<CR>",
+	{ noremap = true, silent = true, desc = "Toggle Aerial Code Outline" }
+)
+vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { noremap = true, silent = true, desc = "Jump to Previous Symbol" })
+vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { noremap = true, silent = true, desc = "Jump to Next Symbol" })
