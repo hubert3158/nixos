@@ -98,12 +98,6 @@ require("lspconfig").clangd.setup({ -- c
 	capabilities = general_capabilities,
 })
 
-require("lspconfig").ts_ls.setup({
-	on_attach = general_on_attach,
-	capabilities = general_capabilities,
-	cmd = { "typescript-language-server", "--stdio" },
-})
-
 require("lspconfig").pyright.setup({
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
