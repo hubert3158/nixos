@@ -414,7 +414,7 @@ vim.api.nvim_set_keymap(
 
 vim.keymap.set("n", "<leader>xd", function()
 	require("telescope").extensions["todo-comments"].todo({
-		default_text = "DEBUGPRINT",
+		default_text = "DEBUGPRINT | DEV",
 	})
 end, { noremap = true, silent = true, desc = "Search 'DEBUGPRINT' in TODOs" })
 
