@@ -261,7 +261,7 @@
 
     # Option 2: Install components directly via Nix (simpler if you don't need rustup's flexibility)
     rustfmt # Rust code formatter
-   rustup # Rust toolchain manager (optional, but useful for managing toolchains)
+    rustup # Rust toolchain manager (optional, but useful for managing toolchains)
 
     # --- Terraform ---
     terraform # Provides terraform fmt
