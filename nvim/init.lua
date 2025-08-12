@@ -15,10 +15,8 @@ g.slime_target = "tmux"
 
 cmd.filetype("plugin", "indent", "on")
 cmd.packadd("cfilter") -- Allows filtering the quickfix list with :cfdo
--- Colorscheme
-cmd("colorscheme gruvbox")
+cmd("colorscheme catppuccin")
 
--- General settings
 opt.compatible = false
 opt.scrolloff = 6
 opt.incsearch = true -- Do incremental searching
@@ -627,7 +625,7 @@ vim.diagnostic.config({
 
 -- Better colorscheme setup with enhanced contrast
 vim.cmd([[
-  colorscheme gruvbox
+  colorscheme catppuccin
   highlight Normal guibg=NONE ctermbg=NONE
   highlight SignColumn guibg=NONE ctermbg=NONE
   highlight LineNr guibg=NONE ctermbg=NONE
