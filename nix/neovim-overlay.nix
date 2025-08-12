@@ -35,6 +35,7 @@ with final.pkgs.lib; let
     fugitive
 
     nvim-ufo
+    promise-async
     # neoformat # replaced with conform
     kulala-nvim
     markdown-preview-nvim
@@ -102,6 +103,7 @@ with final.pkgs.lib; let
       plugin = fidget-nvim;
       config = "lua << EOF\nrequire(\"fidget\").setup()\nEOF\n";
     }
+    nvim-navic
     {
       plugin = barbecue-nvim;
       config = "lua << EOF\nrequire(\"barbecue\").setup()\nEOF\n";
