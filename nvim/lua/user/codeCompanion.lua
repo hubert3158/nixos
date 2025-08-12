@@ -28,7 +28,7 @@ require("codecompanion").setup({
 					api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/openai.gpg",
 				},
 				params = {
-					model = "gpt-4.1",
+					model = "gpt-5",
 					temperature = 0.1,
 				},
 			})
