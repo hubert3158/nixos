@@ -28,8 +28,8 @@ with final.pkgs.lib; let
     # COLORSCHEME & UI
     # ============================================================================
     {
-      plugin = gruvbox-nvim; # Gruvbox colorscheme
-      config = "colorscheme gruvbox";
+      plugin = catppuccin-nvim; # Catppuccin colorscheme
+      config = "colorscheme catppuccin";
     }
     {
       plugin = lualine-nvim; # Statusline
@@ -142,6 +142,7 @@ with final.pkgs.lib; let
     nvim-treesitter # Syntax highlighting
     nvim-treesitter-textobjects # Text objects based on syntax
     nvim-ts-autotag # Auto-close/rename HTML tags
+    nvim-ts-context-commentstring # Context-aware commenting
 
     # Treesitter parsers for various languages
     nvim-treesitter-parsers.vimdoc
