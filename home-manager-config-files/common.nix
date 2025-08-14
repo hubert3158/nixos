@@ -144,6 +144,7 @@
         pytesseract
         requests
         flask
+        boto3
       ]))
 
     lua-language-server
