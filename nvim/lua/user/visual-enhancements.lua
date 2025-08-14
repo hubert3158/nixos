@@ -8,7 +8,7 @@ function M.setup()
 	if pcall(require, "lualine") then
 		require("lualine").setup({
 			options = {
-				theme = "gruvbox-material",
+				theme = "catppuccin",
 				globalstatus = true,
 				disabled_filetypes = { statusline = { "dashboard", "alpha" } },
 				component_separators = { left = "", right = "" },

@@ -15,10 +15,8 @@ g.slime_target = "tmux"
 
 cmd.filetype("plugin", "indent", "on")
 cmd.packadd("cfilter") -- Allows filtering the quickfix list with :cfdo
--- Colorscheme
-cmd("colorscheme gruvbox")
+cmd("colorscheme catppuccin")
 
--- General settings
 opt.compatible = false
 opt.scrolloff = 6
 opt.incsearch = true -- Do incremental searching
@@ -80,10 +78,12 @@ require("user.twilight")
 require("user.nvimUfo")
 require("user.kulala")
 require("user.spectre")
-require("user.nvim-tree")
+require("user.neo-tree")
 require("user.auto-session")
 require("user.git-conflict")
 require("user.visual-enhancements").setup()
+require("user.todo-comments")
+require("user.debugprint")
 
 vim.api.nvim_set_keymap(
 	"n",
@@ -140,13 +140,8 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "Find Marks" }
 )
 
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>nf",
-	":NvimTreeFindFileToggle<CR>",
-	{ silent = true, desc = "Find file in nvim-tree" }
-)
-vim.api.nvim_set_keymap("n", "<leader>nt", ":NvimTreeToggle<CR>", { silent = true, desc = "Toggle nvim-tree" })
+vim.api.nvim_set_keymap("n", "<leader>nf", ":Neotree reveal<CR>", { silent = true, desc = "Find file in neo-tree" })
+vim.api.nvim_set_keymap("n", "<leader>nt", ":Neotree toggle<CR>", { silent = true, desc = "Toggle neo-tree" })
 
 -- NeoFormat keybinding
 
@@ -258,7 +253,6 @@ vim.api.nvim_set_keymap("v", ">", ">gv", { noremap = true, silent = true, desc =
 
 -- Save and Quit shortcuts
 vim.api.nvim_set_keymap("n", "<leader>w", ":w<CR>", { noremap = true, silent = true, desc = "Save File" })
-vim.api.nvim_set_keymap("n", "<leader>qa", ":qa!<CR>", { noremap = true, silent = true, desc = "Quit All" })
 
 -- Copy to system clipboard
 vim.api.nvim_set_keymap("v", "<leader>y", '"+y', { noremap = true, silent = true, desc = "Yank to System Clipboard" })
@@ -267,20 +261,6 @@ vim.api.nvim_set_keymap(
 	"<leader>Y",
 	'gg"+yG',
 	{ noremap = true, silent = true, desc = "Yank Entire Buffer to Clipboard" }
-)
-
--- Paste from system clipboard
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>p",
-	'"+p',
-	{ noremap = true, silent = true, desc = "Paste from System Clipboard" }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>P",
-	'"+P',
-	{ noremap = true, silent = true, desc = "Paste Before from System Clipboard" }
 )
 
 -- Search and replace
@@ -305,20 +285,6 @@ vim.api.nvim_set_keymap(
 	"<leader>ch",
 	":nohlsearch<CR>",
 	{ noremap = true, silent = true, desc = "Clear Search Highlighting" }
-)
-
--- Open config file
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ve",
-	":e $MYVIMRC<CR>",
-	{ noremap = true, silent = true, desc = "Edit Neovim Config" }
-)
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>vs",
-	":source $MYVIMRC<CR>",
-	{ noremap = true, silent = true, desc = "Source Neovim Config" }
 )
 
 -- Toggle spell check
@@ -443,6 +409,12 @@ vim.api.nvim_set_keymap(
 	"<cmd>TodoTelescope<cr>",
 	{ noremap = true, silent = true, desc = "Search TODOs with Telescope" }
 )
+
+vim.keymap.set("n", "<leader>xd", function()
+	require("telescope").extensions["todo-comments"].todo({
+		default_text = "DEBUGPRINT | DEV",
+	})
+end, { noremap = true, silent = true, desc = "Search 'DEBUGPRINT' in TODOs" })
 
 -- Zoxide integration
 vim.api.nvim_set_keymap(
@@ -703,7 +675,7 @@ vim.diagnostic.config({
 
 -- Better colorscheme setup with enhanced contrast
 vim.cmd([[
-  colorscheme gruvbox
+  colorscheme catppuccin
   highlight Normal guibg=NONE ctermbg=NONE
   highlight SignColumn guibg=NONE ctermbg=NONE
   highlight LineNr guibg=NONE ctermbg=NONE
@@ -942,3 +914,13 @@ vim.keymap.set(
 	":CodeCompanionActions<CR>",
 	{ noremap = true, silent = true, desc = "Code Companion actions" }
 )
+
+-- Aerial (code outline) keybindings
+vim.keymap.set(
+	"n",
+	"<leader>a",
+	"<cmd>AerialToggle!<CR>",
+	{ noremap = true, silent = true, desc = "Toggle Aerial Code Outline" }
+)
+vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { noremap = true, silent = true, desc = "Jump to Previous Symbol" })
+vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { noremap = true, silent = true, desc = "Jump to Next Symbol" })

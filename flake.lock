@@ -60,11 +60,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1724097937,
-        "narHash": "sha256-Q4tgm8ZHAQUdvsNft86MqIbHQAm7OF7RT/wwYWXqSdY=",
+        "lastModified": 1754898281,
+        "narHash": "sha256-A7qkqaq8fqZXCxtHfJFDds2whPkCex3ZyXt8SXr/R3U=",
         "owner": "mrcjkb",
         "repo": "nix-gen-luarc-json",
-        "rev": "b36b69c4ded9f31b079523bc452e23458734cf00",
+        "rev": "560b1103cd6f38cd7ca89022f0e5293741fadd59",
         "type": "github"
       },
       "original": {
@@ -77,10 +77,7 @@
       "inputs": {
         "flake-compat": "flake-compat",
         "gitignore": "gitignore",
-        "nixpkgs": [
-          "gen-luarc",
-          "nixpkgs"
-        ],
+        "nixpkgs": ["gen-luarc", "nixpkgs"],
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
@@ -99,11 +96,7 @@
     },
     "gitignore": {
       "inputs": {
-        "nixpkgs": [
-          "gen-luarc",
-          "git-hooks",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["gen-luarc", "git-hooks", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1709087332,
