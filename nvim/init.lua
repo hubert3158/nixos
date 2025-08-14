@@ -462,6 +462,56 @@ vim.api.nvim_set_keymap(
 
 vim.api.nvim_set_keymap("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true, desc = "Lazy [[G]]it" })
 
+-- vim-dadbod-ui keybindings
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>dt",
+	":DBUIToggle<CR>",
+	{ noremap = true, silent = true, desc = "Toggle Database UI" }
+)
+
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>df",
+	":DBUIFindBuffer<CR>",
+	{ noremap = true, silent = true, desc = "Find Database Buffer" }
+)
+
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>dr",
+	":DBUIRenameBuffer<CR>",
+	{ noremap = true, silent = true, desc = "Rename Database Buffer" }
+)
+
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>da",
+	":DBUIAddConnection<CR>",
+	{ noremap = true, silent = true, desc = "Add Database Connection" }
+)
+
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>dl",
+	":DBUILastQueryInfo<CR>",
+	{ noremap = true, silent = true, desc = "Last Query Info" }
+)
+
+-- Execute query in visual mode
+vim.api.nvim_set_keymap(
+	"v",
+	"<leader>ds",
+	":DB<CR>",
+	{ noremap = true, silent = true, desc = "Execute Selected Query" }
+)
+
+-- Execute current line/query in normal mode
+vim.api.nvim_set_keymap("n", "<leader>ds", ":DB<CR>", { noremap = true, silent = true, desc = "Execute Current Query" })
+
+-- Save query buffer
+vim.api.nvim_set_keymap("n", "<leader>dw", ":w<CR>", { noremap = true, silent = true, desc = "Save Query Buffer" })
+
 -- DAP (Debug Adapter Protocol) UI toggling, continue, disconnect, stepping, and breakpoints
 vim.api.nvim_set_keymap(
 	"n",
