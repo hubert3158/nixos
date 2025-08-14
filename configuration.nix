@@ -67,7 +67,7 @@
     bluetooth.enable = true;
   };
 
-  networking.firewall.allowedTCPPorts = [3000 8080 8081 993 5678 5432 5000 8083 8085 9990];
+  networking.firewall.allowedTCPPorts = [3000 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317];
 
   # services.intune.enable = true;
   # Set your time zone.
@@ -204,10 +204,10 @@
     nodePackages.jsonlint
     nodePackages.serve
     nodePackages.prettier # Prettier CLI
-    nodePackages.typescript-language-server
     nodePackages.pm2
     nodePackages.ts-node
     nodePackages.htmlhint # HTML linter
+    nodePackages.typescript
 
     # === Daemons ===
     prettierd
@@ -261,7 +261,6 @@
 
     # Option 2: Install components directly via Nix (simpler if you don't need rustup's flexibility)
     rustfmt # Rust code formatter
-    rust-analyzer # Rust LSP (often bundles or ensures rustfmt is found)
     rustup # Rust toolchain manager (optional, but useful for managing toolchains)
 
     # --- Terraform ---

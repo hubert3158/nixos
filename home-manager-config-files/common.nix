@@ -136,6 +136,7 @@
         reportlab
         openai
         pandas
+        boto3
         pypdf
         pypdf2
         # pymupdf # marked as broken for the latest version
