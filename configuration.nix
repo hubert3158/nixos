@@ -130,9 +130,6 @@
   programs.steam.enable = true;
   programs.hyprland.withUWSM = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
@@ -149,7 +146,7 @@
     eclipses.eclipse-jee
 
     dbeaver-bin
-    wpsoffice
+    # wpsoffice
 
     graphicsmagick
     git-credential-manager

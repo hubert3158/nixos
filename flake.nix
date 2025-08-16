@@ -30,46 +30,29 @@
       # This assumes nvim-pkg is the attribute name exposed by your overlay
       home-manager.users.hubert.home.packages = [pkgs.nvim-pkg];
     };
-
-    # Define system-specific global nixpkgs configuration
-    nixpkgsConfigWork = {lib, ...}: {
-      nixpkgs.config = {
-        allowUnfree = true;
-        # Use lib.getName for safer package name checking
-        allowUnfreePredicate = pkg:
-          builtins.elem (lib.getName pkg) [
-          ];
-        permittedInsecurePackages = [
-          "emacs-29.4"
-        ];
-      };
-    };
-
-    # Define system-specific global nixpkgs configuration (can be same as work if desired)
-    nixpkgsConfigHome = {lib, ...}: {
-      # neovimOverlay = import ./overlays/default.nix {
-      #   pkgs = import nixpkgs {inherit system;};
-      # };
-      nixpkgs.config = {
-        allowUnfree = true;
-        allowUnfreePredicate = pkg:
-          builtins.elem (lib.getName pkg) [
-          ];
-        permittedInsecurePackages = [
-          "emacs-29.4"
-        ];
-      };
-    };
   in {
     # NixOS Configurations
     nixosConfigurations = {
       work = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        # Apply nixpkgs config at system level to ensure it's available to overlays
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = pkg:
+              builtins.elem (nixpkgs.lib.getName pkg) [
+                "ventoy"
+              ];
+            permittedInsecurePackages = [
+              "emacs-29.4"
+              "ventoy-1.1.05"
+            ];
+          };
+        };
         # Special arguments passed to modules
         specialArgs = {inherit inputs;}; # Pass inputs if needed in your modules
         modules = [
-          # Global Nixpkgs config for this system
-          nixpkgsConfigWork
           # Core configurations
           ./configuration.nix
           ./work.nix
@@ -96,11 +79,23 @@
 
       home = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        # Apply nixpkgs config at system level to ensure it's available to overlays
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = pkg:
+              builtins.elem (nixpkgs.lib.getName pkg) [
+                "ventoy"
+              ];
+            permittedInsecurePackages = [
+              "emacs-29.4"
+              "ventoy-1.1.05"
+            ];
+          };
+        };
         specialArgs = {inherit inputs;};
         modules = [
-          # Global Nixpkgs config for this system
-          nixpkgsConfigHome
-
           # Core configurations
           ./configuration.nix
           ./home.nix

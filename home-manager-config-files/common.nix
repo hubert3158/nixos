@@ -60,6 +60,8 @@
     wrk #HTTP benchmarking tool.
     keychain
 
+    ventoy
+
     pgadmin
 
     freerdp
@@ -173,6 +175,8 @@
     allowUnfree = true;
     permittedInsecurePackages = [
       "python-2.7.18.8"
+     "emacs-29.4"
+     "ventoy-1.1.05"
     ];
   };
 
