@@ -22,7 +22,6 @@ with final.pkgs.lib; let
     # Core dependencies
     plenary-nvim # Lua utility library used by many plugins
     nui-nvim # UI components library
-    nvim-web-devicons # Icon support for file types
 
     # ============================================================================
     # COLORSCHEME & UI
@@ -42,6 +41,14 @@ with final.pkgs.lib; let
       plugin = noice-nvim; # Better UI for messages, cmdline and popupmenu
       config = "lua << EOF\nrequire(\"noice\").setup()\nEOF\n";
     }
+    {
+      plugin =
+        nvim-web-devicons
+        # Icon support for file types
+        ; # Better UI for messages, cmdline and popupmenu
+      config = "lua << EOF\nrequire(\"nvim-web-devicons\").setup()\nEOF\n";
+    }
+
     {
       plugin = nvim-notify; # Notification manager
     }
