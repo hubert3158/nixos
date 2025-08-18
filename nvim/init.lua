@@ -360,6 +360,13 @@ vim.api.nvim_set_keymap(
 	"<cmd>Trouble diagnostics toggle<cr>",
 	{ noremap = true, silent = true, desc = "Toggle Diagnostics (Trouble)" }
 )
+-- Toggle only Errors
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>xe",
+	"<cmd>Trouble diagnostics toggle filter.severity=ERROR<cr>",
+	{ noremap = true, silent = true, desc = "Show Errors Only (Trouble)" }
+)
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>xX",
