@@ -61,6 +61,11 @@
     keychain
 
     ventoy
+    parted
+    dosfstools
+    ntfs3g
+    rsync
+    util-linux
 
     pgadmin
 
@@ -175,8 +180,8 @@
     allowUnfree = true;
     permittedInsecurePackages = [
       "python-2.7.18.8"
-     "emacs-29.4"
-     "ventoy-1.1.05"
+      "emacs-29.4"
+      "ventoy-1.1.05"
     ];
   };
 
