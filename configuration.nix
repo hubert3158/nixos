@@ -346,6 +346,8 @@
     sshpass
     postman
     libreoffice
+    networkmanagerapplet
+    waybar
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
@@ -433,6 +435,13 @@
 
   programs.neovim.enable = true;
 
+  # NetworkManager UI/agent
+  programs.nm-applet.enable = true;
+
+  security.pam.services.sddm.enableGnomeKeyring = true; # you use SDDM
+
+  # Polkit (needed for auth prompts)
+  security.polkit.enable = true;
   services.gnome.gnome-keyring = {
     enable = true;
   };
