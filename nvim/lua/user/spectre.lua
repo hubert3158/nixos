@@ -94,7 +94,7 @@ require("spectre").setup({
 				"--line-number",
 				"--column",
 				"--multiline",
-				"--pcre2", 
+				"--pcre2",
 			},
 			options = {
 				["ignore-case"] = {
