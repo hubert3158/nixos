@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   xdg = {
     enable = true;
     desktopEntries = {
@@ -47,6 +47,18 @@
         categories = ["Network"];
         mimeType = ["text/plain"];
         comment = "needed at work bro";
+      };
+      clipHist = {
+        name = "ClipHist";
+        genericName = "Clipboard History";
+        # Note: double quotes inside the Nix string, no single quotes
+        exec = ''
+          ${pkgs.bash}/bin/bash -lc "cliphist list | wofi -S dmenu | cut -f1 | xargs -r -n1 cliphist decode | wl-copy"
+        '';
+        terminal = false;
+        categories = ["Utility"];
+        mimeType = ["text/plain"];
+        comment = "Clipboard manager";
       };
     };
     mime = {enable = true;};
