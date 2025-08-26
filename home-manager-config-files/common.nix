@@ -59,6 +59,7 @@
     # Add your user packages here
     wrk #HTTP benchmarking tool.
     keychain
+    waybar
 
     ventoy
     parted
@@ -386,6 +387,24 @@
       wallpaper = [
         "HDMI-A-1,/home/hubert/nixos/images/kitty-wallpaper.jpg"
       ];
+    };
+  };
+
+  services.flameshot = {
+    enable = true;
+
+    settings = {
+      General = {
+        disabledTrayIcon = true;
+        showStartupLaunchMessage = false;
+        useGrimAdapter = true; # Wayland screenshot adapter
+        savePath = "/home/hubert/Pictures/Screenshots";
+      };
+
+      Shortcuts = {
+        TYPE_COPY = "Ctrl+Shift+C";
+        TYPE_SAVE = "Ctrl+Shift+S";
+      };
     };
   };
 
