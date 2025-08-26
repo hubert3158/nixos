@@ -134,7 +134,8 @@
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
-    wl-clipboard-rs
+    wl-clipboard
+    cliphist
     entr
     ffmpeg
     flameshot
