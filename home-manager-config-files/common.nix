@@ -118,6 +118,7 @@
     # postman
     teams-for-linux
     ripgrep
+    sd
     lazygit
 
     dig
