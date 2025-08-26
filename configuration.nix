@@ -135,6 +135,7 @@
 
   environment.systemPackages = with pkgs; [
     wl-clipboard
+    fuzzel
     cliphist
     entr
     ffmpeg
