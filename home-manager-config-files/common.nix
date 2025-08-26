@@ -389,50 +389,59 @@
     };
   };
 
-  programs.wofi = {
+  programs.fuzzel = {
     enable = true;
     settings = {
-      allow_markup = true;
-      allow_images = true;
-      width = "30%";
+      main = {
+        terminal = "alacritty";
+        layer = "overlay";
+        font = "Monofur Nerd Font:size=24";
+        icon-theme = "breeze";
+        icons = true;
+        fields = "name,generic,comment,categories,filename,keywords";
+        width = 30;
+        horizontal-pad = 40;
+        vertical-pad = 8;
+        inner-pad = 8;
+      };
+
+      colors = {
+        background = "001d2ecc";
+        text = "blanchedalmond";
+        match = "mediumseagreen";
+        selection = "000000cc";
+        selection-text = "mediumseagreen";
+        selection-match = "mediumseagreen";
+        border = "001d2e";
+      };
+
+      border = {
+        width = 1;
+        radius = 0;
+      };
+
+      dmenu = {
+        exit-immediately-if-empty = true;
+      };
+
+      key-bindings = {
+        cancel = "Escape Control+c";
+        execute = "Return KP_Enter Control+y";
+        execute-or-next = "Tab";
+        cursor-left = "Left Control+b";
+        cursor-right = "Right Control+f";
+        cursor-home = "Home Control+a";
+        cursor-end = "End Control+e";
+        delete-prev = "BackSpace";
+        delete-next = "Delete";
+        delete-prev-word = "Mod1+BackSpace Control+BackSpace";
+        delete-next-word = "Mod1+d Control+Delete";
+        prev = "Up Control+p";
+        next = "Down Control+n";
+        page-up = "Page_Up Control+v";
+        page-down = "Page_Down Mod1+v";
+      };
     };
-    style = ''
-            * {
-        font-family: Monofur Nerd Font;
-        font-size: 1.5rem;
-      }
-
-      #outer-box {
-        background-color: #001d2e;
-      }
-
-      #input {
-        color: white;
-        background-color: black;
-      }
-
-      #entry {
-        background-color: #001d2e;
-      }
-
-      #text {
-        color: blanchedalmond;
-      }
-
-      #img {
-        width: 10px;
-        height: 10px;
-        background-color: black;
-      }
-      #entry:selected {
-        background-color: black;
-      }
-      #text:selected {
-        color: mediumseagreen;
-        background-color: black;
-      }
-
-    '';
   };
 
   #   [Desktop Entry]
