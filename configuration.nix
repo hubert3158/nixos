@@ -195,7 +195,6 @@
     slurp
     dmenu
     lightdm
-    wofi
     gnome-keyring
 
     nodejs # Base Node.js (or a specific version like nodejs-18_x)
