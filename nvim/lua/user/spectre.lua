@@ -26,11 +26,6 @@ require("spectre").setup({
 			cmd = "<cmd>lua require('spectre').send_to_qf()<CR>",
 			desc = "send all items to quickfix",
 		},
-		["replace_cmd"] = {
-			map = "<leader>c",
-			cmd = "<cmd>lua require('spectre').replace_cmd()<CR>",
-			desc = "input replace command",
-		},
 		["show_option_menu"] = {
 			map = "<leader>o",
 			cmd = "<cmd>lua require('spectre').show_options()<CR>",
@@ -98,20 +93,21 @@ require("spectre").setup({
 		},
 	},
 	replace_engine = {
-		oxi = { cmd = "oxi", args = {}, options = { ["ignore-case"] = { value = "i" } } }, -- aka sd
+		oxi = {
+			cmd = "sd",
+			args = {},
+			options = {
+				["ignore-case"] = { value = "i", icon = "[I]", desc = "ignore case" },
+			},
+		},
 		sed = { cmd = "sed", args = nil },
 	},
+
 	default = {
-		find = {
-			--pick one of item in find_engine
-			cmd = "rg",
-			options = { "ignore-case" },
-		},
-		replace = {
-			--pick one of item in replace_engine
-			cmd = "oxi",
-		},
+		find = { cmd = "rg", options = { "ignore-case" } },
+		replace = { cmd = "oxi" }, -- 👈 key from replace_engine
 	},
+
 	is_open_target_win = true, --open file on opener window
 	is_insert_mode = false, -- start open panel on is_insert_mode
 })
