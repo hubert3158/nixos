@@ -351,6 +351,7 @@
     networkmanagerapplet
     waybar
     claude-code
+    miller
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
