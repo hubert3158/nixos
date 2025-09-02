@@ -350,6 +350,7 @@
     libreoffice
     networkmanagerapplet
     waybar
+    claude-code
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
