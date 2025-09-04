@@ -272,7 +272,7 @@ with final.pkgs.lib; let
     # ============================================================================
     # DOCUMENTATION & MARKDOWN
     # ============================================================================
-    markdown-preview-nvim # Markdown preview
+    render-markdown-nvim # Markdown rendering in buffer
 
     # ============================================================================
     # SCREENSHOTS & SHARING
