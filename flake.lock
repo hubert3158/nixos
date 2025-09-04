@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "eldritch-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1753109286,
+        "narHash": "sha256-jfxCX73BK/Px/OkcC2st2KjXqd/S9+F9aVIKyJLOB0o=",
+        "owner": "eldritch-theme",
+        "repo": "eldritch.nvim",
+        "rev": "c980caea40cab7eab2c3a467af5bab1e7e66fcce",
+        "type": "github"
+      },
+      "original": {
+        "owner": "eldritch-theme",
+        "repo": "eldritch.nvim",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -231,6 +247,7 @@
     },
     "root": {
       "inputs": {
+        "eldritch-nvim": "eldritch-nvim",
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "home-manager": "home-manager",

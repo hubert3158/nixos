@@ -6,6 +6,10 @@
     home-manager.url = "github:nix-community/home-manager";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
+    eldritch-nvim = {
+      url = "github:eldritch-theme/eldritch.nvim";
+      flake = false;
+    };
     # Consider adding your neovim overlay source as an input if it's external
     # neovim-overlay-src.url = "github:your/neovim-overlay-repo"; # Example
   };
