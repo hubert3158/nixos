@@ -352,6 +352,7 @@
     waybar
     claude-code
     miller
+    marksman
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
