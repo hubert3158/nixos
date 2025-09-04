@@ -10,6 +10,8 @@ with final.pkgs.lib; let
       version = src.lastModifiedDate;
     };
 
+  eldritch-nvim = mkNvimPlugin inputs.eldritch-nvim "eldritch-nvim";
+
   # Make sure we use the pinned nixpkgs instance for wrapNeovimUnstable,
   # otherwise it could have an incompatible signature when applying this overlay.
   pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${pkgs.system};
@@ -27,8 +29,8 @@ with final.pkgs.lib; let
     # COLORSCHEME & UI
     # ============================================================================
     {
-      plugin = catppuccin-nvim; # Catppuccin colorscheme
-      config = "colorscheme catppuccin";
+      plugin = eldritch-nvim; # Eldritch colorscheme
+      config = "lua << EOF\nrequire(\"eldritch\").setup()\nEOF\ncolorscheme eldritch\n";
     }
     {
       plugin = lualine-nvim; # Statusline
