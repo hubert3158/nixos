@@ -121,6 +121,11 @@ require("lspconfig").nil_ls.setup({
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
 })
+
+require("lspconfig").marksman.setup({
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
+})
 require("lspconfig").sqls.setup({
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
