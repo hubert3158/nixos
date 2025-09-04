@@ -254,63 +254,71 @@
 
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host *
-      ForwardAgent yes
-      ForwardX11 no
-      ForwardX11Trusted yes
-      ServerAliveInterval 60
-      ServerAliveCountMax 30
+    enableDefaultConfig = false;
+    matchBlocks = {
+      "*" = {
+        forwardAgent = true;
+        forwardX11 = false;
+        forwardX11Trusted = true;
+        serverAliveInterval = 60;
+        serverAliveCountMax = 30;
+      };
 
-      Host stg
-      HostName staging.v2.smartmca.com
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/staging.v2.pem
+      "stg" = {
+        hostname = "staging.v2.smartmca.com";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/staging.v2.pem";
+      };
 
-      Host prod
-      HostName app.v2.smartmca.com
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/prod.v2.pem
+      "prod" = {
+        hostname = "app.v2.smartmca.com";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/prod.v2.pem";
+      };
 
-      Host wellMed
-      HostName 100.29.157.104
-      User ubuntu
-      Port 22
+      "wellMed" = {
+        hostname = "100.29.157.104";
+        user = "ubuntu";
+        port = 22;
+      };
 
-      Host submission
-      HostName 35.153.23.89
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/automated_submission.pem
+      "submission" = {
+        hostname = "35.153.23.89";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/automated_submission.pem";
+      };
 
+      "dev" = {
+        hostname = "44.220.241.10";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/dev_server.pem";
+      };
 
-      Host dev
-      HostName 44.220.241.10
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/dev_server.pem
+      "demo" = {
+        hostname = "35.153.23.89";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/demo.pem";
+      };
 
-      Host demo
-      HostName 35.153.23.89
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/demo.pem
+      "bluetangles" = {
+        hostname = "bluetangles.com";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/bluetangles.pem";
+      };
 
-      Host bluetangles
-      HostName bluetangles.com
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/bluetangles.pem
-
-      Host rules-engine
-      HostName 54.166.84.96
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/rules_engine.pem
-
-    '';
+      "rules-engine" = {
+        hostname = "54.166.84.96";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/rules_engine.pem";
+      };
+    };
   };
 
   programs.git = {
