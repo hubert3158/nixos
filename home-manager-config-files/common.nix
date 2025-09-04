@@ -254,63 +254,71 @@
 
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host *
-      ForwardAgent yes
-      ForwardX11 no
-      ForwardX11Trusted yes
-      ServerAliveInterval 60
-      ServerAliveCountMax 30
+    enableDefaultConfig = false;
+    matchBlocks = {
+      "*" = {
+        forwardAgent = true;
+        forwardX11 = false;
+        forwardX11Trusted = true;
+        serverAliveInterval = 60;
+        serverAliveCountMax = 30;
+      };
 
-      Host stg
-      HostName REDACTED-HOST-STG
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/staging.v2.pem
+      "stg" = {
+        hostname = "REDACTED-HOST-STG";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/staging.v2.pem";
+      };
 
-      Host prod
-      HostName REDACTED-HOST-PROD
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/prod.v2.pem
+      "prod" = {
+        hostname = "REDACTED-HOST-PROD";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/prod.v2.pem";
+      };
 
-      Host wellMed
-      HostName 0.0.0.0
-      User ubuntu
-      Port 22
+      "wellMed" = {
+        hostname = "0.0.0.0";
+        user = "ubuntu";
+        port = 22;
+      };
 
-      Host submission
-      HostName 0.0.0.0
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/automated_submission.pem
+      "submission" = {
+        hostname = "0.0.0.0";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/automated_submission.pem";
+      };
 
+      "dev" = {
+        hostname = "0.0.0.0";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/dev_server.pem";
+      };
 
-      Host dev
-      HostName 0.0.0.0
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/dev_server.pem
+      "demo" = {
+        hostname = "0.0.0.0";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/demo.pem";
+      };
 
-      Host demo
-      HostName 0.0.0.0
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/demo.pem
+      "REDACTED-BT" = {
+        hostname = "REDACTED-HOST-BT";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/REDACTED-BT.pem";
+      };
 
-      Host REDACTED-BT
-      HostName REDACTED-HOST-BT
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/REDACTED-BT.pem
-
-      Host rules-engine
-      HostName 0.0.0.0
-      User ubuntu
-      Port 22
-      IdentityFile ~/.ssh/rules_engine.pem
-
-    '';
+      "rules-engine" = {
+        hostname = "0.0.0.0";
+        user = "ubuntu";
+        port = 22;
+        identityFile = "~/.ssh/rules_engine.pem";
+      };
+    };
   };
 
   programs.git = {
