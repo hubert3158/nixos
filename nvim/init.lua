@@ -15,7 +15,8 @@ g.slime_target = "tmux"
 
 cmd.filetype("plugin", "indent", "on")
 cmd.packadd("cfilter") -- Allows filtering the quickfix list with :cfdo
-cmd("colorscheme catppuccin")
+require("eldritch").setup()
+cmd("colorscheme eldritch")
 
 opt.compatible = false
 opt.scrolloff = 6
@@ -686,7 +687,7 @@ vim.diagnostic.config({
 
 -- Better colorscheme setup with enhanced contrast
 vim.cmd([[
-  colorscheme catppuccin
+  colorscheme eldritch
   highlight Normal guibg=NONE ctermbg=NONE
   highlight SignColumn guibg=NONE ctermbg=NONE
   highlight LineNr guibg=NONE ctermbg=NONE
