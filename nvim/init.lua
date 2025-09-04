@@ -595,12 +595,16 @@ vim.api.nvim_set_keymap(
 	"<cmd>Twilight<CR>",
 	{ noremap = true, silent = true, desc = "[M]isscellineous [T]wilight" }
 )
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ma",
-	"<cmd>MarkdownPreviewToggle<CR>",
-	{ noremap = true, silent = true, desc = "[M]isscellineous m[A]rkdown " }
-)
+-- render-markdown.nvim keybindings
+vim.keymap.set("n", "<leader>mr", function()
+	require("render-markdown").toggle()
+end, { noremap = true, silent = true, desc = "Toggle Markdown [R]endering" })
+vim.keymap.set("n", "<leader>me", function()
+	require("render-markdown").enable()
+end, { noremap = true, silent = true, desc = "[E]nable Markdown Rendering" })
+vim.keymap.set("n", "<leader>md", function()
+	require("render-markdown").disable()
+end, { noremap = true, silent = true, desc = "[D]isable Markdown Rendering" })
 
 -- refactor
 vim.keymap.set({ "n", "x" }, "<leader>re", function()
