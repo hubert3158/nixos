@@ -10,6 +10,10 @@
       url = "github:eldritch-theme/eldritch.nvim";
       flake = false;
     };
+    nvim-java = {
+      url = "github:nvim-java/nvim-java";
+      flake = false;
+    };
     # Consider adding your neovim overlay source as an input if it's external
     # neovim-overlay-src.url = "github:your/neovim-overlay-repo"; # Example
   };
