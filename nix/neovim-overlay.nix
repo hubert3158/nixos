@@ -11,7 +11,6 @@ with final.pkgs.lib; let
     };
 
   eldritch-nvim = mkNvimPlugin inputs.eldritch-nvim "eldritch-nvim";
-  nvim-java = mkNvimPlugin inputs.nvim-java "nvim-java";
 
   # Make sure we use the pinned nixpkgs instance for wrapNeovimUnstable,
   # otherwise it could have an incompatible signature when applying this overlay.
