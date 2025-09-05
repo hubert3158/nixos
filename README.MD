@@ -1,7 +1,7 @@
 #
 #run the following script
 #
-# Java support is provided by nvim-java with Lombok and Spring Boot tools; no manual jdtls setup needed.
+# Java support is provided by nvim-java with Lombok; no manual jdtls setup needed.
 
 #rebuilds the the whole config including main configuration for ( work/home)
 sudo nixos-rebuild switch --flake .#home --show-trace

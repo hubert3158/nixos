@@ -131,7 +131,6 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"typescript-tools\").setup({})\nEOF\n";
     }
     { plugin = nvim-java; } # Java language support
-    { plugin = spring-boot-nvim; } # Spring Boot tools for nvim-java
     {
       plugin = fidget-nvim; # LSP progress indicator
       config = "lua << EOF\nrequire(\"fidget\").setup()\nEOF\n";
