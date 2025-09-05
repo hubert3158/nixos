@@ -138,6 +138,8 @@ require("lspconfig").rust_analyzer.setup({
 
 -- Java setup using nvim-java with Lombok support
 require("java").setup({
+        -- use Nix-provided JDK instead of downloading one via mason
+        jdk = { auto_install = false },
         lombok = { version = "1.18.38" },
         -- spring_boot tools require an extra plugin that isn't packaged in this
         -- Nix setup. Disable it to avoid missing module errors during startup.
@@ -149,7 +151,24 @@ require("java").setup({
         },
 })
 
+local java_home = vim.env.JAVA_HOME
+local java_home11 = vim.env.JAVA_HOME11
+
 require("lspconfig").jdtls.setup({
         on_attach = general_on_attach,
         capabilities = general_capabilities,
+        cmd_env = { JAVA_HOME = java_home },
+        settings = {
+                java = {
+                        configuration = {
+                                runtimes = {
+                                        {
+                                                name = "JavaSE-11",
+                                                path = java_home11,
+                                                default = true,
+                                        },
+                                },
+                        },
+                },
+        },
 })
