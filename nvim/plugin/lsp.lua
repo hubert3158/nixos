@@ -137,13 +137,9 @@ require("lspconfig").rust_analyzer.setup({
         capabilities = general_capabilities,
 })
 
--- Java support via nvim-java with Lombok and Spring Boot
+-- Java support via nvim-java with Lombok
 require("java").setup({
         lombok = {
                 version = "nightly",
         },
-        spring_boot_tools = {
-                enable = true,
-        },
 })
-require("spring_boot").setup()
