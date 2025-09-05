@@ -12,6 +12,14 @@ with final.pkgs.lib; let
 
   eldritch-nvim = mkNvimPlugin inputs.eldritch-nvim "eldritch-nvim";
 
+  spring-boot-nvim =
+    mkNvimPlugin
+      (builtins.fetchGit {
+        url = "https://github.com/nvim-java/spring-boot.nvim";
+        rev = "218c0c26c14d99feca778e4d13f5ec3e8b1b60f0";
+      })
+      "spring-boot-nvim";
+
   # Make sure we use the pinned nixpkgs instance for wrapNeovimUnstable,
   # otherwise it could have an incompatible signature when applying this overlay.
   pkgs-wrapNeovim = inputs.nixpkgs.legacyPackages.${pkgs.system};
@@ -131,6 +139,7 @@ with final.pkgs.lib; let
       config = "lua << EOF\nrequire(\"typescript-tools\").setup({})\nEOF\n";
     }
     { plugin = nvim-java; } # Java language support
+    { plugin = spring-boot-nvim; } # Spring Boot tools for nvim-java
     {
       plugin = fidget-nvim; # LSP progress indicator
       config = "lua << EOF\nrequire(\"fidget\").setup()\nEOF\n";
