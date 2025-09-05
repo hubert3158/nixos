@@ -130,7 +130,7 @@ with final.pkgs.lib; let
       plugin = typescript-tools-nvim; # Enhanced TypeScript support
       config = "lua << EOF\nrequire(\"typescript-tools\").setup({})\nEOF\n";
     }
-    nvim-jdtls # Java language server
+    nvim-java # Java support and tools
     {
       plugin = fidget-nvim; # LSP progress indicator
       config = "lua << EOF\nrequire(\"fidget\").setup()\nEOF\n";
