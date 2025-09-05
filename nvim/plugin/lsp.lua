@@ -139,6 +139,14 @@ require("lspconfig").rust_analyzer.setup({
 -- Java setup using nvim-java with Lombok support
 require("java").setup({
         lombok = { version = "1.18.38" },
+        -- spring_boot tools require an extra plugin that isn't packaged in this
+        -- Nix setup. Disable it to avoid missing module errors during startup.
+        spring_boot_tools = { enable = false },
+        mason = {
+                registries = {
+                        "github:nvim-java/mason-registry",
+                },
+        },
 })
 
 require("lspconfig").jdtls.setup({
