@@ -154,6 +154,7 @@
         requests
         flask
         boto3
+        paramiko
       ]))
 
     lua-language-server
