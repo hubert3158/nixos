@@ -68,7 +68,6 @@ with final.pkgs.lib; let
     }
     {
       plugin = smear-cursor-nvim; # Smooth cursor animation
-      config = "lua << EOF\nrequire(\"smear_cursor\").setup()\nEOF\n";
     }
     twilight-nvim # Dim inactive portions of code
     {

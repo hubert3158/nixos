@@ -85,6 +85,7 @@ require("user.git-conflict")
 require("user.visual-enhancements").setup()
 require("user.todo-comments")
 require("user.debugprint")
+require("user.smear-cursor")
 
 vim.api.nvim_set_keymap(
 	"n",
