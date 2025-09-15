@@ -46,11 +46,9 @@
             allowUnfree = true;
             allowUnfreePredicate = pkg:
               builtins.elem (nixpkgs.lib.getName pkg) [
-                "ventoy"
               ];
             permittedInsecurePackages = [
               "emacs-29.4"
-              "ventoy-1.1.05"
             ];
           };
         };
@@ -90,11 +88,9 @@
             allowUnfree = true;
             allowUnfreePredicate = pkg:
               builtins.elem (nixpkgs.lib.getName pkg) [
-                "ventoy"
               ];
             permittedInsecurePackages = [
               "emacs-29.4"
-              "ventoy-1.1.05"
             ];
           };
         };

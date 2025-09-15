@@ -61,7 +61,6 @@
     keychain
     waybar
 
-    ventoy
     parted
     dosfstools
     ntfs3g
@@ -183,7 +182,6 @@
     permittedInsecurePackages = [
       "python-2.7.18.8"
       "emacs-29.4"
-      "ventoy-1.1.05"
     ];
   };
 
