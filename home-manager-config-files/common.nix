@@ -201,7 +201,18 @@
       highlight = "fg=red,bold,underline";
     };
 
-    oh-my-zsh.enable = true;
+    oh-my-zsh = {
+      enable = true;
+      plugins = [
+        "git"
+        "mvn"
+        "docker"
+        "kubectl"
+        "history-substring-search"
+        "colored-man-pages"
+        "extract"
+      ];
+    };
 
     initContent = ''
     '';
