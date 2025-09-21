@@ -176,6 +176,7 @@ with final.pkgs.lib; let
     nvim-treesitter-parsers.http
     nvim-treesitter-parsers.graphql
     nvim-treesitter-parsers.yaml
+    nvim-treesitter-parsers.typst
 
     # ============================================================================
     # CODE EDITING & REFACTORING
@@ -286,6 +287,7 @@ with final.pkgs.lib; let
     vim-pug # Pug template support
     vim-nix # Nix language support
     vim-slime # REPL integration
+    typst-preview-nvim # Typst document preview
 
     # ============================================================================
     # MINI PLUGINS COLLECTION

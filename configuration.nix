@@ -134,6 +134,8 @@
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
+    typst
+    tinymist
     wl-clipboard
     fuzzel
     cliphist
