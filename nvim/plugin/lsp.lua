@@ -137,6 +137,8 @@ require("lspconfig").rust_analyzer.setup({
 })
 
 require("lspconfig").tinymist.setup({
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
 	settings = {
 		exportPdf = "onSave", -- "never", "onType", "onSave"
 		formatterMode = "typstyle", -- built-in formatter
