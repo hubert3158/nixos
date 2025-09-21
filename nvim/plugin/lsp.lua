@@ -136,7 +136,13 @@ require("lspconfig").rust_analyzer.setup({
 	capabilities = general_capabilities,
 })
 
--- jdtls + Lombok setup for Neovim (multi-module Maven via aggregator POM)
+require("lspconfig").tinymist.setup({
+	settings = {
+		exportPdf = "onSave", -- "never", "onType", "onSave"
+		formatterMode = "typstyle", -- built-in formatter
+	},
+})
+
 local home = os.getenv("HOME")
 local jdtls = require("jdtls")
 local fmt = string.format
