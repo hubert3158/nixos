@@ -5,6 +5,11 @@
 }: {
   programs.kitty = {
     enable = true;
+    package = pkgs.kitty.overrideAttrs (_: {
+      doCheck = false;
+      doInstallCheck = false;
+      checkInputs = [];
+    });
     enableGitIntegration = true;
 
     font = {
@@ -38,7 +43,7 @@
     shellIntegration = {
       mode = "default";
       enableZshIntegration = true;
-      enableFishIntegration = true;
+      # enableFishIntegration = true;
       enableBashIntegration = true;
     };
   };
