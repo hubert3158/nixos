@@ -3,11 +3,11 @@
     "eldritch-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1753109286,
-        "narHash": "sha256-jfxCX73BK/Px/OkcC2st2KjXqd/S9+F9aVIKyJLOB0o=",
+        "lastModified": 1759151167,
+        "narHash": "sha256-xuCpuF7aYUQrFgptPpkHB1aOuL8oZG177DtkpL0LNIE=",
         "owner": "eldritch-theme",
         "repo": "eldritch.nvim",
-        "rev": "c980caea40cab7eab2c3a467af5bab1e7e66fcce",
+        "rev": "b5415e4a4b463166fef9f21c8244a09c8a37d024",
         "type": "github"
       },
       "original": {
@@ -140,11 +140,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1758916421,
-        "narHash": "sha256-i4vGfcRJpLIWjWzXPzsyhP4cCPJu1bzoY0eMGxRK5SI=",
+        "lastModified": 1759236626,
+        "narHash": "sha256-1BjCUU2csqhR5umGYFnOOTU8r8Bi+bnB2SLsr0FLcws=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "497e2bfa8a45bebe9788e2aa13e766e6a96677cd",
+        "rev": "9e0453a9b0c8ef22de0355b731d712707daa6308",
         "type": "github"
       },
       "original": {
@@ -231,11 +231,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1758763312,
-        "narHash": "sha256-puBMviZhYlqOdUUgEmMVJpXqC/ToEqSvkyZ30qQ09xM=",
+        "lastModified": 1759070547,
+        "narHash": "sha256-JVZl8NaVRYb0+381nl7LvPE+A774/dRpif01FKLrYFQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "e57b3b16ad8758fd681511a078f35c416a8cc939",
+        "rev": "647e5c14cbd5067f44ac86b74f014962df460840",
         "type": "github"
       },
       "original": {
