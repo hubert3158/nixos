@@ -1,4 +1,3 @@
-local util = require("lspconfig.util")
 local general_on_attach = function(client, bufnr)
 	local bufmap = function(keys, func)
 		vim.keymap.set("n", keys, func, { buffer = bufnr })
@@ -37,10 +36,10 @@ local general_capabilities = require("blink.cmp").get_lsp_capabilities(
 	-- }
 )
 
-require("lspconfig").lua_ls.setup({
+vim.lsp.config.lua_ls = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-	root_dir = util.root_pattern(".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git"),
+	root_dir = vim.fs.root(0, { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git" }),
 	cmd = { "lua-language-server" },
 	settings = {
 		Lua = {
@@ -48,23 +47,24 @@ require("lspconfig").lua_ls.setup({
 			telemetry = { enable = false },
 		},
 	},
-})
+}
 
-require("lspconfig").html.setup({
+vim.lsp.config.html = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
-require("lspconfig").bashls.setup({
+}
+
+vim.lsp.config.bashls = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").zls.setup({
+vim.lsp.config.zls = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").eslint.setup({
+vim.lsp.config.eslint = {
 	-- This 'on_attach' is specific to ESLint
 	on_attach = function(client, bufnr)
 		general_on_attach(client, bufnr)
@@ -87,63 +87,65 @@ require("lspconfig").eslint.setup({
 	capabilities = general_capabilities,
 	-- Any other ESLint specific settings can go here
 	-- settings = { ... }
-})
+}
 
-require("lspconfig").sourcekit.setup({ -- c++lsp
+vim.lsp.config.sourcekit = { -- c++lsp
 	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").clangd.setup({ -- c
+vim.lsp.config.clangd = { -- c
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").pyright.setup({
+vim.lsp.config.pyright = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").cssls.setup({
+vim.lsp.config.cssls = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").jsonls.setup({ -- this has been replaced by conform
+vim.lsp.config.jsonls = { -- this has been replaced by conform
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
-require("lspconfig").nginx_language_server.setup({
-	on_attach = general_on_attach,
-	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").nil_ls.setup({
+vim.lsp.config.nginx_language_server = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").marksman.setup({
+vim.lsp.config.nil_ls = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
-require("lspconfig").sqls.setup({
-	on_attach = general_on_attach,
-	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").rust_analyzer.setup({
+vim.lsp.config.marksman = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
-})
+}
 
-require("lspconfig").tinymist.setup({
+vim.lsp.config.sqls = {
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
+}
+
+vim.lsp.config.rust_analyzer = {
+	on_attach = general_on_attach,
+	capabilities = general_capabilities,
+}
+
+vim.lsp.config.tinymist = {
 	on_attach = general_on_attach,
 	capabilities = general_capabilities,
 	settings = {
 		exportPdf = "onSave", -- "never", "onType", "onSave"
 		formatterMode = "typstyle", -- built-in formatter
 	},
-})
+}
 
 local home = os.getenv("HOME")
 local jdtls = require("jdtls")
