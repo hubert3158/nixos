@@ -8,8 +8,34 @@ local function check_dependency(module, name)
 	return mod
 end
 
-local telescope_builtin = check_dependency("telescope.builtin", "Telescope")
+-- Get Neovim runtime and plugin paths for better Lua completion
+local function get_lua_workspace_library()
+	local library = {}
+
+	-- Add Neovim runtime
+	library[vim.fn.expand("$VIMRUNTIME/lua")] = true
+	library[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true
+
+	-- Add Neovim config directory
+	local config_path = vim.fn.stdpath("config")
+	if config_path then
+		library[config_path .. "/lua"] = true
+	end
+
+	-- Add plugin directories from runtimepath
+	local rtp_dirs = vim.api.nvim_list_runtime_paths()
+	for _, path in ipairs(rtp_dirs) do
+		local lua_path = path .. "/lua"
+		if vim.fn.isdirectory(lua_path) == 1 then
+			library[lua_path] = true
+		end
+	end
+
+	return vim.tbl_keys(library)
+end
+
 local blink_cmp = check_dependency("blink.cmp", "Blink.cmp")
+local telescope_builtin = check_dependency("telescope.builtin", "Telescope")
 
 if not blink_cmp then
 	return -- Exit early if blink.cmp is not available
@@ -52,7 +78,126 @@ end
 
 local general_capabilities = blink_cmp.get_lsp_capabilities()
 
--- Configure all LSP servers
+-- Debug: Verify blink.cmp capabilities are properly set
+if vim.env.DEBUG_LSP then
+	vim.print("Blink.cmp LSP capabilities:", general_capabilities)
+end
+
+-- Enhance capabilities with additional LSP features
+general_capabilities.textDocument = general_capabilities.textDocument or {}
+general_capabilities.textDocument.completion = general_capabilities.textDocument.completion or {}
+general_capabilities.textDocument.completion.completionItem = general_capabilities.textDocument.completion.completionItem
+	or {}
+general_capabilities.textDocument.completion.completionItem.snippetSupport = true
+general_capabilities.textDocument.completion.completionItem.resolveSupport = {
+	properties = { "documentation", "detail", "additionalTextEdits" },
+}
+general_capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+general_capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+general_capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+general_capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+general_capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+
+-- Debug utilities for LSP completion
+local function debug_lsp_completion()
+	local clients = vim.lsp.get_clients({ bufnr = 0 })
+	if #clients == 0 then
+		vim.notify("No LSP clients attached to current buffer", vim.log.levels.WARN)
+		return
+	end
+
+	for _, client in ipairs(clients) do
+		local capabilities = client.server_capabilities
+		vim.print("=== LSP Client: " .. client.name .. " ===")
+		vim.print("Completion provider:", capabilities.completionProvider)
+		if capabilities.completionProvider then
+			vim.print("Trigger characters:", capabilities.completionProvider.triggerCharacters)
+			vim.print("Resolve provider:", capabilities.completionProvider.resolveProvider)
+		end
+		vim.print("Hover provider:", capabilities.hoverProvider)
+		vim.print("Definition provider:", capabilities.definitionProvider)
+	end
+
+	-- Check blink.cmp setup
+	vim.print("=== Blink.cmp Debug ===")
+	local ok, blink = pcall(require, "blink.cmp")
+	if ok then
+		-- Test if we can get completion at cursor
+		local ok2, completion = pcall(blink.show)
+		vim.print("Blink completion test:", ok2)
+
+		-- Check current buffer LSP clients
+		local bufnr = vim.api.nvim_get_current_buf()
+		local lsp_clients = vim.lsp.get_clients({ bufnr = bufnr })
+		vim.print("LSP clients for current buffer:")
+		for _, client in ipairs(lsp_clients) do
+			vim.print("  - " .. client.name)
+		end
+	else
+		vim.print("Blink.cmp not available")
+	end
+end
+
+-- Test completion at current position
+local function test_completion()
+	local bufnr = vim.api.nvim_get_current_buf()
+	local clients = vim.lsp.get_clients({ bufnr = bufnr })
+
+	if #clients == 0 then
+		vim.notify("No LSP clients attached", vim.log.levels.WARN)
+		return
+	end
+
+	local cursor = vim.api.nvim_win_get_cursor(0)
+	local line = cursor[1] - 1
+	local col = cursor[2]
+
+	local params = vim.lsp.util.make_position_params()
+
+	for _, client in ipairs(clients) do
+		if client.server_capabilities.completionProvider then
+			vim.print("Testing completion with " .. client.name)
+			client.request("textDocument/completion", params, function(err, result)
+				if err then
+					vim.print("Completion error: " .. vim.inspect(err))
+				else
+					if result and result.items then
+						vim.print("Got " .. #result.items .. " completion items")
+						for i, item in ipairs(result.items) do
+							if i <= 5 then -- Show first 5 items
+								vim.print("  " .. item.label .. " (" .. (item.kind or "unknown") .. ")")
+							end
+						end
+					elseif result then
+						vim.print("Got completion result but no items: " .. vim.inspect(result))
+					else
+						vim.print("No completion result")
+					end
+				end
+			end, bufnr)
+		end
+	end
+end
+
+-- User commands for debugging
+vim.api.nvim_create_user_command("LspDebugCompletion", debug_lsp_completion, {
+	desc = "Debug LSP completion setup",
+})
+
+vim.api.nvim_create_user_command("LspTestCompletion", test_completion, {
+	desc = "Test LSP completion at cursor position",
+})
+
+vim.api.nvim_create_user_command("LspRestartAll", function()
+	vim.lsp.stop_client(vim.lsp.get_clients())
+	vim.defer_fn(function()
+		vim.cmd("edit")
+		vim.notify("All LSP clients restarted", vim.log.levels.INFO)
+	end, 1000)
+end, {
+	desc = "Restart all LSP clients",
+})
+
 local servers = {
 	lua_ls = {
 		on_attach = general_on_attach,
@@ -64,8 +209,30 @@ local servers = {
 		cmd = { "lua-language-server" },
 		settings = {
 			Lua = {
-				workspace = { checkThirdParty = false },
+				runtime = {
+					version = "LuaJIT",
+				},
+				diagnostics = {
+					globals = { "vim" },
+				},
+				workspace = {
+					checkThirdParty = false,
+					library = get_lua_workspace_library(),
+					maxPreload = 100000,
+					preloadFileSize = 10000,
+				},
+				completion = {
+					callSnippet = "Replace",
+				},
 				telemetry = { enable = false },
+				hint = {
+					enable = true,
+					setType = false,
+					paramType = true,
+					paramName = "Disable",
+					semicolon = "Disable",
+					arrayIndex = "Disable",
+				},
 			},
 		},
 	},
