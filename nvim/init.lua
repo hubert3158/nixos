@@ -184,7 +184,14 @@ vim.api.nvim_set_keymap(
 )
 vim.api.nvim_set_keymap("n", "<leader>bd", ":bd<CR>", { noremap = true, silent = true, desc = "Close Buffer" })
 
--- Window management
+-- Close all buffers except current
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>bo",
+	":%bd|e#<CR>",
+	{ noremap = true, silent = true, desc = "Close All Buffers Except Current" }
+)
+
 vim.api.nvim_set_keymap("n", "<leader>sv", ":vsp<CR>", { noremap = true, silent = true, desc = "Vertical Split" })
 vim.api.nvim_set_keymap("n", "<leader>sh", ":sp<CR>", { noremap = true, silent = true, desc = "Horizontal Split" })
 
