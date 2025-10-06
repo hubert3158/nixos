@@ -57,7 +57,10 @@ local servers = {
 	lua_ls = {
 		on_attach = general_on_attach,
 		capabilities = general_capabilities,
-		root_dir = vim.fs.root(0, { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git" }),
+		root_dir = vim.fs.root(
+			0,
+			{ ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git" }
+		),
 		cmd = { "lua-language-server" },
 		settings = {
 			Lua = {
@@ -160,8 +163,8 @@ if jdtls then
 	-- Paths & JDK installations
 	local lombok = home .. "/nixos/dotfiles/lombok-1.18.38.jar"
 	local javax_annotation = home .. "/nixos/dotfiles/javax.annotation-api-1.3.2.jar"
-	local jdk11 = "/nix/store/lvrsn84nvwv9q4ji28ygchhvra7rsfwv-openjdk-11.0.19+7/lib/openjdk"
-	local jdk21 = "/nix/store/55qm2mvhmv7n2n6yzym1idrvnlwia73z-openjdk-21.0.5+11/lib/openjdk"
+	local jdk11 = os.getenv("JAVA_HOME11")
+	local jdk21 = os.getenv("JAVA_HOME21")
 
 	-- Validate paths exist
 	local function file_exists(path)
