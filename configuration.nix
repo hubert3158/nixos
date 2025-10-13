@@ -217,7 +217,7 @@
     # === Language Servers & Other Linters ===
     vscode-langservers-extracted # LSP for HTML, CSS, JSON, ESLint
     nginx-language-server
-    sourcekit-lsp # LSP for Swift and C-based languages
+    # sourcekit-lsp # LSP for Swift and C-based languages
     semgrep # Static analysis
     sqls # SQL Language Server
     hadolint # Dockerfile linter (keep if you use it for linting)
@@ -291,7 +291,6 @@
     maven
     jdk11
     jdk21
-    jdk24
     gcc
     gnumake
     nix-index
@@ -391,10 +390,9 @@
 
   environment.shells = with pkgs; [zsh];
   environment.variables = {
-    JAVA_HOME = "${pkgs.jdk24}/lib/openjdk";
+    JAVA_HOME = "${pkgs.jdk21}/lib/openjdk";
     JAVA_HOME11 = "${pkgs.jdk11}/lib/openjdk";
     JAVA_HOME21 = "${pkgs.jdk21}/lib/openjdk";
-    JAVA_HOME24 = "${pkgs.jdk24}/lib/openjdk";
   };
 
   environment.shellInit = ''
@@ -412,7 +410,6 @@
   programs.fish.enable = true;
   programs.tmux.enable = true;
   programs.java.enable = true;
-  programs.java.package = pkgs.jdk24;
 
   services.postgresql = {
     enable = true;
