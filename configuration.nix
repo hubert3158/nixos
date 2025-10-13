@@ -355,6 +355,7 @@
     claude-code
     miller
     marksman
+    kdePackages.kdenlive
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
