@@ -1,4 +1,26 @@
--- Check for required dependencies
+local original_start_client = vim.lsp.start_client
+vim.lsp.start_client = function(config)
+	if config.name == "jdtls" or (config.cmd and config.cmd[1] and config.cmd[1]:match("jdtls")) then
+		if not config.custom_jdtls then
+			return nil
+		end
+	end
+	return original_start_client(config)
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "java",
+	callback = function()
+		-- Stop any automatically started JDTLS clients
+		local clients = vim.lsp.get_clients({ name = "jdtls" })
+		for _, client in ipairs(clients) do
+			if not client.config.custom_jdtls then
+				vim.lsp.stop_client(client.id)
+			end
+		end
+	end,
+})
+
 local function check_dependency(module, name)
 	local ok, mod = pcall(require, module)
 	if not ok then
@@ -37,6 +59,7 @@ end
 local blink_cmp = check_dependency("blink.cmp", "Blink.cmp")
 local telescope_builtin = check_dependency("telescope.builtin", "Telescope")
 
+local jdtls_debug = check_dependency("jdtls", "nvim-jdtls")
 if not blink_cmp then
 	return -- Exit early if blink.cmp is not available
 end
@@ -266,9 +289,6 @@ local servers = {
 		end,
 		capabilities = general_capabilities,
 	},
-	sourcekit = {
-		capabilities = general_capabilities,
-	},
 	clangd = {
 		on_attach = general_on_attach,
 		capabilities = general_capabilities,
@@ -317,8 +337,13 @@ local servers = {
 
 -- Apply configurations and enable servers
 for server_name, config in pairs(servers) do
+	-- Skip jdtls here as we handle it separately with nvim-jdtls
+	if server_name == "jdtls" then
+		goto continue
+	end
 	vim.lsp.config[server_name] = config
 	vim.lsp.enable(server_name)
+	::continue::
 end
 
 -- Java JDTLS Setup (separate handling due to complexity)
@@ -332,14 +357,41 @@ if jdtls then
 	local javax_annotation = home .. "/nixos/dotfiles/javax.annotation-api-1.3.2.jar"
 	local jdk11 = os.getenv("JAVA_HOME11")
 	local jdk21 = os.getenv("JAVA_HOME21")
+	local jdk25 = os.getenv("JAVA_HOME25")
 
 	-- Validate paths exist
 	local function file_exists(path)
 		return vim.fn.filereadable(path) == 1 or vim.fn.isdirectory(path) == 1
 	end
 
-	if not file_exists(jdk21) then
-		vim.notify("JDK21 path not found: " .. jdk21, vim.log.levels.WARN)
+	-- Smart Java version selection with fallback
+	local function select_java_home()
+		local candidates = {
+			{ version = "25", path = jdk25, name = "JAVA_HOME25" },
+			{ version = "21", path = jdk21, name = "JAVA_HOME21" },
+			{ version = "11", path = jdk11, name = "JAVA_HOME11" },
+		}
+
+		for _, candidate in ipairs(candidates) do
+			if candidate.path and file_exists(candidate.path) then
+				vim.notify(
+					string.format("JDTLS using Java %s from %s", candidate.version, candidate.path),
+					vim.log.levels.INFO
+				)
+				return candidate.path, candidate.version
+			end
+		end
+
+		vim.notify(
+			"No suitable Java installation found. Please set JAVA_HOME25, JAVA_HOME21, or JAVA_HOME11",
+			vim.log.levels.ERROR
+		)
+		return nil, nil
+	end
+
+	local selected_java, java_version = select_java_home()
+	if not selected_java then
+		return -- Exit if no Java installation is available
 	end
 
 	local bundles = {}
@@ -366,13 +418,39 @@ if jdtls then
 			local project_name = vim.fn.fnamemodify(root_dir, ":t")
 			local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
 
-			local cmd = {
-				"jdtls",
-				fmt("--jvm-arg=-Dosgi.java.home=%s", jdk21),
-				"--jvm-arg=--add-opens=java.base/java.lang=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/java.util=ALL-UNNAMED",
+			-- Build JVM arguments based on detected Java version
+			local jvm_args = {
+				fmt("--jvm-arg=-Dosgi.java.home=%s", selected_java),
+				-- Lombok and JDTLS specific
 				fmt("--jvm-arg=-javaagent:%s", lombok),
 				"--jvm-arg=-Djdt.ls.lombokSupport=true",
+				-- Fix Java 17+ warnings and restrictions (comprehensive set)
+				"--jvm-arg=-XX:+IgnoreUnrecognizedVMOptions",
+				"--jvm-arg=--enable-native-access=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/java.lang=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/java.io=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/java.nio=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/java.util=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/java.text=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/sun.security.util=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.base/sun.misc=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=java.desktop/java.awt.font=ALL-UNNAMED",
+				"--jvm-arg=--add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED",
+				"--jvm-arg=--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
+				"--jvm-arg=--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
+				-- Suppress warnings and improve compatibility
+				"--jvm-arg=-Djdk.util.jar.enableMultiRelease=false",
+				"--jvm-arg=-Dfile.encoding=UTF-8",
+				"--jvm-arg=-Duser.timezone=UTC",
+				"--jvm-arg=--illegal-access=permit",
+			}
+
+			local cmd = {
+				"jdtls",
+				unpack(jvm_args),
 				"-data",
 				workspace_dir,
 			}
@@ -380,10 +458,11 @@ if jdtls then
 			local config = {
 				cmd = cmd,
 				root_dir = root_dir,
+				custom_jdtls = true, -- Mark this as our custom configuration
 				init_options = { bundles = bundles },
 				settings = {
 					java = {
-						home = jdk21,
+						home = selected_java, -- Use dynamically selected Java version
 						import = {
 							enabled = true,
 							maven = {
@@ -404,10 +483,19 @@ if jdtls then
 								},
 							},
 							updateBuildConfiguration = "interactive",
-							runtimes = {
-								{ name = "JavaSE-11", path = jdk11 },
-								{ name = "JavaSE-21", path = jdk21 },
-							},
+							runtimes = (function()
+								local runtimes = {}
+								if jdk11 and file_exists(jdk11) then
+									table.insert(runtimes, { name = "JavaSE-11", path = jdk11 })
+								end
+								if jdk21 and file_exists(jdk21) then
+									table.insert(runtimes, { name = "JavaSE-21", path = jdk21 })
+								end
+								if jdk25 and file_exists(jdk25) then
+									table.insert(runtimes, { name = "JavaSE-25", path = jdk25 })
+								end
+								return runtimes
+							end)(),
 							checkProjectCompliance = false,
 						},
 						project = { referencedLibraries = { lombok, javax_annotation } },
