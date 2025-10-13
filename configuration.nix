@@ -291,6 +291,7 @@
     maven
     jdk11
     jdk21
+    jdk25
     gcc
     gnumake
     nix-index
@@ -390,9 +391,10 @@
 
   environment.shells = with pkgs; [zsh];
   environment.variables = {
-    JAVA_HOME = "${pkgs.jdk21}/lib/openjdk";
+    JAVA_HOME = "${pkgs.jdk25}/lib/openjdk";
     JAVA_HOME11 = "${pkgs.jdk11}/lib/openjdk";
     JAVA_HOME21 = "${pkgs.jdk21}/lib/openjdk";
+    JAVA_HOME25 = "${pkgs.jdk25}/lib/openjdk";
   };
 
   environment.shellInit = ''
