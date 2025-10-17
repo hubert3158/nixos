@@ -483,13 +483,6 @@ if jdtls then
 					default = project_java == jdk21,
 				})
 			end
-			if exists(jdk17) then
-				table.insert(java_runtimes, {
-					name = "JavaSE-17",
-					path = jdk17,
-					default = project_java == jdk17,
-				})
-			end
 			if exists(jdk11) then
 				table.insert(java_runtimes, {
 					name = "JavaSE-11",
