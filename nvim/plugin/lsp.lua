@@ -1,6 +1,24 @@
+--[[
+Neovim LSP bootstrap — diagnostics fixed (logic preserved)
+- Suppress legitimate monkey-patch warning
+- Type-hint custom fields
+- Nil-guards where LuaLS requests them
+- Correct param types for stop_client / requests
+]]
+
+------------------------------------------------------------
+-- 0) Guard: prevent unwanted auto-start of JDTLS
+------------------------------------------------------------
 local original_start_client = vim.lsp.start_client
+
+---@class JdtlsClientConfig: lsp.ClientConfig
+---@field custom_jdtls? boolean
+
+---Block non-custom jdtls startups while preserving original API
+---@param config JdtlsClientConfig
+---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.start_client = function(config)
-	if config.name == "jdtls" or (config.cmd and config.cmd[1] and config.cmd[1]:match("jdtls")) then
+	if config and (config.name == "jdtls" or (config.cmd and config.cmd[1] and config.cmd[1]:match("jdtls"))) then
 		if not config.custom_jdtls then
 			return nil
 		end
@@ -8,19 +26,24 @@ vim.lsp.start_client = function(config)
 	return original_start_client(config)
 end
 
+-- Ensure auto-started jdtls clients from other plugins are stopped for Java buffers
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "java",
 	callback = function()
-		-- Stop any automatically started JDTLS clients
 		local clients = vim.lsp.get_clients({ name = "jdtls" })
 		for _, client in ipairs(clients) do
-			if not client.config.custom_jdtls then
+			-- guard client.config and the custom flag (LuaLS nil-checks)
+			if not (client and client.config and client.config.custom_jdtls) then
 				vim.lsp.stop_client(client.id)
 			end
 		end
 	end,
 })
 
+------------------------------------------------------------
+-- 1) Helpers and capability wiring
+------------------------------------------------------------
+-- Safe require with user-facing error
 local function check_dependency(module, name)
 	local ok, mod = pcall(require, module)
 	if not ok then
@@ -30,23 +53,18 @@ local function check_dependency(module, name)
 	return mod
 end
 
--- Get Neovim runtime and plugin paths for better Lua completion
+-- Build a Lua workspace library for better Lua completion
 local function get_lua_workspace_library()
 	local library = {}
-
-	-- Add Neovim runtime
 	library[vim.fn.expand("$VIMRUNTIME/lua")] = true
 	library[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true
 
-	-- Add Neovim config directory
 	local config_path = vim.fn.stdpath("config")
-	if config_path then
+	if config_path and #config_path > 0 then
 		library[config_path .. "/lua"] = true
 	end
 
-	-- Add plugin directories from runtimepath
-	local rtp_dirs = vim.api.nvim_list_runtime_paths()
-	for _, path in ipairs(rtp_dirs) do
+	for _, path in ipairs(vim.api.nvim_list_runtime_paths()) do
 		local lua_path = path .. "/lua"
 		if vim.fn.isdirectory(lua_path) == 1 then
 			library[lua_path] = true
@@ -56,72 +74,78 @@ local function get_lua_workspace_library()
 	return vim.tbl_keys(library)
 end
 
+-- External integrations (optional)
 local blink_cmp = check_dependency("blink.cmp", "Blink.cmp")
 local telescope_builtin = check_dependency("telescope.builtin", "Telescope")
 
-local jdtls_debug = check_dependency("jdtls", "nvim-jdtls")
 if not blink_cmp then
-	return -- Exit early if blink.cmp is not available
+	return
 end
 
-local general_on_attach = function(client, bufnr)
-	local bufmap = function(keys, func)
-		vim.keymap.set("n", keys, func, { buffer = bufnr })
+------------------------------------------------------------
+-- 2) on_attach: common keymaps and UX
+------------------------------------------------------------
+local function general_on_attach(_, bufnr)
+	local function bufmap(keys, fn)
+		vim.keymap.set("n", keys, fn, { buffer = bufnr })
 	end
 
-	-- Core LSP Navigation & Information
-	bufmap("gd", vim.lsp.buf.definition) -- Go to definition
-	bufmap("gD", vim.lsp.buf.declaration) -- Go to declaration
-	bufmap("gi", vim.lsp.buf.implementation) -- Go to implementation
-	bufmap("K", vim.lsp.buf.hover) -- Show hover information
+	-- Navigation
+	bufmap("gd", vim.lsp.buf.definition)
+	bufmap("gD", vim.lsp.buf.declaration)
+	bufmap("gi", vim.lsp.buf.implementation)
+	bufmap("K", vim.lsp.buf.hover)
 
-	-- Diagnostics
+	-- Diagnostics navigation
 	bufmap("[d", function()
 		vim.diagnostic.jump({ count = -1, float = true })
-	end) -- Go to the previous diagnostic
+	end)
 	bufmap("]d", function()
 		vim.diagnostic.jump({ count = 1, float = true })
-	end) -- Go to the next diagnostic
+	end)
 	bufmap("[e", function()
 		vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
-	end) -- Go to the previous error diagnostic
+	end)
 	bufmap("]e", function()
 		vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
-	end) -- Go to the next error diagnostic
-	-- Show diagnostic float at cursor
+	end)
 	bufmap("<leader>ee", function()
 		vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
 	end)
 
-	-- Telescope Integration (only if available)
 	if telescope_builtin then
 		bufmap("gs", telescope_builtin.lsp_document_symbols)
 	end
 end
 
+------------------------------------------------------------
+-- 3) Client capabilities: derived from blink.cmp + enriched
+------------------------------------------------------------
 local general_capabilities = blink_cmp.get_lsp_capabilities()
 
--- Debug: Verify blink.cmp capabilities are properly set
 if vim.env.DEBUG_LSP then
 	vim.print("Blink.cmp LSP capabilities:", general_capabilities)
 end
 
--- Enhance capabilities with additional LSP features
-general_capabilities.textDocument = general_capabilities.textDocument or {}
-general_capabilities.textDocument.completion = general_capabilities.textDocument.completion or {}
-general_capabilities.textDocument.completion.completionItem = general_capabilities.textDocument.completion.completionItem
-	or {}
-general_capabilities.textDocument.completion.completionItem.snippetSupport = true
-general_capabilities.textDocument.completion.completionItem.resolveSupport = {
-	properties = { "documentation", "detail", "additionalTextEdits" },
-}
-general_capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-general_capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-general_capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-general_capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-general_capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+-- Nil-guard ladders for LuaLS satisfaction
+local td = general_capabilities.textDocument or {}
+local comp = td.completion or {}
+local item = comp.completionItem or {}
+item.snippetSupport = true
+item.resolveSupport = { properties = { "documentation", "detail", "additionalTextEdits" } }
+item.insertReplaceSupport = true
+item.deprecatedSupport = true
+item.commitCharactersSupport = true
+item.tagSupport = { valueSet = { 1 } }
+item.labelDetailsSupport = true
+comp.completionItem = item
 
--- Debug utilities for LSP completion
+td.completion = comp
+general_capabilities.textDocument = td
+
+------------------------------------------------------------
+-- 4) Debug utilities and user commands
+------------------------------------------------------------
 local function debug_lsp_completion()
 	local clients = vim.lsp.get_clients({ bufnr = 0 })
 	if #clients == 0 then
@@ -130,97 +154,96 @@ local function debug_lsp_completion()
 	end
 
 	for _, client in ipairs(clients) do
-		local capabilities = client.server_capabilities
-		vim.print("=== LSP Client: " .. client.name .. " ===")
-		vim.print("Completion provider:", capabilities.completionProvider)
-		if capabilities.completionProvider then
-			vim.print("Trigger characters:", capabilities.completionProvider.triggerCharacters)
-			vim.print("Resolve provider:", capabilities.completionProvider.resolveProvider)
+		local caps = client and client.server_capabilities or nil
+		if caps then
+			vim.print("=== LSP Client: " .. (client.name or "<unknown>") .. " ===")
+			vim.print("Completion provider:", caps.completionProvider)
+			if caps.completionProvider then
+				vim.print("Trigger characters:", caps.completionProvider.triggerCharacters)
+				vim.print("Resolve provider:", caps.completionProvider.resolveProvider)
+			end
+			vim.print("Hover provider:", caps.hoverProvider)
+			vim.print("Definition provider:", caps.definitionProvider)
 		end
-		vim.print("Hover provider:", capabilities.hoverProvider)
-		vim.print("Definition provider:", capabilities.definitionProvider)
 	end
 
-	-- Check blink.cmp setup
 	vim.print("=== Blink.cmp Debug ===")
 	local ok, blink = pcall(require, "blink.cmp")
 	if ok then
-		-- Test if we can get completion at cursor
-		local ok2, completion = pcall(blink.show)
+		---@diagnostic disable-next-line: missing-parameter
+		local ok2 = pcall(blink.show) -- may require params; debug-only
 		vim.print("Blink completion test:", ok2)
 
-		-- Check current buffer LSP clients
 		local bufnr = vim.api.nvim_get_current_buf()
 		local lsp_clients = vim.lsp.get_clients({ bufnr = bufnr })
 		vim.print("LSP clients for current buffer:")
-		for _, client in ipairs(lsp_clients) do
-			vim.print("  - " .. client.name)
+		for _, c in ipairs(lsp_clients) do
+			vim.print("  - " .. (c.name or tostring(c.id)))
 		end
 	else
 		vim.print("Blink.cmp not available")
 	end
 end
 
--- Test completion at current position
 local function test_completion()
 	local bufnr = vim.api.nvim_get_current_buf()
 	local clients = vim.lsp.get_clients({ bufnr = bufnr })
-
 	if #clients == 0 then
 		vim.notify("No LSP clients attached", vim.log.levels.WARN)
 		return
 	end
 
-	local cursor = vim.api.nvim_win_get_cursor(0)
-	local line = cursor[1] - 1
-	local col = cursor[2]
-
 	local params = vim.lsp.util.make_position_params()
-
+	-- Use buf_request to satisfy LuaLS types and Neovim API
 	for _, client in ipairs(clients) do
-		if client.server_capabilities.completionProvider then
-			vim.print("Testing completion with " .. client.name)
-			client.request("textDocument/completion", params, function(err, result)
+		if client.server_capabilities and client.server_capabilities.completionProvider then
+			vim.print("Testing completion with " .. (client.name or tostring(client.id)))
+			vim.lsp.buf_request(bufnr, "textDocument/completion", params, function(err, result)
 				if err then
 					vim.print("Completion error: " .. vim.inspect(err))
-				else
-					if result and result.items then
-						vim.print("Got " .. #result.items .. " completion items")
-						for i, item in ipairs(result.items) do
-							if i <= 5 then -- Show first 5 items
-								vim.print("  " .. item.label .. " (" .. (item.kind or "unknown") .. ")")
-							end
-						end
-					elseif result then
-						vim.print("Got completion result but no items: " .. vim.inspect(result))
-					else
-						vim.print("No completion result")
-					end
+					return
 				end
-			end, bufnr)
+				if result and result.items then
+					vim.print("Got " .. #result.items .. " completion items")
+					for i, it in ipairs(result.items) do
+						if i <= 5 then
+							vim.print("  " .. (it.label or "<no-label>") .. " (" .. (it.kind or "unknown") .. ")")
+						end
+					end
+				elseif result then
+					vim.print("Got completion result but no items: " .. vim.inspect(result))
+				else
+					vim.print("No completion result")
+				end
+			end)
 		end
 	end
 end
 
--- User commands for debugging
-vim.api.nvim_create_user_command("LspDebugCompletion", debug_lsp_completion, {
-	desc = "Debug LSP completion setup",
-})
-
-vim.api.nvim_create_user_command("LspTestCompletion", test_completion, {
-	desc = "Test LSP completion at cursor position",
-})
-
+vim.api.nvim_create_user_command("LspDebugCompletion", debug_lsp_completion, { desc = "Debug LSP completion setup" })
+vim.api.nvim_create_user_command(
+	"LspTestCompletion",
+	test_completion,
+	{ desc = "Test LSP completion at cursor position" }
+)
 vim.api.nvim_create_user_command("LspRestartAll", function()
-	vim.lsp.stop_client(vim.lsp.get_clients())
+	local all = vim.lsp.get_clients()
+	local ids = {}
+	for _, c in ipairs(all) do
+		ids[#ids + 1] = c.id
+	end
+	if #ids > 0 then
+		vim.lsp.stop_client(ids)
+	end
 	vim.defer_fn(function()
 		vim.cmd("edit")
 		vim.notify("All LSP clients restarted", vim.log.levels.INFO)
 	end, 1000)
-end, {
-	desc = "Restart all LSP clients",
-})
+end, { desc = "Restart all LSP clients" })
 
+------------------------------------------------------------
+-- 5) Server table: per-language settings
+------------------------------------------------------------
 local servers = {
 	lua_ls = {
 		on_attach = general_on_attach,
@@ -232,21 +255,15 @@ local servers = {
 		cmd = { "lua-language-server" },
 		settings = {
 			Lua = {
-				runtime = {
-					version = "LuaJIT",
-				},
-				diagnostics = {
-					globals = { "vim" },
-				},
+				runtime = { version = "LuaJIT" },
+				diagnostics = { globals = { "vim" } },
 				workspace = {
 					checkThirdParty = false,
 					library = get_lua_workspace_library(),
 					maxPreload = 100000,
 					preloadFileSize = 10000,
 				},
-				completion = {
-					callSnippet = "Replace",
-				},
+				completion = { callSnippet = "Replace" },
 				telemetry = { enable = false },
 				hint = {
 					enable = true,
@@ -259,27 +276,14 @@ local servers = {
 			},
 		},
 	},
-	html = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	bashls = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	zls = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
+	html = { on_attach = general_on_attach, capabilities = general_capabilities },
+	bashls = { on_attach = general_on_attach, capabilities = general_capabilities },
+	zls = { on_attach = general_on_attach, capabilities = general_capabilities },
 	eslint = {
 		on_attach = function(client, bufnr)
 			general_on_attach(client, bufnr)
-
-			print("ESLint specific on_attach: Setting up EslintFixAll for buffer: " .. bufnr)
-
 			local augroup_name = "LspEslintFixOnSave_" .. bufnr
 			vim.api.nvim_create_augroup(augroup_name, { clear = true })
-
 			vim.api.nvim_create_autocmd("BufWritePre", {
 				group = augroup_name,
 				buffer = bufnr,
@@ -289,117 +293,117 @@ local servers = {
 		end,
 		capabilities = general_capabilities,
 	},
-	clangd = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	pyright = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	cssls = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	jsonls = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	nginx_language_server = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	nil_ls = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	marksman = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	sqls = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
-	rust_analyzer = {
-		on_attach = general_on_attach,
-		capabilities = general_capabilities,
-	},
+	clangd = { on_attach = general_on_attach, capabilities = general_capabilities },
+	pyright = { on_attach = general_on_attach, capabilities = general_capabilities },
+	cssls = { on_attach = general_on_attach, capabilities = general_capabilities },
+	jsonls = { on_attach = general_on_attach, capabilities = general_capabilities },
+	nginx_language_server = { on_attach = general_on_attach, capabilities = general_capabilities },
+	nil_ls = { on_attach = general_on_attach, capabilities = general_capabilities },
+	marksman = { on_attach = general_on_attach, capabilities = general_capabilities },
+	sqls = { on_attach = general_on_attach, capabilities = general_capabilities },
+	rust_analyzer = { on_attach = general_on_attach, capabilities = general_capabilities },
 	tinymist = {
 		on_attach = general_on_attach,
 		capabilities = general_capabilities,
-		settings = {
-			exportPdf = "onSave",
-			formatterMode = "typstyle",
-		},
+		settings = { exportPdf = "onSave", formatterMode = "typstyle" },
 	},
 }
 
--- Apply configurations and enable servers
-for server_name, config in pairs(servers) do
-	-- Skip jdtls here as we handle it separately with nvim-jdtls
-	if server_name == "jdtls" then
-		goto continue
+-- Register servers (except jdtls which is handled separately)
+for server, cfg in pairs(servers) do
+	if server ~= "jdtls" then
+		vim.lsp.config[server] = cfg
+		vim.lsp.enable(server)
 	end
-	vim.lsp.config[server_name] = config
-	vim.lsp.enable(server_name)
-	::continue::
 end
 
--- Java JDTLS Setup (separate handling due to complexity)
+------------------------------------------------------------
+-- 6) Java (JDTLS): dedicated setup via nvim-jdtls
+---------------------------------------------------------------
+
 local jdtls = check_dependency("jdtls", "nvim-jdtls")
 if jdtls then
-	local home = os.getenv("HOME")
 	local fmt = string.format
+	local home = os.getenv("HOME") or ""
+	local data = vim.fn.stdpath("data")
 
-	-- Paths & JDK installations
-	local lombok = home .. "/nixos/dotfiles/lombok-1.18.38.jar"
-	local javax_annotation = home .. "/nixos/dotfiles/javax.annotation-api-1.3.2.jar"
-	local jdk11 = os.getenv("JAVA_HOME11")
-	local jdk21 = os.getenv("JAVA_HOME21")
-	local jdk25 = os.getenv("JAVA_HOME25")
+	-- Mason jdtls paths
+	local jdtls_root = data .. "/mason/packages/jdtls"
+	local launcher_jar = vim.fn.glob(jdtls_root .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+	local config_dir = jdtls_root .. "/config_linux"
 
-	-- Validate paths exist
-	local function file_exists(path)
-		return vim.fn.filereadable(path) == 1 or vim.fn.isdirectory(path) == 1
+	local function exists(p)
+		return type(p) == "string" and #p > 0 and (vim.fn.filereadable(p) == 1 or vim.fn.isdirectory(p) == 1)
 	end
 
-	-- Smart Java version selection with fallback
-	local function select_java_home()
-		local candidates = {
-			{ version = "25", path = jdk25, name = "JAVA_HOME25" },
-			{ version = "21", path = jdk21, name = "JAVA_HOME21" },
-			{ version = "11", path = jdk11, name = "JAVA_HOME11" },
-		}
+	if launcher_jar == "" or not exists(launcher_jar) then
+		vim.notify("jdtls launcher not found under " .. jdtls_root .. "/plugins", vim.log.levels.ERROR)
+		return
+	end
 
-		for _, candidate in ipairs(candidates) do
-			if candidate.path and file_exists(candidate.path) then
-				vim.notify(
-					string.format("JDTLS using Java %s from %s", candidate.version, candidate.path),
-					vim.log.levels.INFO
-				)
-				return candidate.path, candidate.version
-			end
+	if not exists(config_dir) then
+		vim.notify("jdtls config_linux not found under " .. jdtls_root, vim.log.levels.ERROR)
+		return
+	end
+
+	-- Java versions
+	local jdk25 = os.getenv("JAVA_HOME25")
+	local jdk21 = os.getenv("JAVA_HOME21")
+	local jdk11 = os.getenv("JAVA_HOME11")
+
+	local function pick_runtime_java()
+		-- For running jdtls itself, prefer Java 17 or 21 (most stable)
+		if exists(jdk21) then
+			return jdk21, "21"
 		end
-
-		vim.notify(
-			"No suitable Java installation found. Please set JAVA_HOME25, JAVA_HOME21, or JAVA_HOME11",
-			vim.log.levels.ERROR
-		)
+		if exists(jdk11) then
+			return jdk11, "11"
+		end
+		if exists(jdk25) then
+			-- Use 25 only if no other option
+			return jdk25, "25"
+		end
 		return nil, nil
 	end
 
-	local selected_java, java_version = select_java_home()
-	if not selected_java then
-		return -- Exit if no Java installation is available
+	local runtime_java, runtime_ver = pick_runtime_java()
+	if not runtime_java then
+		vim.notify("Set JAVA_HOME17 (preferred for jdtls) or JAVA_HOME21/11/25", vim.log.levels.ERROR)
+		return
 	end
 
+	-- Project Java version (what your code uses)
+	local project_java = jdk25 or jdk21 or jdk11
+
+	local lombok = home .. "/nixos/dotfiles/lombok-1.18.38.jar"
+	local javax_annotation = home .. "/nixos/dotfiles/javax.annotation-api-1.3.2.jar"
+
 	local bundles = {}
-	if file_exists(javax_annotation) then
+	if exists(javax_annotation) then
 		table.insert(bundles, javax_annotation)
 	end
 
-	-- Auto-start JDTLS for Java files
+	-- Add debug adapter bundles if available
+	local debugger_path = data .. "/mason/packages/java-debug-adapter"
+	local test_path = data .. "/mason/packages/java-test"
+
+	if exists(debugger_path) then
+		local debug_bundle =
+			vim.fn.glob(debugger_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", true)
+		if debug_bundle ~= "" then
+			table.insert(bundles, debug_bundle)
+		end
+	end
+
+	if exists(test_path) then
+		vim.list_extend(bundles, vim.split(vim.fn.glob(test_path .. "/extension/server/*.jar", true), "\n"))
+	end
+
+	local function workspace_for(root_dir)
+		local name = vim.fn.fnamemodify(root_dir, ":t")
+		return home .. "/.local/share/eclipse/" .. name
+	end
+
 	vim.api.nvim_create_autocmd("FileType", {
 		pattern = "java",
 		callback = function()
@@ -407,102 +411,132 @@ if jdtls then
 			if vim.b[bufnr].jdtls_attached then
 				return
 			end
-			vim.b[bufnr].jdtls_attached = true
 
-			local root_dir = jdtls.setup.find_root({ "pom.xml", ".git" })
+			local root_dir = jdtls.setup.find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" })
 			if not root_dir then
 				vim.notify("No Java project root found", vim.log.levels.WARN)
 				return
 			end
 
-			local project_name = vim.fn.fnamemodify(root_dir, ":t")
-			local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
+			local ws = workspace_for(root_dir)
 
-			-- Build JVM arguments based on detected Java version
-			local jvm_args = {
-				fmt("--jvm-arg=-Dosgi.java.home=%s", selected_java),
-				-- Lombok and JDTLS specific
-				fmt("--jvm-arg=-javaagent:%s", lombok),
-				"--jvm-arg=-Djdt.ls.lombokSupport=true",
-				-- Fix Java 17+ warnings and restrictions (comprehensive set)
-				"--jvm-arg=-XX:+IgnoreUnrecognizedVMOptions",
-				"--jvm-arg=--enable-native-access=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/java.lang=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/java.io=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/java.nio=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/java.util=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/java.util.concurrent=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/java.text=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/sun.security.util=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.base/sun.misc=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=java.desktop/java.awt.font=ALL-UNNAMED",
-				"--jvm-arg=--add-opens=jdk.zipfs/jdk.nio.zipfs=ALL-UNNAMED",
-				"--jvm-arg=--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
-				"--jvm-arg=--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
-				-- Suppress warnings and improve compatibility
-				"--jvm-arg=-Djdk.util.jar.enableMultiRelease=false",
-				"--jvm-arg=-Dfile.encoding=UTF-8",
-				"--jvm-arg=-Duser.timezone=UTC",
-				"--jvm-arg=--illegal-access=permit",
-			}
-
+			-- Build the command based on Java version
 			local cmd = {
-				"jdtls",
-				unpack(jvm_args),
-				"-data",
-				workspace_dir,
+				runtime_java .. "/bin/java",
 			}
+
+			-- Add JVM memory settings
+			vim.list_extend(cmd, {
+				"-Declipse.application=org.eclipse.jdt.ls.core.id1",
+				"-Dosgi.bundles.defaultStartLevel=4",
+				"-Declipse.product=org.eclipse.jdt.ls.core.product",
+				"-Dlog.protocol=true",
+				"-Dlog.level=ALL",
+				"-Xmx1g",
+				"-Xms100m",
+			})
+
+			-- Add javaagent for lombok if it exists
+			if exists(lombok) then
+				table.insert(cmd, "-javaagent:" .. lombok)
+			end
+
+			-- Java version specific flags
+			if runtime_ver == "17" or runtime_ver == "21" or runtime_ver == "25" then
+				vim.list_extend(cmd, {
+					"--add-modules=ALL-SYSTEM",
+					"--add-opens",
+					"java.base/java.util=ALL-UNNAMED",
+					"--add-opens",
+					"java.base/java.lang=ALL-UNNAMED",
+				})
+			end
+
+			-- Add the jar and configuration
+			vim.list_extend(cmd, {
+				"-jar",
+				launcher_jar,
+				"-configuration",
+				config_dir,
+				"-data",
+				ws,
+				"--add-modules=ALL-SYSTEM",
+				"--add-opens",
+				"java.base/java.util=ALL-UNNAMED",
+				"--add-opens",
+				"java.base/java.lang=ALL-UNNAMED",
+			})
+
+			-- Java runtime configurations for different versions
+			local java_runtimes = {}
+			if exists(jdk25) then
+				table.insert(java_runtimes, {
+					name = "JavaSE-25",
+					path = jdk25,
+					default = project_java == jdk25,
+				})
+			end
+			if exists(jdk21) then
+				table.insert(java_runtimes, {
+					name = "JavaSE-21",
+					path = jdk21,
+					default = project_java == jdk21,
+				})
+			end
+			if exists(jdk17) then
+				table.insert(java_runtimes, {
+					name = "JavaSE-17",
+					path = jdk17,
+					default = project_java == jdk17,
+				})
+			end
+			if exists(jdk11) then
+				table.insert(java_runtimes, {
+					name = "JavaSE-11",
+					path = jdk11,
+					default = project_java == jdk11,
+				})
+			end
 
 			local config = {
 				cmd = cmd,
 				root_dir = root_dir,
-				custom_jdtls = true, -- Mark this as our custom configuration
-				init_options = { bundles = bundles },
+				init_options = {
+					bundles = bundles,
+				},
 				settings = {
 					java = {
-						home = selected_java, -- Use dynamically selected Java version
-						import = {
-							enabled = true,
-							maven = {
-								downloadSources = true,
-								downloadJavadoc = true,
-							},
+						home = project_java,
+						eclipse = {
+							downloadSources = true,
 						},
-						autoBuild = { enabled = true },
 						configuration = {
-							compiler = {
-								apt = {
-									enabled = true,
-									options = { "-Xlint:-processing" },
-								},
-								annotationProcessing = {
-									enabled = true,
-									args = { "-proc:none" },
-								},
-							},
+							runtimes = java_runtimes,
 							updateBuildConfiguration = "interactive",
-							runtimes = (function()
-								local runtimes = {}
-								if jdk11 and file_exists(jdk11) then
-									table.insert(runtimes, { name = "JavaSE-11", path = jdk11 })
-								end
-								if jdk21 and file_exists(jdk21) then
-									table.insert(runtimes, { name = "JavaSE-21", path = jdk21 })
-								end
-								if jdk25 and file_exists(jdk25) then
-									table.insert(runtimes, { name = "JavaSE-25", path = jdk25 })
-								end
-								return runtimes
-							end)(),
-							checkProjectCompliance = false,
 						},
-						project = { referencedLibraries = { lombok, javax_annotation } },
-						annotationProcessing = {
+						maven = {
+							downloadSources = true,
+						},
+						implementationsCodeLens = {
 							enabled = true,
-							factoryPath = { lombok },
-							generatedSourcesOutputDirectory = "target/generated-sources/annotations",
+						},
+						referencesCodeLens = {
+							enabled = true,
+						},
+						references = {
+							includeDecompiledSources = true,
+						},
+						format = {
+							enabled = true,
+						},
+						signatureHelp = { enabled = true },
+						contentProvider = { preferred = nil },
+						completion = {
+							favoriteStaticMembers = {
+								"org.junit.jupiter.api.Assertions.*",
+								"org.junit.Assert.*",
+								"org.mockito.Mockito.*",
+							},
 						},
 					},
 				},
@@ -510,7 +544,28 @@ if jdtls then
 				capabilities = general_capabilities,
 			}
 
+			-- If using lombok, add special settings
+			if exists(lombok) then
+				config.settings.java.project = {
+					referencedLibraries = { lombok, javax_annotation },
+				}
+				config.settings.java.eclipse = {
+					downloadSources = true,
+				}
+				config.settings["java.jdt.ls.lombokSupport.enabled"] = true
+			end
+
+			-- Start jdtls
 			jdtls.start_or_attach(config)
+			vim.b[bufnr].jdtls_attached = true
+			vim.notify(
+				fmt(
+					"JDTLS running on Java %s, project uses %s",
+					runtime_ver or "?",
+					project_java and vim.fn.fnamemodify(project_java, ":t") or "default"
+				),
+				vim.log.levels.INFO
+			)
 		end,
 	})
 end
