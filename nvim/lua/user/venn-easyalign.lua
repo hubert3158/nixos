@@ -4,7 +4,7 @@ function _G.Toggle_venn()
 	local venn_enabled = vim.inspect(vim.b.venn_enabled)
 	if venn_enabled == "nil" then
 		vim.b.venn_enabled = true
-		vim.cmd([[setlocal ve=all]])
+		vim.opt_local.virtualedit = "all"
 		-- draw a line on HJKL keystokes
 		vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", { noremap = true })
 		vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", { noremap = true })
@@ -14,7 +14,7 @@ function _G.Toggle_venn()
 		vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", { noremap = true })
 		print("Venn mode enabled")
 	else
-		vim.cmd([[setlocal ve=]])
+		vim.opt_local.virtualedit = ""
 		vim.api.nvim_buf_del_keymap(0, "n", "J")
 		vim.api.nvim_buf_del_keymap(0, "n", "K")
 		vim.api.nvim_buf_del_keymap(0, "n", "L")
@@ -31,9 +31,5 @@ vim.keymap.set("n", "<leader>vv", function()
 end, { noremap = true, silent = true, desc = "Toggle Venn ASCII Drawing Mode" })
 
 -- Vim-easy-align keybindings
-vim.keymap.set(
-	{ "n", "x" },
-	"ga",
-	"<Plug>(EasyAlign)",
-	{ noremap = false, silent = true, desc = "Easy Align" }
-)
+vim.keymap.set({ "n", "x" }, "ga", "<Plug>(EasyAlign)", { noremap = false, silent = true, desc = "Easy Align" })
+
