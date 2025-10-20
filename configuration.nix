@@ -221,7 +221,6 @@
     semgrep # Static analysis
     sqls # SQL Language Server
     hadolint # Dockerfile linter (keep if you use it for linting)
-    markdownlint-cli # markdown linter
     libxml2 #XML parsing library for C.
 
     nil
@@ -237,7 +236,6 @@
     taplo # TOML
     dfmt # Dockerfile formatter (recommended over hadolint for formatting)
     sqlfluff # SQL formatter/linter
-    # mdformat # Markdown formatter -> currently using prettier
 
     # --- C/C++ ---
     clang-tools
