@@ -93,12 +93,14 @@
 
     google-chrome
     brave
-    (jetbrains.datagrip.override {
-      jdk = pkgs.openjdk21;
-    })
-    (jetbrains.idea-ultimate.override {
-      jdk = pkgs.openjdk21;
-    })
+    jetbrains.datagrip
+    jetbrains.idea-ultimate
+    # (jetbrains.datagrip.override {
+    #   jdk = pkgs.openjdk21;
+    # })
+    # (jetbrains.idea-ultimate.override {
+    #   jdk = pkgs.openjdk21;
+    # })
 
     # jetbrains-toolbox
     onedrive
