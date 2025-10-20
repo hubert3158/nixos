@@ -364,16 +364,7 @@
 
   programs.git = {
     enable = true;
-    delta = {
-      enable = true;
-      options = {
-        features = "decorations";
-        syntax-theme = "Monokai Extended";
-        line-numbers = true;
-        side-by-side = true;
-      };
-    };
-    extraConfig = {
+    settings = {
       user.name = "Subash Acharya";
       user.email = "hubert3158@gmail.com";
       core.editor = "vim";
@@ -386,6 +377,17 @@
       alias.st = "status";
       alias.lg = "log --graph --oneline --all";
       commit.gpgSign = false;
+    };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      features = "decorations";
+      syntax-theme = "Monokai Extended";
+      line-numbers = true;
+      side-by-side = true;
     };
   };
 

@@ -16,7 +16,6 @@ require("conform").setup({
 		json = { "prettierd", "prettier", stop_after_first = true },
 		yaml = { "prettierd", "prettier", stop_after_first = true },
 		graphql = { "prettierd", "prettier", stop_after_first = true },
-		markdown = { "prettierd", "prettier", stop_after_first = true },
 
 		-- Backend / System
 		go = { "goimports", "gofmt" }, -- goimports includes gofmt

@@ -199,6 +199,8 @@ with final.pkgs.lib; let
       plugin = nvim-spectre; # Find and replace
       config = "lua << EOF\nrequire(\"spectre\").setup()\nEOF\n";
     }
+     venn-nvim # Interactive ASCII drawing
+     vim-easy-align # ASCII structure alignment
 
     # ============================================================================
     # FORMATTING & LINTING

@@ -28,6 +28,7 @@ opt.foldcolumn = "1" -- '0' is not bad
 opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 opt.foldlevelstart = 99
 opt.foldenable = true
+opt.virtualedit = "all"
 
 -- Search down into subfolders
 opt.path = vim.o.path .. "**"
@@ -87,6 +88,7 @@ require("user.todo-comments")
 require("user.debugprint")
 require("user.smear-cursor")
 
+require("user.venn-easyalign")
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>ff",

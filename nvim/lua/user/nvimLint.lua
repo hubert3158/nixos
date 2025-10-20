@@ -20,7 +20,6 @@ require("lint").linters.sqlfluff = {
 }
 
 require("lint").linters_by_ft = {
-	markdown = { "markdownlint" }, -- No specific markdown LSP in your list; markdownlint is standard.
 	yaml = { "yamllint" }, -- No specific YAML LSP in your list; yamllint is standard.
 	dockerfile = { "hadolint" }, -- No specific Dockerfile LSP in your list; hadolint is standard.
 
