@@ -11,6 +11,36 @@ g.sqlite_clib_path = require("luv").os_getenv("LIBSQLITE")
 g.copilot_enabled = false
 g.mkdp_browser = "com.microsoft.Edge"
 g.slime_target = "tmux"
+-- markdown-preview.nvim configuration
+g.mkdp_auto_start = 0
+g.mkdp_auto_close = 0
+g.mkdp_refresh_slow = 0
+g.mkdp_command_for_global = 0
+g.mkdp_open_to_the_world = 0
+g.mkdp_open_ip = ""
+g.mkdp_echo_preview_url = 0
+g.mkdp_browserfunc = ""
+g.mkdp_preview_options = {
+	mkit = {},
+	katex = {},
+	uml = {},
+	maid = {},
+	disable_sync_scroll = 0,
+	sync_scroll_type = "middle",
+	hide_yaml_meta = 1,
+	sequence_diagrams = {},
+	flowchart_diagrams = {},
+	content_editable = false,
+	disable_filename = 0,
+	toc = {},
+}
+g.mkdp_markdown_css = ""
+g.mkdp_highlight_css = ""
+g.mkdp_port = ""
+g.mkdp_page_title = "「${name}」"
+g.mkdp_filetypes = { "markdown", "mdown", "mkd", "mkdn", "mdx", "md" }
+-- Enable plugin by default
+g.mkdp_enabled = 1
 -- Native plugins
 
 cmd.filetype("plugin", "indent", "on")
@@ -605,16 +635,27 @@ vim.api.nvim_set_keymap(
 	"<cmd>Twilight<CR>",
 	{ noremap = true, silent = true, desc = "[M]isscellineous [T]wilight" }
 )
--- render-markdown.nvim keybindings
+-- markdown-preview.nvim keybindings
+vim.keymap.set(
+	"n",
+	"<leader>mp",
+	"<Plug>MarkdownPreviewToggle",
+	{ noremap = true, silent = true, desc = "Toggle Markdown [P]review" }
+)
+vim.keymap.set("n", "<leader>mP", function()
+	if vim.g.mkdp_enabled == 1 then
+		vim.g.mkdp_enabled = 0
+		print("Markdown Preview Plugin: DISABLED")
+	else
+		vim.g.mkdp_enabled = 1
+		print("Markdown Preview Plugin: ENABLED")
+	end
+end, { noremap = true, silent = true, desc = "Toggle Markdown [P]lugin On/Off" })
+
+-- render-markdown.nvim keybinding
 vim.keymap.set("n", "<leader>mr", function()
 	require("render-markdown").toggle()
 end, { noremap = true, silent = true, desc = "Toggle Markdown [R]endering" })
-vim.keymap.set("n", "<leader>me", function()
-	require("render-markdown").enable()
-end, { noremap = true, silent = true, desc = "[E]nable Markdown Rendering" })
-vim.keymap.set("n", "<leader>md", function()
-	require("render-markdown").disable()
-end, { noremap = true, silent = true, desc = "[D]isable Markdown Rendering" })
 
 -- refactor
 vim.keymap.set({ "n", "x" }, "<leader>re", function()
