@@ -15,11 +15,11 @@ require("codecompanion").setup({
 						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/anthropic.gpg",
 					},
 					params = {
-						model = "claude-sonnet-4-0",
-						temperature = 0.1, -- More deterministic responses
-						max_tokens = 4000, -- Longer response capability
-						top_p = 0.9,
-						thinking = false,
+						model = "claude-sonnet-4-5",
+						temperature = 0.1, -- keep determinism
+						-- top_p removed per 4.5 migration rules
+						max_tokens = 4000, -- keep your current limit (plugin maps this)
+						thinking = false, -- leave as-is unless you want visible extended thinking
 					},
 				})
 			end,
