@@ -217,35 +217,33 @@
     };
 
     initContent = ''
-            # ---- Vi editing mode ----
-      bindkey -v                 # enable Vim keybindings
-      export KEYTIMEOUT=1        # make <Esc> switch modes quickly
-
-      # Open the current command line in $EDITOR (Vim) with 'v' in Normal mode
+      # ---- Vi editing mode ----
+      bindkey -v
+      export KEYTIMEOUT=1
+      # Edit current line in $EDITOR
       autoload -Uz edit-command-line
       zle -N edit-command-line
       bindkey -M vicmd 'v' edit-command-line
-      bindkey '^X^E' edit-command-line   # also keep Ctrl-x Ctrl-e
-
-      # Word motions closer to Vim expectations on shells/CLI args
+      bindkey '^X^E' edit-command-line
+      # Vim-like word motions
       autoload -Uz select-word-style
       select-word-style bash
-
-      # History QoL
+      # History
       setopt INC_APPEND_HISTORY SHARE_HISTORY HIST_FIND_NO_DUPS HIST_IGNORE_DUPS HIST_IGNORE_ALL_DUPS
       HISTSIZE=100000
       SAVEHIST=100000
-
-      # Cursor shape feedback (block in Normal, beam in Insert) for WezTerm/Kitty/Alacritty
+      # Cursor shape by mode
       function zle-keymap-select {
         case $KEYMAP in
-          vicmd)      print -n -- "\e[1 q" ;;  # block
-          main|viins) print -n -- "\e[5 q" ;;  # beam
+          vicmd)      print -n -- "\e[1 q" ;;
+          main|viins) print -n -- "\e[5 q" ;;
         esac
       }
       zle -N zle-keymap-select
       echo -ne '\e[5 q'
-
+      # ---- Autosuggestion Ctrl-F binding ----
+      bindkey '^ ' autosuggest-accept  # Ctrl-Space as backup
+      bindkey '^F' autosuggest-accept  # Ctrl-F
       # Handy: edit & re-run last command in $EDITOR
       alias fcvim='fc -e "$EDITOR"'
     '';
