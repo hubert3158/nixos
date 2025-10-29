@@ -137,8 +137,7 @@
     # texlive.combined.scheme-full
     mdbook-pdf
 
-    protonvpn-cli_2
-
+    protonvpn-gui
     pipx
     (python312.withPackages (ps:
       with ps; [
@@ -148,7 +147,6 @@
         boto3
         pypdf
         pypdf2
-        # pymupdf # marked as broken for the latest version
         pdfplumber
         pdf2image
         pytesseract
