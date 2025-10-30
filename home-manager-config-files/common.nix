@@ -299,6 +299,9 @@
         forwardX11Trusted = true;
         serverAliveInterval = 60;
         serverAliveCountMax = 30;
+        extraOptions = {
+          KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org";
+        };
       };
 
       "stg" = {
