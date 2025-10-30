@@ -7,8 +7,6 @@
   ...
 }: {
   nixpkgs.overlays = [
-    (self: super: {
-    })
   ];
 
   # Include the results of the hardware scan.
