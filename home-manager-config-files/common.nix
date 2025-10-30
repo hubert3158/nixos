@@ -67,8 +67,6 @@
     rsync
     util-linux
 
-    pgadmin
-
     freerdp
     openvpn
     # aws-workspaces

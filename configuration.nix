@@ -8,8 +8,6 @@
 }: {
   nixpkgs.overlays = [
     (self: super: {
-      noto-fonts-cjk = super.noto-fonts-cjk-sans;
-      # utillinux = super.util-linux;
     })
   ];
 
@@ -59,8 +57,8 @@
     graphics = {
       enable = true;
       extraPackages = with pkgs; [
-        vaapiIntel
-        vaapiVdpau
+        libva-vdpau-driver
+        libva-vdpau-driver
         libvdpau
       ];
     };
@@ -160,7 +158,7 @@
     ngrok
     tesseract
     poppler
-    poppler_utils
+    poppler-utils
 
     pnpm # Fast, disk space efficient package manager for JavaScript
 
@@ -467,8 +465,7 @@
     nerd-fonts.fira-code
     corefonts
     noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     liberation_ttf
     fira-code
     fira-code-symbols
