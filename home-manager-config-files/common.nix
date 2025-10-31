@@ -33,7 +33,27 @@
     "gr" = ''
       git status --porcelain | fzf --height 40% --border | awk '{print $2}' | xargs git restore
     '';
-    "h" = "omz_history | fzf > selected";
+    "h" = ''
+      selected=$(fc -l 1 | fzf \
+        --tac \
+        --height 60% \
+        --border rounded \
+        --margin 2% \
+        --padding 1% \
+        --preview 'echo {2..} | fold -w $((COLUMNS-20))' \
+        --preview-window 'down:3:wrap' \
+        --bind 'ctrl-y:execute-silent(echo {2..} | wl-copy)+abort' \
+        --bind 'ctrl-e:execute(echo {2..} > /tmp/fzf-cmd && nvim /tmp/fzf-cmd)+abort' \
+        --header '󰋚 History Search | ENTER: execute, CTRL-Y: copy, CTRL-E: edit, ESC: cancel' \
+        --prompt '󰞷 ' \
+        --pointer '󰁕' \
+        --color 'header:italic:underline,label:blue,prompt:cyan,pointer:green,marker:yellow' \
+        | sed 's/^[ ]*[0-9]*[ ]*//')
+      if [[ -n "$selected" ]]; then
+        print -s "$selected"
+        eval "$selected"
+      fi
+    '';
     "clean-hm" = "nix-env -v --delete-generations +10 --profile ~/.local/state/nix/profiles/home-manager && nix-collect-garbage -v -d";
     "clean-system" = "sudo nix-env -v --delete-generations +10 --profile /nix/var/nix/profiles/system && sudo nix-collect-garbage -v -d";
     "clean-all" = ''
