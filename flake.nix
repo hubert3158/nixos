@@ -39,22 +39,22 @@
     nixosConfigurations = {
       work = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        # Apply nixpkgs config at system level to ensure it's available to overlays
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          config = {
-            allowUnfree = true;
-            allowUnfreePredicate = pkg:
-              builtins.elem (nixpkgs.lib.getName pkg) [
-              ];
-            permittedInsecurePackages = [
-              "emacs-29.4"
-            ];
-          };
-        };
         # Special arguments passed to modules
         specialArgs = {inherit inputs;}; # Pass inputs if needed in your modules
         modules = [
+          # Configure nixpkgs
+          {
+            nixpkgs.config = {
+              allowUnfree = true;
+              allowUnfreePredicate = pkg:
+                builtins.elem (nixpkgs.lib.getName pkg) [
+                ];
+              permittedInsecurePackages = [
+                "emacs-29.4"
+              ];
+            };
+          }
+
           # Core configurations
           ./configuration.nix
           ./work.nix
@@ -81,21 +81,21 @@
 
       home = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        # Apply nixpkgs config at system level to ensure it's available to overlays
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          config = {
-            allowUnfree = true;
-            allowUnfreePredicate = pkg:
-              builtins.elem (nixpkgs.lib.getName pkg) [
-              ];
-            permittedInsecurePackages = [
-              "emacs-29.4"
-            ];
-          };
-        };
         specialArgs = {inherit inputs;};
         modules = [
+          # Configure nixpkgs
+          {
+            nixpkgs.config = {
+              allowUnfree = true;
+              allowUnfreePredicate = pkg:
+                builtins.elem (nixpkgs.lib.getName pkg) [
+                ];
+              permittedInsecurePackages = [
+                "emacs-29.4"
+              ];
+            };
+          }
+
           # Core configurations
           ./configuration.nix
           ./home.nix
