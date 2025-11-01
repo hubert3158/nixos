@@ -246,16 +246,7 @@
     python3Packages.black
     python3Packages.flake8
 
-    # --- Rust ---
-    # Option 1: Install rustup and manage toolchain components (rustfmt, rust-analyzer) via rustup
-    # rustup
-    # After installing rustup, run:
-    # rustup default stable (or nightly)
-    # rustup component add rustfmt
-    # rustup component add rust-analyzer
-
     # Option 2: Install components directly via Nix (simpler if you don't need rustup's flexibility)
-    rustfmt # Rust code formatter
     rustup # Rust toolchain manager (optional, but useful for managing toolchains)
 
     # --- Terraform ---
