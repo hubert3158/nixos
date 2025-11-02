@@ -45,6 +45,38 @@ require("codecompanion").setup({
 					},
 				})
 			end,
+			--          ╭─────────────────────────────────────────────────────────╮
+			--          │                 MINI MAX IS NOT WORKING                 │
+			--          ╰─────────────────────────────────────────────────────────╯
+			minimax = function()
+				return require("codecompanion.adapters").extend("openai", {
+					name = "minimax",
+					url = "https://api.minimax.chat/v1/text/chatcompletion_v2",
+					env = {
+						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/minimax.gpg",
+					},
+					headers = {
+						["Content-Type"] = "application/json",
+						["Authorization"] = "Bearer ${api_key}",
+					},
+					params = {
+						model = "MiniMax-Text-01",
+						temperature = 0.1,
+						max_tokens = 4000,
+					},
+					schema = {
+						model = {
+							default = "MiniMax-Text-01",
+						},
+						temperature = {
+							default = 0.1,
+						},
+						max_tokens = {
+							default = 4000,
+						},
+					},
+				})
+			end,
 			tavily = function()
 				return require("codecompanion.adapters").extend("tavily", {
 					env = {
