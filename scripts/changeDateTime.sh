@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Hardcoded fake date/time
-FAKE_DATE="2025-11-02 6:00:00"
+FAKE_DATE="2025-11-02 3:00:00"
 
 if [[ $EUID -ne 0 ]]; then
     echo "Run this script as root: sudo $0"
