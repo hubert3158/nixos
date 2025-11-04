@@ -130,6 +130,9 @@
   # $ nix search wget
 
   environment.systemPackages = with pkgs; [
+    asciinema
+    asciinema-agg
+
     typst
     tinymist
     wl-clipboard
