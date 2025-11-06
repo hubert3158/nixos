@@ -219,7 +219,7 @@ vim.api.nvim_set_keymap("n", "<leader>bd", ":bd<CR>", { noremap = true, silent =
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>bo",
-	":%bd|e#<CR>",
+	":%bd|e#|bd#<CR>",
 	{ noremap = true, silent = true, desc = "Close All Buffers Except Current" }
 )
 
