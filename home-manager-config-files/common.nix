@@ -579,6 +579,11 @@
   programs.zathura.enable = true; #pdf viewer
   programs.mpv.enable = true; #pdf viewer
 
+  # Qutebrowser configuration
+  programs.qutebrowser = {
+    enable = true;
+  };
+
   programs.bat = {
     enable = true;
     extraPackages = with pkgs.bat-extras; [
