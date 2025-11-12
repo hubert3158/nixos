@@ -205,7 +205,6 @@
     nodePackages.serve
     nodePackages.prettier # Prettier CLI
     nodePackages.pm2
-    nodePackages.ts-node
     nodePackages.htmlhint # HTML linter
     nodePackages.typescript
 
