@@ -11,7 +11,17 @@ Neovim LSP bootstrap — diagnostics fixed (logic preserved)
 ------------------------------------------------------------
 local original_start_client = vim.lsp.start_client
 
----@class JdtlsClientConfig: lsp.ClientConfig
+---@class JdtlsClientConfig
+---@field name? string
+---@field cmd? string[]
+---@field custom_jdtls? boolean
+---@field root_dir? string
+---@field init_options? table
+---@field settings? table
+---@field on_attach? function
+---@field capabilities? table
+
+---@class LspClientConfig
 ---@field custom_jdtls? boolean
 
 ---Block non-custom jdtls startups while preserving original API
@@ -33,6 +43,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		local clients = vim.lsp.get_clients({ name = "jdtls" })
 		for _, client in ipairs(clients) do
 			-- guard client.config and the custom flag (LuaLS nil-checks)
+			---@diagnostic disable-next-line: undefined-field
 			if not (client and client.config and client.config.custom_jdtls) then
 				vim.lsp.stop_client(client.id)
 			end
@@ -193,7 +204,7 @@ local function test_completion()
 		return
 	end
 
-	local params = vim.lsp.util.make_position_params()
+	local params = vim.lsp.util.make_position_params(0, "utf-16")
 	-- Use buf_request to satisfy LuaLS types and Neovim API
 	for _, client in ipairs(clients) do
 		if client.server_capabilities and client.server_capabilities.completionProvider then
@@ -325,7 +336,7 @@ if not jdtls then
 	return
 end
 
-local home = vim.loop.os_homedir()
+local home = os.getenv("HOME") or vim.fn.expand("~")
 local data = vim.fn.stdpath("data")
 
 -- Mason-installed JDTLS layout
@@ -520,8 +531,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
 			root_dir = root_dir,
 			init_options = { bundles = bundles },
 			settings = build_settings(),
-			on_attach = _G.general_on_attach or general_on_attach,
-			capabilities = _G.general_capabilities or general_capabilities,
+			on_attach = general_on_attach,
+			capabilities = general_capabilities,
 		}
 		jdtls.start_or_attach(cfg)
 	end,
