@@ -311,6 +311,14 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = false, desc = "Search and Replace Word Under Cursor" }
 )
 
+-- Search and replace (visual mode - selected text)
+vim.api.nvim_set_keymap(
+	"v",
+	"<leader>sr",
+	'"zy:%s/\\(<C-r>z\\)/\\1/g<Left><Left><Left>',
+	{ noremap = true, silent = false, desc = "Search and Replace Selection with Capture Group" }
+)
+
 -- Toggle relative line numbers
 vim.api.nvim_set_keymap(
 	"n",
