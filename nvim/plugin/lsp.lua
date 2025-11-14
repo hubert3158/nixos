@@ -385,12 +385,12 @@ end
 local project_java = jdk25 or jdk21 or jdk11
 
 -- Optional extras
-local lombok = home .. "/nixos/dotfiles/lombok-1.18.38.jar"
-local javax_annotation = home .. "/nixos/dotfiles/javax.annotation-api-1.3.2.jar"
+local lombok = home .. "/nixos/dotfiles/lombok-1.18.42.jar"
+local jakarta_annotation = home .. "/nixos/dotfiles/jakarta.annotation-api-1.3.5.jar"
 
 local bundles = {}
-if exists(javax_annotation) then
-	table.insert(bundles, javax_annotation)
+if exists(jakarta_annotation) then
+	table.insert(bundles, jakarta_annotation)
 end
 
 local debugger_path = data .. "/mason/packages/java-debug-adapter"
@@ -507,7 +507,7 @@ local function build_settings()
 	}
 
 	if exists(lombok) then
-		s.java.project = { referencedLibraries = { lombok, javax_annotation } }
+		s.java.project = { referencedLibraries = { lombok, jakarta_annotation } }
 		s["java.jdt.ls.lombokSupport.enabled"] = true
 	end
 
