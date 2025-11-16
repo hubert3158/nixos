@@ -50,6 +50,8 @@
 
   programs.hyprland.enable = true;
   programs.command-not-found.enable = false;
+  programs.wireshark.enable = true;
+  programs.wireshark.package = pkgs.wireshark;
 
   hardware = {
     graphics = {
