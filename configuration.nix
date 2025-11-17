@@ -342,8 +342,9 @@
     waybar
     claude-code
     miller
-    marksman
-    kdePackages.kdenlive
+      marksman
+      kdePackages.kdenlive
+      inetutils # Includes ftp client
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
