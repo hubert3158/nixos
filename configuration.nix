@@ -203,7 +203,6 @@
     nodejs # Base Node.js (or a specific version like nodejs-18_x)
     nodePackages.nodemon
     nodePackages.eslint
-    nodePackages.jsonlint
     nodePackages.serve
     nodePackages.prettier # Prettier CLI
     nodePackages.pm2
@@ -342,9 +341,9 @@
     waybar
     claude-code
     miller
-      marksman
-      kdePackages.kdenlive
-      inetutils # Includes ftp client
+    marksman
+    kdePackages.kdenlive
+    inetutils # Includes ftp client
   ];
   virtualisation.docker.enable = true;
   #services.docker.enable = true;
