@@ -23,6 +23,7 @@
     "lt" = "eza --tree --icons --level=2 --group-directories-first --git --time-style=iso --color=always";
     # "ss" = "sleep 2 && grim -g \"\$(slurp)\" - | tee ~/Pictures/screenshot-\$(date +%Y%m%d-%H%M%S).png | wl-copy";
     "ss" = "sleep 2 && flameshot gui";
+    "p" = "python";
     "f" = ''
       fzf \
       -i \
