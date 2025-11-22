@@ -81,6 +81,7 @@
     wrk #HTTP benchmarking tool.
     keychain
     waybar
+    zed-editor
 
     parted
     dosfstools
