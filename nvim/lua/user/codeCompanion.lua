@@ -1,12 +1,13 @@
 require("codecompanion").setup({
 	opts = {
-		log_level = "INFO", -- Use "DEBUG" or "TRACE" for troubleshooting
+		log_level = "INFO",
 	},
 	loading = {
 		enabled = true,
 		text = "CodeCompanion working...",
 		spinner = "moon",
 	},
+	-- 1. Group all adapters under 'http'
 	adapters = {
 		http = {
 			anthropic = function()
@@ -16,13 +17,13 @@ require("codecompanion").setup({
 					},
 					params = {
 						model = "claude-sonnet-4-5",
-						temperature = 0.1, -- keep determinism
-						-- top_p removed per 4.5 migration rules
-						max_tokens = 4000, -- keep your current limit (plugin maps this)
-						thinking = false, -- leave as-is unless you want visible extended thinking
+						temperature = 0.1,
+						max_tokens = 4000,
+						thinking = false,
 					},
 				})
 			end,
+
 			openai = function()
 				return require("codecompanion.adapters").extend("openai", {
 					env = {
@@ -34,6 +35,7 @@ require("codecompanion").setup({
 					},
 				})
 			end,
+
 			gemini = function()
 				return require("codecompanion.adapters").extend("gemini", {
 					env = {
@@ -45,24 +47,21 @@ require("codecompanion").setup({
 					},
 				})
 			end,
-			--          ╭─────────────────────────────────────────────────────────╮
-			--          │                 MINI MAX IS NOT WORKING                 │
-			--          ╰─────────────────────────────────────────────────────────╯
+
+			-- 2. Minimax Fix (Switched to openai_compatible for URL control)
 			minimax = function()
-				return require("codecompanion.adapters").extend("openai", {
+				return require("codecompanion.adapters").extend("openai_compatible", {
 					name = "minimax",
-					url = "https://api.minimax.chat/v1/text/chatcompletion_v2",
 					env = {
+						-- Base URL only
+						url = "https://api.minimax.chat/v1/text",
 						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/minimax.gpg",
+						-- Specific endpoint suffix
+						chat_url = "/chatcompletion_v2",
 					},
 					headers = {
 						["Content-Type"] = "application/json",
 						["Authorization"] = "Bearer ${api_key}",
-					},
-					params = {
-						model = "MiniMax-Text-01",
-						temperature = 0.1,
-						max_tokens = 4000,
 					},
 					schema = {
 						model = {
@@ -77,27 +76,57 @@ require("codecompanion").setup({
 					},
 				})
 			end,
+
 			tavily = function()
 				return require("codecompanion.adapters").extend("tavily", {
 					env = {
 						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/tavily.gpg",
 					},
 					opts = {
-						topic = "general", -- "general" or "news"
-						search_depth = "advanced", -- "basic" or "advanced"
+						topic = "general",
+						search_depth = "advanced",
 						chunks_per_source = 3,
 						max_results = 3,
 						include_answer = true,
 						include_raw_content = false,
-						-- Optional: time_range = "week", include_domains = {"example.com"},
+					},
+				})
+			end,
+
+			-- 3. Cerebras (Moved inside 'http' table)
+			cerebras = function()
+				return require("codecompanion.adapters").extend("openai_compatible", {
+					name = "cerebras",
+					env = {
+						url = "https://api.cerebras.ai/v1",
+						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/cerebras.gpg",
+						chat_url = "/chat/completions",
+					},
+					schema = {
+						model = {
+							choices = {
+								"gpt-oss-120b",
+								"llama-3.3-70b",
+								"llama3.1-8b",
+								"zai-glm-4.6",
+							},
+							default = "zai-glm-4.6",
+						},
+						temperature = {
+							default = 0.1,
+						},
+						max_tokens = {
+							default = 4000,
+						},
 					},
 				})
 			end,
 		},
 	},
+
 	cache = {
 		enabled = true,
 		path = vim.fn.stdpath("cache") .. "/codecompanion",
-		ttl = 24 * 60 * 60, -- Cache duration: 24 hours
+		ttl = 24 * 60 * 60,
 	},
 })
