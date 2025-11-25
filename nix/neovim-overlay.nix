@@ -255,7 +255,6 @@ with final.pkgs.lib; let
     # AI & CODE ASSISTANCE
     # ============================================================================
     codecompanion-nvim # AI coding assistant
-    copilot-vim # GitHub Copilot
     # {
     #   plugin = supermaven-nvim;               # Alternative AI assistant
     #   config = "lua << EOF\nrequire(\"supermaven-nvim\").setup({})\nEOF\n";
