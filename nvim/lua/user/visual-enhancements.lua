@@ -4,7 +4,8 @@ local M = {}
 
 -- Setup function to initialize all visual enhancements
 function M.setup()
-	-- Enhanced lualine configuration
+	-- Enhanced lualine configuration (COMMENTED OUT - CAUSING ISSUES)
+	--[[
 	if pcall(require, "lualine") then
 		require("lualine").setup({
 			options = {
@@ -78,6 +79,7 @@ function M.setup()
 			extensions = { "nvim-tree", "toggleterm", "trouble" },
 		})
 	end
+	--]]
 
 	-- Enhanced dashboard configuration
 	if pcall(require, "dashboard") then
