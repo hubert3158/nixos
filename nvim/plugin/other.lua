@@ -1,3 +1,5 @@
+-- LUALINE CONFIGURATION COMMENTED OUT - CAUSING ISSUES
+--[[
 -- Autocommand to refresh lualine when recording macros
 vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
 	callback = function()
@@ -9,8 +11,8 @@ require("lualine").setup({
 	options = {
 		icons_enabled = true,
         theme = "eldritch",
-		component_separators = { left = "", right = "" },
-		section_separators = { left = "", right = "" },
+		component_separators = { left = "", right = "" },
+		section_separators = { left = "", right = "" },
 		disabled_filetypes = {
 			statusline = {},
 			winbar = {},
@@ -25,13 +27,13 @@ require("lualine").setup({
 		},
 	},
 	sections = {
-		lualine_a = { { "mode", icon = "" } },
+		lualine_a = { { "mode", icon = "" } },
 		lualine_b = {
-			{ "branch", icon = "" },
-			{ "diff", symbols = { added = " ", modified = " ", removed = " " } },
-			{ "diagnostics", symbols = { error = " ", warn = " ", info = " ", hint = " " } },
+			{ "branch", icon = "" },
+			{ "diff", symbols = { added = " ", modified = " ", removed = " " } },
+			{ "diagnostics", symbols = { error = " ", warn = " ", info = " ", hint = " " } },
 		},
-		lualine_c = { { "filename", path = 1, icon = "󰈔" } },
+		lualine_c = { { "filename", path = 1, icon = "󰄔" } },
 		lualine_x = {
 			{
 				function()
@@ -39,18 +41,18 @@ require("lualine").setup({
 					if reg == "" then
 						return ""
 					end
-					return " @" .. reg
+					return " @" .. reg
 				end,
 				cond = function()
 					return vim.fn.reg_recording() ~= ""
 				end,
 			},
-			{ "encoding", icon = "󰏮" },
-			{ "fileformat", symbols = { unix = "", dos = "", mac = "" } },
+			{ "encoding", icon = "󰃮" },
+			{ "fileformat", symbols = { unix = "", dos = "", mac = "" } },
 			{ "filetype", icon_only = true },
 		},
-		lualine_y = { { "progress", icon = "" } },
-		lualine_z = { { "location", icon = "" } },
+		lualine_y = { { "progress", icon = "" } },
+		lualine_z = { { "location", icon = "" } },
 	},
 	inactive_sections = {
 		lualine_a = {},
@@ -65,6 +67,7 @@ require("lualine").setup({
 	inactive_winbar = {},
 	extensions = {},
 })
+--]]
 
 -- Comment
 require("Comment").setup()
