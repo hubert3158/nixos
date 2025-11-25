@@ -411,6 +411,13 @@ end
 
 -- Root and workspace
 local function compute_root()
+	-- 1. Prefer repo root (.git)
+	local git_root = require("jdtls.setup").find_root({ ".git" })
+	if git_root and git_root ~= home then
+		return git_root
+	end
+
+	-- 2. Fall back to build markers if no git repo
 	local markers = {
 		"mvnw",
 		"gradlew",
@@ -420,7 +427,6 @@ local function compute_root()
 		".project",
 		".classpath",
 		".settings",
-		".git",
 	}
 	local rd = require("jdtls.setup").find_root(markers)
 	if not rd or rd == home then
