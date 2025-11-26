@@ -999,8 +999,7 @@ vim.keymap.set(
 	{ noremap = true, silent = true, desc = "Code Companion actions" }
 )
 
--- Aerial (code outline) keybindings (COMMENTED OUT - CAUSING ISSUES)
---[[
+-- Aerial (code outline) keybindings
 vim.keymap.set(
 	"n",
 	"<leader>a",
@@ -1009,4 +1008,3 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { noremap = true, silent = true, desc = "Jump to Previous Symbol" })
 vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { noremap = true, silent = true, desc = "Jump to Next Symbol" })
---]]
