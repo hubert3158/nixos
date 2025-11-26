@@ -32,9 +32,9 @@ with final.pkgs.lib; let
       plugin = eldritch-nvim; # Eldritch colorscheme
       config = "lua << EOF\nrequire(\"eldritch\").setup()\nEOF\ncolorscheme eldritch\n";
     }
-    # {
-    #   plugin = lualine-nvim; # Statusline (COMMENTED OUT - CAUSING ISSUES)
-    # }
+    {
+      plugin = lualine-nvim; # Statusline
+    }
     bufferline-nvim # Buffer tabs
     {
       plugin = dashboard-nvim; # Start screen
@@ -246,10 +246,10 @@ with final.pkgs.lib; let
     # ============================================================================
     nvim-ufo # Enhanced folding
     promise-async # Async utilities for ufo
-    # {
-    #   plugin = aerial-nvim; # Code outline (COMMENTED OUT - CAUSING ISSUES)
-    #   config = "lua << EOF\nrequire(\"aerial\").setup()\nEOF\n";
-    # }
+    {
+      plugin = aerial-nvim; # Code outline
+      config = "lua << EOF\nrequire(\"aerial\").setup()\nEOF\n";
+    }
 
     # ============================================================================
     # AI & CODE ASSISTANCE

@@ -1,5 +1,4 @@
--- LUALINE CONFIGURATION COMMENTED OUT - CAUSING ISSUES
---[[
+-- LUALINE CONFIGURATION
 -- Autocommand to refresh lualine when recording macros
 vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
 	callback = function()
@@ -10,7 +9,7 @@ vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
 require("lualine").setup({
 	options = {
 		icons_enabled = true,
-        theme = "eldritch",
+		theme = "eldritch",
 		component_separators = { left = "", right = "" },
 		section_separators = { left = "", right = "" },
 		disabled_filetypes = {
@@ -67,7 +66,6 @@ require("lualine").setup({
 	inactive_winbar = {},
 	extensions = {},
 })
---]]
 
 -- Comment
 require("Comment").setup()

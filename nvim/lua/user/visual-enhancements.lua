@@ -4,12 +4,11 @@ local M = {}
 
 -- Setup function to initialize all visual enhancements
 function M.setup()
-	-- Enhanced lualine configuration (COMMENTED OUT - CAUSING ISSUES)
-	--[[
+	-- Enhanced lualine configuration
 	if pcall(require, "lualine") then
 		require("lualine").setup({
 			options = {
-                                theme = "eldritch",
+				theme = "eldritch",
 				globalstatus = true,
 				disabled_filetypes = { statusline = { "dashboard", "alpha" } },
 				component_separators = { left = "", right = "" },
@@ -79,7 +78,6 @@ function M.setup()
 			extensions = { "nvim-tree", "toggleterm", "trouble" },
 		})
 	end
-	--]]
 
 	-- Enhanced dashboard configuration
 	if pcall(require, "dashboard") then
