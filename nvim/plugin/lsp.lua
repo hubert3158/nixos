@@ -493,7 +493,7 @@ local function build_settings()
 			eclipse = { downloadSources = true },
 			configuration = {
 				runtimes = runtimes,
-				updateBuildConfiguration = "interactive",
+				updateBuildConfiguration = "automatic",
 			},
 			maven = { downloadSources = true },
 			implementationsCodeLens = { enabled = true },
