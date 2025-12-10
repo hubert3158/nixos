@@ -23,6 +23,8 @@ with lib;
   withSqlite ? true,
   viAlias ? appName == null || appName == "nvim",
   vimAlias ? appName == null || appName == "nvim",
+  # blink-cmp fuzzy library for Rust performance
+  blink-fuzzy-lib ? pkgs.vimPlugins.blink-cmp.passthru.blink-fuzzy-lib,
 }:
 
 let
@@ -135,6 +137,12 @@ let
     optionalString (resolvedExtraLuaPackages != [])
     ''--suffix LUA_CPATH ";" "${concatMapStringsSep ";" luaPackages.getLuaCPath resolvedExtraLuaPackages}"'';
 
+  # Add blink-fuzzy-lib to LUA_CPATH for Rust fuzzy matching
+  # Uses lib?.so pattern since the library is named libblink_cmp_fuzzy.so
+  blinkFuzzyLuaCArgs =
+    optionalString (blink-fuzzy-lib != null)
+    ''--suffix LUA_CPATH ";" "${blink-fuzzy-lib}/lib/lib?.so"'';
+
   extraMakeWrapperLuaArgs =
     optionalString (resolvedExtraLuaPackages != [])
     ''--suffix LUA_PATH ";" "${concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages}"'';
@@ -149,7 +157,9 @@ let
         + " "
         + extraMakeWrapperLuaCArgs
         + " "
-        + extraMakeWrapperLuaArgs;
+        + extraMakeWrapperLuaArgs
+        + " "
+        + blinkFuzzyLuaCArgs;
       wrapRc = true;
     });
 
