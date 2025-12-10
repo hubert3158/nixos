@@ -1,163 +1,189 @@
 {
-  description = "NixOS configuration with Home Manager and Neovim";
+  description = "Professional NixOS configuration with modular structure";
 
   inputs = {
+    # Core inputs
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Secrets management
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Utilities
     flake-utils.url = "github:numtide/flake-utils";
+
+    # Neovim development
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     eldritch-nvim = {
       url = "github:eldritch-theme/eldritch.nvim";
       flake = false;
     };
-    # Consider adding your neovim overlay source as an input if it's external
-    # neovim-overlay-src.url = "github:your/neovim-overlay-repo"; # Example
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
     home-manager,
+    sops-nix,
     flake-utils,
     gen-luarc,
     ...
   }: let
-    # Define common home-manager settings
-    commonHomeManagerSettings = {
-      pkgs,
-      lib,
-      ...
-    }: {
-      home-manager.useUserPackages = true;
-      home-manager.backupFileExtension = "backup";
-      # Add nvim from the (now global) overlay to the user's packages
-      # This assumes nvim-pkg is the attribute name exposed by your overlay
-      home-manager.users.hubert.home.packages = [pkgs.nvim-pkg];
+    # Supported systems
+    supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+
+    # Helper to generate attrs for each system
+    forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+
+    # Pkgs for each system with overlays
+    pkgsFor = system: import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+      overlays = [
+        (import ./packages/neovim { inherit inputs; })
+        gen-luarc.overlays.default
+      ];
     };
+
+    # Helper function to create a NixOS host
+    mkHost = hostname: system: nixpkgs.lib.nixosSystem {
+      inherit system;
+      specialArgs = { inherit inputs; };
+      modules = [
+        # Nixpkgs configuration
+        {
+          nixpkgs.config = {
+            allowUnfree = true;
+            permittedInsecurePackages = [
+              "emacs-29.4"
+            ];
+          };
+        }
+
+        # Import all custom NixOS modules
+        ./modules/nixos
+
+        # Host-specific configuration
+        ./hosts/${hostname}
+
+        # Overlays
+        (import ./overlays { inherit inputs; })
+
+        # sops-nix module
+        sops-nix.nixosModules.sops
+
+        # Home Manager
+        home-manager.nixosModules.home-manager
+        {
+          home-manager = {
+            useUserPackages = true;
+            useGlobalPkgs = true;
+            backupFileExtension = "backup";
+            extraSpecialArgs = { inherit inputs; };
+            users.hubert = { pkgs, ... }: {
+              imports = [ ./modules/home-manager ];
+
+              # Enable all home-manager modules
+              modules.shell.zsh.enable = true;
+              modules.shell.fish.enable = true;
+              modules.shell.starship.enable = true;
+              modules.shell.aliases.enable = true;
+
+              modules.terminals.wezterm.enable = true;
+              modules.terminals.kitty.enable = true;
+              modules.terminals.ghostty.enable = true;
+
+              modules.desktop.hyprland.enable = true;
+              modules.desktop.hyprlock.enable = true;
+              modules.desktop.hyprpaper.enable = true;
+              modules.desktop.i3.enable = true;
+              modules.desktop.xdg.enable = true;
+              modules.desktop.fuzzel.enable = true;
+              modules.desktop.flameshot.enable = true;
+
+              modules.programs.git.enable = true;
+              modules.programs.ssh.enable = true;
+              modules.programs.gpg.enable = true;
+              modules.programs.tmux.enable = true;
+              modules.programs.neovim.enable = true;
+              modules.programs.browsers.enable = true;
+              modules.programs.media.enable = true;
+              modules.programs.nixIndex.enable = true;
+
+              modules.fileManagers.yazi.enable = true;
+              modules.fileManagers.ranger.enable = true;
+
+              modules.tools.eza.enable = true;
+              modules.tools.bat.enable = true;
+              modules.tools.zoxide.enable = true;
+              modules.tools.fzf.enable = true;
+              modules.tools.htop.enable = true;
+
+              modules.packages.enable = true;
+
+              # Add nvim-pkg from overlay
+              home.packages = [ pkgs.nvim-pkg ];
+            };
+          };
+        }
+      ];
+    };
+
   in {
-    # NixOS Configurations
+    # NixOS configurations for each host
     nixosConfigurations = {
-      work = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        # Special arguments passed to modules
-        specialArgs = {inherit inputs;}; # Pass inputs if needed in your modules
-        modules = [
-          # Configure nixpkgs
-          {
-            nixpkgs.config = {
-              allowUnfree = true;
-              allowUnfreePredicate = pkg:
-                builtins.elem (nixpkgs.lib.getName pkg) [
-                ];
-              permittedInsecurePackages = [
-                "emacs-29.4"
-              ];
-            };
-          }
-
-          # Core configurations
-          ./configuration.nix
-          ./work.nix
-          ./hardware-configuration-work.nix
-
-          (import ./overlays/default.nix {
-            inputs = inputs;
-          })
-
-          # Home Manager module
-          home-manager.nixosModules.home-manager
-
-          # Home Manager user configuration
-          {
-            # Import common settings
-            imports = [commonHomeManagerSettings];
-
-            # Import user-specific settings for 'work'
-            # This file should be a function accepting { pkgs, lib, config, ... }
-            home-manager.users.hubert = import home-manager-config-files/common.nix;
-          }
-        ];
-      };
-
-      home = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          # Configure nixpkgs
-          {
-            nixpkgs.config = {
-              allowUnfree = true;
-              allowUnfreePredicate = pkg:
-                builtins.elem (nixpkgs.lib.getName pkg) [
-                ];
-              permittedInsecurePackages = [
-                "emacs-29.4"
-              ];
-            };
-          }
-
-          # Core configurations
-          ./configuration.nix
-          ./home.nix
-          ./hardware-configuration-home.nix
-          (import ./overlays/default.nix {
-            inputs = inputs;
-          })
-          # Home Manager module
-          home-manager.nixosModules.home-manager
-
-          # Home Manager user configuration
-          {
-            # Import common settings
-            imports = [commonHomeManagerSettings];
-
-            # Import user-specific settings for 'home'
-            # This file should be a function accepting { pkgs, lib, config, ... }
-            home-manager.users.hubert = import home-manager-config-files/common.nix;
-          }
-        ];
-      };
+      work = mkHost "work" "x86_64-linux";
+      home = mkHost "home" "x86_64-linux";
     };
 
-    # Development Shells
-    devShells = flake-utils.lib.eachDefaultSystem (
-      system: let
-        # Create a pkgs instance specifically for the dev shell if needed
-        # Apply overlays needed only for development here
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [
-            # neovimOverlay # Include if needed in dev shell
-            gen-luarc.overlays.default
-          ];
-          # Add dev-specific nixpkgs config if necessary
-          # config = { ... };
-        };
-      in {
-        default = pkgs.mkShell {
-          name = "nvim-devShell";
-          # Packages available in the shell
-          buildInputs = with pkgs; [
-            lua-language-server
-            nil # Nix Language Server
-            stylua # Lua formatter
-            luajitPackages.luacheck # Lua linter
-            # Add other dev tools if needed
-          ];
-          # Shell initialization hook
-          shellHook = ''
-            # Generate .luarc.json for lua-language-server based on nvim config
-            # Ensure nvim-luarc-json attribute exists in pkgs (provided by gen-luarc overlay)
-            if [ -f "${pkgs.nvim-luarc-json}" ]; then
-              ln -fs "${pkgs.nvim-luarc-json}" .luarc.json
-              echo "Created symlink for .luarc.json"
-            else
-              echo "Warning: nvim-luarc-json not found in pkgs."
-            fi
-            echo "Entered nvim-devShell"
-          '';
-        };
-      }
-    );
+    # Development shells
+    devShells = forAllSystems (system: let
+      pkgs = pkgsFor system;
+    in {
+      default = pkgs.mkShell {
+        name = "nixos-devShell";
+        buildInputs = with pkgs; [
+          # Nix tools
+          nil
+          alejandra
+          nixpkgs-fmt
+
+          # Lua tools (for Neovim config)
+          lua-language-server
+          stylua
+          luajitPackages.luacheck
+
+          # Secrets management
+          sops
+          age
+          ssh-to-age
+        ];
+
+        shellHook = ''
+          # Generate .luarc.json for lua-language-server
+          if [ -f "${pkgs.nvim-luarc-json}" ]; then
+            ln -fs "${pkgs.nvim-luarc-json}" .luarc.json
+            echo "Created symlink for .luarc.json"
+          fi
+          echo "Entered NixOS development shell"
+          echo ""
+          echo "Available commands:"
+          echo "  nixos-rebuild build --flake .#work   - Build work config"
+          echo "  nixos-rebuild build --flake .#home   - Build home config"
+          echo "  sops secrets/secrets.yaml            - Edit secrets"
+        '';
+      };
+    });
+
+    # Expose packages
+    packages = forAllSystems (system: {
+      nvim = (pkgsFor system).nvim-pkg;
+    });
   };
 }
