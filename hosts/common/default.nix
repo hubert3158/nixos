@@ -1,7 +1,11 @@
 # Common configuration shared by all hosts
-{ config, lib, pkgs, inputs, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: {
   # ============================================================================
   # ENABLE ALL MODULES
   # ============================================================================
@@ -19,8 +23,8 @@
     enable = true;
     hostName = "nixos";
     enableNetworkManager = true;
-    nameservers = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4" ];
-    allowedTCPPorts = [ 3000 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317 ];
+    nameservers = ["1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4"];
+    allowedTCPPorts = [3000 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317];
   };
 
   # Locale
@@ -35,7 +39,7 @@
     enable = true;
     username = "hubert";
     description = "hubert";
-    extraGroups = [ "networkmanager" "wheel" "docker" "wireshark" "postgres" "video" ];
+    extraGroups = ["networkmanager" "wheel" "docker" "wireshark" "postgres" "video"];
     defaultShell = pkgs.zsh;
   };
 
@@ -220,8 +224,10 @@
     zsh-powerlevel10k
     zellij
     claude-code
+
+    awscli
   ];
 
   # Environment shells
-  environment.shells = with pkgs; [ zsh ];
+  environment.shells = with pkgs; [zsh];
 }
