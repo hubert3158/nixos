@@ -448,8 +448,13 @@ local function build_cmd(ws_dir)
 		"-Declipse.product=org.eclipse.jdt.ls.core.product",
 		"-Dlog.protocol=true",
 		"-Dlog.level=ALL",
-		"-Xmx1g",
-		"-Xms100m",
+		-- Performance optimizations for Spring Boot projects
+		"-Xmx2g", -- Increased from 1g for Spring Boot
+		"-Xms256m", -- Increased from 100m for faster startup
+		"-XX:+UseG1GC", -- G1 garbage collector (better for large heaps)
+		"-XX:+UseStringDeduplication", -- Reduce memory for duplicate strings
+		"-XX:MaxGCPauseMillis=200", -- Target max GC pause
+		"-XX:InitiatingHeapOccupancyPercent=70", -- GC trigger threshold
 	})
 	if exists(lombok) then
 		table.insert(cmd, "-javaagent:" .. lombok)
@@ -493,21 +498,71 @@ local function build_settings()
 			eclipse = { downloadSources = true },
 			configuration = {
 				runtimes = runtimes,
-				updateBuildConfiguration = "automatic",
+				updateBuildConfiguration = "interactive", -- Changed from "automatic" for performance
 			},
-			maven = { downloadSources = true },
-			implementationsCodeLens = { enabled = true },
-			referencesCodeLens = { enabled = true },
-			references = { includeDecompiledSources = true },
+			maven = {
+				downloadSources = true,
+				updateSnapshots = false, -- Don't auto-update snapshots (performance)
+			},
+			gradle = {
+				downloadSources = true,
+			},
+			-- Performance optimizations for large projects
+			maxConcurrentBuilds = 2, -- Limit concurrent builds
+			autobuild = { enabled = false }, -- Disable auto-build for performance
+			-- CodeLens settings (expensive for large projects)
+			implementationsCodeLens = { enabled = false }, -- Disabled for performance
+			referencesCodeLens = { enabled = false }, -- Disabled for performance
+			references = { includeDecompiledSources = false }, -- Disabled for performance
 			format = { enabled = true },
 			signatureHelp = { enabled = true },
 			contentProvider = { preferred = nil },
+			-- Completion optimizations
 			completion = {
 				favoriteStaticMembers = {
 					"org.junit.jupiter.api.Assertions.*",
 					"org.junit.Assert.*",
 					"org.mockito.Mockito.*",
+					-- Spring Boot favorites
+					"org.springframework.boot.test.context.SpringBootTest",
+					"org.springframework.beans.factory.annotation.Autowired",
+					"org.springframework.web.bind.annotation.*",
 				},
+				filteredTypes = {
+					-- Filter out verbose/rarely used types from completion
+					"com.sun.*",
+					"sun.*",
+					"jdk.internal.*",
+				},
+				maxResults = 100, -- Limit completion results
+				guessMethodArguments = false, -- Disable for performance
+			},
+			-- Import organization
+			importOrder = {
+				"java",
+				"javax",
+				"jakarta",
+				"org",
+				"com",
+				"",
+			},
+			-- Code generation templates
+			codeGeneration = {
+				generateComments = false, -- Faster code generation
+				useBlocks = true,
+			},
+			-- Symbols and indexing
+			symbols = {
+				includeSourceJars = false, -- Don't index source jars (performance)
+			},
+			-- Progress reporting (reduce noise)
+			progressReports = {
+				enabled = false, -- Disable progress notifications
+			},
+			-- Validation
+			validation = {
+				enabled = true,
+				semanticValidation = true,
 			},
 		},
 	}
@@ -543,5 +598,34 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		jdtls.start_or_attach(cfg)
 	end,
 })
+
+-- Java-specific performance commands
+vim.api.nvim_create_user_command("JavaCleanWorkspace", function()
+	local workspace_dir = home .. "/.local/share/eclipse/"
+	local choice = vim.fn.confirm("Clean JDTLS workspace? This will require full project reindex.", "&Yes\n&No", 2)
+	if choice == 1 then
+		vim.fn.system({ "rm", "-rf", workspace_dir })
+		vim.notify("JDTLS workspace cleaned. Restart Neovim to reindex.", vim.log.levels.INFO)
+	end
+end, { desc = "Clean JDTLS workspace cache" })
+
+vim.api.nvim_create_user_command("JavaBuildProject", function()
+	vim.lsp.buf.execute_command({ command = "java.project.build", arguments = { vim.uri_from_bufnr(0), false } })
+end, { desc = "Build Java project" })
+
+vim.api.nvim_create_user_command("JavaCleanBuild", function()
+	vim.lsp.buf.execute_command({ command = "java.project.build", arguments = { vim.uri_from_bufnr(0), true } })
+end, { desc = "Clean and build Java project" })
+
+vim.api.nvim_create_user_command("JavaUpdateProject", function()
+	vim.lsp.buf.execute_command({ command = "java.project.update" })
+end, { desc = "Update Java project configuration" })
+
+vim.api.nvim_create_user_command("JavaOrganizeImports", function()
+	vim.lsp.buf.code_action({
+		context = { only = { "source.organizeImports" } },
+		apply = true,
+	})
+end, { desc = "Organize Java imports" })
 
 vim.notify("LSP configuration loaded successfully", vim.log.levels.INFO)
