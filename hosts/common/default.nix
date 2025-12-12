@@ -226,6 +226,7 @@
     claude-code
 
     awscli
+    antigravity
   ];
 
   # Environment shells
