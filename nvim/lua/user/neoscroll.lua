@@ -4,13 +4,11 @@ require('neoscroll').setup({
   stop_eof = true,
   respect_scrolloff = false,
   cursor_scrolls_alone = true,
-  duration_multiplier = 1.0,
+  duration_multiplier = 0.5, -- Faster animations
   easing = 'linear',
   pre_hook = nil,
-  post_hook = function()
-    vim.cmd("normal! zz") -- Re-center after scrolling
-  end,
-  performance_mode = false,
+  post_hook = nil, -- Removed re-centering for better performance
+  performance_mode = true, -- Enable performance mode
   ignored_events = { 'WinScrolled', 'CursorMoved' },
 })
 

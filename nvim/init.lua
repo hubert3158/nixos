@@ -58,6 +58,13 @@ opt.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrea
 opt.foldlevelstart = 99
 opt.foldenable = true
 
+-- Performance settings
+opt.updatetime = 300 -- Faster completion and diagnostics (default 4000)
+opt.timeoutlen = 400 -- Faster key sequence timeout (default 1000)
+opt.redrawtime = 1500 -- Time for syntax highlighting (default 2000)
+opt.synmaxcol = 240 -- Don't syntax highlight super long lines
+opt.lazyredraw = false -- Don't use lazyredraw as it can cause issues with some plugins
+
 -- Search down into subfolders
 opt.path = vim.o.path .. "**"
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
@@ -727,7 +734,7 @@ vim.diagnostic.config({
 			[vim.diagnostic.severity.HINT] = "󰌶",
 		},
 	},
-	update_in_insert = false,
+	update_in_insert = false, -- Don't update diagnostics while typing
 	underline = true,
 	severity_sort = true,
 	float = {
@@ -739,6 +746,35 @@ vim.diagnostic.config({
 		prefix = "",
 	},
 })
+
+-- Performance toggle commands
+vim.api.nvim_create_user_command("ToggleSmearCursor", function()
+	local smear = require("smear_cursor")
+	smear.enabled = not smear.enabled
+	print("Smear cursor: " .. (smear.enabled and "enabled" or "disabled"))
+end, { desc = "Toggle smear cursor animation" })
+
+vim.api.nvim_create_user_command("DisableHeavyFeatures", function()
+	-- Disable cursor animations
+	require("smear_cursor").enabled = false
+	-- Disable treesitter for current buffer
+	vim.cmd("TSBufDisable highlight")
+	vim.cmd("TSBufDisable indent")
+	-- Disable diagnostics
+	vim.diagnostic.disable()
+	print("Heavy features disabled for better performance")
+end, { desc = "Disable performance-heavy features" })
+
+vim.api.nvim_create_user_command("EnableHeavyFeatures", function()
+	-- Enable cursor animations
+	require("smear_cursor").enabled = true
+	-- Enable treesitter for current buffer
+	vim.cmd("TSBufEnable highlight")
+	vim.cmd("TSBufEnable indent")
+	-- Enable diagnostics
+	vim.diagnostic.enable()
+	print("Heavy features enabled")
+end, { desc = "Enable performance-heavy features" })
 
 -- Enhanced Visual Configuration for Professional Look
 
@@ -1001,3 +1037,23 @@ vim.keymap.set(
 )
 vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { noremap = true, silent = true, desc = "Jump to Previous Symbol" })
 vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { noremap = true, silent = true, desc = "Jump to Next Symbol" })
+
+-- Performance keybindings
+vim.keymap.set(
+	"n",
+	"<leader>tc",
+	"<cmd>ToggleSmearCursor<CR>",
+	{ noremap = true, silent = true, desc = "[T]oggle Smear [C]ursor" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>tp",
+	"<cmd>DisableHeavyFeatures<CR>",
+	{ noremap = true, silent = true, desc = "[T]oggle [P]erformance mode (disable heavy features)" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>tP",
+	"<cmd>EnableHeavyFeatures<CR>",
+	{ noremap = true, silent = true, desc = "[T]oggle [P]erformance mode (enable heavy features)" }
+)
