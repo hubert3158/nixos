@@ -749,11 +749,11 @@ vim.cmd([[
 
 -- Enhanced UI settings for professional look
 opt.pumheight = 15 -- Limit completion menu height
-opt.pumblend = 10 -- Transparency for completion menu
+opt.pumblend = 0 -- Solid completion menu background
 opt.cmdheight = 1 -- Command line height
 opt.showtabline = 2 -- Always show tabline
 opt.laststatus = 3 -- Global statusline
-opt.winblend = 10 -- Transparency for floating windows
+opt.winblend = 0 -- Solid floating window backgrounds
 opt.cursorline = true -- Highlight current line
 opt.signcolumn = "yes:2" -- Always show sign column with space for 2 signs
 opt.colorcolumn = "80,120" -- Visual guide columns
