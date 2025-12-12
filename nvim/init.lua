@@ -65,6 +65,45 @@ opt.redrawtime = 1500 -- Time for syntax highlighting (default 2000)
 opt.synmaxcol = 240 -- Don't syntax highlight super long lines
 opt.lazyredraw = false -- Don't use lazyredraw as it can cause issues with some plugins
 
+-- Disable unused providers (massive startup improvement)
+g.loaded_python3_provider = 0
+g.loaded_ruby_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_node_provider = 0
+
+-- File handling optimizations
+opt.swapfile = false -- No swap files (we have auto-session for recovery)
+opt.backup = false -- No backup files
+opt.writebackup = false -- No backup before overwriting
+opt.undofile = true -- Persistent undo
+opt.undodir = vim.fn.stdpath("data") .. "/undo" -- Undo directory
+opt.undolevels = 10000 -- Lots of undo levels
+opt.undoreload = 10000 -- Save whole buffer for undo when reloading
+
+-- Shada (session data) optimization
+opt.shada = "!,'100,<50,s10,h" -- Limit shada size for faster startup
+
+-- Disable some builtin plugins we don't use
+local disabled_built_ins = {
+	"gzip",
+	"zip",
+	"zipPlugin",
+	"tar",
+	"tarPlugin",
+	"getscript",
+	"getscriptPlugin",
+	"vimball",
+	"vimballPlugin",
+	"2html_plugin",
+	"logipat",
+	"rrhelper",
+	"spellfile_plugin",
+	"matchit", -- We have better alternatives
+}
+for _, plugin in pairs(disabled_built_ins) do
+	g["loaded_" .. plugin] = 1
+end
+
 -- Search down into subfolders
 opt.path = vim.o.path .. "**"
 opt.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
@@ -92,38 +131,69 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- Optimized format and lint on save (combined for better performance)
+local format_lint_group = vim.api.nvim_create_augroup("FormatLintOnSave", { clear = true })
+
 vim.api.nvim_create_autocmd("BufWritePre", {
+	group = format_lint_group,
 	pattern = "*",
 	callback = function(args)
-		require("conform").format({ bufnr = args.buf })
-	end,
-})
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-	callback = function()
-		require("lint").try_lint()
+		-- Format before save
+		require("conform").format({ bufnr = args.buf, timeout_ms = 500 })
 	end,
 })
 
+vim.api.nvim_create_autocmd("BufWritePost", {
+	group = format_lint_group,
+	pattern = "*",
+	callback = function()
+		-- Lint after save (async, doesn't block)
+		vim.defer_fn(function()
+			require("lint").try_lint()
+		end, 100) -- 100ms delay to not block save
+	end,
+})
+
+-- Load core modules (always needed)
 require("user.mason")
 require("user.nvimLint")
 require("user.conform")
 require("user.neoscroll")
 require("user.harpoon")
-require("user.codeSnap")
-require("user.codeCompanion")
-require("user.twilight")
-require("user.nvimUfo")
-require("user.kulala")
-require("user.spectre")
-require("user.neo-tree")
-require("user.auto-session")
-require("user.git-conflict")
 require("user.visual-enhancements").setup()
-require("user.todo-comments")
-require("user.debugprint")
+require("user.auto-session")
 require("user.smear-cursor")
 
-require("user.venn-easyalign")
+-- Load UI enhancement modules
+require("user.twilight")
+require("user.nvimUfo")
+require("user.todo-comments")
+
+-- Load Git modules (defer for faster startup)
+vim.defer_fn(function()
+	require("user.git-conflict")
+end, 100)
+
+-- Load heavy/optional modules (lazy load when needed)
+-- These are loaded after startup to improve initial load time
+vim.defer_fn(function()
+	require("user.codeSnap")
+	require("user.codeCompanion")
+	require("user.kulala")
+	require("user.spectre")
+	require("user.debugprint")
+	require("user.venn-easyalign")
+end, 200)
+
+-- Lazy load neo-tree (only load when opened)
+vim.api.nvim_create_autocmd("BufEnter", {
+	once = true,
+	callback = function()
+		if vim.fn.isdirectory(vim.fn.expand("%")) == 1 or vim.fn.argc() == 0 then
+			require("user.neo-tree")
+		end
+	end,
+})
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>ff",
@@ -1057,3 +1127,38 @@ vim.keymap.set(
 	"<cmd>EnableHeavyFeatures<CR>",
 	{ noremap = true, silent = true, desc = "[T]oggle [P]erformance mode (enable heavy features)" }
 )
+
+-- Java/Spring Boot keybindings (global, but most useful in Java files)
+vim.keymap.set(
+	"n",
+	"<leader>jw",
+	"<cmd>JavaCleanWorkspace<CR>",
+	{ noremap = true, silent = true, desc = "[J]ava Clean [W]orkspace" }
+)
+
+-- Performance monitoring command
+vim.api.nvim_create_user_command("ProfileStartup", function()
+	vim.cmd("!nvim --startuptime /tmp/nvim-startup.log +qa && cat /tmp/nvim-startup.log")
+end, { desc = "Profile Neovim startup time" })
+
+vim.api.nvim_create_user_command("CheckPerformance", function()
+	local stats = {
+		lua_files = vim.fn.system("find " .. vim.fn.stdpath("config") .. " -name '*.lua' | wc -l"),
+		buffer_count = #vim.api.nvim_list_bufs(),
+		autocmd_count = #vim.api.nvim_get_autocmds({}),
+		loaded_modules = 0,
+	}
+
+	-- Count loaded Lua modules
+	for _ in pairs(package.loaded) do
+		stats.loaded_modules = stats.loaded_modules + 1
+	end
+
+	print("=== Neovim Performance Stats ===")
+	print("Lua config files: " .. vim.trim(stats.lua_files))
+	print("Open buffers: " .. stats.buffer_count)
+	print("Autocmds: " .. stats.autocmd_count)
+	print("Loaded Lua modules: " .. stats.loaded_modules)
+	print("Update time: " .. vim.o.updatetime .. "ms")
+	print("Timeout length: " .. vim.o.timeoutlen .. "ms")
+end, { desc = "Check Neovim performance stats" })
