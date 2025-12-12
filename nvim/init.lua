@@ -745,13 +745,6 @@ vim.diagnostic.config({
 -- Better colorscheme setup with enhanced contrast
 vim.cmd([[
   colorscheme eldritch
-  highlight Normal guibg=NONE ctermbg=NONE
-  highlight SignColumn guibg=NONE ctermbg=NONE
-  highlight LineNr guibg=NONE ctermbg=NONE
-  highlight CursorLineNr guibg=NONE ctermbg=NONE
-  highlight GitSignsAdd guibg=NONE
-  highlight GitSignsChange guibg=NONE
-  highlight GitSignsDelete guibg=NONE
 ]])
 
 -- Enhanced UI settings for professional look
