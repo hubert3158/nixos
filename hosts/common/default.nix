@@ -24,7 +24,6 @@
     hostName = "nixos";
     enableNetworkManager = true;
     nameservers = ["1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4"];
-    allowedTCPPorts = [3000 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317];
   };
 
   # Locale
