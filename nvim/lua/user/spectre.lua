@@ -1,127 +1,86 @@
-require("spectre").setup({
-	color_devicons = true,
-	open_cmd = "vnew",
-	live_update = false, -- auto execute search again when you write to any file in vim
-	line_sep_start = "┌-----------------------------------------",
-	result_padding = "¦  ",
-	line_sep = "└-----------------------------------------",
-	highlight = {
-		ui = "String",
-		search = "DiffChange",
-		replace = "DiffDelete",
-	},
-	mapping = {
-		["toggle_line"] = {
-			map = "dd",
-			cmd = "<cmd>lua require('spectre').toggle_line()<CR>",
-			desc = "toggle item",
-		},
-		["enter_file"] = {
-			map = "<cr>",
-			cmd = "<cmd>lua require('spectre').enter_file()<CR>",
-			desc = "open file",
-		},
-		["send_to_qf"] = {
-			map = "<leader>q",
-			cmd = "<cmd>lua require('spectre').send_to_qf()<CR>",
-			desc = "send all items to quickfix",
-		},
-		["show_option_menu"] = {
-			map = "<leader>o",
-			cmd = "<cmd>lua require('spectre').show_options()<CR>",
-			desc = "show options",
-		},
-		["run_current_replace"] = {
-			map = "<leader>rc",
-			cmd = "<cmd>lua require('spectre').run_current_replace()<CR>",
-			desc = "replace current line",
-		},
-		["run_replace"] = {
-			map = "<leader>R",
-			cmd = "<cmd>lua require('spectre').run_replace()<CR>",
-			desc = "replace all",
-		},
-		["change_view_mode"] = {
-			map = "<leader>v",
-			cmd = "<cmd>lua require('spectre').change_view()<CR>",
-			desc = "change result view mode",
-		},
-		["change_replace_sed"] = {
-			map = "trs",
-			cmd = "<cmd>lua require('spectre').change_engine_replace('sed')<CR>",
-			desc = "use sed to replace",
-		},
-		["change_replace_oxi"] = {
-			map = "tro",
-			cmd = "<cmd>lua require('spectre').change_engine_replace('oxi')<CR>",
-			desc = "use oxi to replace",
-		},
-		["toggle_live_update"] = {
-			map = "tu",
-			cmd = "<cmd>lua require('spectre').toggle_live_update()<CR>",
-			desc = "update when vim writes to file",
-		},
-		["toggle_ignore_case"] = {
-			map = "ti",
-			cmd = "<cmd>lua require('spectre').change_options('ignore-case')<CR>",
-			desc = "toggle ignore case",
-		},
-		["toggle_ignore_hidden"] = {
-			map = "th",
-			cmd = "<cmd>lua require('spectre').change_options('hidden')<CR>",
-			desc = "toggle search hidden",
-		},
-		["resume_last_search"] = {
-			map = "<leader>l",
-			cmd = "<cmd>lua require('spectre').resume_last_search()<CR>",
-			desc = "repeat last search",
-		},
-	},
-	find_engine = {
-		rg = {
-			cmd = "rg",
-			args = {
-				"--color=never",
-				"--no-heading",
-				"--with-filename",
-				"--line-number",
-				"--column",
-				"--multiline",
-				"--pcre2",
-			},
-			options = { ["ignore-case"] = { value = "--ignore-case" }, ["hidden"] = { value = "--hidden" } },
-		},
-	},
-	replace_engine = {
-		oxi = {
-			cmd = "sd",
-			args = {},
-			options = {
-				["ignore-case"] = { value = "i", icon = "[I]", desc = "ignore case" },
-			},
-		},
-		sed = { cmd = "sed", args = nil },
-	},
+-- Debug spectre loading
+local ok, spectre = pcall(require, "spectre")
 
-	default = {
-		find = { cmd = "rg", options = { "ignore-case" } },
-		replace = { cmd = "oxi" }, -- 👈 key from replace_engine
-	},
+if not ok then
+	vim.notify("Failed to load spectre: " .. tostring(spectre), vim.log.levels.ERROR)
+	return
+end
 
-	is_open_target_win = true, --open file on opener window
-	is_insert_mode = false, -- start open panel on is_insert_mode
-})
+if not spectre then
+	vim.notify("Spectre plugin returned nil!", vim.log.levels.ERROR)
+	return
+end
 
--- Keybindings for nvim-spectre
-vim.keymap.set("n", "<leader>S", '<cmd>lua require("spectre").toggle()<CR>', {
+-- Print available functions for debugging
+vim.notify("Spectre loaded successfully!", vim.log.levels.INFO)
+
+-- Check if required functions exist
+local required_functions = { "run_replace", "run_current_replace", "toggle", "open_visual" }
+for _, func_name in ipairs(required_functions) do
+	if type(spectre[func_name]) ~= "function" then
+		vim.notify("Missing function: spectre." .. func_name, vim.log.levels.WARN)
+	end
+end
+
+-- Minimal setup first
+spectre.setup({})
+
+-- Safe key mappings that check if functions exist before calling
+local function safe_spectre_call(func_name, ...)
+	if type(spectre[func_name]) ~= "function" then
+		vim.notify("Function spectre." .. func_name .. " does not exist", vim.log.levels.ERROR)
+		return
+	end
+
+	local ok, result = pcall(spectre[func_name], ...)
+	if not ok then
+		vim.notify("Spectre error in " .. func_name .. ": " .. result, vim.log.levels.ERROR)
+	end
+end
+
+-- Key mappings with safety checks
+vim.keymap.set("n", "<leader>S", function()
+	safe_spectre_call("toggle")
+end, {
 	desc = "Toggle Spectre",
 })
-vim.keymap.set("n", "<leader>sw", '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+
+vim.keymap.set("n", "<leader>sw", function()
+	safe_spectre_call("open_visual", { select_word = true })
+end, {
 	desc = "Search current word",
 })
-vim.keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual()<CR>', {
-	desc = "Search current word",
+
+vim.keymap.set("v", "<leader>sw", function()
+	vim.cmd("esc")
+	safe_spectre_call("open_visual")
+end, {
+	desc = "Search current word (visual)",
 })
-vim.keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+
+vim.keymap.set("n", "<leader>sp", function()
+	safe_spectre_call("open_file_search", { select_word = true })
+end, {
 	desc = "Search on current file",
+})
+
+-- Add separate mappings that only work within spectre buffers
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "spectre_panel",
+	callback = function()
+		local buf = vim.api.nvim_get_current_buf()
+
+		-- Only set these mappings in spectre buffers
+		vim.keymap.set("n", "<leader>rc", function()
+			safe_spectre_call("run_current_replace")
+		end, { buffer = buf, desc = "Replace current line" })
+
+		vim.keymap.set("n", "<leader>R", function()
+			safe_spectre_call("run_replace")
+		end, { buffer = buf, desc = "Replace all" })
+
+		vim.keymap.set("n", "<leader>q", function()
+			safe_spectre_call("send_to_qf")
+		end, { buffer = buf, desc = "Send to quickfix" })
+	end,
 })
