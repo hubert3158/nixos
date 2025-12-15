@@ -168,10 +168,7 @@ in
     }
     vim-visual-multi
     { plugin = yanky-nvim; }
-    {
-      plugin = nvim-spectre;
-      config = "lua << EOF\nrequire(\"spectre\").setup()\nEOF\n";
-    }
+    nvim-spectre
     venn-nvim
     vim-easy-align
 
