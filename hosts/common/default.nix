@@ -188,26 +188,27 @@
     jupyter
     cht-sh
 
-    # Misc tools
-    asciinema
-    asciinema-agg
-    gnome-multi-writer
-    graphicsmagick
-    git-credential-manager
-    tesseract
-    poppler
-    poppler-utils
-    ntp
-    weston
-    lightdm
-    w3m
-    wikiman
-    tealdeer
-    postman
-    networkmanagerapplet
-    miller
-    kdePackages.kdenlive
-    inetutils
+      # Misc tools
+      asciinema
+      asciinema-agg
+      gnome-multi-writer
+      graphicsmagick
+      git-credential-manager
+      tesseract
+      poppler
+      poppler-utils
+      ntp
+      weston
+      lightdm
+      w3m
+      wikiman
+      tealdeer
+      postman
+      networkmanagerapplet
+      miller
+      kdePackages.kdenlive
+      inetutils
+      gopass
 
     # IDE
     eclipses.eclipse-jee
