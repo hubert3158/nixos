@@ -10,13 +10,13 @@ in
 
     fontFamily = lib.mkOption {
       type = lib.types.str;
-      default = "monofur nerd font";
+      default = "JetBrainsMono Nerd Font";
       description = "Font family";
     };
 
     fontSize = lib.mkOption {
       type = lib.types.number;
-      default = 18;
+      default = 14;
       description = "Font size";
     };
 

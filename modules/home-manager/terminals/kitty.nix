@@ -10,13 +10,13 @@ in
 
     fontName = lib.mkOption {
       type = lib.types.str;
-      default = "Monofur Nerd Font";
+      default = "JetBrainsMono Nerd Font";
       description = "Font family";
     };
 
     fontSize = lib.mkOption {
       type = lib.types.number;
-      default = 18;
+      default = 14;
       description = "Font size";
     };
 
@@ -40,7 +40,7 @@ in
       font = {
         name = cfg.fontName;
         size = cfg.fontSize;
-        package = pkgs.nerd-fonts.monofur;
+        package = pkgs.nerd-fonts.jetbrains-mono;
       };
 
       settings = {
