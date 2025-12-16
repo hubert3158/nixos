@@ -9,9 +9,7 @@ let
       version = src.lastModifiedDate;
     };
 
-  # Build eldritch colorscheme from flake input
-  eldritch-nvim = mkNvimPlugin inputs.eldritch-nvim "eldritch-nvim";
-in
+  in
 {
   all-plugins = with pkgs.vimPlugins; [
     # ============================================================================
@@ -24,8 +22,8 @@ in
     # COLORSCHEME & UI
     # ============================================================================
     {
-      plugin = eldritch-nvim;
-      config = "lua << EOF\nrequire(\"eldritch\").setup()\nEOF\ncolorscheme eldritch\n";
+      plugin = catppuccin-nvim;
+      config = "lua << EOF\nrequire(\"catppuccin\").setup({ flavour = \"mocha\" })\nEOF\ncolorscheme catppuccin\n";
     }
     { plugin = lualine-nvim; }
     bufferline-nvim

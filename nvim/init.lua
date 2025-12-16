@@ -44,8 +44,8 @@ g.mkdp_enabled = 1
 
 cmd.filetype("plugin", "indent", "on")
 cmd.packadd("cfilter") -- Allows filtering the quickfix list with :cfdo
-require("eldritch").setup()
-cmd("colorscheme eldritch")
+require("catppuccin").setup({ flavour = "mocha" })
+cmd("colorscheme catppuccin")
 
 opt.compatible = false
 opt.scrolloff = 6
@@ -850,7 +850,7 @@ end, { desc = "Enable performance-heavy features" })
 
 -- Better colorscheme setup with enhanced contrast
 vim.cmd([[
-  colorscheme eldritch
+  colorscheme catppuccin
 ]])
 
 -- Enhanced UI settings for professional look
