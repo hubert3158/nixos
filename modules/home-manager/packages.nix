@@ -56,7 +56,7 @@ in
         zed-editor
         helix
         jetbrains.datagrip
-        jetbrains.idea-ultimate
+        jetbrains.idea
         vscode-extensions.vscjava.vscode-java-debug
         jprofiler
         eclipse-mat
