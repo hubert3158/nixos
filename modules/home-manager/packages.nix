@@ -85,6 +85,7 @@ in
             pytesseract
             requests
             flask
+            flask-cors
             paramiko
           ]))
         pipx
