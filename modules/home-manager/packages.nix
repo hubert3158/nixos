@@ -1,10 +1,12 @@
 # User packages configuration
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.packages;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.packages;
+in {
   options.modules.packages = {
     enable = lib.mkEnableOption "user packages";
 
@@ -41,7 +43,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs;
-      # Core packages (always included)
+    # Core packages (always included)
       [
         keychain
         waybar
@@ -50,7 +52,6 @@ in
         swayimg
         exiftool
       ]
-
       # Development packages
       ++ (lib.optionals cfg.enableDevelopment [
         zed-editor
@@ -87,10 +88,10 @@ in
             flask
             flask-cors
             paramiko
+            geoip2
           ]))
         pipx
       ])
-
       # Productivity packages
       ++ (lib.optionals cfg.enableProductivity [
         obsidian
@@ -103,14 +104,12 @@ in
         krusader
         chatgpt-cli
       ])
-
       # Multimedia packages
       ++ (lib.optionals cfg.enableMultimedia [
         obs-studio
         pavucontrol
         yazi
       ])
-
       # Networking/Security packages
       ++ (lib.optionals cfg.enableNetworking [
         wrk
@@ -126,7 +125,6 @@ in
         openvpn
         sshfs
       ])
-
       # System utilities
       ++ [
         parted
@@ -140,20 +138,17 @@ in
         figlet
         warp-terminal
       ]
-
       # Browsers
       ++ [
         google-chrome
         brave
       ]
-
       # Fun packages
       ++ (lib.optionals cfg.enableFun [
         cmatrix
         neofetch
         frotz
       ])
-
       # Zsh tools
       ++ [
         zsh-autocomplete
