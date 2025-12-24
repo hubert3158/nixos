@@ -2,12 +2,80 @@ require("codecompanion").setup({
 	opts = {
 		log_level = "INFO",
 	},
-	loading = {
-		enabled = true,
-		text = "CodeCompanion working...",
-		spinner = "moon",
+
+	-- Specify which adapter to use for each interaction type
+	interactions = {
+		chat = {
+			adapter = "anthropic",
+			-- Agentic tools
+			tools = {
+				groups = { "full_stack_dev" },
+				["@memory"] = { enabled = true },
+			},
+			-- Slash commands
+			slash_commands = {
+				["/buffer"] = { provider = "telescope" },
+				["/file"] = { provider = "telescope" },
+				["/symbols"] = { enabled = true },
+				["/fetch"] = { enabled = true },
+				["/terminal"] = { enabled = true },
+				["/help"] = { enabled = true },
+			},
+			-- Variables
+			variables = {
+				["#buffer"] = { enabled = true },
+				["#lsp"] = { enabled = true },
+				["#viewport"] = { enabled = true },
+			},
+			-- Rules - auto-load CLAUDE.md, .cursorrules, etc.
+			rules = {
+				autoload = { "default" },
+			},
+		},
+		inline = {
+			adapter = "anthropic",
+		},
+		cmd = {
+			adapter = "anthropic",
+		},
+		background = {
+			adapter = "gemini", -- Cheaper for auto-titling
+		},
 	},
-	-- 1. Group all adapters under 'http'
+
+	-- Display options
+	display = {
+		chat = {
+			window = {
+				layout = "vertical",
+				width = 0.4,
+				border = "rounded",
+			},
+			show_settings = false,
+		},
+		diff = {
+			provider = "mini_diff",
+		},
+		action_palette = {
+			provider = "telescope",
+		},
+	},
+
+	-- Prompt library with workflows
+	prompt_library = {
+		["Edit and Test"] = {
+			interaction = "chat",
+			opts = { is_workflow = true },
+			prompts = {
+				{
+					role = "user",
+					content = "Edit the code as requested, then run the tests. Keep iterating until tests pass.",
+					opts = { auto_submit = false },
+				},
+			},
+		},
+	},
+
 	adapters = {
 		http = {
 			anthropic = function()
@@ -15,11 +83,16 @@ require("codecompanion").setup({
 					env = {
 						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/anthropic.gpg",
 					},
-					params = {
-						model = "claude-sonnet-4-5",
-						temperature = 0.1,
-						max_tokens = 4000,
-						thinking = false,
+					schema = {
+						model = {
+							default = "claude-sonnet-4-5-20250929",
+						},
+						max_tokens = {
+							default = 16000,
+						},
+						extended_thinking = {
+							default = false,
+						},
 					},
 				})
 			end,
@@ -29,9 +102,13 @@ require("codecompanion").setup({
 					env = {
 						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/openai.gpg",
 					},
-					params = {
-						model = "gpt-5",
-						temperature = 0.1,
+					schema = {
+						model = {
+							default = "gpt-5.2",
+						},
+						temperature = {
+							default = 0.1,
+						},
 					},
 				})
 			end,
@@ -41,22 +118,23 @@ require("codecompanion").setup({
 					env = {
 						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/gemini.gpg",
 					},
-					params = {
-						model = "gemini-2.5-flash-preview-04-17",
-						temperature = 0.1,
+					schema = {
+						model = {
+							default = "gemini-3-flash",
+						},
+						temperature = {
+							default = 0.1,
+						},
 					},
 				})
 			end,
 
-			-- 2. Minimax Fix (Switched to openai_compatible for URL control)
 			minimax = function()
 				return require("codecompanion.adapters").extend("openai_compatible", {
 					name = "minimax",
 					env = {
-						-- Base URL only
 						url = "https://api.minimax.chat/v1/text",
 						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/minimax.gpg",
-						-- Specific endpoint suffix
 						chat_url = "/chatcompletion_v2",
 					},
 					headers = {
@@ -93,7 +171,6 @@ require("codecompanion").setup({
 				})
 			end,
 
-			-- 3. Cerebras (Moved inside 'http' table)
 			cerebras = function()
 				return require("codecompanion.adapters").extend("openai_compatible", {
 					name = "cerebras",
@@ -105,12 +182,10 @@ require("codecompanion").setup({
 					schema = {
 						model = {
 							choices = {
-								"gpt-oss-120b",
 								"llama-3.3-70b",
 								"llama3.1-8b",
-								"zai-glm-4.6",
 							},
-							default = "zai-glm-4.6",
+							default = "llama-3.3-70b",
 						},
 						temperature = {
 							default = 0.1,
@@ -123,10 +198,17 @@ require("codecompanion").setup({
 			end,
 		},
 	},
-
-	cache = {
-		enabled = true,
-		path = vim.fn.stdpath("cache") .. "/codecompanion",
-		ttl = 24 * 60 * 60,
-	},
 })
+
+-- Keymaps
+vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat<cr>", { desc = "Open chat" })
+vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<cr>", { desc = "Actions" })
+vim.keymap.set({ "n", "v" }, "<leader>ct", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "Toggle chat" })
+vim.keymap.set("n", "<leader>ci", "<cmd>CodeCompanion<cr>", { desc = "Inline assistant" })
+vim.keymap.set("v", "<leader>ci", "<cmd>CodeCompanion<cr>", { desc = "Inline assistant" })
+vim.keymap.set("n", "<leader>cb", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add buffer to chat" })
+vim.keymap.set("v", "<leader>cv", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add selection to chat" })
+vim.keymap.set("n", "<leader>cs", "<cmd>CodeCompanionChat Stop<cr>", { desc = "Stop request" })
+vim.keymap.set("v", "<leader>ce", "<cmd>CodeCompanion /explain<cr>", { desc = "Explain code" })
+vim.keymap.set("v", "<leader>cr", "<cmd>CodeCompanion /review<cr>", { desc = "Review code" })
+vim.keymap.set("v", "<leader>cx", "<cmd>CodeCompanion /fix<cr>", { desc = "Fix code" })

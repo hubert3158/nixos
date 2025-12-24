@@ -1083,20 +1083,7 @@ vim.keymap.set("n", "<leader>kc", function()
 	require("kulala").copy()
 end, { noremap = true, silent = true, desc = "Copy HTTP command to clipboard" })
 
--- Codecompanion
-
-vim.keymap.set(
-	"n",
-	"<leader>cc",
-	":CodeCompanionChat anthropic<CR>",
-	{ noremap = true, silent = true, desc = "Code Companion Chat" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>ca",
-	":CodeCompanionActions<CR>",
-	{ noremap = true, silent = true, desc = "Code Companion actions" }
-)
+-- Codecompanion (keymaps moved to lua/user/codeCompanion.lua)
 
 -- Aerial (code outline) keybindings
 vim.keymap.set(
