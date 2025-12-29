@@ -1,10 +1,12 @@
 # Tmux configuration
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.programs.tmux;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.programs.tmux;
+in {
   options.modules.programs.tmux = {
     enable = lib.mkEnableOption "Tmux terminal multiplexer";
 
@@ -79,7 +81,11 @@ in
       ];
 
       extraConfig = ''
-        set -g mouse ${if cfg.enableMouse then "on" else "off"}
+        set -g mouse ${
+          if cfg.enableMouse
+          then "on"
+          else "off"
+        }
         set-option -g allow-passthrough all
 
         # ── True Color Support ───────────────────────────────────────
@@ -103,8 +109,8 @@ in
         set -g mode-style "fg=#1e1e2e,bg=#f5c2e7"
 
         # ── Window Behavior ──────────────────────────────────────────
-        set -g base-index 1
-        set -g pane-base-index 1
+        set -g base-index 0
+        set -g pane-base-index 0
         set -g renumber-windows on
         set -g automatic-rename off
         set -g allow-rename off
