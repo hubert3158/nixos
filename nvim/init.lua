@@ -566,12 +566,30 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true, desc = "Lazy [[G]]it" })
 
 -- vim-dadbod-ui keybindings
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>dt",
-	":DBUIToggle<CR>",
-	{ noremap = true, silent = true, desc = "Toggle Database UI" }
-)
+vim.keymap.set("n", "<leader>dt", function()
+	-- Check if any DBUI windows are open
+	local dbui_wins = {}
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local buf = vim.api.nvim_win_get_buf(win)
+		local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+		local buf_name = vim.api.nvim_buf_get_name(buf)
+		-- Match DBUI drawer, query buffers, and result buffers
+		if ft == "dbui" or ft == "dbout" or string.match(buf_name, "dbui") or string.match(buf_name, "DBUIQuery") then
+			table.insert(dbui_wins, win)
+		end
+	end
+
+	if #dbui_wins > 0 then
+		-- Close all DBUI-related windows
+		for _, win in ipairs(dbui_wins) do
+			if vim.api.nvim_win_is_valid(win) then
+				vim.api.nvim_win_close(win, true)
+			end
+		end
+	else
+		vim.cmd("DBUIToggle")
+	end
+end, { noremap = true, silent = true, desc = "Toggle Database UI" })
 
 vim.api.nvim_set_keymap(
 	"n",
@@ -1057,19 +1075,23 @@ vim.keymap.set("n", "<leader>ko", function()
 end, { noremap = true, silent = true, desc = "Open request in new buffer" })
 
 vim.keymap.set("n", "<leader>kt", function()
-	-- Check if any Kulala windows are open
-	local kulala_open = false
+	-- Find all Kulala windows
+	local kulala_wins = {}
 	for _, win in ipairs(vim.api.nvim_list_wins()) do
 		local buf = vim.api.nvim_win_get_buf(win)
 		local buf_name = vim.api.nvim_buf_get_name(buf)
 		if string.match(buf_name, "kulala://") then
-			kulala_open = true
-			break
+			table.insert(kulala_wins, win)
 		end
 	end
 
-	if kulala_open then
-		require("kulala").close()
+	if #kulala_wins > 0 then
+		-- Close only the Kulala windows, not the whole tab
+		for _, win in ipairs(kulala_wins) do
+			if vim.api.nvim_win_is_valid(win) then
+				vim.api.nvim_win_close(win, true)
+			end
+		end
 	else
 		require("kulala.ui").show_body()
 	end
