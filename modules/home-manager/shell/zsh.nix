@@ -1,10 +1,12 @@
 # Zsh shell configuration
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.shell.zsh;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.shell.zsh;
+in {
   options.modules.shell.zsh = {
     enable = lib.mkEnableOption "Zsh shell";
   };
@@ -65,12 +67,16 @@ in
       '';
 
       profileExtra = ''
-        zi() {
-          zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
-        }
+              zi() {
+                zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
+              }
 
-        zia() {
-          zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide add {}
+              zia() {
+                zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide add {}
+              }
+
+                tailf() {
+          tail -f "$1" | bat --paging=never --file-name="$1"
         }
       '';
     };
