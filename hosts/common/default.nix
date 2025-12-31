@@ -169,6 +169,7 @@
     # Terminal emulators
     alacritty
     kdePackages.konsole
+    kitty.terminfo
 
     # File managers
     kdePackages.dolphin
