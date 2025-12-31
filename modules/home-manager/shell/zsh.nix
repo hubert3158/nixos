@@ -64,6 +64,11 @@ in {
         bindkey '^F' autosuggest-accept  # Ctrl-F
         # Handy: edit & re-run last command in $EDITOR
         alias fcvim='fc -e "$EDITOR"'
+
+        # Use kitty's ssh kitten when inside kitty (auto-copies terminfo)
+        if [[ -n "$KITTY_WINDOW_ID" ]]; then
+          alias ssh="kitten ssh"
+        fi
       '';
 
       profileExtra = ''
