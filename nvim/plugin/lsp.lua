@@ -610,15 +610,18 @@ vim.api.nvim_create_user_command("JavaCleanWorkspace", function()
 end, { desc = "Clean JDTLS workspace cache" })
 
 vim.api.nvim_create_user_command("JavaBuildProject", function()
-	vim.lsp.buf.execute_command({ command = "java.project.build", arguments = { vim.uri_from_bufnr(0), false } })
+	local jdtls = require("jdtls")
+	jdtls.build_projects({ full_build = false })
 end, { desc = "Build Java project" })
 
 vim.api.nvim_create_user_command("JavaCleanBuild", function()
-	vim.lsp.buf.execute_command({ command = "java.project.build", arguments = { vim.uri_from_bufnr(0), true } })
+	local jdtls = require("jdtls")
+	jdtls.build_projects({ full_build = true })
 end, { desc = "Clean and build Java project" })
 
 vim.api.nvim_create_user_command("JavaUpdateProject", function()
-	vim.lsp.buf.execute_command({ command = "java.project.update" })
+	local jdtls = require("jdtls")
+	jdtls.update_project_config()
 end, { desc = "Update Java project configuration" })
 
 vim.api.nvim_create_user_command("JavaOrganizeImports", function()
