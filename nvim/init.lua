@@ -98,7 +98,6 @@ local disabled_built_ins = {
 	"logipat",
 	"rrhelper",
 	"spellfile_plugin",
-	"matchit", -- We have better alternatives
 }
 for _, plugin in pairs(disabled_built_ins) do
 	g["loaded_" .. plugin] = 1
