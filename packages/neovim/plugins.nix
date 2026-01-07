@@ -121,7 +121,6 @@ let
     # TREESITTER & SYNTAX HIGHLIGHTING
     # ============================================================================
     nvim-treesitter
-    nvim-treesitter-textobjects
     nvim-ts-autotag
     nvim-ts-context-commentstring
 
@@ -135,7 +134,6 @@ let
     nvim-treesitter-parsers.tsx
     nvim-treesitter-parsers.csv
     nvim-treesitter-parsers.json
-    nvim-treesitter-parsers.jsonc
     nvim-treesitter-parsers.c
     nvim-treesitter-parsers.query
     nvim-treesitter-parsers.lua
