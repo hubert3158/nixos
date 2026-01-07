@@ -5,6 +5,17 @@ vim.filetype.add({
 	},
 })
 
+-- Register kulala_http treesitter parser from Nix-built grammar
+local kulala_parser_path = vim.env.KULALA_HTTP_PARSER
+if kulala_parser_path then
+	-- Add parser
+	vim.treesitter.language.add("kulala_http", {
+		path = kulala_parser_path .. "/parser",
+	})
+	-- Add queries to runtimepath
+	vim.opt.runtimepath:append(kulala_parser_path)
+end
+
 -- Initialize Kulala
 require("kulala").setup({
 	default_view = "body",

@@ -25,6 +25,8 @@ with lib;
   vimAlias ? appName == null || appName == "nvim",
   # blink-cmp fuzzy library for Rust performance
   blink-fuzzy-lib ? pkgs.vimPlugins.blink-cmp.passthru.blink-fuzzy-lib,
+  # kulala_http treesitter parser
+  kulalaParser ? null,
 }:
 
 let
@@ -128,6 +130,8 @@ let
       ''--set LIBSQLITE_CLIB_PATH "${pkgs.sqlite.out}/lib/libsqlite3.so"'')
     ++ (optional withSqlite
       ''--set LIBSQLITE "${pkgs.sqlite.out}/lib/libsqlite3.so"'')
+    ++ (optional (kulalaParser != null)
+      ''--set KULALA_HTTP_PARSER "${kulalaParser}"'')
   );
 
   luaPackages = neovim-unwrapped.lua.pkgs;
