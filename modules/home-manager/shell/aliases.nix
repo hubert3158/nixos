@@ -1,10 +1,12 @@
 # Shell aliases configuration
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.shell.aliases;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.shell.aliases;
+in {
   options.modules.shell.aliases = {
     enable = lib.mkEnableOption "shell aliases";
   };
@@ -34,6 +36,7 @@ in
       "cat" = "bat";
       "man" = "batman";
       "open" = "xdg-open";
+      "pass" = "gopass";
 
       # Eza (ls replacement)
       "l" = "eza --icons --group-directories-first --git --header --time-style=iso --color=always";
