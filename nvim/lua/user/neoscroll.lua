@@ -8,7 +8,7 @@ require('neoscroll').setup({
   easing = 'linear',
   pre_hook = nil,
   post_hook = nil, -- Removed re-centering for better performance
-  performance_mode = true, -- Enable performance mode
+  performance_mode = false,
   ignored_events = { 'WinScrolled', 'CursorMoved' },
 })
 
