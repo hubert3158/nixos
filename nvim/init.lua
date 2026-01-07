@@ -153,36 +153,9 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	end,
 })
 
--- Load core modules (always needed)
+-- Module loading is handled by lz.n (see plugin/lazy-load.lua)
+-- Only load mason here as it's needed for LSP server management
 require("user.mason")
-require("user.nvimLint")
-require("user.conform")
-require("user.neoscroll")
-require("user.harpoon")
-require("user.visual-enhancements").setup()
-require("user.auto-session")
-require("user.smear-cursor")
-
--- Load UI enhancement modules
-require("user.twilight")
-require("user.nvimUfo")
-require("user.todo-comments")
-
--- Load Git modules (defer for faster startup)
-vim.defer_fn(function()
-	require("user.git-conflict")
-end, 100)
-
--- Load heavy/optional modules (lazy load when needed)
--- These are loaded after startup to improve initial load time
-vim.defer_fn(function()
-	require("user.codeSnap")
-	require("user.codeCompanion")
-	require("user.kulala")
-	require("user.spectre")
-	require("user.debugprint")
-	require("user.venn-easyalign")
-end, 200)
 
 -- Lazy load neo-tree (only load when opened)
 vim.api.nvim_create_autocmd("BufEnter", {
