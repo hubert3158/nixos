@@ -12,6 +12,8 @@ if kulala_parser_path then
 	vim.treesitter.language.add("kulala_http", {
 		path = kulala_parser_path .. "/parser",
 	})
+	-- Map filetype "http" to language "kulala_http"
+	vim.treesitter.language.register("kulala_http", "http")
 	-- Add queries to runtimepath
 	vim.opt.runtimepath:append(kulala_parser_path)
 end

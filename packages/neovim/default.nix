@@ -14,12 +14,12 @@ let
   # Pre-build the kulala_http tree-sitter grammar
   treesitter-kulala-http = pkgs.tree-sitter.buildGrammar {
     language = "kulala_http";
-    version = "5.3.1";
+    version = "5.4.0";
     src = pkgs.fetchFromGitHub {
       owner = "mistweaverco";
       repo = "kulala.nvim";
-      rev = "902fc21e8a3fee7ccace37784879327baa6d1ece";
-      hash = "sha256-whQpwZMEvD62lgCrnNryrEvfSwLJJ+IqVCywTq78Vf8=";
+      rev = "cd3eaa83b8d60533837202dede73238334d71832";
+      hash = "sha256-RKtjVWC25D7k9nI0xKPEmO+MNqf77PWfg8h7hdK5+ik=";
     };
     location = "lua/tree-sitter";
   };
