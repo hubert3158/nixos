@@ -33,6 +33,7 @@ in
     # Session variables for Wayland
     environment.sessionVariables = {
       NIXOS_OZONE_WL = "1"; # Hint electron apps to use wayland
+      XDG_CURRENT_DESKTOP = "Hyprland";
     };
 
     # Required packages for Hyprland
