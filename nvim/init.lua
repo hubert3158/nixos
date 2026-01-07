@@ -845,8 +845,7 @@ vim.api.nvim_create_user_command("DisableHeavyFeatures", function()
 	-- Disable cursor animations
 	require("smear_cursor").enabled = false
 	-- Disable treesitter for current buffer
-	vim.cmd("TSBufDisable highlight")
-	vim.cmd("TSBufDisable indent")
+	vim.treesitter.stop()
 	-- Disable diagnostics
 	vim.diagnostic.disable()
 	print("Heavy features disabled for better performance")
@@ -856,8 +855,7 @@ vim.api.nvim_create_user_command("EnableHeavyFeatures", function()
 	-- Enable cursor animations
 	require("smear_cursor").enabled = true
 	-- Enable treesitter for current buffer
-	vim.cmd("TSBufEnable highlight")
-	vim.cmd("TSBufEnable indent")
+	vim.treesitter.start()
 	-- Enable diagnostics
 	vim.diagnostic.enable()
 	print("Heavy features enabled")

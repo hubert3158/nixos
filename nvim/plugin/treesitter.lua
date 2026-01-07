@@ -1,4 +1,9 @@
--- Treesitter highlighting is enabled by default with Nix-provided parsers
+-- Filetype detection for .http files
+vim.filetype.add({
+	extension = {
+		http = "http",
+	},
+})
 
 -- Initialize Kulala
 require("kulala").setup({

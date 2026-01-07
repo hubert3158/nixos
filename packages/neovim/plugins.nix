@@ -120,34 +120,13 @@ let
     # ============================================================================
     # TREESITTER & SYNTAX HIGHLIGHTING
     # ============================================================================
-    nvim-treesitter
+    (nvim-treesitter.withPlugins (p: [
+      p.vimdoc p.rust p.pug p.vim p.javascript p.typescript p.tsx
+      p.csv p.json p.c p.query p.lua p.java p.nix p.luadoc
+      p.markdown p.markdown_inline p.yuck p.zig p.http p.graphql p.yaml p.typst
+    ]))
     nvim-ts-autotag
     nvim-ts-context-commentstring
-
-    # Treesitter parsers
-    nvim-treesitter-parsers.vimdoc
-    nvim-treesitter-parsers.rust
-    nvim-treesitter-parsers.pug
-    nvim-treesitter-parsers.vim
-    nvim-treesitter-parsers.javascript
-    nvim-treesitter-parsers.typescript
-    nvim-treesitter-parsers.tsx
-    nvim-treesitter-parsers.csv
-    nvim-treesitter-parsers.json
-    nvim-treesitter-parsers.c
-    nvim-treesitter-parsers.query
-    nvim-treesitter-parsers.lua
-    nvim-treesitter-parsers.java
-    nvim-treesitter-parsers.nix
-    nvim-treesitter-parsers.luadoc
-    nvim-treesitter-parsers.markdown
-    nvim-treesitter-parsers.markdown_inline
-    nvim-treesitter-parsers.yuck
-    nvim-treesitter-parsers.zig
-    nvim-treesitter-parsers.http
-    nvim-treesitter-parsers.graphql
-    nvim-treesitter-parsers.yaml
-    nvim-treesitter-parsers.typst
 
     # ============================================================================
     # CODE EDITING & REFACTORING
