@@ -7,14 +7,14 @@ require("lz.n").load({
 	-- ============================================================================
 	{
 		"lualine.nvim",
-		event = "VeryLazy",
+		event = "DeferredUIEnter",
 		after = function()
 			require("user.visual-enhancements").setup()
 		end,
 	},
 	{
 		"smear-cursor.nvim",
-		event = "VeryLazy",
+		event = "DeferredUIEnter",
 		after = function()
 			require("user.smear-cursor")
 		end,
@@ -97,7 +97,7 @@ require("lz.n").load({
 	},
 	{
 		"git-conflict.nvim",
-		event = "VeryLazy",
+		event = "DeferredUIEnter",
 		after = function()
 			require("user.git-conflict")
 		end,
