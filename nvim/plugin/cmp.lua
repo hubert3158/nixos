@@ -78,9 +78,6 @@ cmp.setup({
 			"path",
 			"buffer",
 			"snippets",
-			"codecompanion",
-			"omni",
-			"cmdline",
 		},
 		providers = {
 			lsp = {

@@ -13,6 +13,7 @@ in
     programs.starship = {
       enable = true;
       settings = {
+        scan_timeout = 30;
         add_newline = true;
         character = {
           success_symbol = "[➜](bold green)";
