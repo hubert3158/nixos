@@ -24,17 +24,17 @@ in
   config = lib.mkIf cfg.enable {
     services.hyprpaper = {
       enable = true;
-      settings = {
-        ipc = "on";
-        splash = false;
-        splash_offset = 2.0;
-
-        preload = [ cfg.wallpaper ];
-
-        wallpaper = [
-          "${cfg.monitor},${cfg.wallpaper}"
-        ];
-      };
     };
+
+    # Write config manually using new format (hyprpaper 0.8.0+)
+    xdg.configFile."hypr/hyprpaper.conf".text = ''
+      splash = false
+
+      wallpaper {
+        monitor = ${cfg.monitor}
+        path = ${cfg.wallpaper}
+        fit_mode = cover
+      }
+    '';
   };
 }
