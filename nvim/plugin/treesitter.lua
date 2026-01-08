@@ -18,6 +18,14 @@ if kulala_parser_path then
 	vim.opt.runtimepath:append(kulala_parser_path)
 end
 
+-- Enable treesitter highlighting for http files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "http",
+	callback = function()
+		vim.treesitter.start()
+	end,
+})
+
 -- Initialize Kulala
 require("kulala").setup({
 	default_view = "body",
