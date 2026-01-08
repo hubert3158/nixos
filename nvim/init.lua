@@ -221,8 +221,8 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "Find Marks" }
 )
 
-vim.api.nvim_set_keymap("n", "<leader>nf", ":Neotree reveal<CR>", { silent = true, desc = "Find file in neo-tree" })
-vim.api.nvim_set_keymap("n", "<leader>nt", ":Neotree toggle<CR>", { silent = true, desc = "Toggle neo-tree" })
+vim.api.nvim_set_keymap("n", "<leader>nf", "<cmd>Neotree reveal<CR>", { silent = true, desc = "Find file in neo-tree" })
+vim.api.nvim_set_keymap("n", "<leader>nt", "<cmd>Neotree toggle<CR>", { silent = true, desc = "Toggle neo-tree" })
 
 -- NeoFormat keybinding
 
@@ -247,20 +247,13 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap("n", "<leader>q", ":q<CR>", { silent = true, desc = "Quit" })
 vim.api.nvim_set_keymap("n", "<leader>l", ":bnext<CR>", { silent = true, desc = "next Buffer" })
 vim.api.nvim_set_keymap("n", "<leader>h", ":bprev<CR>", { silent = true, desc = "Previous Buffer" })
-vim.api.nvim_set_keymap("n", "<leader>1", "1gt<CR>", { noremap = true, silent = true, desc = "Go to Tab 1" })
-vim.api.nvim_set_keymap("n", "<leader>2", "2gt<CR>", { noremap = true, silent = true, desc = "Go to Tab 2" })
-vim.api.nvim_set_keymap("n", "<leader>3", "3gt<CR>", { noremap = true, silent = true, desc = "Go to Tab 3" })
-vim.api.nvim_set_keymap("n", "<leader>4", "4gt<CR>", { noremap = true, silent = true, desc = "Go to Tab 4" })
-vim.api.nvim_set_keymap("n", "<leader>5", "5gt<CR>", { noremap = true, silent = true, desc = "Go to Tab 5" })
+vim.api.nvim_set_keymap("n", "<leader>1", "1gt", { noremap = true, silent = true, desc = "Go to Tab 1" })
+vim.api.nvim_set_keymap("n", "<leader>2", "2gt", { noremap = true, silent = true, desc = "Go to Tab 2" })
+vim.api.nvim_set_keymap("n", "<leader>3", "3gt", { noremap = true, silent = true, desc = "Go to Tab 3" })
+vim.api.nvim_set_keymap("n", "<leader>4", "4gt", { noremap = true, silent = true, desc = "Go to Tab 4" })
+vim.api.nvim_set_keymap("n", "<leader>5", "5gt", { noremap = true, silent = true, desc = "Go to Tab 5" })
 
--- Buffer navigation
-vim.api.nvim_set_keymap("n", "<leader>bn", ":bnext<CR>", { noremap = true, silent = true, desc = "Next Buffer" })
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>bp",
-	":bprevious<CR>",
-	{ noremap = true, silent = true, desc = "Previous Buffer" }
-)
+-- Buffer navigation (using <leader>l and <leader>h above)
 vim.api.nvim_set_keymap("n", "<leader>bd", ":bd<CR>", { noremap = true, silent = true, desc = "Close Buffer" })
 
 -- Close all buffers except current
@@ -404,9 +397,6 @@ vim.api.nvim_set_keymap(
 	{ noremap = true, silent = true, desc = "Toggle Wrap Mode" }
 )
 
--- Close buffer
-vim.api.nvim_set_keymap("n", "<leader>bd", ":bd<CR>", { noremap = true, silent = true, desc = "Close Buffer" })
-
 -- Quickfix list navigation
 vim.api.nvim_set_keymap("n", "]q", ":cnext<CR>", { noremap = true, silent = true, desc = "Next Quickfix Item" })
 vim.api.nvim_set_keymap("n", "[q", ":cprev<CR>", { noremap = true, silent = true, desc = "Previous Quickfix Item" })
@@ -532,10 +522,8 @@ vim.api.nvim_set_keymap(
 	"n",
 	"<leader>y",
 	":lua require'yazi'.yazi()<CR>",
-	{ noremap = true, silent = true, desc = "Opnen [Y]azi" }
+	{ noremap = true, silent = true, desc = "Open [Y]azi" }
 )
-
-vim.api.nvim_set_keymap("n", "<leader>gg", ":LazyGit<CR>", { noremap = true, silent = true, desc = "Lazy [[G]]it" })
 
 -- vim-dadbod-ui keybindings
 vim.keymap.set("n", "<leader>dt", function()
@@ -760,53 +748,6 @@ vim.keymap.set({ "n", "x" }, "<leader>rbf", function()
 	return require("refactoring").refactor("Extract Block To File")
 end, { expr = true, desc = "Extract Block To File" })
 
--- Configure Neovim diagnostic messages
-local function prefix_diagnostic(prefix, diagnostic)
-	return string.format(prefix .. " %s", diagnostic.message)
-end
-
-vim.diagnostic.config({
-	virtual_text = {
-		prefix = "",
-		format = function(diagnostic)
-			local severity = diagnostic.severity
-			if severity == vim.diagnostic.severity.ERROR then
-				return prefix_diagnostic("󰅚", diagnostic)
-			end
-			if severity == vim.diagnostic.severity.WARN then
-				return prefix_diagnostic("⚠", diagnostic)
-			end
-			if severity == vim.diagnostic.severity.INFO then
-				return prefix_diagnostic("ⓘ", diagnostic)
-			end
-			if severity == vim.diagnostic.severity.HINT then
-				return prefix_diagnostic("󰌶", diagnostic)
-			end
-			return prefix_diagnostic("■", diagnostic)
-		end,
-	},
-	signs = {
-		text = {
-			-- Requires Nerd fonts
-			[vim.diagnostic.severity.ERROR] = "󰅚",
-			[vim.diagnostic.severity.WARN] = "⚠",
-			[vim.diagnostic.severity.INFO] = "ⓘ",
-			[vim.diagnostic.severity.HINT] = "󰌶",
-		},
-	},
-	update_in_insert = false, -- Don't update diagnostics while typing
-	underline = true,
-	severity_sort = true,
-	float = {
-		focusable = false,
-		style = "minimal",
-		border = "rounded",
-		source = "if_many",
-		header = "",
-		prefix = "",
-	},
-})
-
 -- Performance toggle commands
 vim.api.nvim_create_user_command("ToggleSmearCursor", function()
 	local smear = require("smear_cursor")
@@ -835,11 +776,6 @@ vim.api.nvim_create_user_command("EnableHeavyFeatures", function()
 end, { desc = "Enable performance-heavy features" })
 
 -- Enhanced Visual Configuration for Professional Look
-
--- Better colorscheme setup with enhanced contrast
-vim.cmd([[
-  colorscheme catppuccin
-]])
 
 -- Enhanced UI settings for professional look
 opt.pumheight = 15 -- Limit completion menu height

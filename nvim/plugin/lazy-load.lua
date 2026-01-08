@@ -93,7 +93,7 @@ require("lz.n").load({
 	{
 		"lazygit.nvim",
 		cmd = "LazyGit",
-		keys = { { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" } },
+		keys = { { "<leader>gg", function() require("lazygit").lazygit() end, desc = "LazyGit" } },
 	},
 	{
 		"git-conflict.nvim",
