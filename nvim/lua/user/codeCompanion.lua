@@ -10,22 +10,25 @@ require("codecompanion").setup({
 			-- Agentic tools
 			tools = {
 				groups = { "full_stack_dev" },
-				["@memory"] = { enabled = true },
+				opts = {
+					auto_submit_errors = true,
+					auto_submit_success = true,
+				},
 			},
 			-- Slash commands
 			slash_commands = {
-				["/buffer"] = { provider = "telescope" },
-				["/file"] = { provider = "telescope" },
-				["/symbols"] = { enabled = true },
-				["/fetch"] = { enabled = true },
-				["/terminal"] = { enabled = true },
-				["/help"] = { enabled = true },
+				buffer = { opts = { provider = "telescope" } },
+				file = { opts = { provider = "telescope" } },
+				symbols = { enabled = true },
+				fetch = { enabled = true },
+				terminal = { enabled = true },
+				help = { enabled = true },
 			},
 			-- Variables
 			variables = {
-				["#buffer"] = { enabled = true },
-				["#lsp"] = { enabled = true },
-				["#viewport"] = { enabled = true },
+				buffer = { enabled = true },
+				lsp = { enabled = true },
+				viewport = { enabled = true },
 			},
 			-- Rules - auto-load CLAUDE.md, .cursorrules, etc.
 			rules = {
