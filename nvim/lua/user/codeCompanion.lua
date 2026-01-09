@@ -9,8 +9,8 @@ require("codecompanion").setup({
 			adapter = "cerebras",
 			-- Agentic tools
 			tools = {
-				groups = { "full_stack_dev" },
 				opts = {
+					default_tools = { "full_stack_dev" },
 					auto_submit_errors = true,
 					auto_submit_success = true,
 				},
