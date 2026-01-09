@@ -116,6 +116,18 @@ require("lz.n").load({
 	{
 		"codecompanion.nvim",
 		cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+		keys = {
+			{ "<leader>cc", desc = "Open chat" },
+			{ "<leader>ca", desc = "Actions" },
+			{ "<leader>ct", desc = "Toggle chat" },
+			{ "<leader>ci", desc = "Inline assistant" },
+			{ "<leader>cb", desc = "Add buffer to chat" },
+			{ "<leader>cv", desc = "Add selection to chat", mode = "v" },
+			{ "<leader>cs", desc = "Stop request" },
+			{ "<leader>ce", desc = "Explain code", mode = "v" },
+			{ "<leader>cr", desc = "Review code", mode = "v" },
+			{ "<leader>cx", desc = "Fix code", mode = "v" },
+		},
 		after = function()
 			require("user.codeCompanion")
 		end,

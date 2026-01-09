@@ -6,7 +6,7 @@ require("codecompanion").setup({
 	-- Specify which adapter to use for each interaction type
 	interactions = {
 		chat = {
-			adapter = "anthropic",
+			adapter = "cerebras",
 			-- Agentic tools
 			tools = {
 				groups = { "full_stack_dev" },
@@ -182,10 +182,11 @@ require("codecompanion").setup({
 					schema = {
 						model = {
 							choices = {
+								"zai-glm-4.7",
 								"llama-3.3-70b",
 								"llama3.1-8b",
 							},
-							default = "llama-3.3-70b",
+							default = "zai-glm-4.7",
 						},
 						temperature = {
 							default = 0.1,
