@@ -182,6 +182,32 @@ require("codecompanion").setup({
 						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/cerebras.gpg",
 						chat_url = "/chat/completions",
 					},
+					handlers = {
+						-- Custom form_tools to strip strict mode for Cerebras compatibility
+						form_tools = function(self, tools)
+							if not self.opts.tools or not tools then
+								return nil
+							end
+							if vim.tbl_count(tools) == 0 then
+								return nil
+							end
+
+							local transformed = {}
+							for _, tool in pairs(tools) do
+								for _, schema in pairs(tool) do
+									-- Deep copy and remove strict fields
+									local clean_schema = vim.deepcopy(schema)
+									clean_schema.strict = nil
+									if clean_schema["function"] then
+										clean_schema["function"].strict = nil
+									end
+									table.insert(transformed, clean_schema)
+								end
+							end
+
+							return { tools = transformed }
+						end,
+					},
 					schema = {
 						model = {
 							choices = {
