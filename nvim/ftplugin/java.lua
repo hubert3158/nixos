@@ -35,17 +35,22 @@ local map = vim.keymap.set
 local opts = { buffer = true, silent = true }
 
 -- Quick imports organization
-map("n", "<leader>jo", "<cmd>JavaOrganizeImports<CR>", vim.tbl_extend("force", opts, { desc = "[J]ava [O]rganize imports" }))
+map(
+	"n",
+	"<leader>jo",
+	"<cmd>JavaOrganizeImports<CR>",
+	vim.tbl_extend("force", opts, { desc = "[J]ava [O]rganize imports" })
+)
 
 -- Build commands
 map("n", "<leader>jb", "<cmd>JavaBuildProject<CR>", vim.tbl_extend("force", opts, { desc = "[J]ava [B]uild project" }))
+map("n", "<leader>jc", "<cmd>JavaCleanBuild<CR>", vim.tbl_extend("force", opts, { desc = "[J]ava [C]lean and build" }))
 map(
 	"n",
-	"<leader>jc",
-	"<cmd>JavaCleanBuild<CR>",
-	vim.tbl_extend("force", opts, { desc = "[J]ava [C]lean and build" })
+	"<leader>ju",
+	"<cmd>JavaUpdateProject<CR>",
+	vim.tbl_extend("force", opts, { desc = "[J]ava [U]pdate project" })
 )
-map("n", "<leader>ju", "<cmd>JavaUpdateProject<CR>", vim.tbl_extend("force", opts, { desc = "[J]ava [U]pdate project" }))
 
 -- Quick navigation for Spring Boot
 map("n", "<leader>jt", function()

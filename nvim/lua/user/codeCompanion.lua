@@ -77,6 +77,41 @@ require("codecompanion").setup({
 				},
 			},
 		},
+		["Review Code"] = {
+			interaction = "chat",
+			opts = {
+				alias = "review",
+				is_slash_cmd = true,
+				auto_submit = true,
+				modes = { "v" },
+				stop_context_insertion = true,
+			},
+			prompts = {
+				{
+					role = "system",
+					content = [[When asked to review code, follow these steps:
+
+1. **Code Quality Analysis**: Assess readability, maintainability, and adherence to best practices.
+2. **Bug Detection**: Identify potential bugs, edge cases, or logical errors.
+3. **Performance Review**: Highlight performance issues or inefficiencies.
+4. **Security Check**: Flag security vulnerabilities or unsafe patterns.
+5. **Suggestions**: Provide specific, actionable improvement recommendations.
+
+Structure your review with clear sections and prioritize critical issues first.]],
+				},
+				{
+					role = "user",
+					content = [[Please review this code from buffer ${context.bufnr}:
+
+```${context.filetype}
+${context.code}
+```]],
+					opts = {
+						contains_code = true,
+					},
+				},
+			},
+		},
 	},
 
 	adapters = {
