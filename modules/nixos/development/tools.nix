@@ -62,11 +62,11 @@ in
     };
 
     # Prisma environment variables
-    environment.shellInit = lib.mkIf cfg.enablePrisma ''
-      export PRISMA_SCHEMA_ENGINE_BINARY='/nix/store/zvhb5bj7xbwr55avrimyv7pzxxyw9skj-prisma-engines-6.7.0/bin/schema-engine'
-      export PRISMA_QUERY_ENGINE_BINARY='/nix/store/zvhb5bj7xbwr55avrimyv7pzxxyw9skj-prisma-engines-6.7.0/bin/query-engine'
-      export PRISMA_QUERY_ENGINE_LIBRARY='/nix/store/zvhb5bj7xbwr55avrimyv7pzxxyw9skj-prisma-engines-6.7.0/lib/libquery_engine.node'
-    '';
+    environment.variables = lib.mkIf cfg.enablePrisma {
+      PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
+      PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
+      PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
+    };
 
     environment.systemPackages = with pkgs;
       # Core development tools
@@ -141,7 +141,12 @@ in
         ngrok
         sshpass
         audit
-      ];
+      ]
+
+      # Prisma
+      ++ (lib.optionals cfg.enablePrisma [
+        prisma-engines
+      ]);
 
     # Session variables for editors/tools
     environment.sessionVariables = {
