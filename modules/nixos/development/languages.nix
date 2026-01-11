@@ -49,6 +49,12 @@ in
       default = false;
       description = "Enable Zig programming language";
     };
+
+    enableR = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable R programming language";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -130,6 +136,21 @@ in
       ++ (lib.optionals cfg.enableZig [
         zig
         zls
+      ])
+
+      # R packages
+      ++ (lib.optionals cfg.enableR [
+        (rWrapper.override {
+          packages = with rPackages; [
+            languageserver
+            tidyverse
+            ggplot2
+            dplyr
+            readr
+            jsonlite
+          ];
+        })
+        rstudio
       ]);
   };
 }

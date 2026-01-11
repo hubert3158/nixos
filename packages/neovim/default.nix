@@ -27,6 +27,16 @@ let
   extraPackages = with pkgs; [
     lua-language-server
     nil  # Nix LSP
+    (rWrapper.override {
+      packages = with rPackages; [
+        languageserver
+        tidyverse
+        ggplot2
+        dplyr
+        readr
+        jsonlite
+      ];
+    })
   ];
 in
 {
