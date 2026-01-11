@@ -318,6 +318,10 @@ local servers = {
 		capabilities = general_capabilities,
 		settings = { exportPdf = "onSave", formatterMode = "typstyle" },
 	},
+	r_language_server = {
+		on_attach = general_on_attach,
+		capabilities = general_capabilities,
+	},
 }
 
 -- Register servers (except jdtls which is handled separately)
