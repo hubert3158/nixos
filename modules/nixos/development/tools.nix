@@ -145,6 +145,7 @@ in
 
       # Prisma
       ++ (lib.optionals cfg.enablePrisma [
+        nodePackages.prisma
         prisma-engines
       ]);
 
