@@ -1,54 +1,12 @@
+local ignore = require("user.ignore-patterns")
+
 require("telescope").setup({
 	defaults = {
 		path_display = { "truncate" },
-		-- Performance optimizations
-		vimgrep_arguments = {
-			"rg",
-			"--color=never",
-			"--no-heading",
-			"--with-filename",
-			"--line-number",
-			"--column",
-			"--smart-case",
-			"--hidden", -- Search hidden files
-			"--glob=!.git/", -- Exclude .git
-			"--glob=!node_modules/", -- Exclude node_modules
-			"--glob=!target/", -- Exclude Java/Rust target
-			"--glob=!build/", -- Exclude build directories
-			"--glob=!dist/", -- Exclude dist
-			"--glob=!.next/", -- Exclude Next.js
-			"--glob=!coverage/", -- Exclude coverage
-		},
-		file_ignore_patterns = {
-			"^.git/",
-			"^node_modules/",
-			"^target/",
-			"^build/",
-			"^dist/",
-			"^.next/",
-			"^coverage/",
-			"^.cache/",
-			"%.class$",
-			"%.jar$",
-			"%.war$",
-			"%.ear$",
-			"%.zip$",
-			"%.tar.gz$",
-			"%.o$",
-			"%.a$",
-			"%.so$",
-			"%.dylib$",
-			"%.dll$",
-			"%.exe$",
-			"%.out$",
-			"%.png$",
-			"%.jpg$",
-			"%.jpeg$",
-			"%.gif$",
-			"%.svg$",
-			"%.ico$",
-			"%.pdf$",
-		},
+		-- ripgrep respects .gitignore by default
+		vimgrep_arguments = ignore.get_rg_args(),
+		-- Dynamic patterns from .gitignore + base binary patterns
+		file_ignore_patterns = ignore.get_file_ignore_patterns(),
 		-- Sorting and performance
 		sorting_strategy = "ascending",
 		layout_config = {
@@ -84,7 +42,30 @@ require("telescope").setup({
 			case_mode = "smart_case",
 			fuzzy = true,
 		},
+		frecency = {
+			-- Database is stored in data directory
+			db_safe_mode = false, -- Faster writes
+			show_scores = false, -- Hide frecency scores in results
+			show_unindexed = true, -- Show files not yet in database
+			ignore_patterns = { "*.git/*", "*/tmp/*", "*/node_modules/*" },
+			workspaces = {
+				["nixos"] = "/home/hubert/nixos",
+			},
+		},
 	},
 })
 
 require("telescope").load_extension("fzf")
+require("telescope").load_extension("frecency")
+
+-- Keymaps for frecency (smart file finding based on frequency + recency)
+vim.keymap.set("n", "<leader>ff", function()
+	require("telescope").extensions.frecency.frecency({
+		workspace = "CWD", -- Use current working directory
+	})
+end, { desc = "Find files (frecency)" })
+
+-- Keep original find_files on different binding if needed
+vim.keymap.set("n", "<leader>fF", function()
+	require("telescope.builtin").find_files()
+end, { desc = "Find files (all)" })

@@ -157,6 +157,20 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 -- Only load mason here as it's needed for LSP server management
 require("user.mason")
 
+-- Performance modules
+require("user.bigfile").setup({
+	size_threshold = 1024 * 1024, -- 1MB
+	line_threshold = 10000,
+	notify = true,
+})
+
+require("user.buffer-cleanup").setup({
+	max_inactive_minutes = 30,
+	max_buffers = 20,
+	cleanup_interval = 10,
+	notify = false, -- Set to true to see when buffers are cleaned
+})
+
 -- Lazy load neo-tree (only load when opened)
 vim.api.nvim_create_autocmd("BufEnter", {
 	once = true,
@@ -166,12 +180,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		end
 	end,
 })
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ff",
-	"<cmd>Telescope find_files<CR>",
-	{ noremap = true, silent = true, desc = "Find Files" }
-)
+-- <leader>ff is now handled by telescope.lua with frecency
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>fo",
