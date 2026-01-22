@@ -64,6 +64,7 @@ let
     telescope-symbols-nvim
     telescope-zoxide
     telescope-fzf-native-nvim
+    telescope-frecency-nvim
     { plugin = neo-tree-nvim; }
     {
       plugin = yazi-nvim;
