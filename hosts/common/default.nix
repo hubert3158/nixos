@@ -202,7 +202,7 @@
     postman
     networkmanagerapplet
     miller
-    kdePackages.kdenlive
+    # kdePackages.kdenlive
     inetutils
     gopass
 
