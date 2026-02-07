@@ -219,7 +219,6 @@
     balena-cli
     zsh-powerlevel10k
     zellij
-    claude-code
 
     awscli
     antigravity
