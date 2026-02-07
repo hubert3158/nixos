@@ -119,7 +119,7 @@ in {
         nmap
         nikto
         zap
-        wireshark-qt
+        wireshark
         protonvpn-gui
         freerdp
         openvpn

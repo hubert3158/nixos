@@ -21,6 +21,7 @@
 
   # Session variables
   home.sessionVariables = {
-    PATH = "$HOME/.local/bin:$PATH";
+    PATH = "$HOME/.local/bin:$HOME/.npm-global/bin:$PATH";
+    NPM_CONFIG_PREFIX = "$HOME/.npm-global";
   };
 }
