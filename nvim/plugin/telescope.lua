@@ -1,5 +1,19 @@
 local ignore = require("user.ignore-patterns")
 
+-- Fix "Invalid window id" race condition in telescope buffer_previewer.lua
+-- The previewer sets vim.wo[window_id] without checking if the window is still valid,
+-- which errors when scrolling results quickly. Wrap the class preview method with pcall.
+do
+	local Previewer = require("telescope.previewers.previewer")
+	local original_preview = Previewer.preview
+	function Previewer:preview(entry, status)
+		local ok, err = pcall(original_preview, self, entry, status)
+		if not ok and not tostring(err):find("Invalid window id") then
+			error(err)
+		end
+	end
+end
+
 require("telescope").setup({
 	defaults = {
 		path_display = { "truncate" },
