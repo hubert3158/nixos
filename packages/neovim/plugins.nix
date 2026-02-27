@@ -84,7 +84,7 @@ let
       plugin = gitsigns-nvim;
       config = "lua << EOF\nrequire(\"gitsigns\").setup({})\nEOF\n";
     }
-    fugitive
+    vim-fugitive
     lazygit-nvim
     {
       plugin = git-conflict-nvim;
