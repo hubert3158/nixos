@@ -12,6 +12,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.yazi = {
       enable = true;
+      shellWrapperName = "y";
       enableZshIntegration = true;
       settings.yazi = {
         opener = [

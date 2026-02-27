@@ -16,7 +16,7 @@ in
       i3
       rofi
       dmenu
-      xorg.xrandr
+      xrandr
     ];
   };
 }
