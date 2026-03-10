@@ -72,6 +72,7 @@ in
       # Core development tools
       [
         git
+        gh
         vim
         curl
         wget
