@@ -1,10 +1,12 @@
 # XDG configuration (desktop entries, MIME types)
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.desktop.xdg;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.desktop.xdg;
+in {
   options.modules.desktop.xdg = {
     enable = lib.mkEnableOption "XDG configuration";
   };
@@ -18,8 +20,8 @@ in
           genericName = "Application";
           exec = "evolution";
           terminal = false;
-          categories = [ "Email" "Application" "Network" ];
-          mimeType = [ "text/html" "text/xml" ];
+          categories = ["Email" "Application" "Network"];
+          mimeType = ["text/html" "text/xml"];
           comment = "It is a email client bro";
         };
 
@@ -28,8 +30,8 @@ in
           genericName = "Image Viewer";
           exec = "swayimg %f";
           terminal = false;
-          categories = [ "Graphics" "Viewer" ];
-          mimeType = [ "image/jpeg" "image/png" "image/gif" "image/bmp" "image/webp" "image/tiff" ];
+          categories = ["Graphics" "Viewer"];
+          mimeType = ["image/jpeg" "image/png" "image/gif" "image/bmp" "image/webp" "image/tiff"];
           comment = "It opens images bro";
         };
 
@@ -38,8 +40,8 @@ in
           genericName = "file editor";
           exec = "nvim %f";
           terminal = true;
-          categories = [ "TextEditor" "Utility" ];
-          mimeType = [ "text/plain" ];
+          categories = ["TextEditor" "Utility"];
+          mimeType = ["text/plain"];
           comment = "Its a beast bro";
         };
 
@@ -48,8 +50,8 @@ in
           genericName = "AWS Workspaces Client";
           exec = "workspacesclient";
           terminal = false;
-          categories = [ "Network" "Utility" ];
-          mimeType = [ "text/plain" ];
+          categories = ["Network" "Utility"];
+          mimeType = ["text/plain"];
           comment = "needed at work bro";
         };
 
@@ -58,8 +60,8 @@ in
           genericName = "Chrome Debug Mode";
           exec = "google-chrome-stable --remote-debugging-port=9222 --no-first-run --new-instance";
           terminal = false;
-          categories = [ "Network" ];
-          mimeType = [ "text/plain" ];
+          categories = ["Network"];
+          mimeType = ["text/plain"];
           comment = "needed at work bro";
         };
 
@@ -70,9 +72,26 @@ in
             ${pkgs.bash}/bin/bash -lc "cliphist list | sort -nr -k1,1 | fuzzel --dmenu | cut -f1 | xargs -r -n1 cliphist decode | wl-copy"
           '';
           terminal = false;
-          categories = [ "Utility" ];
-          mimeType = [ "text/plain" ];
+          categories = ["Utility"];
+          mimeType = ["text/plain"];
           comment = "Clipboard manager";
+        };
+
+        googleChrome = {
+          name = "Google Chrome";
+          genericName = "Web Browser";
+          exec = "google-chrome-stable %U";
+          terminal = false;
+          categories = ["Network" "WebBrowser"];
+          mimeType = [
+            "text/html"
+            "text/xml"
+            "application/xhtml+xml"
+            "x-scheme-handler/http"
+            "x-scheme-handler/https"
+            "x-scheme-handler/ftp"
+          ];
+          comment = "Web Browser";
         };
       };
 
@@ -80,17 +99,24 @@ in
       mimeApps = {
         enable = true;
         defaultApplications = {
-          "image/jpeg" = [ "swayimg.desktop" ];
-          "image/png" = [ "swayimg.desktop" ];
-          "image/gif" = [ "swayimg.desktop" ];
-          "image/bmp" = [ "swayimg.desktop" ];
-          "image/webp" = [ "swayimg.desktop" ];
-          "image/tiff" = [ "swayimg.desktop" ];
-          "application/pdf" = [ "microsoft-edge.desktop" ];
-          "x-scheme-handler/msteams" = [ "teams-for-linux.desktop" ];
-          "text/plain" = [ "nvim.desktop" ];
-          "text/markdown" = [ "google-chrome-stable.desktop" ];
-          "text/csv" = [ "libreoffice-calc.desktop" ];
+          "image/jpeg" = ["swayimg.desktop"];
+          "image/png" = ["swayimg.desktop"];
+          "image/gif" = ["swayimg.desktop"];
+          "image/bmp" = ["swayimg.desktop"];
+          "image/webp" = ["swayimg.desktop"];
+          "image/tiff" = ["swayimg.desktop"];
+          "application/pdf" = ["microsoft-edge.desktop"];
+          "x-scheme-handler/msteams" = ["teams-for-linux.desktop"];
+          "text/plain" = ["nvim.desktop"];
+          "text/markdown" = ["google-chrome-stable.desktop"];
+          "text/csv" = ["libreoffice-calc.desktop"];
+          "text/html" = ["googleChrome.desktop"];
+          "text/xml" = ["googleChrome.desktop"];
+          "application/xhtml+xml" = ["googleChrome.desktop"];
+          "x-scheme-handler/http" = ["googleChrome.desktop"];
+          "x-scheme-handler/https" = ["googleChrome.desktop"];
+          "x-scheme-handler/ftp" = ["googleChrome.desktop"];
+          "x-scheme-handler/mailto" = ["googleChrome.desktop"];
         };
       };
     };
