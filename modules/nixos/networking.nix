@@ -1,10 +1,12 @@
 # Networking configuration
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.networking;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.networking;
+in {
   options.modules.networking = {
     enable = lib.mkEnableOption "networking configuration";
 
@@ -23,18 +25,29 @@ in
     nameservers = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [
-        "1.1.1.1"   # Cloudflare
-        "1.0.0.1"   # Cloudflare secondary
-        "8.8.8.8"   # Google
-        "8.8.4.4"   # Google secondary
+        "1.1.1.1" # Cloudflare
+        "1.0.0.1" # Cloudflare secondary
+        "8.8.8.8" # Google
+        "8.8.4.4" # Google secondary
       ];
       description = "DNS nameservers";
     };
 
     allowedTCPPorts = lib.mkOption {
       type = lib.types.listOf lib.types.port;
-      default = [ 3000 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317 ];
+      default = [3000 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317];
       description = "Allowed TCP ports in firewall";
+    };
+
+    allowedTCPPortRanges = lib.mkOption {
+      type = lib.types.listOf (lib.types.attrsOf lib.types.port);
+      default = [
+        {
+          from = 1024;
+          to = 65535;
+        }
+      ];
+      description = "Allowed TCP port ranges in firewall for claude code login";
     };
 
     allowedUDPPorts = lib.mkOption {

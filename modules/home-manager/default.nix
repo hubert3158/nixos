@@ -23,5 +23,8 @@
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$HOME/.npm-global/bin:$PATH";
     NPM_CONFIG_PREFIX = "$HOME/.npm-global";
+    # Force Node.js to prefer IPv4 — fixes Claude Code OAuth login on NixOS
+    # (Node binds to IPv6 ::1 but browser hits IPv4 127.0.0.1, causing timeout)
+    NODE_OPTIONS = "--dns-result-order=ipv4first";
   };
 }
