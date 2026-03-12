@@ -108,6 +108,12 @@ in {
             port = 22;
             identityFile = "~/.ssh/rules_engine.pem";
           };
+
+          "github-work" = {
+            hostname = "github.com";
+            user = "git";
+            identityFile = "~/.ssh/id_ed25519_work";
+          };
         });
     };
   };
