@@ -109,10 +109,18 @@ in {
             identityFile = "~/.ssh/rules_engine.pem";
           };
 
-          "github-work" = {
+          "github.com-work" = {
             hostname = "github.com";
             user = "git";
             identityFile = "~/.ssh/id_ed25519_work";
+            identitiesOnly = true;
+          };
+
+          "github.com" = {
+            hostname = "github.com";
+            user = "git";
+            identityFile = "~/.ssh/id_ed25519";
+            identitiesOnly = true;
           };
         });
     };
