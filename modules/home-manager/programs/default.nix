@@ -11,5 +11,6 @@
     ./browsers.nix
     ./media.nix
     ./nix-index.nix
+    ./opencode.nix
   ];
 }
