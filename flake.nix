@@ -115,6 +115,7 @@
               modules.programs.browsers.enable = true;
               modules.programs.media.enable = true;
               modules.programs.nixIndex.enable = true;
+              modules.programs.opencode.enable = true;
 
               modules.fileManagers.yazi.enable = true;
               modules.fileManagers.ranger.enable = true;
