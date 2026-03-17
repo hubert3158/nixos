@@ -98,7 +98,7 @@ in {
         pandoc
         mdbook-pdf
         libreoffice
-        teams-for-linux
+
         discord
         onedrive
         krusader

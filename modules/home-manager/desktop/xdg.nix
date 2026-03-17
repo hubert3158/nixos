@@ -106,7 +106,7 @@ in {
           "image/webp" = ["swayimg.desktop"];
           "image/tiff" = ["swayimg.desktop"];
           "application/pdf" = ["microsoft-edge.desktop"];
-          "x-scheme-handler/msteams" = ["teams-for-linux.desktop"];
+          "x-scheme-handler/msteams" = ["com.github.IsmaelMartinez.teams_for_linux.desktop"];
           "text/plain" = ["nvim.desktop"];
           "text/markdown" = ["google-chrome-stable.desktop"];
           "text/csv" = ["libreoffice-calc.desktop"];
