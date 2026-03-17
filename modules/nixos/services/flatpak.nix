@@ -27,5 +27,13 @@ in
       fsType = "fuse.bindfs";
       options = [ "ro" "resolve-symlinks" "x-gvfs-hide" ];
     };
+
+    # Microsoft Edge policies (disables sidebar/Copilot that cause flickering on tiling WMs)
+    environment.etc."opt/edge/policies/managed/edge-policy.json".text = builtins.toJSON {
+      HubsSidebarEnabled = false;
+      StandaloneHubsSidebarEnabled = false;
+      Microsoft365CopilotChatIconEnabled = false;
+      NewTabPageBingChatEnabled = false;
+    };
   };
 }
