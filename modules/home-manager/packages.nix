@@ -146,7 +146,7 @@ in {
       # Fun packages
       ++ (lib.optionals cfg.enableFun [
         cmatrix
-        neofetch
+        fastfetch
         frotz
       ])
       # Zsh tools

@@ -34,7 +34,7 @@ let
     plugin = null;
     config = null;
     optional = false;
-    runtime = {};
+
   };
 
   externalPackages = extraPackages ++ (optionals withSqlite [pkgs.sqlite]);
