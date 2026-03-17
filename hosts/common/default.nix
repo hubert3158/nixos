@@ -155,6 +155,8 @@
     nerd-fonts.jetbrains-mono
     corefonts
     noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
     noto-fonts-color-emoji
     liberation_ttf
     fira-code
