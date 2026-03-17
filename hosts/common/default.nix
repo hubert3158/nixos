@@ -150,6 +150,7 @@
   programs.nm-applet.enable = true;
 
   # Fonts
+  fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
