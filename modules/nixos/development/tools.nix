@@ -66,6 +66,8 @@ in
       PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
       PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
       PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
+      PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+      PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
     };
 
     environment.systemPackages = with pkgs;
@@ -142,6 +144,11 @@ in
         ngrok
         sshpass
         audit
+      ]
+
+      # Playwright (E2E testing)
+      ++ [
+        playwright-driver
       ]
 
       # Prisma
