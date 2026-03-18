@@ -26,5 +26,8 @@
     # Force Node.js to prefer IPv4 — fixes Claude Code OAuth login on NixOS
     # (Node binds to IPv6 ::1 but browser hits IPv4 127.0.0.1, causing timeout)
     NODE_OPTIONS = "--dns-result-order=ipv4first";
+    # Playwright E2E testing — use Nix-provided browsers
+    PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
   };
 }
