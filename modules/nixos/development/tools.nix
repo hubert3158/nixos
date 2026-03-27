@@ -62,13 +62,6 @@ in
       package = pkgs.wireshark;
     };
 
-    # Prisma environment variables
-    # Uses static binary as workaround for prisma-engines Rust compilation issue (rust-lang/rust#141402)
-    # Prisma 7.x only needs schema-engine for migrations; query engine is built into the client
-    environment.variables = lib.mkIf cfg.enablePrisma {
-      PRISMA_SCHEMA_ENGINE_BINARY = "${prisma-schema-engine-static}/bin/schema-engine";
-    };
-
     environment.systemPackages = with pkgs;
       # Core development tools
       [
@@ -156,6 +149,7 @@ in
       ]);
 
     # Session variables for editors/tools
+    # Prisma uses static binary as workaround for prisma-engines Rust compilation issue (rust-lang/rust#141402)
     environment.sessionVariables = {
       EDITOR = "nvim";
       PAGER = "less";
@@ -164,6 +158,8 @@ in
       PDF_VIEWER = "zathura";
       MUSIC_PLAYER = "mpv";
       TERMINAL = "alacritty";
+    } // lib.optionalAttrs cfg.enablePrisma {
+      PRISMA_SCHEMA_ENGINE_BINARY = "${prisma-schema-engine-static}/bin/schema-engine";
     };
   };
 }
