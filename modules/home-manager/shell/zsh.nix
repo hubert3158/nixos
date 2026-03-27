@@ -36,6 +36,8 @@ in {
       };
 
       initContent = ''
+        unalias gsd 2>/dev/null
+
         # ---- Vi editing mode ----
         bindkey -v
         export KEYTIMEOUT=1
