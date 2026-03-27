@@ -120,7 +120,7 @@ in {
         nikto
         zap
         wireshark
-        protonvpn-gui
+        proton-vpn
         freerdp
         openvpn
         sshfs

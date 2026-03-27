@@ -150,7 +150,6 @@ in
             jsonlite
           ];
         })
-        rstudio
       ]);
   };
 }

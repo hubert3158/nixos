@@ -3,6 +3,7 @@
 
 let
   cfg = config.modules.development.tools;
+  prisma-schema-engine-static = pkgs.callPackage ../../../packages/prisma-schema-engine-static { };
 in
 {
   options.modules.development.tools = {
@@ -62,10 +63,10 @@ in
     };
 
     # Prisma environment variables
+    # Uses static binary as workaround for prisma-engines Rust compilation issue (rust-lang/rust#141402)
+    # Prisma 7.x only needs schema-engine for migrations; query engine is built into the client
     environment.variables = lib.mkIf cfg.enablePrisma {
-      PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
-      PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
-      PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
+      PRISMA_SCHEMA_ENGINE_BINARY = "${prisma-schema-engine-static}/bin/schema-engine";
     };
 
     environment.systemPackages = with pkgs;
@@ -149,10 +150,9 @@ in
         playwright-driver
       ]
 
-      # Prisma
+      # Prisma (static schema-engine only; Prisma 7.x query engine is built into @prisma/client)
       ++ (lib.optionals cfg.enablePrisma [
-        nodePackages.prisma
-        prisma-engines
+        prisma-schema-engine-static
       ]);
 
     # Session variables for editors/tools
