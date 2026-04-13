@@ -98,7 +98,7 @@ in {
       };
 
       # Global rules
-      rules = ''
+      context = ''
         # Global Rules for Open Code
 
         ## NixOS Context

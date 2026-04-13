@@ -78,13 +78,13 @@ in
       (lib.optionals cfg.enableNode [
         nodejs
         nodejs_22
-        nodePackages.nodemon
-        nodePackages.eslint
-        nodePackages.serve
-        nodePackages.prettier
-        nodePackages.pm2
-        nodePackages.htmlhint
-        nodePackages.typescript
+        nodemon
+        eslint
+        serve
+        prettier
+        pm2
+        htmlhint
+        typescript
         pnpm
         yarn
         prettierd
