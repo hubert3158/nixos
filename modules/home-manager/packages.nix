@@ -80,7 +80,6 @@ in {
             pandas
             boto3
             pypdf
-            pypdf2
             pdfplumber
             pdf2image
             pytesseract

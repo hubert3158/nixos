@@ -48,11 +48,6 @@ let
     ))
   plugins;
 
-  neovimConfig = pkgs-wrapNeovim.neovimUtils.makeNeovimConfig {
-    inherit extraPython3Packages withPython3 withRuby withNodeJs viAlias vimAlias;
-    plugins = normalizedPlugins;
-  };
-
   # Filter nvim config directory
   nvimRtpSrc = let
     src = ../../nvim;
@@ -151,13 +146,12 @@ let
     optionalString (resolvedExtraLuaPackages != [])
     ''--suffix LUA_PATH ";" "${concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages}"'';
 
-  neovim-wrapped = pkgs-wrapNeovim.wrapNeovimUnstable neovim-unwrapped (neovimConfig
-    // {
+  neovim-wrapped = pkgs-wrapNeovim.wrapNeovimUnstable neovim-unwrapped {
+      inherit extraPython3Packages withPython3 withRuby withNodeJs viAlias vimAlias;
+      plugins = normalizedPlugins;
       luaRcContent = initLua;
       wrapperArgs =
-        escapeShellArgs neovimConfig.wrapperArgs
-        + " "
-        + extraMakeWrapperArgs
+        extraMakeWrapperArgs
         + " "
         + extraMakeWrapperLuaCArgs
         + " "
@@ -165,7 +159,7 @@ let
         + " "
         + blinkFuzzyLuaCArgs;
       wrapRc = true;
-    });
+    };
 
   isCustomAppName = appName != null && appName != "nvim";
 in
