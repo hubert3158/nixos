@@ -223,9 +223,10 @@
     zsh-powerlevel10k
     zellij
 
-    awscli
+    awscli2
     antigravity
     libmaxminddb
+    claude-desktop-fhs
   ];
 
   # Environment shells

@@ -24,6 +24,12 @@
       url = "github:eldritch-theme/eldritch.nvim";
       flake = false;
     };
+
+    # Claude Desktop (aaddrick) — FHS variant w/ MCP + Cowork sandboxing
+    claude-desktop = {
+      url = "github:aaddrick/claude-desktop-debian";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
