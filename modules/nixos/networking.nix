@@ -35,7 +35,7 @@ in {
 
     allowedTCPPorts = lib.mkOption {
       type = lib.types.listOf lib.types.port;
-      default = [3000 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317];
+      default = [3000 5173 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317];
       description = "Allowed TCP ports in firewall";
     };
 
