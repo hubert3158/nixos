@@ -139,14 +139,27 @@ in
       ]
 
       # Playwright (E2E testing)
+      # google-chrome is referenced by the systemd.tmpfiles rule below that satisfies
+      # playwright-cli's hardcoded /opt/google/chrome/chrome lookup on Linux.
       ++ [
         playwright-driver
+        google-chrome
       ]
 
       # Prisma (static schema-engine only; Prisma 7.x query engine is built into @prisma/client)
       ++ (lib.optionals cfg.enablePrisma [
         prisma-schema-engine-static
       ]);
+
+    # playwright-cli hardcodes /opt/google/chrome/chrome for the "chrome" channel on Linux
+    # (--browser only accepts chrome|firefox|webkit|msedge, no chromium, no env override).
+    # Symlink it to the Nix-managed google-chrome so the lookup resolves.
+    systemd.tmpfiles.rules = [
+      "d /opt               0755 root root - -"
+      "d /opt/google        0755 root root - -"
+      "d /opt/google/chrome 0755 root root - -"
+      "L+ /opt/google/chrome/chrome - - - - ${pkgs.google-chrome}/bin/google-chrome-stable"
+    ];
 
     # Session variables for editors/tools
     # Prisma uses static binary as workaround for prisma-engines Rust compilation issue (rust-lang/rust#141402)
