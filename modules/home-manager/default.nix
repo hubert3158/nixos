@@ -28,6 +28,5 @@
     NODE_OPTIONS = "--dns-result-order=ipv4first";
     # Playwright E2E testing — use Nix-provided browsers
     PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
-    PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
   };
 }

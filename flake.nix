@@ -66,9 +66,6 @@
         {
           nixpkgs.config = {
             allowUnfree = true;
-            permittedInsecurePackages = [
-              "emacs-29.4"
-            ];
           };
         }
 

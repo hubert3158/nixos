@@ -19,9 +19,6 @@ rec {
       {
         nixpkgs.config = {
           allowUnfree = true;
-          permittedInsecurePackages = [
-            "emacs-29.4"
-          ];
         };
         networking.hostName = hostname;
       }
