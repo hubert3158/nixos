@@ -30,11 +30,6 @@ in
   config = lib.mkIf cfg.enable {
     programs.kitty = {
       enable = true;
-      package = pkgs.kitty.overrideAttrs (_: {
-        doCheck = false;
-        doInstallCheck = false;
-        checkInputs = [];
-      });
       enableGitIntegration = true;
 
       font = {

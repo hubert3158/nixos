@@ -80,7 +80,6 @@ in {
             pandas
             boto3
             pypdf
-            pdfplumber
             pdf2image
             pytesseract
             requests

@@ -3,7 +3,6 @@
 
 let
   cfg = config.modules.development.tools;
-  prisma-schema-engine-static = pkgs.callPackage ../../../packages/prisma-schema-engine-static { };
 in
 {
   options.modules.development.tools = {
@@ -146,9 +145,10 @@ in
         google-chrome
       ]
 
-      # Prisma (static schema-engine only; Prisma 7.x query engine is built into @prisma/client)
+      # Prisma
       ++ (lib.optionals cfg.enablePrisma [
-        prisma-schema-engine-static
+        prisma
+        prisma-engines
       ]);
 
     # playwright-cli hardcodes /opt/google/chrome/chrome for the "chrome" channel on Linux
@@ -162,17 +162,20 @@ in
     ];
 
     # Session variables for editors/tools
-    # Prisma uses static binary as workaround for prisma-engines Rust compilation issue (rust-lang/rust#141402)
     environment.sessionVariables = {
       EDITOR = "nvim";
       PAGER = "less";
       BROWSER = "firefox";
       FILE_MANAGER = "ranger";
       PDF_VIEWER = "zathura";
-      MUSIC_PLAYER = "mpv";
       TERMINAL = "alacritty";
-    } // lib.optionalAttrs cfg.enablePrisma {
-      PRISMA_SCHEMA_ENGINE_BINARY = "${prisma-schema-engine-static}/bin/schema-engine";
+    };
+
+    # Prisma environment variables
+    environment.variables = lib.mkIf cfg.enablePrisma {
+      PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
+      PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
+      PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
     };
   };
 }

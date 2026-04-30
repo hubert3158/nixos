@@ -128,7 +128,7 @@
     enableNeovim = true;
     enableTerraform = true;
     enableWireshark = true;
-    enablePrisma = true; # uses static binary workaround (rust-lang/rust#141402)
+    enablePrisma = true;
   };
 
   # ============================================================================
