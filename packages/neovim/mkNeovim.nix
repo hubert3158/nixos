@@ -1,4 +1,9 @@
 # Function for creating a Neovim derivation
+#
+# Forked and customized from the kickstart-nix.nvim template:
+#   https://github.com/nix-community/kickstart-nix.nvim
+# Local additions: pkgs-wrapNeovim arg, blink-fuzzy-lib + kulalaParser params,
+# and inline wrapNeovimUnstable call (already aligned with upstream 8da1f2e).
 {
   pkgs,
   lib,

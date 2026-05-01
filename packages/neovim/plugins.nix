@@ -1,4 +1,7 @@
 # Neovim plugins list
+#
+# Built on top of the kickstart-nix.nvim template:
+#   https://github.com/nix-community/kickstart-nix.nvim
 { pkgs, inputs }:
 
 let
@@ -139,10 +142,11 @@ let
     }
     nvim-comment
     comment-box-nvim
-    {
-      plugin = refactoring-nvim;
-      config = "lua << EOF\nrequire(\"refactoring\").setup({})\nEOF\n";
-    }
+    # refactoring.nvim removed: as of nixpkgs 2026-04 it depends on async.nvim,
+    # which ships a top-level lua/async.lua that collides with promise-async
+    # and breaks nvim-ufo's require('async'). LSP code actions cover most of
+    # what refactoring.nvim offered. Re-evaluate once upstream resolves the
+    # naming collision.
     vim-visual-multi
     { plugin = yanky-nvim; }
     nvim-spectre
