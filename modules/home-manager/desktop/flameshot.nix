@@ -23,7 +23,7 @@ in
         General = {
           disabledTrayIcon = true;
           showStartupLaunchMessage = false;
-          useGrimAdapter = true;  # Wayland screenshot adapter
+          useGrimAdapter = true;
           savePath = cfg.savePath;
         };
 
