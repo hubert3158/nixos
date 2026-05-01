@@ -4,6 +4,11 @@
   inputs = {
     # Core inputs
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    # Pinned nixpkgs for flameshot — flameshot v14 + xdg-desktop-portal-hyprland 1.3.12
+    # have a Screenshot interface ABI mismatch (interface declared but not exposed to
+    # clients, causing 30s portal timeout). Revisit when nixpkgs ships compatible versions.
+    nixpkgs-flameshot.url = "github:NixOS/nixpkgs/13043924aaa7375ce482ebe2494338e058282925";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
