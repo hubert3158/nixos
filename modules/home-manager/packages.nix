@@ -89,6 +89,7 @@ in {
             geoip2
           ]))
         pipx
+        uv
       ])
       # Productivity packages
       ++ (lib.optionals cfg.enableProductivity [
