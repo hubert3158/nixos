@@ -991,6 +991,10 @@ vim.keymap.set("n", "<leader>kc", function()
 	require("kulala").copy()
 end, { noremap = true, silent = true, desc = "Copy HTTP command to clipboard" })
 
+vim.keymap.set("n", "<leader>ke", function()
+	require("kulala").set_selected_env()
+end, { noremap = true, silent = true, desc = "Select HTTP env (mock/sandbox/production)" })
+
 -- Codecompanion (keymaps moved to lua/user/codeCompanion.lua)
 
 -- Aerial (code outline) keybindings
