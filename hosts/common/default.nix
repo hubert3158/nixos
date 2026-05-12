@@ -1,5 +1,9 @@
 # Common configuration shared by all hosts
-{pkgs, ...}: {
+{pkgs, ...}: let
+  cocoindex = pkgs.callPackage ../../packages/cocoindex { };
+  ccline = pkgs.callPackage ../../packages/ccline { };
+  sigmap = pkgs.callPackage ../../packages/sigmap { };
+in {
   # ============================================================================
   # ENABLE ALL MODULES
   # ============================================================================
@@ -227,6 +231,12 @@
     antigravity
     libmaxminddb
     claude-desktop-fhs
+
+    # AI / Claude Code tooling — replaces previous npm-global installs.
+    claude-code      # @anthropic-ai/claude-code CLI
+    ccline           # @cometix/ccline statusline (custom pkg, Rust binary)
+    cocoindex        # incremental indexing engine for agents (Python+Rust)
+    sigmap           # AI context engine CLI (gen-context / gen-project-map)
   ];
 
   # Environment shells
