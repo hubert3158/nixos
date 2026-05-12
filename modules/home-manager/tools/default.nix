@@ -9,5 +9,6 @@
     ./fzf.nix
     ./delta.nix
     ./htop.nix
+    ./uv-tools.nix
   ];
 }

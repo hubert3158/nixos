@@ -98,6 +98,7 @@ in
         python3Packages.black
         python3Packages.flake8
         pyright
+        uv
       ])
 
       # Go packages
