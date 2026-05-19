@@ -24,6 +24,7 @@ in
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
+      configType = "hyprlang";
       xwayland.enable = cfg.enableXwayland;
       # Disable systemd integration as it conflicts with uwsm
       systemd.enable = false;
