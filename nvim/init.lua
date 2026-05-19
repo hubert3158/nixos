@@ -820,17 +820,8 @@ vim.diagnostic.config({
 	},
 })
 
--- Enhanced LSP UI
-local border_style = "rounded"
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-	border = border_style,
-	title = "Hover",
-})
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-	border = border_style,
-	title = "Signature Help",
-})
+-- Enhanced LSP UI: use global float border (nvim 0.11+)
+vim.o.winborder = "rounded"
 
 -- Better completion menu styling
 vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { bg = "NONE", strikethrough = true, fg = "#808080" })
