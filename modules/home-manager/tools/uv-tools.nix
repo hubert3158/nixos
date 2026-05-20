@@ -23,6 +23,10 @@ let
       name = "cocoindex-code";
       args = "cocoindex-code";
     }
+    {
+      name = "semble";
+      args = "semble";
+    }
   ];
 
   installScript = lib.concatMapStringsSep "\n" (t: ''
