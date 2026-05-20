@@ -40,87 +40,85 @@ in {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks =
+      settings =
         {
           "*" = {
-            forwardAgent = cfg.enableForwardAgent;
-            forwardX11 = false;
-            forwardX11Trusted = true;
-            serverAliveInterval = cfg.serverAliveInterval;
-            serverAliveCountMax = cfg.serverAliveCountMax;
-            extraOptions = {
-              KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org";
-            };
+            ForwardAgent = cfg.enableForwardAgent;
+            ForwardX11 = false;
+            ForwardX11Trusted = true;
+            ServerAliveInterval = cfg.serverAliveInterval;
+            ServerAliveCountMax = cfg.serverAliveCountMax;
+            KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org";
           };
         }
         // (lib.optionalAttrs cfg.enableWorkHosts {
           "stg" = {
-            hostname = "0.0.0.0";
-            user = "ubuntu";
-            port = 22;
-            identityFile = "~/.ssh/staging.v2.pem";
+            HostName = "0.0.0.0";
+            User = "ubuntu";
+            Port = 22;
+            IdentityFile = "~/.ssh/staging.v2.pem";
           };
 
           "prod" = {
-            hostname = "REDACTED-HOST-PROD";
-            user = "ubuntu";
-            port = 22;
-            identityFile = "~/.ssh/prod.v2.pem";
+            HostName = "REDACTED-HOST-PROD";
+            User = "ubuntu";
+            Port = 22;
+            IdentityFile = "~/.ssh/prod.v2.pem";
           };
 
           "wellMed" = {
-            hostname = "0.0.0.0";
-            user = "ubuntu";
-            port = 22;
+            HostName = "0.0.0.0";
+            User = "ubuntu";
+            Port = 22;
           };
 
           "submission" = {
-            hostname = "0.0.0.0";
-            user = "ubuntu";
-            port = 22;
-            identityFile = "~/.ssh/automated_submission.pem";
+            HostName = "0.0.0.0";
+            User = "ubuntu";
+            Port = 22;
+            IdentityFile = "~/.ssh/automated_submission.pem";
           };
 
           "dev" = {
-            hostname = "0.0.0.0";
-            user = "ubuntu";
-            port = 22;
-            identityFile = "~/.ssh/dev_server.pem";
+            HostName = "0.0.0.0";
+            User = "ubuntu";
+            Port = 22;
+            IdentityFile = "~/.ssh/dev_server.pem";
           };
 
           "demo" = {
-            hostname = "0.0.0.0";
-            user = "ubuntu";
-            port = 22;
-            identityFile = "~/.ssh/demo.pem";
+            HostName = "0.0.0.0";
+            User = "ubuntu";
+            Port = 22;
+            IdentityFile = "~/.ssh/demo.pem";
           };
 
           "REDACTED-BT" = {
-            hostname = "REDACTED-HOST-BT";
-            user = "ubuntu";
-            port = 22;
-            identityFile = "~/.ssh/REDACTED-BT.pem";
+            HostName = "REDACTED-HOST-BT";
+            User = "ubuntu";
+            Port = 22;
+            IdentityFile = "~/.ssh/REDACTED-BT.pem";
           };
 
           "rules-engine" = {
-            hostname = "0.0.0.0";
-            user = "ubuntu";
-            port = 22;
-            identityFile = "~/.ssh/rules_engine.pem";
+            HostName = "0.0.0.0";
+            User = "ubuntu";
+            Port = 22;
+            IdentityFile = "~/.ssh/rules_engine.pem";
           };
 
           "github.com-work" = {
-            hostname = "github.com";
-            user = "git";
-            identityFile = "~/.ssh/id_ed25519_work";
-            identitiesOnly = true;
+            HostName = "github.com";
+            User = "git";
+            IdentityFile = "~/.ssh/id_ed25519_work";
+            IdentitiesOnly = true;
           };
 
           "github.com" = {
-            hostname = "github.com";
-            user = "git";
-            identityFile = "~/.ssh/id_ed25519";
-            identitiesOnly = true;
+            HostName = "github.com";
+            User = "git";
+            IdentityFile = "~/.ssh/id_ed25519";
+            IdentitiesOnly = true;
           };
         });
     };
