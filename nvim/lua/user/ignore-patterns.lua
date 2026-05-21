@@ -117,33 +117,21 @@ local function read_ignore_file(filepath)
 end
 
 -- Build patterns (internal, called by lazy getter)
+-- NOTE: We deliberately do NOT translate .gitignore into Lua patterns here.
+-- ripgrep (used by telescope's find_command and vimgrep_arguments) already
+-- honors .gitignore natively. Re-applying the same filter as Lua regex inside
+-- telescope cost ~1.3s per find_files on a 7k-file monorepo (151 patterns x
+-- ~7000 entries). The base binary/image patterns below are cheap and catch
+-- files that .gitignore typically does NOT list (e.g. *.png, *.jar).
 local function build_patterns()
 	local patterns = {}
 
-	-- Add base patterns first
 	for _, p in ipairs(M.base_patterns) do
 		table.insert(patterns, p)
 	end
 
-	-- Try to read from git root
-	local git_root = get_git_root()
-	cache.git_root = git_root
+	cache.git_root = get_git_root()
 
-	if git_root then
-		-- Read .gitignore
-		local gitignore_patterns = read_ignore_file(git_root .. "/.gitignore")
-		for _, p in ipairs(gitignore_patterns) do
-			table.insert(patterns, p)
-		end
-
-		-- Read .ignore (ripgrep's ignore file) if it exists
-		local ignore_patterns = read_ignore_file(git_root .. "/.ignore")
-		for _, p in ipairs(ignore_patterns) do
-			table.insert(patterns, p)
-		end
-	end
-
-	-- Always add .git
 	table.insert(patterns, "^%.git/")
 
 	return patterns
