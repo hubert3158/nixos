@@ -34,8 +34,6 @@ require("lint").linters_by_ft = {
 	terraform = { "tflint" },
 
 	sql = { "sqlfluff" }, -- (Uncomment if you install and want to use sqlfluff for linting)
-	javascript = { "eslint_d" },
-	javascriptreact = { "eslint_d" },
-	typescript = { "eslint_d" },
-	typescriptreact = { "eslint_d" },
+	-- JS/TS lint handled by the eslint LSP server. Running eslint_d here too
+	-- triples the work per save on big monorepos.
 }

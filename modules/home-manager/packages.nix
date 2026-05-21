@@ -54,7 +54,8 @@ in {
       ]
       # Development packages
       ++ (lib.optionals cfg.enableDevelopment [
-        zed-editor
+        # EnableLater
+        # zed-editor
         helix
         jetbrains.datagrip
         jetbrains.idea
@@ -143,7 +144,7 @@ in {
         brave
         # Force XWayland — native Wayland path has hover-triggered tooltip
         # rendering glitches in Edge specifically (Chrome/Brave unaffected).
-        (microsoft-edge.override { commandLineArgs = "--ozone-platform=x11"; })
+        (microsoft-edge.override {commandLineArgs = "--ozone-platform=x11";})
       ]
       # Fun packages
       ++ (lib.optionals cfg.enableFun [

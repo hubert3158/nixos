@@ -293,13 +293,11 @@ local servers = {
 	eslint = {
 		on_attach = function(client, bufnr)
 			general_on_attach(client, bufnr)
-			local augroup_name = "LspEslintFixOnSave_" .. bufnr
-			vim.api.nvim_create_augroup(augroup_name, { clear = true })
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				group = augroup_name,
+			-- Auto fix-on-save was running EslintFixAll over the whole project
+			-- graph per :w on big monorepos. Bind it to <leader>ef instead.
+			vim.keymap.set("n", "<leader>ef", "<cmd>EslintFixAll<cr>", {
 				buffer = bufnr,
-				command = "EslintFixAll",
-				desc = "Run EslintFixAll on save for this buffer (ESLint LSP)",
+				desc = "ESLint: fix all in buffer",
 			})
 		end,
 		capabilities = general_capabilities,
