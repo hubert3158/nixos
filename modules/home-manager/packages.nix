@@ -72,6 +72,7 @@ in {
         nil
         bash-language-server
         zls
+        typescript-language-server
 
         # Python with packages
         (python312.withPackages (ps:
