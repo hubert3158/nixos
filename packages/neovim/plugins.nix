@@ -105,7 +105,34 @@ let
     }
     {
       plugin = typescript-tools-nvim;
-      config = "lua << EOF\nrequire(\"typescript-tools\").setup({})\nEOF\n";
+      config = ''
+        lua << EOF
+        require("typescript-tools").setup({
+          -- Anchor tsserver to nearest tsconfig (avoids loading whole monorepo
+          -- when nvim is opened at the workspace root).
+          root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "jsconfig.json"),
+          single_file_support = false,
+          settings = {
+            tsserver_max_memory = 8192,
+            code_lens = "off",
+            disable_member_code_lens = true,
+            complete_function_calls = false,
+            expose_as_code_action = {},
+            publish_diagnostic_on = "insert_leave",
+            tsserver_file_preferences = {
+              includeInlayParameterNameHints = "none",
+              includeInlayFunctionParameterTypeHints = false,
+              includeInlayVariableTypeHints = false,
+              includeInlayPropertyDeclarationTypeHints = false,
+              includeInlayFunctionLikeReturnTypeHints = false,
+              includeInlayEnumMemberValueHints = false,
+              -- Stops project-wide auto-import scan on every keystroke.
+              includeCompletionsForModuleExports = false,
+            },
+          },
+        })
+        EOF
+      '';
     }
     nvim-jdtls
     {
