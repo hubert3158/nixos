@@ -32,10 +32,8 @@ let
     { plugin = lualine-nvim; }
     bufferline-nvim
     { plugin = dashboard-nvim; }
-    {
-      plugin = noice-nvim;
-      config = "lua << EOF\nrequire(\"noice\").setup()\nEOF\n";
-    }
+    # noice setup lazy via lz.n on DeferredUIEnter (+ overrides for vim.lsp.util).
+    noice-nvim
     {
       plugin = nvim-web-devicons;
       config = "lua << EOF\nrequire(\"nvim-web-devicons\").setup()\nEOF\n";
@@ -45,20 +43,12 @@ let
       plugin = barbecue-nvim;
       config = "lua << EOF\nrequire(\"barbecue\").setup()\nEOF\n";
     }
-    {
-      plugin = indent-blankline-nvim;
-      config = "lua << EOF\nrequire(\"ibl\").setup()\nEOF\n";
-    }
-    {
-      plugin = nvim-colorizer-lua;
-      config = "lua << EOF\nrequire(\"colorizer\").setup()\nEOF\n";
-    }
+    # indent-blankline / colorizer / smartcolumn — setup lazy via lz.n.
+    indent-blankline-nvim
+    nvim-colorizer-lua
     { plugin = smear-cursor-nvim; }
     twilight-nvim
-    {
-      plugin = smartcolumn-nvim;
-      config = "lua << EOF\nrequire(\"smartcolumn\").setup()\nEOF\n";
-    }
+    smartcolumn-nvim
 
     # ============================================================================
     # FILE MANAGEMENT & NAVIGATION
@@ -83,57 +73,25 @@ let
     # ============================================================================
     # GIT INTEGRATION
     # ============================================================================
-    {
-      plugin = gitsigns-nvim;
-      config = "lua << EOF\nrequire(\"gitsigns\").setup({})\nEOF\n";
-    }
+    # gitsigns setup lazy via lz.n on BufReadPre/BufNewFile.
+    gitsigns-nvim
     vim-fugitive
     lazygit-nvim
-    {
-      plugin = git-conflict-nvim;
-      config = "lua << EOF\nrequire(\"git-conflict\").setup()\nEOF\n";
-    }
+    # git-conflict setup runs lazily via nvim/lua/user/git-conflict.lua
+    # (driven by lz.n on DeferredUIEnter). Inline setup() removed — was duplicate.
+    git-conflict-nvim
 
     # ============================================================================
     # LSP & LANGUAGE SUPPORT
     # ============================================================================
     { plugin = nvim-lspconfig; }
-    { plugin = mason-nvim; }
+    # mason-nvim removed — all LSPs and jdtls bundles now come from nixpkgs.
     {
       plugin = lazydev-nvim;
       config = "lua << EOF\nrequire(\"lazydev\").setup({})\nEOF\n";
     }
-    {
-      plugin = typescript-tools-nvim;
-      config = ''
-        lua << EOF
-        require("typescript-tools").setup({
-          -- Anchor tsserver to nearest tsconfig (avoids loading whole monorepo
-          -- when nvim is opened at the workspace root).
-          root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "jsconfig.json"),
-          single_file_support = false,
-          settings = {
-            tsserver_max_memory = 8192,
-            code_lens = "off",
-            disable_member_code_lens = true,
-            complete_function_calls = false,
-            expose_as_code_action = {},
-            publish_diagnostic_on = "insert_leave",
-            tsserver_file_preferences = {
-              includeInlayParameterNameHints = "none",
-              includeInlayFunctionParameterTypeHints = false,
-              includeInlayVariableTypeHints = false,
-              includeInlayPropertyDeclarationTypeHints = false,
-              includeInlayFunctionLikeReturnTypeHints = false,
-              includeInlayEnumMemberValueHints = false,
-              -- Stops project-wide auto-import scan on every keystroke.
-              includeCompletionsForModuleExports = false,
-            },
-          },
-        })
-        EOF
-      '';
-    }
+    # typescript-tools.nvim replaced by vtsls (registered via lsp.lua) —
+    # plugin had breakage on nvim 0.12 vim.lsp.enable wire-up (issue #379).
     nvim-jdtls
     {
       plugin = fidget-nvim;
@@ -167,7 +125,7 @@ let
       plugin = comment-nvim;
       config = "lua << EOF\nrequire(\"Comment\").setup()\nEOF\n";
     }
-    nvim-comment
+    # nvim-comment removed — duplicate of comment-nvim.
     comment-box-nvim
     # refactoring.nvim removed: as of nixpkgs 2026-04 it depends on async.nvim,
     # which ships a top-level lua/async.lua that collides with promise-async
@@ -206,10 +164,9 @@ let
       config = "lua << EOF\nrequire(\"trouble\").setup()\nEOF\n";
     }
     undotree
-    {
-      plugin = auto-session;
-      config = "lua << EOF\nrequire(\"auto-session\").setup()\nEOF\n";
-    }
+    # auto-session is setup lazily via nvim/lua/user/auto-session.lua
+    # (driven by lz.n). Inline setup() removed — was running twice.
+    auto-session
     todo-comments-nvim
     neoscroll-nvim
     {
