@@ -28,5 +28,9 @@
     NODE_OPTIONS = "--dns-result-order=ipv4first";
     # Playwright E2E testing — use Nix-provided browsers
     PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+    # nvim-jdtls — point at nix-packaged jdtls + bundles (replaces mason)
+    JDTLS_PATH = "${pkgs.jdt-language-server}/share/java/jdtls";
+    JDTLS_JAVA_DEBUG_BUNDLE_DIR = "${pkgs.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server";
+    JDTLS_JAVA_TEST_BUNDLE_DIR = "${pkgs.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server";
   };
 }

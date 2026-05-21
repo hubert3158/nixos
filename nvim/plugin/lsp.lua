@@ -7,45 +7,19 @@ Neovim LSP bootstrap — diagnostics fixed (logic preserved)
 ]]
 
 ------------------------------------------------------------
--- 0) Guard: prevent unwanted auto-start of JDTLS
+-- 0) Guard: kill stray jdtls clients on java buffers
+-- The vim.lsp.start_client monkey-patch was removed (deprecated in 0.11).
+-- The FileType autocmd below is sufficient: any non-custom jdtls client
+-- that an unrelated plugin spawns is stopped on attach.
 ------------------------------------------------------------
-local original_start_client = vim.lsp.start_client
-
----@class JdtlsClientConfig
----@field name? string
----@field cmd? string[]
----@field custom_jdtls? boolean
----@field root_dir? string
----@field init_options? table
----@field settings? table
----@field on_attach? function
----@field capabilities? table
-
----@class LspClientConfig
----@field custom_jdtls? boolean
-
----Block non-custom jdtls startups while preserving original API
----@param config JdtlsClientConfig
----@diagnostic disable-next-line: duplicate-set-field
-vim.lsp.start_client = function(config)
-	if config and (config.name == "jdtls" or (config.cmd and config.cmd[1] and config.cmd[1]:match("jdtls"))) then
-		if not config.custom_jdtls then
-			return nil
-		end
-	end
-	return original_start_client(config)
-end
-
--- Ensure auto-started jdtls clients from other plugins are stopped for Java buffers
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "java",
 	callback = function()
 		local clients = vim.lsp.get_clients({ name = "jdtls" })
 		for _, client in ipairs(clients) do
-			-- guard client.config and the custom flag (LuaLS nil-checks)
 			---@diagnostic disable-next-line: undefined-field
 			if not (client and client.config and client.config.custom_jdtls) then
-				vim.lsp.stop_client(client.id)
+				client:stop()
 			end
 		end
 	end,
@@ -154,6 +128,19 @@ comp.completionItem = item
 td.completion = comp
 general_capabilities.textDocument = td
 
+-- Enable workspace/didChangeWatchedFiles dynamic registration. typescript-tools
+-- + vtsls don't advertise this by default; tsserver / pyright / clangd benefit
+-- from seeing out-of-editor file changes (git checkout, codegen, pnpm install).
+general_capabilities.workspace = general_capabilities.workspace or {}
+general_capabilities.workspace.didChangeWatchedFiles = {
+	dynamicRegistration = true,
+	relativePatternSupport = true,
+}
+
+-- Make global capabilities the default for every enabled server. Individual
+-- entries in the `servers` table below can override but don't need to repeat.
+vim.lsp.config("*", { capabilities = general_capabilities })
+
 ------------------------------------------------------------
 -- 4) Debug utilities and user commands
 ------------------------------------------------------------
@@ -205,11 +192,10 @@ local function test_completion()
 	end
 
 	local params = vim.lsp.util.make_position_params(0, "utf-16")
-	-- Use buf_request to satisfy LuaLS types and Neovim API
 	for _, client in ipairs(clients) do
-		if client.server_capabilities and client.server_capabilities.completionProvider then
+		if client:supports_method("textDocument/completion") then
 			vim.print("Testing completion with " .. (client.name or tostring(client.id)))
-			vim.lsp.buf_request(bufnr, "textDocument/completion", params, function(err, result)
+			client:request("textDocument/completion", params, function(err, result)
 				if err then
 					vim.print("Completion error: " .. vim.inspect(err))
 					return
@@ -226,7 +212,7 @@ local function test_completion()
 				else
 					vim.print("No completion result")
 				end
-			end)
+			end, bufnr)
 		end
 	end
 end
@@ -238,13 +224,8 @@ vim.api.nvim_create_user_command(
 	{ desc = "Test LSP completion at cursor position" }
 )
 vim.api.nvim_create_user_command("LspRestartAll", function()
-	local all = vim.lsp.get_clients()
-	local ids = {}
-	for _, c in ipairs(all) do
-		ids[#ids + 1] = c.id
-	end
-	if #ids > 0 then
-		vim.lsp.stop_client(ids)
+	for _, c in ipairs(vim.lsp.get_clients()) do
+		c:stop()
 	end
 	vim.defer_fn(function()
 		vim.cmd("edit")
@@ -320,6 +301,43 @@ local servers = {
 		on_attach = general_on_attach,
 		capabilities = general_capabilities,
 	},
+	vtsls = {
+		on_attach = general_on_attach,
+		capabilities = general_capabilities,
+		root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+		settings = {
+			vtsls = {
+				tsserver = { maxTsServerMemory = 8192 },
+			},
+			typescript = {
+				preferences = {
+					includeCompletionsForModuleExports = true,
+					includeCompletionsForImportStatements = false,
+				},
+				inlayHints = {
+					parameterNames = { enabled = "none" },
+					parameterTypes = { enabled = false },
+					variableTypes = { enabled = false },
+					propertyDeclarationTypes = { enabled = false },
+					functionLikeReturnTypes = { enabled = false },
+					enumMemberValues = { enabled = false },
+				},
+				tsserver = { useSyntaxServer = "auto" },
+				updateImportsOnFileMove = { enabled = "always" },
+			},
+			javascript = {
+				preferences = {
+					includeCompletionsForModuleExports = true,
+					includeCompletionsForImportStatements = false,
+				},
+				inlayHints = {
+					parameterNames = { enabled = "none" },
+					parameterTypes = { enabled = false },
+					variableTypes = { enabled = false },
+				},
+			},
+		},
+	},
 }
 
 -- Register servers (except jdtls which is handled separately)
@@ -341,8 +359,9 @@ end
 local home = os.getenv("HOME") or vim.fn.expand("~")
 local data = vim.fn.stdpath("data")
 
--- Mason-installed JDTLS layout
-local jdtls_root = data .. "/mason/packages/jdtls"
+-- Nix-managed JDTLS layout (env var set in home-manager); Mason path is
+-- legacy fallback for unconfigured environments.
+local jdtls_root = vim.env.JDTLS_PATH or (data .. "/mason/packages/jdtls")
 local launcher_jar = vim.fn.glob(jdtls_root .. "/plugins/org.eclipse.equinox.launcher_*.jar")
 local config_dir = jdtls_root .. "/config_linux"
 
@@ -359,17 +378,13 @@ if not exists(config_dir) then
 	return
 end
 
--- JDKs (prefer 21 for running jdtls, fall back to 11, then 25)
+-- JDKs (jdtls 1.40+ requires JDK 21+; JDK 11 fallback dropped).
 local jdk25 = os.getenv("JAVA_HOME25")
 local jdk21 = os.getenv("JAVA_HOME21")
-local jdk11 = os.getenv("JAVA_HOME11")
 
 local function pick_runtime_java()
 	if exists(jdk21) then
 		return jdk21, "21"
-	end
-	if exists(jdk11) then
-		return jdk11, "11"
 	end
 	if exists(jdk25) then
 		return jdk25, "25"
@@ -383,8 +398,8 @@ if not runtime_java then
 	return
 end
 
--- Project Java (what the code compiles with): prefer highest available
-local project_java = jdk25 or jdk21 or jdk11
+-- Project Java (what the code compiles with): prefer highest available.
+local project_java = jdk25 or jdk21
 
 -- Optional extras
 local lombok = home .. "/nixos/dotfiles/lombok-1.18.42.jar"
@@ -395,16 +410,21 @@ if exists(jakarta_annotation) then
 	table.insert(bundles, jakarta_annotation)
 end
 
-local debugger_path = data .. "/mason/packages/java-debug-adapter"
-local test_path = data .. "/mason/packages/java-test"
-if exists(debugger_path) then
-	local dbg = vim.fn.glob(debugger_path .. "/extension/server/com.microsoft.java.debug.plugin-*.jar", true)
+-- Bundle dirs from home-manager session vars (nix-packaged extensions).
+-- Each var points directly at the dir containing the .jar files; layout
+-- differs from Mason's `extension/server/`, so glob lives at the root.
+local debugger_dir = vim.env.JDTLS_JAVA_DEBUG_BUNDLE_DIR
+	or (data .. "/mason/packages/java-debug-adapter/extension/server")
+local test_dir = vim.env.JDTLS_JAVA_TEST_BUNDLE_DIR
+	or (data .. "/mason/packages/java-test/extension/server")
+if exists(debugger_dir) then
+	local dbg = vim.fn.glob(debugger_dir .. "/com.microsoft.java.debug.plugin-*.jar", true)
 	if dbg ~= "" then
 		table.insert(bundles, dbg)
 	end
 end
-if exists(test_path) then
-	for _, j in ipairs(vim.split(vim.fn.glob(test_path .. "/extension/server/*.jar", true), "\n")) do
+if exists(test_dir) then
+	for _, j in ipairs(vim.split(vim.fn.glob(test_dir .. "/*.jar", true), "\n")) do
 		if j ~= "" then
 			table.insert(bundles, j)
 		end
@@ -451,8 +471,8 @@ local function build_cmd(ws_dir)
 		"-Dlog.protocol=true",
 		"-Dlog.level=ALL",
 		-- Performance optimizations for Spring Boot projects
-		"-Xmx2g", -- Increased from 1g for Spring Boot
-		"-Xms256m", -- Increased from 100m for faster startup
+		"-Xmx4g", -- Spring Boot + Lombok + m2e index pushes past 2g
+		"-Xms1g", -- larger initial heap avoids early GC during indexing
 		"-XX:+UseG1GC", -- G1 garbage collector (better for large heaps)
 		"-XX:+UseStringDeduplication", -- Reduce memory for duplicate strings
 		"-XX:MaxGCPauseMillis=200", -- Target max GC pause
@@ -461,7 +481,7 @@ local function build_cmd(ws_dir)
 	if exists(lombok) then
 		table.insert(cmd, "-javaagent:" .. lombok)
 	end
-	if runtime_ver == "17" or runtime_ver == "21" or runtime_ver == "25" then
+	if runtime_ver == "21" or runtime_ver == "25" then
 		vim.list_extend(cmd, {
 			"--add-modules=ALL-SYSTEM",
 			"--add-opens",
@@ -490,32 +510,38 @@ local function build_settings()
 	if exists(jdk21) then
 		table.insert(runtimes, { name = "JavaSE-21", path = jdk21, default = project_java == jdk21 })
 	end
-	if exists(jdk11) then
-		table.insert(runtimes, { name = "JavaSE-11", path = jdk11, default = project_java == jdk11 })
-	end
 
 	local s = {
 		java = {
 			home = project_java,
-			eclipse = { downloadSources = true },
+			-- downloadSources hits Maven/Gradle for every dep's source jar on
+			-- first import; dominates Spring Boot startup. Cheap to flip back
+			-- per project via :lua vim.lsp.config(...) if needed.
+			eclipse = { downloadSources = false },
 			configuration = {
 				runtimes = runtimes,
-				updateBuildConfiguration = "interactive", -- Changed from "automatic" for performance
+				updateBuildConfiguration = "interactive",
 			},
 			maven = {
-				downloadSources = true,
-				updateSnapshots = false, -- Don't auto-update snapshots (performance)
+				downloadSources = false,
+				updateSnapshots = false,
 			},
 			gradle = {
-				downloadSources = true,
+				downloadSources = false,
 			},
-			-- Performance optimizations for large projects
-			maxConcurrentBuilds = 2, -- Limit concurrent builds
-			autobuild = { enabled = false }, -- Disable auto-build for performance
+			-- Concurrent build cap (Spring Boot multi-module + Lombok loves to spawn).
+			maxConcurrentBuilds = 1,
+			-- autobuild=true is required for cross-file diagnostics (jdtls#3155).
+			-- The previous "perf optimization" silently dropped diagnostics.
+			autobuild = { enabled = true },
+			-- Null analysis runs per-keystroke; off by default for Spring.
+			compile = { nullAnalysis = { mode = "disabled" } },
 			-- CodeLens settings (expensive for large projects)
-			implementationsCodeLens = { enabled = false }, -- Disabled for performance
-			referencesCodeLens = { enabled = false }, -- Disabled for performance
-			references = { includeDecompiledSources = false }, -- Disabled for performance
+			implementationsCodeLens = { enabled = false },
+			referencesCodeLens = { enabled = false },
+			-- includeDecompiledSources=true is lazy; restore so Find References
+			-- can jump into library jars when needed.
+			references = { includeDecompiledSources = true },
 			format = { enabled = true },
 			signatureHelp = { enabled = true },
 			contentProvider = { preferred = nil },
@@ -569,8 +595,20 @@ local function build_settings()
 		},
 	}
 
+	-- Gate each library on its own existence check. Before this split, jakarta
+	-- was added whenever lombok existed, logging a warning when the jakarta
+	-- jar was missing.
+	if exists(lombok) or exists(jakarta_annotation) then
+		local refs = {}
+		if exists(lombok) then
+			table.insert(refs, lombok)
+		end
+		if exists(jakarta_annotation) then
+			table.insert(refs, jakarta_annotation)
+		end
+		s.java.project = { referencedLibraries = refs }
+	end
 	if exists(lombok) then
-		s.java.project = { referencedLibraries = { lombok, jakarta_annotation } }
 		s["java.jdt.ls.lombokSupport.enabled"] = true
 	end
 
@@ -601,15 +639,21 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	end,
 })
 
--- Java-specific performance commands
+-- Scope to the current project's workspace only — the original command
+-- rm-rf'd ~/.local/share/eclipse/, nuking unrelated projects.
 vim.api.nvim_create_user_command("JavaCleanWorkspace", function()
-	local workspace_dir = home .. "/.local/share/eclipse/"
-	local choice = vim.fn.confirm("Clean JDTLS workspace? This will require full project reindex.", "&Yes\n&No", 2)
-	if choice == 1 then
-		vim.fn.system({ "rm", "-rf", workspace_dir })
-		vim.notify("JDTLS workspace cleaned. Restart Neovim to reindex.", vim.log.levels.INFO)
+	local root = compute_root()
+	if not root then
+		vim.notify("Not in a Java project root", vim.log.levels.WARN)
+		return
 	end
-end, { desc = "Clean JDTLS workspace cache" })
+	local ws = workspace_for(root)
+	local prompt = "Clean JDTLS workspace for " .. root .. "?\n(" .. ws .. ")"
+	if vim.fn.confirm(prompt, "&Yes\n&No", 2) == 1 then
+		vim.fn.system({ "rm", "-rf", ws })
+		vim.notify("Cleaned " .. ws .. ". Restart nvim to reindex.", vim.log.levels.INFO)
+	end
+end, { desc = "Clean JDTLS workspace cache (current project only)" })
 
 vim.api.nvim_create_user_command("JavaBuildProject", function()
 	local jdtls = require("jdtls")

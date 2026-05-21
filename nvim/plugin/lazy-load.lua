@@ -20,6 +20,13 @@ require("lz.n").load({
 		end,
 	},
 	{
+		"noice.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("user.noice")
+		end,
+	},
+	{
 		"twilight.nvim",
 		cmd = "Twilight",
 		after = function()
@@ -58,6 +65,34 @@ require("lz.n").load({
 			require("user.nvimLint")
 		end,
 	},
+	{
+		"gitsigns.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		after = function()
+			require("user.gitsigns")
+		end,
+	},
+	{
+		"indent-blankline.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		after = function()
+			require("user.indent-blankline")
+		end,
+	},
+	{
+		"nvim-colorizer.lua",
+		event = { "BufReadPre", "BufNewFile" },
+		after = function()
+			require("user.colorizer")
+		end,
+	},
+	{
+		"smartcolumn.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		after = function()
+			require("user.smartcolumn")
+		end,
+	},
 
 	-- ============================================================================
 	-- TOOLS - Load on command/key
@@ -81,7 +116,6 @@ require("lz.n").load({
 	},
 	{
 		"auto-session",
-		event = "VimEnter",
 		after = function()
 			require("user.auto-session")
 		end,
@@ -130,6 +164,13 @@ require("lz.n").load({
 		},
 		after = function()
 			require("user.codeCompanion")
+		end,
+	},
+	{
+		"render-markdown.nvim",
+		ft = { "markdown", "mdx" },
+		after = function()
+			require("user.render-markdown")
 		end,
 	},
 	{

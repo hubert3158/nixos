@@ -69,10 +69,12 @@ in {
         # Language servers
         lua-language-server
         jdt-language-server
+        vscode-extensions.vscjava.vscode-java-debug
+        vscode-extensions.vscjava.vscode-java-test
         nil
         bash-language-server
         zls
-        typescript-language-server
+        vtsls
 
         # Python with packages
         (python312.withPackages (ps:

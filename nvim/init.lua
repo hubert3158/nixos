@@ -83,6 +83,11 @@ opt.undoreload = 10000 -- Save whole buffer for undo when reloading
 -- Shada (session data) optimization
 opt.shada = "!,'100,<50,s10,h" -- Limit shada size for faster startup
 
+-- Session restore must include localoptions so filetype survives the
+-- restore — without it FileType autocmds (vim.lsp.enable, lazydev) never
+-- fire on restored buffers and no LSP attaches.
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 -- Disable some builtin plugins we don't use
 local disabled_built_ins = {
 	"gzip",
@@ -153,9 +158,8 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	end,
 })
 
--- Module loading is handled by lz.n (see plugin/lazy-load.lua)
--- Only load mason here as it's needed for LSP server management
-require("user.mason")
+-- Module loading is handled by lz.n (see plugin/lazy-load.lua).
+-- mason.nvim removed — LSPs and jdtls bundles are nix-managed.
 
 -- Performance modules
 require("user.bigfile").setup({
