@@ -17,5 +17,14 @@
     (final: prev: {
       flameshot = inputs.nixpkgs-flameshot.legacyPackages.${prev.stdenv.hostPlatform.system}.flameshot;
     })
+
+    # pipx 1.8.0 test suite fails against newer `packaging` lib (canonicalizes
+    # `name@ url` -> `name @ url`). Tests-only failure, skip them.
+    (final: prev: {
+      pipx = prev.pipx.overridePythonAttrs (old: {
+        doCheck = false;
+        doInstallCheck = false;
+      });
+    })
   ];
 }
