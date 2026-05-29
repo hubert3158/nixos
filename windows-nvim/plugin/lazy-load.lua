@@ -1,0 +1,7 @@
+-- ============================================================================
+-- (Windows port) Lazy-loading is now handled by lazy.nvim in lua/plugins.lua.
+--
+-- On NixOS this file used `lz.n` to defer plugins that Nix had already
+-- installed. lazy.nvim provides the same event/cmd/keys/ft triggers directly
+-- in the plugin spec, so this file is intentionally left empty.
+-- ============================================================================
