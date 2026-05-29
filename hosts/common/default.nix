@@ -230,7 +230,7 @@ in {
     awscli2
     antigravity
     libmaxminddb
-    claude-desktop-fhs
+    # claude-desktop-fhs  # disabled: upstream patches (aaddrick) fail against Claude Desktop 1.9659.2 — addTrustedFolder anchor + #412 spawn regex no longer match. Re-enable when aaddrick/claude-desktop-debian updates.
 
     # AI / Claude Code tooling — replaces previous npm-global installs.
     claude-code      # @anthropic-ai/claude-code CLI
