@@ -10,11 +10,11 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "sigmap";
-  version = "6.10.10";
+  version = "6.10.12";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/sigmap/-/sigmap-${version}.tgz";
-    hash = "sha256-g+0PACciQfFgRzU+B9cu1YeooacAj2/xFPYGysb+G8Q=";
+    hash = "sha256-s2RpWKZNAG1+OLKaGd/lqctqInxsk0rfmDi0cx8B4Zg=";
   };
 
   nativeBuildInputs = [ makeWrapper ];

@@ -12,12 +12,12 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "cocoindex";
-  version = "1.0.3";
+  version = "1.0.7";
   format = "wheel";
 
   src = fetchurl {
-    url = "https://files.pythonhosted.org/packages/f4/87/502fb337b4d8a821284b1a7c3fd0a06772360a68f2ae955ccb58b719f5cc/cocoindex-${version}-cp311-abi3-manylinux_2_28_x86_64.whl";
-    hash = "sha256-eBvGKVnYhHCA83q/OoGVie6vEgyExi57gO9MlR012VA=";
+    url = "https://files.pythonhosted.org/packages/9c/b3/f9f494e7293ce07e40c1bdf02cd3d7eb0ace8bcc3b30c6841f9c8e9bd67b/cocoindex-${version}-cp311-abi3-manylinux_2_28_x86_64.whl";
+    hash = "sha256-mICRrume6MdmrG1owXEzkUONWZrL9361FagEwjRSNpw=";
   };
 
   nativeBuildInputs = [ autoPatchelfHook ];
@@ -33,10 +33,10 @@ python3.pkgs.buildPythonApplication rec {
     click
     rich
     python-dotenv
-    watchfiles
     numpy
     psutil
     msgspec
+    watchdog
   ];
 
   pythonImportsCheck = [ "cocoindex" ];

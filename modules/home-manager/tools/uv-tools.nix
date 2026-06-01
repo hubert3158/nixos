@@ -27,6 +27,11 @@ let
       name = "semble";
       args = "semble";
     }
+    {
+      name = "graphify";
+      # PyPI package is `graphifyy` (double-y); exposes the `graphify` bin.
+      args = "graphifyy";
+    }
   ];
 
   installScript = lib.concatMapStringsSep "\n" (t: ''
