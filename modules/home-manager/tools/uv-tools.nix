@@ -37,7 +37,9 @@ let
       # Nix's python312Packages.markitdown pulls torch+onnxruntime+transformers
       # as hard deps (via speechrecognition/magika) and isn't cached → hours of
       # local compile. The PyPI base wheel needs none of that, so install via uv.
-      args = "markitdown";
+      # Doc-format extras (pdf/docx/pptx/xlsx/xls/outlook) are all pure-Python and
+      # light. Deliberately NOT [all] — that adds audio-transcription → torch.
+      args = "'markitdown[pdf,docx,pptx,xlsx,xls,outlook]'";
     }
   ];
 
