@@ -32,6 +32,13 @@ let
       # PyPI package is `graphifyy` (double-y); exposes the `graphify` bin.
       args = "graphifyy";
     }
+    {
+      name = "markitdown";
+      # Nix's python312Packages.markitdown pulls torch+onnxruntime+transformers
+      # as hard deps (via speechrecognition/magika) and isn't cached → hours of
+      # local compile. The PyPI base wheel needs none of that, so install via uv.
+      args = "markitdown";
+    }
   ];
 
   installScript = lib.concatMapStringsSep "\n" (t: ''
