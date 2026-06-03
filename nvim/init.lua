@@ -8,7 +8,7 @@ g.maplocalleader = "," -- Same for `maplocalleader`
 g.editorconfig = true
 -- let sqlite.lua (which some plugins depend on) know where to find sqlite
 g.sqlite_clib_path = require("luv").os_getenv("LIBSQLITE")
-g.mkdp_browser = "com.microsoft.Edge"
+g.mkdp_browser = "google-chrome"
 g.slime_target = "tmux"
 -- markdown-preview.nvim configuration
 g.mkdp_auto_start = 0
