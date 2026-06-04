@@ -717,6 +717,18 @@ vim.keymap.set(
 	"<Plug>MarkdownPreviewToggle",
 	{ noremap = true, silent = true, desc = "Toggle Markdown [P]review" }
 )
+-- Open current file in Obsidian (native mermaid render + click-to-zoom).
+-- Requires the file to live inside a registered Obsidian vault.
+vim.keymap.set("n", "<leader>mo", function()
+	local path = vim.fn.expand("%:p")
+	if path == "" then
+		vim.notify("No file to open in Obsidian", vim.log.levels.WARN)
+		return
+	end
+	local uri = "obsidian://open?path=" .. vim.uri_encode(path)
+	vim.fn.jobstart({ "xdg-open", uri }, { detach = true })
+	vim.notify("Obsidian: " .. vim.fn.expand("%:t"), vim.log.levels.INFO)
+end, { noremap = true, silent = true, desc = "Open current file in [O]bsidian" })
 vim.keymap.set("n", "<leader>mP", function()
 	if vim.g.mkdp_enabled == 1 then
 		vim.g.mkdp_enabled = 0
