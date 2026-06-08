@@ -115,6 +115,7 @@ in {
       ])
       # Networking/Security packages
       ++ (lib.optionals cfg.enableNetworking [
+        cloudflared
         wrk
         mtr
         dig
