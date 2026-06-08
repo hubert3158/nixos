@@ -109,6 +109,7 @@ in {
   modules.services.openssh.enable = true;
   modules.services.flatpak.enable = true;
   modules.services.printing.enable = true;
+  modules.services.cloudflared.enable = true;
 
   # ============================================================================
   # DEVELOPMENT MODULES

@@ -3,6 +3,7 @@
 
 {
   imports = [
+    ./cloudflared.nix
     ./docker.nix
     ./postgresql.nix
     ./openssh.nix
