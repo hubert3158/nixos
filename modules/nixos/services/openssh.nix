@@ -16,8 +16,8 @@ in
 
     passwordAuthentication = lib.mkOption {
       type = lib.types.bool;
-      default = true;
-      description = "Allow password authentication";
+      default = false;
+      description = "Allow password authentication (key-only by default; verify ~/.ssh/authorized_keys before enabling sshd on a new machine)";
     };
   };
 

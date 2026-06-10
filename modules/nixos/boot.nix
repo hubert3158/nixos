@@ -22,7 +22,9 @@ in
 
     enableJProfiler = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      # kptr_restrict=0 leaks kernel pointers (ASLR bypass aid) — only
+      # enable on the machine that actually runs JProfiler.
+      default = false;
       description = "Enable kernel settings for JProfiler (perf_event_paranoid, kptr_restrict)";
     };
   };

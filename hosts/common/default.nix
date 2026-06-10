@@ -13,7 +13,7 @@ in {
     enable = true;
     loader = "systemd-boot";
     configurationLimit = 20;
-    enableJProfiler = true;
+    # enableJProfiler set per-host (relaxes kernel hardening)
   };
 
   # Networking
@@ -102,8 +102,7 @@ in {
   modules.services.postgresql = {
     enable = true;
     package = pkgs.postgresql_15;
-    listenAddresses = "*";
-    enableRemoteAccess = true;
+    # localhost-only listen + default pg_hba (module defaults)
   };
 
   modules.services.openssh.enable = true;

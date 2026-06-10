@@ -35,19 +35,9 @@ in {
 
     allowedTCPPorts = lib.mkOption {
       type = lib.types.listOf lib.types.port;
-      default = [3000 5173 8080 8081 993 5678 5432 5000 8083 8085 9990 4318 4317];
+      # 5432 deliberately NOT here — postgres is localhost-only.
+      default = [3000 5173 8080 8081 993 5678 5000 8083 8085 9990 4318 4317];
       description = "Allowed TCP ports in firewall";
-    };
-
-    allowedTCPPortRanges = lib.mkOption {
-      type = lib.types.listOf (lib.types.attrsOf lib.types.port);
-      default = [
-        {
-          from = 1024;
-          to = 65535;
-        }
-      ];
-      description = "Allowed TCP port ranges in firewall for claude code login";
     };
 
     allowedUDPPorts = lib.mkOption {
@@ -64,6 +54,7 @@ in {
       nameservers = cfg.nameservers;
 
       firewall = {
+        enable = true;
         allowedTCPPorts = cfg.allowedTCPPorts;
         allowedUDPPorts = cfg.allowedUDPPorts;
       };
