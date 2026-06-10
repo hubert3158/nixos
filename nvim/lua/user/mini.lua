@@ -1,3 +1,5 @@
+-- mini.nvim modules. Loaded via lz.n on DeferredUIEnter.
+
 require("mini.pairs").setup({})
 require("mini.surround").setup({})
 require("mini.map").setup({

@@ -26,7 +26,5 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
--- Initialize Kulala
-require("kulala").setup({
-	default_view = "body",
-})
+-- Kulala itself is loaded lazily on ft=http (see plugin/lazy-load.lua and
+-- lua/user/kulala.lua) — only the parser registration above must be eager.

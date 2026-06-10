@@ -61,7 +61,6 @@ end
 
 -- External integrations (optional)
 local blink_cmp = check_dependency("blink.cmp", "Blink.cmp")
-local telescope_builtin = check_dependency("telescope.builtin", "Telescope")
 
 if not blink_cmp then
 	return
@@ -98,9 +97,16 @@ local function general_on_attach(_, bufnr)
 		vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
 	end)
 
-	if telescope_builtin then
-		bufmap("gs", telescope_builtin.lsp_document_symbols)
-	end
+	-- Telescope loads on DeferredUIEnter (opt plugin) — resolve at keypress,
+	-- not at startup, so this file doesn't force-load it.
+	bufmap("gs", function()
+		local ok, builtin = pcall(require, "telescope.builtin")
+		if ok then
+			builtin.lsp_document_symbols()
+		else
+			vim.notify("Telescope not loaded yet", vim.log.levels.WARN)
+		end
+	end)
 end
 
 ------------------------------------------------------------
@@ -240,10 +246,9 @@ local servers = {
 	lua_ls = {
 		on_attach = general_on_attach,
 		capabilities = general_capabilities,
-		root_dir = vim.fs.root(
-			0,
-			{ ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git" }
-		),
+		-- root_markers (not a precomputed root_dir): vim.fs.root(0, ...) at
+		-- config time pins every later buffer to the startup buffer's root.
+		root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git" },
 		cmd = { "lua-language-server" },
 		settings = {
 			Lua = {
@@ -275,8 +280,9 @@ local servers = {
 		on_attach = function(client, bufnr)
 			general_on_attach(client, bufnr)
 			-- Auto fix-on-save was running EslintFixAll over the whole project
-			-- graph per :w on big monorepos. Bind it to <leader>ef instead.
-			vim.keymap.set("n", "<leader>ef", "<cmd>EslintFixAll<cr>", {
+			-- graph per :w on big monorepos. Bind it to a key instead.
+			-- <leader>el (not <leader>ef — that's DAP Show Frames).
+			vim.keymap.set("n", "<leader>el", "<cmd>EslintFixAll<cr>", {
 				buffer = bufnr,
 				desc = "ESLint: fix all in buffer",
 			})
@@ -394,7 +400,7 @@ end
 
 local runtime_java, runtime_ver = pick_runtime_java()
 if not runtime_java then
-	vim.notify("Set JAVA_HOME21/11/25 for JDTLS runtime", vim.log.levels.ERROR)
+	vim.notify("Set JAVA_HOME21 or JAVA_HOME25 for JDTLS runtime", vim.log.levels.ERROR)
 	return
 end
 
@@ -677,4 +683,3 @@ vim.api.nvim_create_user_command("JavaOrganizeImports", function()
 	})
 end, { desc = "Organize Java imports" })
 
-vim.notify("LSP configuration loaded successfully", vim.log.levels.INFO)

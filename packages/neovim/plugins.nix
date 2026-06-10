@@ -2,6 +2,11 @@
 #
 # Built on top of the kickstart-nix.nvim template:
 #   https://github.com/nix-community/kickstart-nix.nvim
+#
+# `optional = true` puts a plugin in pack/*/opt — it is NOT sourced at
+# startup; lz.n (nvim/plugin/lazy-load.lua) packadds it on its trigger.
+# Every optional plugin here MUST have a matching lz.n spec whose name
+# equals the plugin's pname (= pack directory name).
 { pkgs, inputs }:
 
 let
@@ -25,15 +30,13 @@ let
     # ============================================================================
     # COLORSCHEME & UI
     # ============================================================================
-    {
-      plugin = catppuccin-nvim;
-      config = "lua << EOF\nrequire(\"catppuccin\").setup({ flavour = \"mocha\" })\nEOF\ncolorscheme catppuccin\n";
-    }
-    { plugin = lualine-nvim; }
+    # catppuccin setup lives in nvim/init.lua (single source of truth).
+    catppuccin-nvim
+    { plugin = lualine-nvim; optional = true; }
     bufferline-nvim
     { plugin = dashboard-nvim; }
     # noice setup lazy via lz.n on DeferredUIEnter (+ overrides for vim.lsp.util).
-    noice-nvim
+    { plugin = noice-nvim; optional = true; }
     {
       plugin = nvim-web-devicons;
       config = "lua << EOF\nrequire(\"nvim-web-devicons\").setup()\nEOF\n";
@@ -44,26 +47,28 @@ let
       config = "lua << EOF\nrequire(\"barbecue\").setup()\nEOF\n";
     }
     # indent-blankline / colorizer / smartcolumn — setup lazy via lz.n.
-    indent-blankline-nvim
-    nvim-colorizer-lua
-    { plugin = smear-cursor-nvim; }
-    twilight-nvim
-    smartcolumn-nvim
+    { plugin = indent-blankline-nvim; optional = true; }
+    { plugin = nvim-colorizer-lua; optional = true; }
+    { plugin = smear-cursor-nvim; optional = true; }
+    { plugin = twilight-nvim; optional = true; }
+    { plugin = smartcolumn-nvim; optional = true; }
 
     # ============================================================================
     # FILE MANAGEMENT & NAVIGATION
     # ============================================================================
-    { plugin = telescope-nvim; }
-    telescope-symbols-nvim
-    telescope-zoxide
-    telescope-fzf-native-nvim
-    telescope-frecency-nvim
+    # telescope + extensions load on DeferredUIEnter (user/telescope.lua
+    # packadds the extensions before setup).
+    { plugin = telescope-nvim; optional = true; }
+    { plugin = telescope-symbols-nvim; optional = true; }
+    { plugin = telescope-zoxide; optional = true; }
+    { plugin = telescope-fzf-native-nvim; optional = true; }
+    { plugin = telescope-frecency-nvim; optional = true; }
     { plugin = neo-tree-nvim; }
     {
       plugin = yazi-nvim;
       config = "lua << EOF\nrequire(\"yazi\").setup()\nEOF\n";
     }
-    harpoon2
+    { plugin = harpoon2; optional = true; }
     {
       plugin = nvim-window-picker;
       config = "lua << EOF\nrequire(\"window-picker\").setup()\nEOF\n";
@@ -74,12 +79,12 @@ let
     # GIT INTEGRATION
     # ============================================================================
     # gitsigns setup lazy via lz.n on BufReadPre/BufNewFile.
-    gitsigns-nvim
+    { plugin = gitsigns-nvim; optional = true; }
     vim-fugitive
-    lazygit-nvim
+    { plugin = lazygit-nvim; optional = true; }
     # git-conflict setup runs lazily via nvim/lua/user/git-conflict.lua
-    # (driven by lz.n on DeferredUIEnter). Inline setup() removed — was duplicate.
-    git-conflict-nvim
+    # (driven by lz.n on DeferredUIEnter).
+    { plugin = git-conflict-nvim; optional = true; }
 
     # ============================================================================
     # LSP & LANGUAGE SUPPORT
@@ -102,6 +107,8 @@ let
     # ============================================================================
     # AUTOCOMPLETION & SNIPPETS
     # ============================================================================
+    # blink-cmp must stay eager: plugin/lsp.lua derives LSP client
+    # capabilities from it at startup.
     blink-cmp
     luasnip
     friendly-snippets
@@ -125,7 +132,6 @@ let
       plugin = comment-nvim;
       config = "lua << EOF\nrequire(\"Comment\").setup()\nEOF\n";
     }
-    # nvim-comment removed — duplicate of comment-nvim.
     comment-box-nvim
     # refactoring.nvim removed: as of nixpkgs 2026-04 it depends on async.nvim,
     # which ships a top-level lua/async.lua that collides with promise-async
@@ -134,22 +140,22 @@ let
     # naming collision.
     vim-visual-multi
     { plugin = yanky-nvim; }
-    nvim-spectre
-    venn-nvim
+    { plugin = nvim-spectre; optional = true; }
+    { plugin = venn-nvim; optional = true; }
     vim-easy-align
 
     # ============================================================================
     # FORMATTING & LINTING
     # ============================================================================
-    conform-nvim
-    nvim-lint
+    { plugin = conform-nvim; optional = true; }
+    { plugin = nvim-lint; optional = true; }
 
     # ============================================================================
     # DEBUGGING
     # ============================================================================
-    nvim-dap
-    nvim-dap-ui
-    debugprint-nvim
+    { plugin = nvim-dap; optional = true; }
+    { plugin = nvim-dap-ui; optional = true; }
+    { plugin = debugprint-nvim; optional = true; }
 
     # ============================================================================
     # UTILITIES & PRODUCTIVITY
@@ -164,11 +170,11 @@ let
       config = "lua << EOF\nrequire(\"trouble\").setup()\nEOF\n";
     }
     undotree
-    # auto-session is setup lazily via nvim/lua/user/auto-session.lua
-    # (driven by lz.n). Inline setup() removed — was running twice.
+    # auto-session stays eager — session restore must be configured before
+    # VimEnter; init.lua requires user/auto-session.lua directly.
     auto-session
-    todo-comments-nvim
-    neoscroll-nvim
+    { plugin = todo-comments-nvim; optional = true; }
+    { plugin = neoscroll-nvim; optional = true; }
     {
       plugin = neogen;
       config = "lua << EOF\nrequire(\"neogen\").setup()\nEOF\n";
@@ -177,7 +183,7 @@ let
     # ============================================================================
     # CODE FOLDING & STRUCTURE
     # ============================================================================
-    nvim-ufo
+    { plugin = nvim-ufo; optional = true; }
     promise-async
     {
       plugin = aerial-nvim;
@@ -187,7 +193,7 @@ let
     # ============================================================================
     # AI & CODE ASSISTANCE
     # ============================================================================
-    codecompanion-nvim
+    { plugin = codecompanion-nvim; optional = true; }
 
     # ============================================================================
     # DATABASE MANAGEMENT
@@ -199,18 +205,18 @@ let
     # ============================================================================
     # HTTP & API TESTING
     # ============================================================================
-    kulala-nvim
+    { plugin = kulala-nvim; optional = true; }
 
     # ============================================================================
     # DOCUMENTATION & MARKDOWN
     # ============================================================================
     markdown-preview-nvim
-    render-markdown-nvim
+    { plugin = render-markdown-nvim; optional = true; }
 
     # ============================================================================
     # SCREENSHOTS & SHARING
     # ============================================================================
-    codesnap-nvim
+    { plugin = codesnap-nvim; optional = true; }
 
     # ============================================================================
     # LANGUAGE-SPECIFIC PLUGINS
@@ -223,6 +229,6 @@ let
     # ============================================================================
     # MINI PLUGINS COLLECTION
     # ============================================================================
-    { plugin = mini-nvim; }
+    { plugin = mini-nvim; optional = true; }
   ];
 }

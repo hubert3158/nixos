@@ -60,7 +60,7 @@ let
     lib.cleanSourceWith {
       inherit src;
       name = "nvim-rtp-src";
-      filter = path: tyoe: let
+      filter = path: type: let
         srcPrefix = toString src + "/";
         relPath = lib.removePrefix srcPrefix (toString path);
       in

@@ -1,3 +1,15 @@
+-- Telescope setup. Loaded via lz.n on DeferredUIEnter (telescope and its
+-- extensions are opt plugins — packadd the extensions before setup).
+
+for _, ext in ipairs({
+	"telescope-fzf-native.nvim",
+	"telescope-frecency.nvim",
+	"telescope-zoxide",
+	"telescope-symbols.nvim",
+}) do
+	vim.cmd.packadd(ext)
+end
+
 local ignore = require("user.ignore-patterns")
 
 -- Fix "Invalid window id" race condition in telescope buffer_previewer.lua
@@ -71,6 +83,7 @@ require("telescope").setup({
 
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("frecency")
+require("telescope").load_extension("zoxide")
 
 -- Keymaps for frecency (smart file finding based on frequency + recency)
 vim.keymap.set("n", "<leader>ff", function()

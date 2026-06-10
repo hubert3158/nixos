@@ -1,9 +1,11 @@
--- Lazy loading configuration using lz.n
--- This defers plugin initialization for faster startup
+-- Lazy loading via lz.n. Every plugin listed here is marked
+-- `optional = true` in packages/neovim/plugins.nix, so it lands in
+-- pack/*/opt and is NOT sourced at startup — lz.n packadds it on trigger.
+-- Names must match the plugin's nixpkgs pname (= pack directory name).
 
 require("lz.n").load({
 	-- ============================================================================
-	-- HEAVY UI PLUGINS - Load after startup
+	-- UI — load right after the first frame is drawn
 	-- ============================================================================
 	{
 		"lualine.nvim",
@@ -35,6 +37,45 @@ require("lz.n").load({
 	},
 
 	-- ============================================================================
+	-- Core tools — deferred off the startup path, loaded before first keypress
+	-- ============================================================================
+	{
+		"telescope.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("user.telescope")
+		end,
+	},
+	{
+		"mini.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("user.mini")
+		end,
+	},
+	{
+		"nvim-dap",
+		event = "DeferredUIEnter",
+		after = function()
+			require("user.dap")
+		end,
+	},
+	{
+		"debugprint.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("user.debugprint")
+		end,
+	},
+	{
+		"git-conflict.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("user.git-conflict")
+		end,
+	},
+
+	-- ============================================================================
 	-- FILE/BUFFER PLUGINS - Load on file open
 	-- ============================================================================
 	{
@@ -52,8 +93,10 @@ require("lz.n").load({
 		end,
 	},
 	{
+		-- BufWritePre included so `:enew`-created buffers still get
+		-- format_on_save registered on their first write.
 		"conform.nvim",
-		event = "BufWritePre",
+		event = { "BufReadPre", "BufNewFile", "BufWritePre" },
 		after = function()
 			require("user.conform")
 		end,
@@ -98,10 +141,16 @@ require("lz.n").load({
 	-- TOOLS - Load on command/key
 	-- ============================================================================
 	{
-		"harpoon",
+		"harpoon2",
 		keys = {
-			{ "<leader>ha", desc = "Harpoon add" },
-			{ "<leader>hh", desc = "Harpoon menu" },
+			{ "<leader>pa", desc = "Harpoon add file" },
+			{ "<leader>pl", desc = "Harpoon quick menu" },
+			{ "<leader>p1", desc = "Harpoon file 1" },
+			{ "<leader>p2", desc = "Harpoon file 2" },
+			{ "<leader>p3", desc = "Harpoon file 3" },
+			{ "<leader>p4", desc = "Harpoon file 4" },
+			{ "<leader>pp", desc = "Harpoon prev" },
+			{ "<leader>pn", desc = "Harpoon next" },
 		},
 		after = function()
 			require("user.harpoon")
@@ -114,12 +163,6 @@ require("lz.n").load({
 			require("user.neoscroll")
 		end,
 	},
-	{
-		"auto-session",
-		after = function()
-			require("user.auto-session")
-		end,
-	},
 
 	-- ============================================================================
 	-- GIT - Load on command
@@ -128,13 +171,6 @@ require("lz.n").load({
 		"lazygit.nvim",
 		cmd = "LazyGit",
 		keys = { { "<leader>gg", function() require("lazygit").lazygit() end, desc = "LazyGit" } },
-	},
-	{
-		"git-conflict.nvim",
-		event = "DeferredUIEnter",
-		after = function()
-			require("user.git-conflict")
-		end,
 	},
 
 	-- ============================================================================
@@ -185,13 +221,6 @@ require("lz.n").load({
 		cmd = "Spectre",
 		after = function()
 			require("user.spectre")
-		end,
-	},
-	{
-		"debugprint.nvim",
-		keys = { { "<leader>dp", desc = "Debug print" } },
-		after = function()
-			require("user.debugprint")
 		end,
 	},
 	{

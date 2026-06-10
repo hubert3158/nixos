@@ -37,3 +37,14 @@ require("lint").linters_by_ft = {
 	-- JS/TS lint handled by the eslint LSP server. Running eslint_d here too
 	-- triples the work per save on big monorepos.
 }
+
+-- Lint after save (async; deferred so it never blocks the write)
+vim.api.nvim_create_autocmd("BufWritePost", {
+	group = vim.api.nvim_create_augroup("LintOnSave", { clear = true }),
+	pattern = "*",
+	callback = function()
+		vim.defer_fn(function()
+			require("lint").try_lint()
+		end, 100)
+	end,
+})
