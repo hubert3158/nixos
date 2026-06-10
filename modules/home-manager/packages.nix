@@ -57,11 +57,6 @@ in {
         # EnableLater
         # zed-editor
         helix
-        jetbrains.datagrip
-        jetbrains.idea
-        vscode-extensions.vscjava.vscode-java-debug
-        jprofiler
-        eclipse-mat
         lazygit
         ripgrep
         sd
