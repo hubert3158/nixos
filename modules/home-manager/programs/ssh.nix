@@ -1,4 +1,9 @@
 # SSH client configuration
+#
+# Work/private host definitions are NOT tracked in this repo (it is public).
+# They live in ~/.ssh/config.d/ (e.g. ~/.ssh/config.d/work), pulled in via the
+# Include below. A glob include that matches nothing is a silent no-op, so
+# fresh machines work before the file exists. See POST_INSTALL.md.
 {
   config,
   lib,
@@ -27,100 +32,40 @@ in {
       default = 30;
       description = "Maximum server alive count";
     };
-
-    # Work-specific hosts can be enabled separately
-    enableWorkHosts = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable work SSH host configurations";
-    };
   };
 
   config = lib.mkIf cfg.enable {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      settings =
-        {
-          "*" = {
-            ForwardAgent = cfg.enableForwardAgent;
-            ForwardX11 = false;
-            ForwardX11Trusted = true;
-            ServerAliveInterval = cfg.serverAliveInterval;
-            ServerAliveCountMax = cfg.serverAliveCountMax;
-            KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org";
-          };
-        }
-        // (lib.optionalAttrs cfg.enableWorkHosts {
-          "stg" = {
-            HostName = "0.0.0.0";
-            User = "ubuntu";
-            Port = 22;
-            IdentityFile = "~/.ssh/staging.v2.pem";
-          };
 
-          "prod" = {
-            HostName = "REDACTED-HOST-PROD";
-            User = "ubuntu";
-            Port = 22;
-            IdentityFile = "~/.ssh/prod.v2.pem";
-          };
+      # Untracked host definitions (work servers etc.)
+      includes = [ "config.d/*" ];
 
-          "wellMed" = {
-            HostName = "0.0.0.0";
-            User = "ubuntu";
-            Port = 22;
-          };
+      settings = {
+        "*" = {
+          ForwardAgent = cfg.enableForwardAgent;
+          ForwardX11 = false;
+          ForwardX11Trusted = true;
+          ServerAliveInterval = cfg.serverAliveInterval;
+          ServerAliveCountMax = cfg.serverAliveCountMax;
+          KexAlgorithms = "sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org";
+        };
 
-          "submission" = {
-            HostName = "0.0.0.0";
-            User = "ubuntu";
-            Port = 22;
-            IdentityFile = "~/.ssh/automated_submission.pem";
-          };
+        "github.com-work" = {
+          HostName = "github.com";
+          User = "git";
+          IdentityFile = "~/.ssh/id_ed25519_work";
+          IdentitiesOnly = true;
+        };
 
-          "dev" = {
-            HostName = "0.0.0.0";
-            User = "ubuntu";
-            Port = 22;
-            IdentityFile = "~/.ssh/dev_server.pem";
-          };
-
-          "demo" = {
-            HostName = "0.0.0.0";
-            User = "ubuntu";
-            Port = 22;
-            IdentityFile = "~/.ssh/demo.pem";
-          };
-
-          "REDACTED-BT" = {
-            HostName = "REDACTED-HOST-BT";
-            User = "ubuntu";
-            Port = 22;
-            IdentityFile = "~/.ssh/REDACTED-BT.pem";
-          };
-
-          "rules-engine" = {
-            HostName = "0.0.0.0";
-            User = "ubuntu";
-            Port = 22;
-            IdentityFile = "~/.ssh/rules_engine.pem";
-          };
-
-          "github.com-work" = {
-            HostName = "github.com";
-            User = "git";
-            IdentityFile = "~/.ssh/id_ed25519_work";
-            IdentitiesOnly = true;
-          };
-
-          "github.com" = {
-            HostName = "github.com";
-            User = "git";
-            IdentityFile = "~/.ssh/id_ed25519";
-            IdentitiesOnly = true;
-          };
-        });
+        "github.com" = {
+          HostName = "github.com";
+          User = "git";
+          IdentityFile = "~/.ssh/id_ed25519";
+          IdentitiesOnly = true;
+        };
+      };
     };
   };
 }

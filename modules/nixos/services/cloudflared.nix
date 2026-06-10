@@ -1,6 +1,9 @@
 # Cloudflare tunnel — exposes a local service over a public hostname.
 # Runs as a systemd service (DynamicUser); systemd LoadCredential reads the
 # credentials JSON as root at start, so the file may stay in the user's home.
+#
+# No defaults for tunnelId/hostname — set them in the host config that runs
+# the tunnel (this repo is public; identifiers don't belong in module defaults).
 { config, lib, pkgs, ... }:
 
 let
@@ -12,19 +15,17 @@ in
 
     tunnelId = lib.mkOption {
       type = lib.types.str;
-      default = "ba201dbf-cdd7-4a39-af75-6bb37bcc4db0";
       description = "Cloudflare tunnel UUID (from `cloudflared tunnel create`)";
     };
 
     credentialsFile = lib.mkOption {
       type = lib.types.str;
-      default = "/home/hubert/.cloudflared/${cfg.tunnelId}.json";
+      default = "${config.users.users.${config.modules.users.username}.home}/.cloudflared/${cfg.tunnelId}.json";
       description = "Path to the tunnel credentials JSON. Read by root via LoadCredential.";
     };
 
     hostname = lib.mkOption {
       type = lib.types.str;
-      default = "dev.subash.us.kg";
       description = "Public hostname routed to the tunnel (must have a DNS CNAME)";
     };
 

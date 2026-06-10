@@ -14,12 +14,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Secrets management
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Utilities
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -41,7 +35,6 @@
     self,
     nixpkgs,
     home-manager,
-    sops-nix,
     flake-utils,
     gen-luarc,
     ...
@@ -82,9 +75,6 @@
 
         # Overlays
         (import ./overlays { inherit inputs; })
-
-        # sops-nix module
-        sops-nix.nixosModules.sops
 
         # Home Manager
         home-manager.nixosModules.home-manager
@@ -167,11 +157,6 @@
           lua-language-server
           stylua
           luajitPackages.luacheck
-
-          # Secrets management
-          sops
-          age
-          ssh-to-age
         ];
 
         shellHook = ''
@@ -185,7 +170,6 @@
           echo "Available commands:"
           echo "  nixos-rebuild build --flake .#work   - Build work config"
           echo "  nixos-rebuild build --flake .#home   - Build home config"
-          echo "  sops secrets/secrets.yaml            - Edit secrets"
         '';
       };
     });
