@@ -55,6 +55,16 @@ in
       options = cfg.gc.options;
     };
 
+    # Scheduled store deduplication (preferred over per-write
+    # auto-optimise-store, which slows every build)
+    nix.optimise.automatic = true;
+
+    # Extra binary cache for nix-community packages
+    nix.settings.substituters = [ "https://nix-community.cachix.org" ];
+    nix.settings.trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+
     # Useful Nix-related packages
     environment.systemPackages = with pkgs; [
       nix-index

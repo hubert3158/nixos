@@ -55,6 +55,7 @@ in {
     enable = true;
     enableFlakes = true;
     stateVersion = "24.11";
+    gc.enable = true; # weekly, --delete-older-than 30d
   };
 
   # ============================================================================
@@ -235,4 +236,25 @@ in {
 
   # Environment shells
   environment.shells = with pkgs; [zsh];
+
+  # ============================================================================
+  # SYSTEM MAINTENANCE & PERFORMANCE
+  # ============================================================================
+
+  # Compressed RAM swap — the work machine has no disk swap at all;
+  # without this a single OOM kills the session.
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
+
+  # Periodic SSD TRIM
+  services.fstrim.enable = true;
+
+  # Don't let /tmp accumulate across boots
+  boot.tmp.cleanOnBoot = true;
+
+  # Skip rebuilding the NixOS options manual — it regenerates whenever
+  # custom module options change (often, in this repo)
+  documentation.nixos.enable = false;
 }
