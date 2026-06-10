@@ -109,7 +109,6 @@
               modules.programs.ssh.enable = true;
               modules.programs.gpg.enable = true;
               modules.programs.tmux.enable = true;
-              modules.programs.neovim.enable = true;
               modules.programs.browsers.enable = true;
               modules.programs.media.enable = true;
               modules.programs.nixIndex.enable = true;
@@ -125,6 +124,8 @@
               modules.tools.htop.enable = true;
 
               modules.packages.enable = true;
+              # Heavy Java IDE suite only where Java work happens
+              modules.packages.enableJetbrains = hostname == "work";
 
               # Add nvim-pkg from overlay
               home.packages = [ pkgs.nvim-pkg ];

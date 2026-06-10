@@ -173,14 +173,11 @@ in {
 
   # Additional system packages not covered by modules
   environment.systemPackages = with pkgs; [
-    # Terminal emulators
-    alacritty
-    kdePackages.konsole
+    # Terminals: kitty/wezterm/ghostty are home-manager modules
     kitty.terminfo
 
-    # File managers
-    kdePackages.dolphin
-    kdePackages.breeze-icons
+    # File managers: ranger + yazi (yazi via home-manager module)
+    kdePackages.breeze-icons # icon theme for Qt apps
     ranger
 
     # Media & documents
@@ -201,8 +198,6 @@ in {
     poppler
     poppler-utils
     ntp
-    weston
-    lightdm
     w3m
     wikiman
     tealdeer
@@ -213,8 +208,7 @@ in {
     inetutils
     gopass
 
-    # IDE
-    eclipses.eclipse-jee
+    # IDE (heavy Java IDEs live behind modules.packages.enableJetbrains)
     dbeaver-bin
 
     # Communication

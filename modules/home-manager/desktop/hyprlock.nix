@@ -10,7 +10,7 @@ in
 
     wallpaper = lib.mkOption {
       type = lib.types.str;
-      default = "~/nixos/images/wallpaper.png";
+      default = "${config.home.homeDirectory}/nixos/images/wallpaper.png";
       description = "Path to lock screen wallpaper";
     };
 

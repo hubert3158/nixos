@@ -123,7 +123,7 @@ in
 
       # Misc tools
       ++ [
-        gnupg
+        # gnupg comes from the security module (next to gpg-agent config)
         openssl
         zip
         unzip
@@ -168,7 +168,7 @@ in
       BROWSER = "firefox";
       FILE_MANAGER = "ranger";
       PDF_VIEWER = "zathura";
-      TERMINAL = "alacritty";
+      TERMINAL = "kitty";
     };
 
     # Prisma environment variables

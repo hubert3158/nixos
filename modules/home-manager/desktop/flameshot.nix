@@ -10,7 +10,7 @@ in
 
     savePath = lib.mkOption {
       type = lib.types.str;
-      default = "/home/hubert/Pictures/Screenshots";
+      default = "${config.home.homeDirectory}/Pictures/Screenshots";
       description = "Path to save screenshots";
     };
   };

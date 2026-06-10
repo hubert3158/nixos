@@ -10,7 +10,7 @@ in
 
     wallpaper = lib.mkOption {
       type = lib.types.str;
-      default = "/home/hubert/nixos/images/kitty-wallpaper.jpg";
+      default = "${config.home.homeDirectory}/nixos/images/kitty-wallpaper.jpg";
       description = "Path to wallpaper image";
     };
 

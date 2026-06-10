@@ -46,7 +46,7 @@ in
       settings = {
         user.name = cfg.userName;
         user.email = cfg.userEmail;
-        core.editor = "vim";
+        core.editor = "nvim";
         diff.tool = "vimdiff";
         difftool.prompt = false;
         alias.co = "checkout";

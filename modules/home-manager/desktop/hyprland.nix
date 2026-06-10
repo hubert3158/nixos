@@ -16,7 +16,7 @@ in
 
     configFile = lib.mkOption {
       type = lib.types.str;
-      default = "~/nixos/dotfiles/hypr/hyprland.conf";
+      default = "${config.home.homeDirectory}/nixos/dotfiles/hypr/hyprland.conf";
       description = "Path to external Hyprland config file";
     };
   };

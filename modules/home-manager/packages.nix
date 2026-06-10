@@ -39,6 +39,18 @@ in {
       default = true;
       description = "Enable fun packages (neofetch, cmatrix, etc.)";
     };
+
+    enableJetbrains = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Heavy Java IDE/profiling suite (DataGrip, IntelliJ, JProfiler, Eclipse MAT/JEE) — enable per host";
+    };
+
+    enablePentest = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Network/security testing tools (nmap, nikto, zap) — enable when needed";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -90,6 +102,14 @@ in {
         pipx
         uv
       ])
+      # Heavy Java IDE / profiling suite (per-host opt-in)
+      ++ (lib.optionals cfg.enableJetbrains [
+        jetbrains.datagrip
+        jetbrains.idea
+        jprofiler
+        eclipse-mat
+        eclipses.eclipse-jee
+      ])
       # Productivity packages
       ++ (lib.optionals cfg.enableProductivity [
         obsidian
@@ -99,30 +119,31 @@ in {
 
         discord
         onedrive
-        krusader
-        chatgpt-cli
       ])
       # Multimedia packages
       ++ (lib.optionals cfg.enableMultimedia [
         obs-studio
         pavucontrol
-        yazi
+        # yazi comes from modules.fileManagers.yazi
       ])
-      # Networking/Security packages
+      # Networking packages
       ++ (lib.optionals cfg.enableNetworking [
         cloudflared
         wrk
         mtr
         dig
         dnstop
-        nmap
-        nikto
-        zap
-        wireshark
         proton-vpn
         freerdp
         openvpn
         sshfs
+        # wireshark comes from the system module (proper dumpcap capabilities)
+      ])
+      # Security testing tools (opt-in)
+      ++ (lib.optionals cfg.enablePentest [
+        nmap
+        nikto
+        zap
       ])
       # System utilities
       ++ [
@@ -131,11 +152,10 @@ in {
         ntfs3g
         rsync
         util-linux
-        btop
+        # btop comes from modules.tools.htop
         grim
         slurp
         figlet
-        warp-terminal
       ]
       # Browsers
       ++ [
