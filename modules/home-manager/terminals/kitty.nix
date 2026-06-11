@@ -45,6 +45,16 @@ in
         enable_audio_bell = false;
         update_check_interval = 0;
 
+        # Disable the config-file watcher (kitten __watch_conf__). On kitty 0.47.1
+        # with a home-manager-symlinked kitty.conf (-> /nix/store), the watcher
+        # follows the symlink and recursively adds inotify watches under the nix
+        # store, exhausting fs.inotify.max_user_watches (524288) within minutes of
+        # boot. Every other watcher (vite dev server, IDEs) then fails with
+        # ENOSPC. Auto-reload is useless under home-manager anyway: config changes
+        # land as a new store path via `home-manager switch`, never as in-place
+        # edits. Manual reload (ctrl+shift+f5) still works.
+        auto_reload_config = -1;
+
         # Dracula-like colors
         background = "#282a36";
         background_image = "${config.home.homeDirectory}/nixos/images/kitty-wallpaper.jpg";
