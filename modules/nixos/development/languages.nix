@@ -131,6 +131,8 @@ in
         ccls
         libclang
         glibc.dev
+        # Windows cross-compiler (x86_64-w64-mingw32-gcc), fully cached upstream
+        pkgsCross.mingwW64.buildPackages.gcc
       ])
 
       # Zig packages
