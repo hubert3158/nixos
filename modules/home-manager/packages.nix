@@ -71,6 +71,7 @@ in {
         helix
         lazygit
         ripgrep
+        rtk
         sd
 
         # Language servers
