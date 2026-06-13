@@ -1,8 +1,8 @@
 # Common configuration shared by all hosts
 {pkgs, ...}: let
-  cocoindex = pkgs.callPackage ../../packages/cocoindex { };
-  ccline = pkgs.callPackage ../../packages/ccline { };
-  sigmap = pkgs.callPackage ../../packages/sigmap { };
+  cocoindex = pkgs.callPackage ../../packages/cocoindex {};
+  ccline = pkgs.callPackage ../../packages/ccline {};
+  sigmap = pkgs.callPackage ../../packages/sigmap {};
 in {
   # ============================================================================
   # ENABLE ALL MODULES
@@ -223,15 +223,15 @@ in {
     zellij
 
     awscli2
-    antigravity
+    # antigravity
     libmaxminddb
     # claude-desktop-fhs  # disabled: upstream patches (aaddrick) fail against Claude Desktop 1.9659.2 — addTrustedFolder anchor + #412 spawn regex no longer match. Re-enable when aaddrick/claude-desktop-debian updates.
 
     # AI / Claude Code tooling — replaces previous npm-global installs.
-    claude-code      # @anthropic-ai/claude-code CLI
-    ccline           # @cometix/ccline statusline (custom pkg, Rust binary)
-    cocoindex        # incremental indexing engine for agents (Python+Rust)
-    sigmap           # AI context engine CLI (gen-context / gen-project-map)
+    claude-code # @anthropic-ai/claude-code CLI
+    ccline # @cometix/ccline statusline (custom pkg, Rust binary)
+    cocoindex # incremental indexing engine for agents (Python+Rust)
+    sigmap # AI context engine CLI (gen-context / gen-project-map)
   ];
 
   # Environment shells
