@@ -164,7 +164,7 @@ in {
         brave
         # Force XWayland — native Wayland path has hover-triggered tooltip
         # rendering glitches in Edge specifically (Chrome/Brave unaffected).
-        # microsoft-edge
+        (microsoft-edge.override {commandLineArgs = "--ozone-platform=x11";})
       ]
       # Fun packages
       ++ (lib.optionals cfg.enableFun [
