@@ -49,7 +49,7 @@ in {
     enablePentest = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Network/security testing tools (nmap, nikto, zap) — enable when needed";
+      description = "Network/security testing tools (nmap, zenmap, bettercap, nikto, zap) — enable when needed";
     };
   };
 
@@ -143,6 +143,8 @@ in {
       # Security testing tools (opt-in)
       ++ (lib.optionals cfg.enablePentest [
         nmap
+        zenmap # GTK GUI front-end for nmap (host discovery/scanning)
+        bettercap # MITM/ARP-spoof toolkit — LAN recon + traffic interception
         nikto
         zap
       ])

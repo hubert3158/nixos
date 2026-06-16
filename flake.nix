@@ -126,6 +126,8 @@
               modules.packages.enable = true;
               # Heavy Java IDE suite only where Java work happens
               modules.packages.enableJetbrains = hostname == "work";
+              # Network/security testing tools (zenmap, bettercap, nmap, ...)
+              modules.packages.enablePentest = true;
 
               # Add nvim-pkg from overlay
               home.packages = [ pkgs.nvim-pkg ];
