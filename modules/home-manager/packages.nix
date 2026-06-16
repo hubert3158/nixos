@@ -130,6 +130,7 @@ in {
       # Networking packages
       ++ (lib.optionals cfg.enableNetworking [
         cloudflared
+        net-tools # netstat, ifconfig, route, arp
         wrk
         mtr
         dig
