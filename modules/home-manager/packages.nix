@@ -146,6 +146,7 @@ in {
         nmap
         zenmap # GTK GUI front-end for nmap (host discovery/scanning)
         bettercap # MITM/ARP-spoof toolkit — LAN recon + traffic interception
+        iw # wireless config — bettercap's wifi module needs it to set channels
         nikto
         zap
       ])
