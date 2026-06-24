@@ -98,6 +98,10 @@ let
     # typescript-tools.nvim replaced by vtsls (registered via lsp.lua) —
     # plugin had breakage on nvim 0.12 vim.lsp.enable wire-up (issue #379).
     nvim-jdtls
+    # rustaceanvim owns the rust-analyzer client (do NOT also register it in
+    # plugin/lsp.lua). Config + keymaps: nvim/lua/user/rustaceanvim.lua, loaded
+    # lazily on ft=rust via lz.n (nvim/plugin/lazy-load.lua).
+    { plugin = rustaceanvim; optional = true; }
     {
       plugin = fidget-nvim;
       config = "lua << EOF\nrequire(\"fidget\").setup()\nEOF\n";

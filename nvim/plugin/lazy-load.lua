@@ -217,6 +217,17 @@ require("lz.n").load({
 		end,
 	},
 	{
+		-- `after` (post-packadd): rustaceanvim must be on rtp so user.rustaceanvim
+		-- can require("rustaceanvim.config") for the codelldb DAP adapter. lz.n
+		-- re-fires the FileType event after this hook, so vim.g.rustaceanvim is
+		-- still set before rust-analyzer starts.
+		"rustaceanvim",
+		ft = "rust",
+		after = function()
+			require("user.rustaceanvim")
+		end,
+	},
+	{
 		"nvim-spectre",
 		cmd = "Spectre",
 		after = function()

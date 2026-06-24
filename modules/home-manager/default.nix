@@ -32,5 +32,8 @@
     JDTLS_PATH = "${pkgs.jdt-language-server}/share/java/jdtls";
     JDTLS_JAVA_DEBUG_BUNDLE_DIR = "${pkgs.vscode-extensions.vscjava.vscode-java-debug}/share/vscode/extensions/vscjava.vscode-java-debug/server";
     JDTLS_JAVA_TEST_BUNDLE_DIR = "${pkgs.vscode-extensions.vscjava.vscode-java-test}/share/vscode/extensions/vscjava.vscode-java-test/server";
+    # rustaceanvim DAP — codelldb adapter dir (read in nvim/lua/user/rustaceanvim.lua).
+    # Interpolating the store path pins the package as a dependency; no PATH entry needed.
+    CODELLDB_PATH = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb";
   };
 }

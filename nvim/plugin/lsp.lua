@@ -69,45 +69,9 @@ end
 ------------------------------------------------------------
 -- 2) on_attach: common keymaps and UX
 ------------------------------------------------------------
-local function general_on_attach(_, bufnr)
-	local function bufmap(keys, fn)
-		vim.keymap.set("n", keys, fn, { buffer = bufnr })
-	end
-
-	-- Navigation
-	bufmap("gd", vim.lsp.buf.definition)
-	bufmap("gD", vim.lsp.buf.declaration)
-	bufmap("gi", vim.lsp.buf.implementation)
-	bufmap("K", vim.lsp.buf.hover)
-
-	-- Diagnostics navigation
-	bufmap("[d", function()
-		vim.diagnostic.jump({ count = -1, float = true })
-	end)
-	bufmap("]d", function()
-		vim.diagnostic.jump({ count = 1, float = true })
-	end)
-	bufmap("[e", function()
-		vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
-	end)
-	bufmap("]e", function()
-		vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
-	end)
-	bufmap("<leader>ee", function()
-		vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
-	end)
-
-	-- Telescope loads on DeferredUIEnter (opt plugin) — resolve at keypress,
-	-- not at startup, so this file doesn't force-load it.
-	bufmap("gs", function()
-		local ok, builtin = pcall(require, "telescope.builtin")
-		if ok then
-			builtin.lsp_document_symbols()
-		else
-			vim.notify("Telescope not loaded yet", vim.log.levels.WARN)
-		end
-	end)
-end
+-- Shared with user/rustaceanvim.lua (Rust client is owned by rustaceanvim, not
+-- the servers table below, but must keep the same keymaps).
+local general_on_attach = require("user.lsp-on-attach")
 
 ------------------------------------------------------------
 -- 3) Client capabilities: derived from blink.cmp + enriched
@@ -297,7 +261,9 @@ local servers = {
 	nil_ls = { on_attach = general_on_attach, capabilities = general_capabilities },
 	marksman = { on_attach = general_on_attach, capabilities = general_capabilities },
 	sqls = { on_attach = general_on_attach, capabilities = general_capabilities },
-	rust_analyzer = { on_attach = general_on_attach, capabilities = general_capabilities },
+	-- rust_analyzer is intentionally NOT here — rustaceanvim (user/rustaceanvim.lua,
+	-- loaded lazily on ft=rust) owns the rust-analyzer client. Registering it in
+	-- both double-attaches and breaks runnables/debuggables wiring.
 	tinymist = {
 		on_attach = general_on_attach,
 		capabilities = general_capabilities,
