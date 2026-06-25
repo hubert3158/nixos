@@ -36,4 +36,16 @@
     # Interpolating the store path pins the package as a dependency; no PATH entry needed.
     CODELLDB_PATH = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb";
   };
+
+  # kulala.nvim backend (kulala-core) — provides the HTTP-file LSP that powers
+  # completion/diagnostics/hover. nixpkgs patches the plugin's kulala_core.path to
+  # point at pkgs.kulala-core and disables the GitHub auto-download (downloaded
+  # binaries don't run on NixOS, and nothing here auto-updates by design — the
+  # version is pinned to whatever nixpkgs ships). But the plugin's LSP start gate
+  # (Backend.is_up_to_date) only checks the *download* location, ignoring the
+  # configured path, so the LSP never attaches and completion silently dies.
+  # Symlinking the nix binary into that expected download path satisfies the gate.
+  # Same binary nixpkgs already wires as kulala_core.path, so run + gate agree.
+  home.file.".local/share/nvim/kulala.nvim/bin/kulala-core".source =
+    "${pkgs.kulala-core}/bin/kulala-core";
 }
