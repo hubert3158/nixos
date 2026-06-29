@@ -47,7 +47,8 @@
        syntax                  ; on-the-fly syntax checking
 
        :tools
-       (debugger +lsp)         ; DAP debugging (nvim-dap / dap-ui equivalent)
+       debugger                ; DAP debugging (nvim-dap / dap-ui equiv; dape backend, no flags)
+       (docker +lsp)           ; Dockerfile LSP (docker-langserver) + hadolint
        (eval +overlay)         ; run code inline
        lookup                  ; jump-to-definition / docs
        lsp                     ; language-server support (lsp-mode backend)
@@ -55,17 +56,22 @@
        tree-sitter             ; treesitter highlighting + text objects
 
        :lang
-       data                    ; xml/csv/toml and friends
+       (cc +lsp)               ; c/c++ via clangd + clang-format
+       data                    ; xml/csv and friends
        emacs-lisp              ; configuring Emacs itself
+       (go +lsp)               ; gopls + goimports + delve
+       (graphql +lsp +tree-sitter) ; graphql-lsp
        (java +lsp)             ; jdtls
-       json                    ; json
+       (javascript +lsp +tree-sitter) ; js/ts/jsx/tsx — ts-ls + eslint + prettier
+       (json +lsp)             ; vscode-json-language-server
        (lua +lsp)              ; lua-language-server
        (markdown)              ; writing
        (nix +lsp)              ; this very config (nil/nixd)
        (python +lsp +pyright)  ; pyright language server
-       (rust +lsp)             ; rust-analyzer
+       (rust +lsp +tree-sitter) ; rust-analyzer + rustfmt + clippy + codelldb
        (sh +lsp)               ; bash-language-server
-       yaml                    ; yaml
+       (web +lsp)              ; html/css/scss/less/vue — cssls/html-ls/volar
+       (yaml +lsp)             ; yaml-language-server + yamllint
 
        :config
        (default +bindings +smartparens))

@@ -85,11 +85,14 @@ in
       # LSP servers
       ++ (lib.optionals cfg.enableLSP [
         nil  # Nix LSP
-        vscode-langservers-extracted
+        vscode-langservers-extracted        # html/css/json/eslint servers
         nginx-language-server
         sqls
         semgrep
         marksman
+        graphql-language-service-cli        # graphql-lsp — (graphql +lsp)
+        terraform-ls                        # terraform LSP (terraform-mode)
+        dockerfile-language-server          # docker-langserver — (docker +lsp)
       ])
 
       # Formatters
@@ -117,8 +120,11 @@ in
 
       # Linters
       ++ [
-        hadolint
-        libxml2
+        hadolint     # Dockerfile (flycheck dockerfile-hadolint)
+        libxml2      # xmllint
+        shellcheck   # shell — bash-language-server shells out to it for diagnostics
+        tflint       # Terraform (flycheck terraform-tflint)
+        yamllint     # YAML (flycheck yaml-yamllint)
       ]
 
       # Misc tools

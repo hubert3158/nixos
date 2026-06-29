@@ -89,6 +89,13 @@ in
         yarn
         prettierd
         eslint_d
+        # LSP servers for Doom (javascript +lsp) / (web +lsp) / (yaml +lsp).
+        # ts-ls backs js/ts/jsx/tsx; Volar (vue-language-server) attaches its
+        # TS host to ts-ls; vscode-langservers-extracted (in tools.nix) provides
+        # html/css/json/eslint servers.
+        typescript-language-server
+        vue-language-server
+        yaml-language-server
       ])
 
       # Python packages
@@ -104,7 +111,10 @@ in
       # Go packages
       ++ (lib.optionals cfg.enableGo [
         go
-        gotools
+        gotools       # goimports
+        gopls         # Go LSP
+        delve         # dlv — DAP debugger (dape built-in `dlv` config)
+        golangci-lint # linter (flycheck-golangci-lint)
       ])
 
       # Rust packages
@@ -114,6 +124,12 @@ in
         # `rustup component add rust-analyzer`. hiPrio wins the bin/rust-analyzer
         # collision against rustup's proxy shim (which needs ~/.rustup state).
         (lib.hiPrio rust-analyzer)
+        # Same shim-collision story for rustfmt (apheleia format-on-save) and
+        # clippy (rust-analyzer checkOnSave). hiPrio makes the real binaries win
+        # over rustup's proxies. If a rustup stable toolchain version-mismatches
+        # nixpkgs clippy-driver, drop clippy here and `rustup component add clippy`.
+        (lib.hiPrio rustfmt)
+        (lib.hiPrio clippy)
       ])
 
       # Java packages
@@ -135,6 +151,8 @@ in
         ccls
         libclang
         glibc.dev
+        gdb           # dape built-in `gdb` c/c++ DAP config
+        lldb          # provides lldb-dap for dape's `lldb-dap` config
         # Windows cross-compiler (x86_64-w64-mingw32-gcc), fully cached upstream
         pkgsCross.mingwW64.buildPackages.gcc
       ])

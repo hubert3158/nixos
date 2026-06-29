@@ -14,3 +14,7 @@
 
 ;; nvim-colorizer equivalent: highlight #rrggbb / color names inline.
 (package! rainbow-mode)
+
+;; --- Language parity additions (workflow: doom-language-parity) -------------
+(package! sql-indent)      ; smart SQL indentation (no sql tree-sitter mode)
+(package! terraform-mode)  ; no :lang terraform module in this Doom fork

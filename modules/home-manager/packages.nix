@@ -99,6 +99,11 @@ in {
             flask-cors
             paramiko
             geoip2
+            # Python DAP adapter for Emacs (dape's built-in `debugpy` config runs
+            # a bare `python`, which resolves to THIS env — so debugpy must live
+            # inside it, not in systemPackages or a uv venv. Not in the binary
+            # cache (404) but a tiny pure-Python build, no torch/onnxruntime.
+            debugpy
           ]))
         pipx
         uv
