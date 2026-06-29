@@ -113,6 +113,8 @@
               modules.programs.media.enable = true;
               modules.programs.nixIndex.enable = true;
               modules.programs.opencode.enable = true;
+              modules.programs.emacs.enable = true;
+              modules.programs.emacs.daemon = true;
 
               modules.fileManagers.yazi.enable = true;
               modules.fileManagers.ranger.enable = true;

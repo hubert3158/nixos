@@ -11,5 +11,6 @@
     ./media.nix
     ./nix-index.nix
     ./opencode.nix
+    ./emacs.nix
   ];
 }
