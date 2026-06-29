@@ -17,12 +17,14 @@
        :ui
        doom                    ; the default look
        doom-dashboard          ; the startup splash screen
-       hl-todo                  ; highlight TODO/FIXME/etc
+       hl-todo                  ; highlight TODO/FIXME/etc (todo-comments)
+       indent-guides           ; indent-blankline equivalent
        (ligatures)             ; pretty programming ligatures
-       modeline                ; a fancier status bar
+       modeline                ; a fancier status bar (lualine)
        ophints                 ; highlight regions on yank/delete
        (popup +defaults)       ; tame stray windows
-       vc-gutter               ; git diff in the fringe
+       (treemacs +lsp)         ; neo-tree-style file sidebar ('SPC o p')
+       vc-gutter               ; git diff in the fringe (gitsigns)
        workspaces              ; tab-like workspaces
 
        :editor
@@ -45,18 +47,25 @@
        syntax                  ; on-the-fly syntax checking
 
        :tools
+       (debugger +lsp)         ; DAP debugging (nvim-dap / dap-ui equivalent)
        (eval +overlay)         ; run code inline
        lookup                  ; jump-to-definition / docs
        lsp                     ; language-server support (lsp-mode backend)
        magit                   ; the best git porcelain there is
+       tree-sitter             ; treesitter highlighting + text objects
 
        :lang
+       data                    ; xml/csv/toml and friends
        emacs-lisp              ; configuring Emacs itself
+       (java +lsp)             ; jdtls
+       json                    ; json
+       (lua +lsp)              ; lua-language-server
        (markdown)              ; writing
        (nix +lsp)              ; this very config (nil/nixd)
        (python +lsp +pyright)  ; pyright language server
        (rust +lsp)             ; rust-analyzer
-       (sh)                    ; shell scripts
+       (sh +lsp)               ; bash-language-server
+       yaml                    ; yaml
 
        :config
        (default +bindings +smartparens))

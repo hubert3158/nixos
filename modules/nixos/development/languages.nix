@@ -110,6 +110,10 @@ in
       # Rust packages
       ++ (lib.optionals cfg.enableRust [
         rustup
+        # Declarative rust-analyzer so Rust LSP works without an imperative
+        # `rustup component add rust-analyzer`. hiPrio wins the bin/rust-analyzer
+        # collision against rustup's proxy shim (which needs ~/.rustup state).
+        (lib.hiPrio rust-analyzer)
       ])
 
       # Java packages

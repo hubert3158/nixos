@@ -30,3 +30,28 @@
 (setq projectile-project-search-path '("~/" "~/nixos"))
 
 ;; Handy: 'SPC h' = help, 'SPC f p' = open this private config dir.
+
+;; --- completion: make corfu behave like blink-cmp --------------------------
+;; Eager auto-popup (1 char, fast) + C-j/C-k nav, matching your Neovim keymap.
+(after! corfu
+  (setq corfu-auto t                    ; pop up automatically as you type
+        corfu-auto-delay 0.1            ; nearly instant (blink-cmp feel)
+        corfu-auto-prefix 1             ; trigger after the FIRST character
+        corfu-preview-current t         ; inline preview of the selection
+        corfu-popupinfo-delay '(0.3 . 0.2))
+  (corfu-popupinfo-mode +1)             ; show doc panel beside candidates
+  (define-key corfu-map (kbd "C-j") #'corfu-next)
+  (define-key corfu-map (kbd "C-k") #'corfu-previous))
+
+;; Always-on completion sources (blink-cmp ships buffer-words + paths by
+;; default; Corfu doesn't). Cape ships with Doom's corfu module — just wire it.
+(after! cape
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev) ; words in buffers
+  (add-to-list 'completion-at-point-functions #'cape-file))   ; file paths
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (add-hook 'completion-at-point-functions #'cape-dabbrev 90 t)))
+
+;; --- nvim-colorizer: show colors inline in CSS/web/conf buffers ------------
+(use-package! rainbow-mode
+  :hook ((css-mode scss-mode web-mode html-mode conf-mode) . rainbow-mode))

@@ -11,3 +11,6 @@
 ;; (package! builtin-package :disable t)
 ;;
 ;; Most things you'd want are already provided by the modules in init.el.
+
+;; nvim-colorizer equivalent: highlight #rrggbb / color names inline.
+(package! rainbow-mode)
