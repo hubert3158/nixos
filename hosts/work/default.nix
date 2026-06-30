@@ -20,7 +20,7 @@
   # Dev tunnel (vite on :5173) — runs on this machine only
   modules.services.cloudflared = {
     enable = true;
-    tunnelId = "aa1284a7-4a1d-489c-9109-1a0863009a9c";
-    hostname = "bluetangles.com";
+    tunnelId = "bd3c97f4-586f-40f6-8a4c-cb90fde6f9a4";
+    hostname = "dev.bluetangles.com";
   };
 }
