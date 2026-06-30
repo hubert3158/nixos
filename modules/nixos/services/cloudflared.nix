@@ -4,12 +4,14 @@
 #
 # No defaults for tunnelId/hostname — set them in the host config that runs
 # the tunnel (this repo is public; identifiers don't belong in module defaults).
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.services.cloudflared;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.modules.services.cloudflared;
+in {
   options.modules.services.cloudflared = {
     enable = lib.mkEnableOption "Cloudflare tunnel";
 

@@ -275,7 +275,15 @@ local servers = {
 	},
 	vtsls = {
 		on_attach = general_on_attach,
-		capabilities = general_capabilities,
+		-- Own capabilities table: open buffers already get live sync via
+		-- textDocument/didChange. Watched-files events for the same save
+		-- (e.g. a concurrent `tsc --watch`/`pnpm dev:worker` rewriting
+		-- dist/*.js + tsbuildinfo) race the in-flight edit and desync
+		-- tsserver's internal line map -> "Debug Failure. Bad line number"
+		-- crash loop. Disable dynamicRegistration for vtsls only.
+		capabilities = vim.tbl_deep_extend("force", {}, general_capabilities, {
+			workspace = { didChangeWatchedFiles = { dynamicRegistration = false } },
+		}),
 		root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
 		settings = {
 			vtsls = {
