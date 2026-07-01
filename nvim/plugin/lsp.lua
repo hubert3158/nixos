@@ -284,11 +284,16 @@ local servers = {
 		capabilities = vim.tbl_deep_extend("force", {}, general_capabilities, {
 			workspace = { didChangeWatchedFiles = { dynamicRegistration = false } },
 		}),
+		-- Force FULL document sync for vtsls only. tsserver advertises
+		-- Incremental sync; on large files an off-by-one in an incremental
+		-- didChange range desyncs tsserver's line map ->
+		-- "Debug Failure. Bad line number. Line: N, lineStarts.length: N"
+		-- -> uncaught rejection -> node exit -> "JS/TS service crashed" loop.
+		-- Full sync resends the whole buffer each change, so the line map is
+		-- always rebuilt from ground truth (see nvim _changetracking.lua:67-71).
+		flags = { allow_incremental_sync = false },
 		root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
 		settings = {
-			vtsls = {
-				tsserver = { maxTsServerMemory = 8192 },
-			},
 			typescript = {
 				preferences = {
 					includeCompletionsForModuleExports = true,
@@ -302,7 +307,12 @@ local servers = {
 					functionLikeReturnTypes = { enabled = false },
 					enumMemberValues = { enabled = false },
 				},
-				tsserver = { useSyntaxServer = "auto" },
+				-- vtsls reads maxTsServerMemory from the *typescript.tsserver*
+				-- key (index.js:4728 -> --max-old-space-size). Under vtsls.tsserver
+				-- it is silently ignored -> node child stays at the 3072MB default
+				-- -> heap OOM -> SIGABRT respawn loop on big projects (core-v3
+				-- backend + generated Prisma types). Give it 8GB here.
+				tsserver = { useSyntaxServer = "auto", maxTsServerMemory = 8192 },
 				updateImportsOnFileMove = { enabled = "always" },
 			},
 			javascript = {
