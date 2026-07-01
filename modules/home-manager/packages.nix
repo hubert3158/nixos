@@ -110,11 +110,11 @@ in {
       ])
       # Heavy Java IDE / profiling suite (per-host opt-in)
       ++ (lib.optionals cfg.enableJetbrains [
-        jetbrains.datagrip
-        jetbrains.idea
-        jprofiler
-        eclipse-mat
-        eclipses.eclipse-jee
+        # jetbrains.datagrip
+        # jetbrains.idea
+        # jprofiler
+        # eclipse-mat
+        # eclipses.eclipse-jee
       ])
       # Productivity packages
       ++ (lib.optionals cfg.enableProductivity [
@@ -123,7 +123,6 @@ in {
         mdbook-pdf
         libreoffice
 
-        discord
         onedrive
       ])
       # Multimedia packages

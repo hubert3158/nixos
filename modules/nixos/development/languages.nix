@@ -90,11 +90,9 @@ in
         prettierd
         eslint_d
         # LSP servers for Doom (javascript +lsp) / (web +lsp) / (yaml +lsp).
-        # ts-ls backs js/ts/jsx/tsx; Volar (vue-language-server) attaches its
-        # TS host to ts-ls; vscode-langservers-extracted (in tools.nix) provides
-        # html/css/json/eslint servers.
+        # ts-ls backs js/ts/jsx/tsx; vscode-langservers-extracted (in tools.nix)
+        # provides html/css/json/eslint servers.
         typescript-language-server
-        vue-language-server
         yaml-language-server
       ])
 
