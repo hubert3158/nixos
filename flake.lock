@@ -21,22 +21,6 @@
         "type": "github"
       }
     },
-    "eldritch-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1778546492,
-        "narHash": "sha256-7gK3a2zwQqDgdfeIMfsSHyMIEa4oVBwDAKYHaFqyBFw=",
-        "owner": "eldritch-theme",
-        "repo": "eldritch.nvim",
-        "rev": "c9131a5a11f00a2f428f563a4eb2c4aeb680d963",
-        "type": "github"
-      },
-      "original": {
-        "owner": "eldritch-theme",
-        "repo": "eldritch.nvim",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -304,7 +288,6 @@
     "root": {
       "inputs": {
         "claude-desktop": "claude-desktop",
-        "eldritch-nvim": "eldritch-nvim",
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "home-manager": "home-manager",

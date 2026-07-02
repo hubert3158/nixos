@@ -19,10 +19,6 @@
 
     # Neovim development
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
-    eldritch-nvim = {
-      url = "github:eldritch-theme/eldritch.nvim";
-      flake = false;
-    };
 
     # Claude Desktop (aaddrick) — FHS variant w/ MCP + Cowork sandboxing
     claude-desktop = {

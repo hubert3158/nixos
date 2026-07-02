@@ -118,18 +118,15 @@ in
       # Rust packages
       ++ (lib.optionals cfg.enableRust [
         rustup
-        # Declarative rust-analyzer so Rust LSP works without an imperative
-        # `rustup component add rust-analyzer`. hiPrio wins the bin/rust-analyzer
-        # collision against rustup's proxy shim (which needs ~/.rustup state).
-        (lib.hiPrio rust-analyzer)
-        # Same shim-collision story for rustfmt (apheleia format-on-save).
-        # hiPrio makes the real binary win over rustup's proxy.
-        (lib.hiPrio rustfmt)
-        # clippy intentionally NOT here: nixpkgs clippy-driver (rustc 1.95.0)
-        # version-mismatched the rustup nightly toolchain and poisoned
-        # target/rust-analyzer caches ("crate compiled by an incompatible
-        # version of rustc"). cargo-clippy now resolves through rustup's proxy
-        # to the toolchain's own clippy component (`rustup component add clippy`).
+        # rust-analyzer / rustfmt / clippy intentionally NOT installed from
+        # nixpkgs: the nixpkgs builds are pinned to nixpkgs' rustc (stable)
+        # while cargo/rustc come from rustup (nightly default). Mixing the two
+        # poisons target/ caches ("crate compiled by an incompatible version
+        # of rustc") and the stable RA proc-macro server can't load dylibs
+        # built by nightly cargo. All three resolve through rustup's proxy
+        # shims to the active toolchain's own components instead
+        # (`rustup component add rust-analyzer clippy rustfmt` — already done),
+        # so every tool is always ABI-consistent with the compiler in use.
       ])
 
       # Java packages

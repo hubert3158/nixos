@@ -108,8 +108,9 @@ opt.shada = "!,'100,<50,s10,h" -- Limit shada size for faster startup
 -- fire on restored buffers and no LSP attaches.
 opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
--- Search down into subfolders
-opt.path = vim.o.path .. "**"
+-- NOTE: deliberately NOT appending "**" to 'path' — it makes :find / gf /
+-- path-completion recursively crawl the whole CWD tree (multi-second stalls
+-- on big repos). Use Telescope find_files for fuzzy path lookup instead.
 
 -- Indentation
 opt.tabstop = 4
@@ -127,7 +128,8 @@ opt.laststatus = 3 -- Global statusline
 opt.winblend = 0 -- Solid floating window backgrounds
 opt.cursorline = true
 opt.signcolumn = "yes:2" -- Always show sign column with space for 2 signs
-opt.colorcolumn = "80,120" -- Visual guide columns
+-- colorcolumn is owned by smartcolumn.nvim (user/smartcolumn.lua) — setting
+-- it statically here fights the plugin's per-filetype show/hide logic.
 opt.list = true -- Show invisible characters
 opt.listchars = "tab:→ ,trail:·,extends:›,precedes:‹,nbsp:␣"
 opt.fillchars = "fold: ,foldopen:▾,foldsep: ,foldclose:▸,stl: ,eob: "

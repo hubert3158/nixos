@@ -33,10 +33,8 @@ map("n", "<leader>nn", function()
 	require("conform").format({ async = false, lsp_fallback = true })
 end, { desc = "Lint then Format with Conform" })
 
--- neogen
-map("n", "<Leader>nc", function()
-	require("neogen").generate()
-end, { silent = true, desc = " [C]omment Documentation Generation" })
+-- neogen <leader>nc lives in its lz.n keys spec (plugin/lazy-load.lua) —
+-- neogen is opt; a direct require here would error before it loads.
 
 -- ============================================================================
 -- Buffers, tabs, windows
@@ -174,11 +172,8 @@ map("n", "<leader>xd", function()
 end, { silent = true, desc = "Search 'DEBUGPRINT' in TODOs" })
 
 -- ============================================================================
--- Yazi
+-- Yazi — <leader>y (n-mode) lives in its lz.n keys spec (plugin/lazy-load.lua)
 -- ============================================================================
-map("n", "<leader>y", function()
-	require("yazi").yazi()
-end, { silent = true, desc = "Open [Y]azi" })
 
 -- ============================================================================
 -- vim-dadbod-ui
@@ -219,7 +214,11 @@ map("n", "<leader>dw", ":w<CR>", { silent = true, desc = "Save Query Buffer" })
 -- ============================================================================
 map("n", "<leader>rr", "<cmd>:!!<CR>", { silent = true, desc = "[R]erun last shell command" })
 map("n", "<leader>mm", function()
-	require("mini.map").toggle()
+	-- mini.nvim loads on DeferredUIEnter; guard the first-instant race
+	local ok, minimap = pcall(require, "mini.map")
+	if ok then
+		minimap.toggle()
+	end
 end, { silent = true, desc = "[M]ini [M]ap Toggle" })
 map("n", "<leader>mt", "<cmd>Twilight<CR>", { silent = true, desc = "[M]isc [T]wilight" })
 

@@ -4,8 +4,10 @@
 local opt_local = vim.opt_local
 
 -- Performance settings for large Java files
-opt_local.foldmethod = "expr" -- Use treesitter for folding (faster than syntax)
-opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+-- NOTE: no foldmethod/foldexpr override here — nvim-ufo owns folding
+-- (options.lua foldlevel=99 + user/nvimUfo.lua treesitter/indent provider).
+-- The previous "nvim_treesitter#foldexpr()" was the removed master-branch
+-- Vimscript API and broke both folds and ufo on java buffers.
 opt_local.synmaxcol = 300 -- Increase slightly for Java (longer lines common)
 
 -- Indentation for Java

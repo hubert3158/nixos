@@ -9,15 +9,6 @@
 # equals the plugin's pname (= pack directory name).
 { pkgs, inputs }:
 
-let
-  # Helper to create a plugin from a flake input
-  mkNvimPlugin = src: pname:
-    pkgs.vimUtils.buildVimPlugin {
-      inherit pname src;
-      version = src.lastModifiedDate;
-    };
-
-  in
 {
   all-plugins = with pkgs.vimPlugins; [
     # ============================================================================
@@ -33,7 +24,9 @@ let
     # catppuccin setup lives in nvim/init.lua (single source of truth).
     catppuccin-nvim
     { plugin = lualine-nvim; optional = true; }
-    bufferline-nvim
+    # bufferline setup runs inside user/visual-enhancements.setup() (lualine's
+    # DeferredUIEnter hook packadds it first).
+    { plugin = bufferline-nvim; optional = true; }
     { plugin = dashboard-nvim; }
     # noice setup lazy via lz.n on DeferredUIEnter (+ overrides for vim.lsp.util).
     { plugin = noice-nvim; optional = true; }
@@ -42,10 +35,8 @@ let
       config = "lua << EOF\nrequire(\"nvim-web-devicons\").setup()\nEOF\n";
     }
     { plugin = nvim-notify; }
-    {
-      plugin = barbecue-nvim;
-      config = "lua << EOF\nrequire(\"barbecue\").setup()\nEOF\n";
-    }
+    # barbecue (winbar breadcrumbs) — lazy via lz.n on DeferredUIEnter.
+    { plugin = barbecue-nvim; optional = true; }
     # indent-blankline / colorizer / smartcolumn — setup lazy via lz.n.
     { plugin = indent-blankline-nvim; optional = true; }
     { plugin = nvim-colorizer-lua; optional = true; }
@@ -63,16 +54,12 @@ let
     { plugin = telescope-zoxide; optional = true; }
     { plugin = telescope-fzf-native-nvim; optional = true; }
     { plugin = telescope-frecency-nvim; optional = true; }
-    { plugin = neo-tree-nvim; }
-    {
-      plugin = yazi-nvim;
-      config = "lua << EOF\nrequire(\"yazi\").setup()\nEOF\n";
-    }
+    # neo-tree loads via lz.n on cmd=Neotree / the dir-open autocmd; its
+    # window-picker dep is packadd'ed + configured in the same lz.n hook.
+    { plugin = neo-tree-nvim; optional = true; }
+    { plugin = yazi-nvim; optional = true; }
     { plugin = harpoon2; optional = true; }
-    {
-      plugin = nvim-window-picker;
-      config = "lua << EOF\nrequire(\"window-picker\").setup()\nEOF\n";
-    }
+    { plugin = nvim-window-picker; optional = true; }
     vim-tmux-navigator
 
     # ============================================================================
@@ -80,7 +67,7 @@ let
     # ============================================================================
     # gitsigns setup lazy via lz.n on BufReadPre/BufNewFile.
     { plugin = gitsigns-nvim; optional = true; }
-    vim-fugitive
+    { plugin = vim-fugitive; optional = true; }
     { plugin = lazygit-nvim; optional = true; }
     # git-conflict setup runs lazily via nvim/lua/user/git-conflict.lua
     # (driven by lz.n on DeferredUIEnter).
@@ -91,10 +78,8 @@ let
     # ============================================================================
     { plugin = nvim-lspconfig; }
     # mason-nvim removed — all LSPs and jdtls bundles now come from nixpkgs.
-    {
-      plugin = lazydev-nvim;
-      config = "lua << EOF\nrequire(\"lazydev\").setup({})\nEOF\n";
-    }
+    # lazydev — lazy via lz.n on ft=lua.
+    { plugin = lazydev-nvim; optional = true; }
     # typescript-tools.nvim replaced by vtsls (registered via lsp.lua) —
     # plugin had breakage on nvim 0.12 vim.lsp.enable wire-up (issue #379).
     nvim-jdtls
@@ -102,10 +87,8 @@ let
     # plugin/lsp.lua). Config + keymaps: nvim/lua/user/rustaceanvim.lua, loaded
     # lazily on ft=rust via lz.n (nvim/plugin/lazy-load.lua).
     { plugin = rustaceanvim; optional = true; }
-    {
-      plugin = fidget-nvim;
-      config = "lua << EOF\nrequire(\"fidget\").setup()\nEOF\n";
-    }
+    # fidget (LSP progress UI) — lazy via lz.n on LspAttach.
+    { plugin = fidget-nvim; optional = true; }
     nvim-navic
 
     # ============================================================================
@@ -116,7 +99,8 @@ let
     blink-cmp
     luasnip
     friendly-snippets
-    vim-snippets
+    # vim-snippets removed — snipMate-format; only the vscode loader
+    # (friendly-snippets) is wired in plugin/cmp.lua, so it contributed nothing.
 
     # ============================================================================
     # TREESITTER & SYNTAX HIGHLIGHTING
@@ -136,7 +120,7 @@ let
       plugin = comment-nvim;
       config = "lua << EOF\nrequire(\"Comment\").setup()\nEOF\n";
     }
-    comment-box-nvim
+    comment-box-nvim # no config anywhere — used ad hoc via :CB* or candidate for removal
     # refactoring.nvim removed: as of nixpkgs 2026-04 it depends on async.nvim,
     # which ships a top-level lua/async.lua that collides with promise-async
     # and breaks nvim-ufo's require('async'). LSP code actions cover most of
@@ -165,34 +149,26 @@ let
     # UTILITIES & PRODUCTIVITY
     # ============================================================================
     { plugin = which-key-nvim; }
-    {
-      plugin = toggleterm-nvim;
-      config = "lua << EOF\nrequire(\"toggleterm\").setup()\nEOF\n";
-    }
-    {
-      plugin = trouble-nvim;
-      config = "lua << EOF\nrequire(\"trouble\").setup()\nEOF\n";
-    }
-    undotree
+    # toggleterm — lazy via lz.n (cmd/keys); full config in user/toggleterm.lua.
+    { plugin = toggleterm-nvim; optional = true; }
+    # trouble — lazy via lz.n on cmd=Trouble.
+    { plugin = trouble-nvim; optional = true; }
+    { plugin = undotree; optional = true; }
     # auto-session stays eager — session restore must be configured before
     # VimEnter; init.lua requires user/auto-session.lua directly.
     auto-session
     { plugin = todo-comments-nvim; optional = true; }
     { plugin = neoscroll-nvim; optional = true; }
-    {
-      plugin = neogen;
-      config = "lua << EOF\nrequire(\"neogen\").setup()\nEOF\n";
-    }
+    # neogen — lazy via lz.n on its <leader>nc key.
+    { plugin = neogen; optional = true; }
 
     # ============================================================================
     # CODE FOLDING & STRUCTURE
     # ============================================================================
     { plugin = nvim-ufo; optional = true; }
     promise-async
-    {
-      plugin = aerial-nvim;
-      config = "lua << EOF\nrequire(\"aerial\").setup()\nEOF\n";
-    }
+    # aerial — lazy via lz.n on its commands.
+    { plugin = aerial-nvim; optional = true; }
 
     # ============================================================================
     # AI & CODE ASSISTANCE
@@ -214,7 +190,8 @@ let
     # ============================================================================
     # DOCUMENTATION & MARKDOWN
     # ============================================================================
-    markdown-preview-nvim
+    # markdown-preview (node-backed, heavy) — lazy via lz.n on ft=markdown.
+    { plugin = markdown-preview-nvim; optional = true; }
     { plugin = render-markdown-nvim; optional = true; }
 
     # ============================================================================
@@ -228,7 +205,8 @@ let
     vim-pug
     vim-nix
     vim-slime
-    typst-preview-nvim
+    # typst-preview — lazy via lz.n on ft=typst.
+    { plugin = typst-preview-nvim; optional = true; }
 
     # ============================================================================
     # MINI PLUGINS COLLECTION

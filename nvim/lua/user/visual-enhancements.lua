@@ -18,7 +18,7 @@ function M.setup()
 			-- (no plain "catppuccin" module) — name the flavour explicitly.
 			theme = "catppuccin-mocha",
 			globalstatus = true,
-			disabled_filetypes = { statusline = { "dashboard", "alpha" } },
+			disabled_filetypes = { statusline = { "dashboard" } },
 			component_separators = { left = "", right = "" },
 			section_separators = { left = "", right = "" },
 		},
@@ -95,7 +95,7 @@ function M.setup()
 				},
 			},
 		},
-		extensions = { "nvim-tree", "toggleterm", "trouble" },
+		extensions = { "neo-tree", "toggleterm", "trouble" },
 	})
 
 	-- Enhanced bufferline configuration
@@ -121,7 +121,7 @@ function M.setup()
 				},
 				offsets = {
 					{
-						filetype = "NvimTree",
+						filetype = "neo-tree",
 						text = "File Explorer",
 						text_align = "center",
 						separator = true,

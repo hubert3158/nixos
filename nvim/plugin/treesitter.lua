@@ -18,13 +18,23 @@ if kulala_parser_path then
 	vim.opt.runtimepath:append(kulala_parser_path)
 end
 
--- Enable treesitter highlighting for http files
+-- ============================================================================
+-- Treesitter highlighting — enabled per buffer for every filetype with an
+-- installed grammar (grammars come from nvim-treesitter.withPlugins in
+-- packages/neovim/plugins.nix). nvim-treesitter master does NOT auto-enable
+-- highlighting without configs.setup(), which this config never called —
+-- without this autocmd every buffer silently fell back to regex :syntax.
+-- pcall: filetypes without a parser keep regex syntax; bigfile.lua still
+-- calls vim.treesitter.stop() afterwards for oversized files.
+-- ============================================================================
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "http",
-	callback = function()
-		vim.treesitter.start()
+	group = vim.api.nvim_create_augroup("TreesitterHighlight", { clear = true }),
+	callback = function(args)
+		pcall(vim.treesitter.start, args.buf)
 	end,
 })
 
 -- Kulala itself is loaded lazily on ft=http (see plugin/lazy-load.lua and
 -- lua/user/kulala.lua) — only the parser registration above must be eager.
+-- (The generic FileType autocmd above covers http buffers too, via the
+-- kulala_http parser registered for the "http" filetype.)

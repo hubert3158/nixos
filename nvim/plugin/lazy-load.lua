@@ -11,7 +11,16 @@ require("lz.n").load({
 		"lualine.nvim",
 		event = "DeferredUIEnter",
 		after = function()
+			-- bufferline is opt (packadd before visual-enhancements requires it)
+			vim.cmd.packadd("bufferline.nvim")
 			require("user.visual-enhancements").setup()
+		end,
+	},
+	{
+		"barbecue.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("barbecue").setup()
 		end,
 	},
 	{
@@ -172,6 +181,70 @@ require("lz.n").load({
 		cmd = "LazyGit",
 		keys = { { "<leader>gg", function() require("lazygit").lazygit() end, desc = "LazyGit" } },
 	},
+	{
+		"vim-fugitive",
+		cmd = { "Git", "G" },
+	},
+
+	-- ============================================================================
+	-- FILES / UI TOOLS - Load on command or key
+	-- ============================================================================
+	{
+		-- Also triggered by the dir-open autocmd in user/autocmds.lua via
+		-- lz.n trigger_load (netrw hijack needs neo-tree loaded).
+		"neo-tree.nvim",
+		cmd = "Neotree",
+		after = function()
+			-- window-picker is opt; neo-tree's open-with-picker actions need it
+			vim.cmd.packadd("nvim-window-picker")
+			require("window-picker").setup()
+			require("user.neo-tree")
+		end,
+	},
+	{
+		"yazi.nvim",
+		keys = {
+			{ "<leader>y", function() require("yazi").yazi() end, desc = "Open [Y]azi" },
+		},
+		after = function()
+			require("yazi").setup()
+		end,
+	},
+	{
+		"toggleterm.nvim",
+		cmd = { "ToggleTerm", "TermExec" },
+		keys = { [[<c-\>]] },
+		after = function()
+			require("user.toggleterm")
+		end,
+	},
+	{
+		"trouble.nvim",
+		cmd = "Trouble",
+		after = function()
+			require("trouble").setup()
+		end,
+	},
+	{
+		"aerial.nvim",
+		cmd = { "AerialToggle", "AerialPrev", "AerialNext" },
+		after = function()
+			require("aerial").setup()
+		end,
+	},
+	{
+		"undotree",
+		cmd = "UndotreeToggle",
+	},
+	{
+		"neogen",
+		keys = {
+			{ "<leader>nc", function() require("neogen").generate() end, desc = " [C]omment Documentation Generation" },
+		},
+		after = function()
+			require("neogen").setup()
+		end,
+	},
 
 	-- ============================================================================
 	-- HEAVY OPTIONAL - Load on demand
@@ -207,6 +280,30 @@ require("lz.n").load({
 		ft = { "markdown", "mdx" },
 		after = function()
 			require("user.render-markdown")
+		end,
+	},
+	{
+		-- Node-backed preview server; g:mkdp_* globals are set eagerly in
+		-- user/options.lua so they're ready whenever this loads.
+		"markdown-preview.nvim",
+		ft = { "markdown", "mdx" },
+	},
+	{
+		"typst-preview.nvim",
+		ft = "typst",
+	},
+	{
+		"lazydev.nvim",
+		ft = "lua",
+		after = function()
+			require("lazydev").setup({})
+		end,
+	},
+	{
+		"fidget.nvim",
+		event = "LspAttach",
+		after = function()
+			require("fidget").setup()
 		end,
 	},
 	{

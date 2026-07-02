@@ -31,7 +31,7 @@ vim.diagnostic.config({
 		focusable = false,
 		style = "minimal",
 		border = "rounded",
-		source = "always",
+		source = true, -- "always" is the deprecated pre-0.11 string form
 		header = "",
 		prefix = "",
 		suffix = "",

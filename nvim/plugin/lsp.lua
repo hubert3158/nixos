@@ -13,6 +13,7 @@ Neovim LSP bootstrap — diagnostics fixed (logic preserved)
 -- that an unrelated plugin spawns is stopped on attach.
 ------------------------------------------------------------
 vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("JdtlsStrayGuard", { clear = true }),
 	pattern = "java",
 	callback = function()
 		local clients = vim.lsp.get_clients({ name = "jdtls" })
@@ -214,13 +215,18 @@ local servers = {
 		-- config time pins every later buffer to the startup buffer's root.
 		root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", ".git" },
 		cmd = { "lua-language-server" },
+		-- Workspace library scans every rtp entry (isdirectory per path) —
+		-- compute it when lua_ls actually starts, not at startup.
+		before_init = function(_, config)
+			config.settings.Lua.workspace.library = get_lua_workspace_library()
+		end,
 		settings = {
 			Lua = {
 				runtime = { version = "LuaJIT" },
 				diagnostics = { globals = { "vim" } },
 				workspace = {
 					checkThirdParty = false,
-					library = get_lua_workspace_library(),
+					library = {},
 					maxPreload = 100000,
 					preloadFileSize = 10000,
 				},
@@ -340,85 +346,106 @@ end
 
 ------------------------------------------------------------
 -- 6) Java (JDTLS): dedicated setup via nvim-jdtls (drop-in)
+--
+-- Bootstrapped LAZILY on the first java FileType: all filesystem probing
+-- (launcher glob, JDK checks, bundle globs) used to run at every startup
+-- even in non-Java sessions. `J` caches the result; false = failed once,
+-- don't retry or re-notify.
 ------------------------------------------------------------
-local jdtls = check_dependency("jdtls", "nvim-jdtls")
-if not jdtls then
-	return
-end
-
 local home = os.getenv("HOME") or vim.fn.expand("~")
-local data = vim.fn.stdpath("data")
-
--- Nix-managed JDTLS layout (env var set in home-manager); Mason path is
--- legacy fallback for unconfigured environments.
-local jdtls_root = vim.env.JDTLS_PATH or (data .. "/mason/packages/jdtls")
-local launcher_jar = vim.fn.glob(jdtls_root .. "/plugins/org.eclipse.equinox.launcher_*.jar")
-local config_dir = jdtls_root .. "/config_linux"
 
 local function exists(p)
 	return type(p) == "string" and #p > 0 and (vim.fn.filereadable(p) == 1 or vim.fn.isdirectory(p) == 1)
 end
 
-if launcher_jar == "" or not exists(launcher_jar) then
-	vim.notify("jdtls launcher not found under " .. jdtls_root .. "/plugins", vim.log.levels.ERROR)
-	return
-end
-if not exists(config_dir) then
-	vim.notify("jdtls config_linux not found under " .. jdtls_root, vim.log.levels.ERROR)
-	return
-end
+local J -- nil = not attempted, false = failed, table = resolved paths
 
--- JDKs (jdtls 1.40+ requires JDK 21+; JDK 11 fallback dropped).
-local jdk25 = os.getenv("JAVA_HOME25")
-local jdk21 = os.getenv("JAVA_HOME21")
+local function jdtls_bootstrap()
+	if J ~= nil then
+		return J
+	end
+	J = false
 
-local function pick_runtime_java()
+	if not check_dependency("jdtls", "nvim-jdtls") then
+		return J
+	end
+
+	local data = vim.fn.stdpath("data")
+
+	-- Nix-managed JDTLS layout (env var set in home-manager); Mason path is
+	-- legacy fallback for unconfigured environments.
+	local jdtls_root = vim.env.JDTLS_PATH or (data .. "/mason/packages/jdtls")
+	local launcher_jar = vim.fn.glob(jdtls_root .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+	local config_dir = jdtls_root .. "/config_linux"
+
+	if launcher_jar == "" or not exists(launcher_jar) then
+		vim.notify("jdtls launcher not found under " .. jdtls_root .. "/plugins", vim.log.levels.ERROR)
+		return J
+	end
+	if not exists(config_dir) then
+		vim.notify("jdtls config_linux not found under " .. jdtls_root, vim.log.levels.ERROR)
+		return J
+	end
+
+	-- JDKs (jdtls 1.40+ requires JDK 21+; JDK 11 fallback dropped).
+	local jdk25 = os.getenv("JAVA_HOME25")
+	local jdk21 = os.getenv("JAVA_HOME21")
+
+	local runtime_java, runtime_ver
 	if exists(jdk21) then
-		return jdk21, "21"
+		runtime_java, runtime_ver = jdk21, "21"
+	elseif exists(jdk25) then
+		runtime_java, runtime_ver = jdk25, "25"
 	end
-	if exists(jdk25) then
-		return jdk25, "25"
+	if not runtime_java then
+		vim.notify("Set JAVA_HOME21 or JAVA_HOME25 for JDTLS runtime", vim.log.levels.ERROR)
+		return J
 	end
-	return nil, nil
-end
 
-local runtime_java, runtime_ver = pick_runtime_java()
-if not runtime_java then
-	vim.notify("Set JAVA_HOME21 or JAVA_HOME25 for JDTLS runtime", vim.log.levels.ERROR)
-	return
-end
+	-- Optional extras
+	local lombok = home .. "/nixos/dotfiles/lombok-1.18.42.jar"
+	local jakarta_annotation = home .. "/nixos/dotfiles/jakarta.annotation-api-1.3.5.jar"
 
--- Project Java (what the code compiles with): prefer highest available.
-local project_java = jdk25 or jdk21
-
--- Optional extras
-local lombok = home .. "/nixos/dotfiles/lombok-1.18.42.jar"
-local jakarta_annotation = home .. "/nixos/dotfiles/jakarta.annotation-api-1.3.5.jar"
-
-local bundles = {}
-if exists(jakarta_annotation) then
-	table.insert(bundles, jakarta_annotation)
-end
-
--- Bundle dirs from home-manager session vars (nix-packaged extensions).
--- Each var points directly at the dir containing the .jar files; layout
--- differs from Mason's `extension/server/`, so glob lives at the root.
-local debugger_dir = vim.env.JDTLS_JAVA_DEBUG_BUNDLE_DIR
-	or (data .. "/mason/packages/java-debug-adapter/extension/server")
-local test_dir = vim.env.JDTLS_JAVA_TEST_BUNDLE_DIR
-	or (data .. "/mason/packages/java-test/extension/server")
-if exists(debugger_dir) then
-	local dbg = vim.fn.glob(debugger_dir .. "/com.microsoft.java.debug.plugin-*.jar", true)
-	if dbg ~= "" then
-		table.insert(bundles, dbg)
+	local bundles = {}
+	if exists(jakarta_annotation) then
+		table.insert(bundles, jakarta_annotation)
 	end
-end
-if exists(test_dir) then
-	for _, j in ipairs(vim.split(vim.fn.glob(test_dir .. "/*.jar", true), "\n")) do
-		if j ~= "" then
-			table.insert(bundles, j)
+
+	-- Bundle dirs from home-manager session vars (nix-packaged extensions).
+	-- Each var points directly at the dir containing the .jar files; layout
+	-- differs from Mason's `extension/server/`, so glob lives at the root.
+	local debugger_dir = vim.env.JDTLS_JAVA_DEBUG_BUNDLE_DIR
+		or (data .. "/mason/packages/java-debug-adapter/extension/server")
+	local test_dir = vim.env.JDTLS_JAVA_TEST_BUNDLE_DIR
+		or (data .. "/mason/packages/java-test/extension/server")
+	if exists(debugger_dir) then
+		local dbg = vim.fn.glob(debugger_dir .. "/com.microsoft.java.debug.plugin-*.jar", true)
+		if dbg ~= "" then
+			table.insert(bundles, dbg)
 		end
 	end
+	if exists(test_dir) then
+		for _, j in ipairs(vim.split(vim.fn.glob(test_dir .. "/*.jar", true), "\n")) do
+			if j ~= "" then
+				table.insert(bundles, j)
+			end
+		end
+	end
+
+	J = {
+		launcher_jar = launcher_jar,
+		config_dir = config_dir,
+		runtime_java = runtime_java,
+		runtime_ver = runtime_ver,
+		-- Project Java (what the code compiles with): prefer highest available.
+		project_java = jdk25 or jdk21,
+		jdk21 = jdk21,
+		jdk25 = jdk25,
+		lombok = lombok,
+		jakarta_annotation = jakarta_annotation,
+		bundles = bundles,
+	}
+	return J
 end
 
 -- Root and workspace
@@ -453,7 +480,7 @@ end
 
 -- Build JDTLS command
 local function build_cmd(ws_dir)
-	local cmd = { runtime_java .. "/bin/java" }
+	local cmd = { J.runtime_java .. "/bin/java" }
 	vim.list_extend(cmd, {
 		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
 		"-Dosgi.bundles.defaultStartLevel=4",
@@ -468,10 +495,10 @@ local function build_cmd(ws_dir)
 		"-XX:MaxGCPauseMillis=200", -- Target max GC pause
 		"-XX:InitiatingHeapOccupancyPercent=70", -- GC trigger threshold
 	})
-	if exists(lombok) then
-		table.insert(cmd, "-javaagent:" .. lombok)
+	if exists(J.lombok) then
+		table.insert(cmd, "-javaagent:" .. J.lombok)
 	end
-	if runtime_ver == "21" or runtime_ver == "25" then
+	if J.runtime_ver == "21" or J.runtime_ver == "25" then
 		vim.list_extend(cmd, {
 			"--add-modules=ALL-SYSTEM",
 			"--add-opens",
@@ -482,9 +509,9 @@ local function build_cmd(ws_dir)
 	end
 	vim.list_extend(cmd, {
 		"-jar",
-		launcher_jar,
+		J.launcher_jar,
 		"-configuration",
-		config_dir,
+		J.config_dir,
 		"-data",
 		ws_dir,
 	})
@@ -494,16 +521,16 @@ end
 -- Settings
 local function build_settings()
 	local runtimes = {}
-	if exists(jdk25) then
-		table.insert(runtimes, { name = "JavaSE-25", path = jdk25, default = project_java == jdk25 })
+	if exists(J.jdk25) then
+		table.insert(runtimes, { name = "JavaSE-25", path = J.jdk25, default = J.project_java == J.jdk25 })
 	end
-	if exists(jdk21) then
-		table.insert(runtimes, { name = "JavaSE-21", path = jdk21, default = project_java == jdk21 })
+	if exists(J.jdk21) then
+		table.insert(runtimes, { name = "JavaSE-21", path = J.jdk21, default = J.project_java == J.jdk21 })
 	end
 
 	local s = {
 		java = {
-			home = project_java,
+			home = J.project_java,
 			-- downloadSources hits Maven/Gradle for every dep's source jar on
 			-- first import; dominates Spring Boot startup. Cheap to flip back
 			-- per project via :lua vim.lsp.config(...) if needed.
@@ -588,50 +615,69 @@ local function build_settings()
 	-- Gate each library on its own existence check. Before this split, jakarta
 	-- was added whenever lombok existed, logging a warning when the jakarta
 	-- jar was missing.
-	if exists(lombok) or exists(jakarta_annotation) then
+	if exists(J.lombok) or exists(J.jakarta_annotation) then
 		local refs = {}
-		if exists(lombok) then
-			table.insert(refs, lombok)
+		if exists(J.lombok) then
+			table.insert(refs, J.lombok)
 		end
-		if exists(jakarta_annotation) then
-			table.insert(refs, jakarta_annotation)
+		if exists(J.jakarta_annotation) then
+			table.insert(refs, J.jakarta_annotation)
 		end
 		s.java.project = { referencedLibraries = refs }
 	end
-	if exists(lombok) then
+	if exists(J.lombok) then
 		s["java.jdt.ls.lombokSupport.enabled"] = true
 	end
 
 	return s
 end
 
--- Attach on every Java buffer; idempotent; honors your start_client guard
-vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = { "*.java" },
-	callback = function()
-		local root_dir = compute_root()
+-- Attach on every Java buffer; idempotent; honors the stray-client guard.
+-- FileType (not BufEnter): fires once per buffer instead of on every window
+-- switch, and compute_root's filesystem walk is cached per directory.
+local jdtls_group = vim.api.nvim_create_augroup("JdtlsAttach", { clear = true })
+local root_cache = {}
+vim.api.nvim_create_autocmd("FileType", {
+	group = jdtls_group,
+	pattern = "java",
+	callback = function(args)
+		if not jdtls_bootstrap() then
+			return
+		end
+		local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
+		local root_dir = root_cache[dir]
+		if root_dir == nil then
+			root_dir = compute_root() or false
+			root_cache[dir] = root_dir
+		end
 		if not root_dir then
-			vim.notify("No Java project root found for buffer " .. vim.api.nvim_buf_get_name(0), vim.log.levels.WARN)
+			vim.notify(
+				"No Java project root found for buffer " .. vim.api.nvim_buf_get_name(args.buf),
+				vim.log.levels.WARN
+			)
 			return
 		end
 		local ws = workspace_for(root_dir)
 		local cfg = {
 			name = "jdtls",
-			custom_jdtls = true, -- REQUIRED for your vim.lsp.start_client guard
+			custom_jdtls = true, -- REQUIRED for the stray-client guard
 			cmd = build_cmd(ws),
 			root_dir = root_dir,
-			init_options = { bundles = bundles },
+			init_options = { bundles = J.bundles },
 			settings = build_settings(),
 			on_attach = general_on_attach,
 			capabilities = general_capabilities,
 		}
-		jdtls.start_or_attach(cfg)
+		require("jdtls").start_or_attach(cfg)
 	end,
 })
 
 -- Scope to the current project's workspace only — the original command
 -- rm-rf'd ~/.local/share/eclipse/, nuking unrelated projects.
 vim.api.nvim_create_user_command("JavaCleanWorkspace", function()
+	if not jdtls_bootstrap() then
+		return
+	end
 	local root = compute_root()
 	if not root then
 		vim.notify("Not in a Java project root", vim.log.levels.WARN)

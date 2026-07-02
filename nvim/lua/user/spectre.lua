@@ -58,7 +58,9 @@ end, {
 	desc = "Search current word (visual)",
 })
 
-vim.keymap.set("n", "<leader>sp", function()
+-- <leader>sf (NOT <leader>sp — that's the global "toggle spell" map in
+-- user/keymaps.lua; this one used to silently clobber it after Spectre loaded)
+vim.keymap.set("n", "<leader>sf", function()
 	safe_spectre_call("open_file_search", { select_word = true })
 end, {
 	desc = "Search on current file",
