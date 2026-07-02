@@ -47,7 +47,12 @@ local opts = {
 				-- clippy on save instead of plain `cargo check` — richer lints.
 				checkOnSave = true,
 				check = { command = "clippy" },
-				cargo = { allFeatures = true, buildScripts = { enable = true } },
+				-- targetDir = true → RA builds into target/rust-analyzer/ instead of
+				-- sharing target/ with terminal cargo. Prevents "compiled by an
+				-- incompatible version of rustc" thrash: system RA/clippy is nixpkgs
+				-- stable, terminal cargo is rustup nightly — same target/ means each
+				-- rejects the other's .rmeta artifacts.
+				cargo = { allFeatures = true, buildScripts = { enable = true }, targetDir = true },
 				procMacro = { enable = true },
 			},
 		},

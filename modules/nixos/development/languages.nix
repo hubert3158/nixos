@@ -122,12 +122,14 @@ in
         # `rustup component add rust-analyzer`. hiPrio wins the bin/rust-analyzer
         # collision against rustup's proxy shim (which needs ~/.rustup state).
         (lib.hiPrio rust-analyzer)
-        # Same shim-collision story for rustfmt (apheleia format-on-save) and
-        # clippy (rust-analyzer checkOnSave). hiPrio makes the real binaries win
-        # over rustup's proxies. If a rustup stable toolchain version-mismatches
-        # nixpkgs clippy-driver, drop clippy here and `rustup component add clippy`.
+        # Same shim-collision story for rustfmt (apheleia format-on-save).
+        # hiPrio makes the real binary win over rustup's proxy.
         (lib.hiPrio rustfmt)
-        (lib.hiPrio clippy)
+        # clippy intentionally NOT here: nixpkgs clippy-driver (rustc 1.95.0)
+        # version-mismatched the rustup nightly toolchain and poisoned
+        # target/rust-analyzer caches ("crate compiled by an incompatible
+        # version of rustc"). cargo-clippy now resolves through rustup's proxy
+        # to the toolchain's own clippy component (`rustup component add clippy`).
       ])
 
       # Java packages
