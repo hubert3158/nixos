@@ -4,11 +4,22 @@
 local M = {}
 
 function M.setup()
-	-- Refresh lualine when recording macros so the @reg indicator shows up
+	-- Refresh lualine when recording macros so the REC indicator shows up,
+	-- and notify loudly — a stuck accidental recording silently disables
+	-- blink.cmp and which-key popups (looks like "completion broke").
 	vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
 		group = vim.api.nvim_create_augroup("LualineMacroRefresh", { clear = true }),
-		callback = function()
+		callback = function(ev)
 			require("lualine").refresh()
+			if ev.event == "RecordingEnter" then
+				vim.notify(
+					"Recording macro @" .. vim.fn.reg_recording() .. " — press q to stop\n(completion is disabled while recording)",
+					vim.log.levels.WARN,
+					{ title = "Macro" }
+				)
+			else
+				vim.notify("Macro recording stopped", vim.log.levels.INFO, { title = "Macro" })
+			end
 		end,
 	})
 
@@ -61,11 +72,13 @@ function M.setup()
 						if reg == "" then
 							return ""
 						end
-						return " @" .. reg
+						return "  REC @" .. reg .. " "
 					end,
 					cond = function()
 						return vim.fn.reg_recording() ~= ""
 					end,
+					-- kanagawa samuraiRed on light fg — impossible to miss
+					color = { bg = "#E82424", fg = "#DCD7BA", gui = "bold" },
 				},
 				{
 					"diagnostics",
