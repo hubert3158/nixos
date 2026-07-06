@@ -9,8 +9,34 @@
 # equals the plugin's pname (= pack directory name).
 { pkgs, inputs }:
 
+let
+  # Patch away nvim 0.13+ deprecations that upstream hasn't fixed yet
+  # (checkhealth vim.deprecated). extend() rewrites the fixed point, so
+  # plugins that depend on these (e.g. neotest → nvim-nio) pick up the
+  # patched versions too. Drop once upstream releases catch up.
+  vimPlugins = pkgs.vimPlugins.extend (final: prev: {
+    # client.request → client:request (removed in nvim 0.13; hit by
+    # rustaceanvim's neotest adapter through nio.lsp)
+    nvim-nio = prev.nvim-nio.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace lua/nio/lsp.lua \
+          --replace-fail "client.request(method, params, cb, bufnr)" "client:request(method, params, cb, bufnr)"
+      '';
+      # test suite stubs clients with plain tables that expect the old
+      # dot-call signature — real nvim clients accept both
+      doCheck = false;
+    });
+    # vim.highlight → vim.hl (removed in nvim 2.0)
+    git-conflict-nvim = prev.git-conflict-nvim.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace lua/git-conflict.lua \
+          --replace-fail "vim.highlight.priorities.user" "vim.hl.priorities.user"
+      '';
+    });
+  });
+in
 {
-  all-plugins = with pkgs.vimPlugins; [
+  all-plugins = with vimPlugins; [
     # ============================================================================
     # CORE DEPENDENCIES
     # ============================================================================
