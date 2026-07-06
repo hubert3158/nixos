@@ -14,6 +14,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
+-- Deprecated-API compat shims — must load before ANY plugin code
+require("user.compat")
+
 require("user.options")
 require("user.diagnostics")
 require("user.keymaps")

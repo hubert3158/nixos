@@ -33,6 +33,20 @@ let
           --replace-fail "vim.highlight.priorities.user" "vim.hl.priorities.user"
       '';
     });
+    # ufo's decoration provider works off a cached buffer model that goes
+    # stale when buffers change under it (notify animation floats, noice
+    # redraws, undo, diffview refreshes). Any error inside the render hook is
+    # re-raised by silentOnEnd (decorator.lua:148) on EVERY redraw → endless
+    # "Decoration provider end (ns=ufo)" spam. Patching individual crash
+    # sites is whack-a-mole (buffer.lua assert → render/init.lua nil text →
+    # ...), so mute the re-raise itself: onEnd is pure decoration, silently
+    # skipping a frame on a stale buffer is invisible.
+    nvim-ufo = prev.nvim-ufo.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace lua/ufo/decorator.lua \
+          --replace-fail "error(msg, 0)" "do end -- swallowed: stale-buffer decoration errors are cosmetic"
+      '';
+    });
   });
 in
 {

@@ -1,3 +1,12 @@
+-- zR/zM must go through ufo — native versions change foldlevel, which ufo
+-- fights (folds snap back). za/zo/zc/zO work natively.
+vim.keymap.set("n", "zR", function()
+	require("ufo").openAllFolds()
+end, { desc = "Open all folds (ufo)" })
+vim.keymap.set("n", "zM", function()
+	require("ufo").closeAllFolds()
+end, { desc = "Close all folds (ufo)" })
+
 require("ufo").setup({
 	provider_selector = function(bufnr, filetype, buftype)
 		-- Skip special buffers (diffview panels, terminals, prompts, nofile).
