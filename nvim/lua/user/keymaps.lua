@@ -39,7 +39,7 @@ end, { desc = "Lint then Format with Conform" })
 -- ============================================================================
 -- Buffers, tabs, windows
 -- ============================================================================
-map("n", "<leader>q", ":q<CR>", { silent = true, desc = "Quit" })
+-- <leader>q (quit) removed on purpose — too easy to fat-finger; use :q
 map("n", "<leader>l", ":bnext<CR>", { silent = true, desc = "Next Buffer" })
 map("n", "<leader>h", ":bprev<CR>", { silent = true, desc = "Previous Buffer" })
 for i = 1, 5 do
