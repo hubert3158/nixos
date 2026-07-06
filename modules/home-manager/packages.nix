@@ -68,7 +68,6 @@ in {
       ++ (lib.optionals cfg.enableDevelopment [
         # EnableLater
         # zed-editor
-        helix
         lazygit
         ripgrep
         rtk

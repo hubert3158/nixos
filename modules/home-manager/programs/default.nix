@@ -12,5 +12,6 @@
     ./nix-index.nix
     ./opencode.nix
     ./emacs.nix
+    ./helix.nix
   ];
 }
