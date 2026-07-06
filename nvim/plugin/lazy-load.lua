@@ -388,6 +388,12 @@ require("lz.n").load({
 		end,
 	},
 	{
+		-- colors come from the RainbowDelimiter* kanagawa overrides (init.lua);
+		-- plugin auto-activates per buffer once sourced, no setup() call.
+		"rainbow-delimiters.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+	},
+	{
 		"quicker.nvim",
 		event = "DeferredUIEnter",
 		after = function()

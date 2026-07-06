@@ -54,6 +54,15 @@ cmp.setup({
 			scrollbar = true,
 			direction_priority = { "s", "n" },
 			auto_show = true,
+			draw = {
+				-- treesitter-highlight LSP item labels; icon | label | kind
+				treesitter = { "lsp" },
+				columns = {
+					{ "kind_icon" },
+					{ "label", "label_description", gap = 1 },
+					{ "kind", gap = 1 },
+				},
+			},
 		},
 		list = {
 			-- auto_insert=false stops blink from previewing the selection

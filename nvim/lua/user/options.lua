@@ -132,7 +132,8 @@ opt.signcolumn = "yes:2" -- Always show sign column with space for 2 signs
 -- it statically here fights the plugin's per-filetype show/hide logic.
 opt.list = true -- Show invisible characters
 opt.listchars = "tab:→ ,trail:·,extends:›,precedes:‹,nbsp:␣"
-opt.fillchars = "fold: ,foldopen:▾,foldsep: ,foldclose:▸,stl: ,eob: "
+-- thin ink-stroke window separators (▏/─) instead of heavy full-cell bars
+opt.fillchars = "fold: ,foldopen:▾,foldsep: ,foldclose:▸,stl: ,eob: ,vert:▏,vertleft:▏,vertright:▏,verthoriz:▏,horiz:─,horizup:─,horizdown:─"
 
 -- Cursor and scrolling
 opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"

@@ -29,12 +29,77 @@ vim.cmd.packadd("cfilter")
 -- ============================================================================
 -- Colorscheme — single source of truth (do not also configure in plugins.nix)
 -- ============================================================================
--- kanagawa "wave" matches helix's built-in kanagawa theme
--- (kanagawa.nvim ships highlight groups for treesitter/telescope/dap/etc.
--- out of the box — no integrations table needed).
+-- kanagawa "wave" matches helix's built-in kanagawa theme.
+-- Custom overrides build a "sumi-e ink" look: floats/pickers/menus render as
+-- solid borderless ink blocks on layered background shades, with sparing
+-- glow accents (carpYellow matches, crystalBlue titles).
 require("kanagawa").setup({
 	theme = "wave",
 	background = { dark = "wave", light = "lotus" },
+	dimInactive = true, -- unfocused windows fade into the paper
+	commentStyle = { italic = true },
+	keywordStyle = { italic = true },
+	statementStyle = { bold = true },
+	colors = {
+		theme = { all = { ui = { bg_gutter = "none" } } }, -- clean gutter
+	},
+	overrides = function(colors)
+		local theme = colors.theme
+		local p = colors.palette
+		return {
+			-- ══ Floats: solid ink blocks, border melts into the panel ══
+			NormalFloat = { bg = theme.ui.bg_m3 },
+			FloatBorder = { bg = theme.ui.bg_m3, fg = theme.ui.bg_m3 },
+			FloatTitle = { bg = p.crystalBlue, fg = theme.ui.bg_m3, bold = true },
+
+			-- ══ Telescope: three-tone block composition ══
+			TelescopeTitle = { fg = theme.ui.special, bold = true },
+			TelescopePromptNormal = { bg = theme.ui.bg_p1 },
+			TelescopePromptBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+			TelescopeResultsNormal = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m1 },
+			TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
+			TelescopePreviewNormal = { bg = theme.ui.bg_dim },
+			TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
+			TelescopeSelection = { bg = p.waveBlue1, bold = true },
+			TelescopeMatching = { fg = p.carpYellow, bold = true },
+
+			-- ══ Completion menu (blink) ══
+			Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 },
+			PmenuSel = { fg = "NONE", bg = p.waveBlue1 },
+			PmenuSbar = { bg = theme.ui.bg_m1 },
+			PmenuThumb = { bg = p.crystalBlue },
+			BlinkCmpMenu = { bg = theme.ui.bg_p1 },
+			BlinkCmpMenuBorder = { fg = theme.ui.bg_p1, bg = theme.ui.bg_p1 },
+			BlinkCmpMenuSelection = { bg = p.waveBlue1, bold = true },
+			BlinkCmpLabelMatch = { fg = p.carpYellow, bold = true },
+			BlinkCmpGhostText = { fg = theme.ui.nontext, italic = true },
+
+			-- ══ Chrome: thin ink separators, glowing cursor line number ══
+			WinSeparator = { fg = p.sumiInk4 },
+			CursorLineNr = { fg = p.carpYellow, bold = true },
+			TreesitterContext = { bg = theme.ui.bg_p1 },
+			TreesitterContextBottom = { underline = true, sp = p.waveBlue2 },
+			WhichKeyFloat = { bg = theme.ui.bg_m3 },
+
+			-- ══ Noice command palette ══
+			NoiceCmdlinePopup = { bg = theme.ui.bg_m3 },
+			NoiceCmdlinePopupBorder = { fg = p.crystalBlue },
+			NoiceCmdlineIcon = { fg = p.surimiOrange },
+
+			-- ══ Dashboard ══
+			DashboardHeader = { fg = p.crystalBlue },
+			DashboardFooter = { fg = p.fujiGray, italic = true },
+
+			-- ══ Rainbow delimiters: muted kanagawa inks, no neon ══
+			RainbowDelimiterRed = { fg = p.waveRed },
+			RainbowDelimiterYellow = { fg = p.carpYellow },
+			RainbowDelimiterBlue = { fg = p.crystalBlue },
+			RainbowDelimiterOrange = { fg = p.surimiOrange },
+			RainbowDelimiterGreen = { fg = p.springGreen },
+			RainbowDelimiterViolet = { fg = p.oniViolet },
+			RainbowDelimiterCyan = { fg = p.waveAqua2 },
+		}
+	end,
 })
 vim.cmd.colorscheme("kanagawa")
 

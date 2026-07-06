@@ -164,6 +164,9 @@ in
     nvim-treesitter-textobjects
     # sticky current-function header while scrolling; lazy on BufReadPre.
     { plugin = nvim-treesitter-context; optional = true; }
+    # muted kanagawa-toned bracket pairs (RainbowDelimiter* groups defined in
+    # the kanagawa overrides, nvim/init.lua); lazy on BufReadPre.
+    { plugin = rainbow-delimiters-nvim; optional = true; }
 
     # ============================================================================
     # CODE EDITING & REFACTORING

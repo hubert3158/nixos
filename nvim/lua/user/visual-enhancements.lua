@@ -29,6 +29,7 @@ function M.setup()
 			theme = "kanagawa",
 			globalstatus = true,
 			disabled_filetypes = { statusline = { "dashboard" } },
+			-- bubble statusline: rounded section caps, thin ink dividers
 			component_separators = { left = "", right = "" },
 			section_separators = { left = "", right = "" },
 		},

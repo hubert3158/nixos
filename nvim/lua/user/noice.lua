@@ -1,6 +1,12 @@
 require("noice").setup({
-  -- Render :IncRename input inline at the cursor
-  presets = { inc_rename = true },
+  presets = {
+    -- Render :IncRename input inline at the cursor
+    inc_rename = true,
+    -- Cmdline as a centered floating palette, search popup follows
+    command_palette = true,
+    -- Long messages route to a split instead of blocking hit-enter prompts
+    long_message_to_split = true,
+  },
   lsp = {
     -- Route LSP markdown through Noice's TreeSitter renderer.
     -- Silences the two healthcheck warnings and avoids the

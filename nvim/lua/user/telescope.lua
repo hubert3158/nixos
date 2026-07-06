@@ -28,6 +28,13 @@ end
 
 require("telescope").setup({
 	defaults = {
+		-- sumi-e block look: colors come from kanagawa overrides (init.lua);
+		-- glyphs here just give the prompt/selection some calligraphy
+		prompt_prefix = "   ",
+		selection_caret = " ",
+		entry_prefix = "  ",
+		multi_icon = " ",
+		results_title = false,
 		path_display = { "truncate" },
 		-- ripgrep respects .gitignore by default
 		vimgrep_arguments = ignore.get_rg_args(),
