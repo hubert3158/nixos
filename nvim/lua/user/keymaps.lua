@@ -107,6 +107,11 @@ map("n", "<leader>gs", ":Git<CR>", { silent = true, desc = "Git Status" })
 map("n", "<leader>gc", ":Git commit<CR>", { silent = true, desc = "Git Commit" })
 map("n", "<leader>gp", ":Git push<CR>", { silent = true, desc = "Git Push" })
 
+-- Diffview (commands are lz.n stubs until first use)
+map("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { silent = true, desc = "Diffview: working tree diff" })
+map("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { silent = true, desc = "Diffview: file history" })
+map("n", "<leader>gH", "<cmd>DiffviewFileHistory<CR>", { silent = true, desc = "Diffview: repo history" })
+
 -- ============================================================================
 -- Quickfix
 -- ============================================================================
@@ -274,3 +279,16 @@ map("n", "<leader>tP", "<cmd>EnableHeavyFeatures<CR>", { silent = true, desc = "
 
 -- Java/Spring Boot (command defined in plugin/lsp.lua)
 map("n", "<leader>jw", "<cmd>JavaCleanWorkspace<CR>", { silent = true, desc = "[J]ava Clean [W]orkspace" })
+
+-- ============================================================================
+-- LSP rename with live preview (inc-rename.nvim, loads on cmd via lz.n)
+-- ============================================================================
+map("n", "<leader>rn", function()
+	return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true, desc = "LSP [R]e[n]ame (live preview)" })
+
+-- ============================================================================
+-- Overseer task runner (commands are lz.n stubs until first use)
+-- ============================================================================
+map("n", "<leader>or", "<cmd>OverseerRun<CR>", { silent = true, desc = "[O]verseer [R]un task" })
+map("n", "<leader>ot", "<cmd>OverseerToggle<CR>", { silent = true, desc = "[O]verseer [T]oggle task list" })

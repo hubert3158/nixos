@@ -70,6 +70,10 @@
     { plugin = gitsigns-nvim; optional = true; }
     { plugin = vim-fugitive; optional = true; }
     { plugin = lazygit-nvim; optional = true; }
+    # diffview — PR review / file history; lazy via lz.n on its commands.
+    { plugin = diffview-nvim; optional = true; }
+    # octo — GitHub PRs/issues via gh CLI; lazy via lz.n on cmd=Octo.
+    { plugin = octo-nvim; optional = true; }
     # git-conflict setup runs lazily via nvim/lua/user/git-conflict.lua
     # (driven by lz.n on DeferredUIEnter).
     { plugin = git-conflict-nvim; optional = true; }
@@ -91,6 +95,8 @@
     # fidget (LSP progress UI) — lazy via lz.n on LspAttach.
     { plugin = fidget-nvim; optional = true; }
     nvim-navic
+    # inc-rename — live rename preview (noice renders it inline); lazy on cmd.
+    { plugin = inc-rename-nvim; optional = true; }
 
     # ============================================================================
     # AUTOCOMPLETION & SNIPPETS
@@ -113,6 +119,11 @@
     ]))
     nvim-ts-autotag
     nvim-ts-context-commentstring
+    # textobjects queries (queries/*/textobjects.scm) — consumed by mini.ai's
+    # treesitter spec (user/mini.lua); no setup call needed.
+    nvim-treesitter-textobjects
+    # sticky current-function header while scrolling; lazy on BufReadPre.
+    { plugin = nvim-treesitter-context; optional = true; }
 
     # ============================================================================
     # CODE EDITING & REFACTORING
@@ -129,7 +140,9 @@
     # naming collision.
     vim-visual-multi
     { plugin = yanky-nvim; }
-    { plugin = nvim-spectre; optional = true; }
+    # grug-far — ripgrep-backed search/replace with live preview (replaced
+    # nvim-spectre: stale, sed-based apply). Lazy via lz.n on keys/cmd.
+    { plugin = grug-far-nvim; optional = true; }
     { plugin = venn-nvim; optional = true; }
     vim-easy-align
 
@@ -144,7 +157,21 @@
     # ============================================================================
     { plugin = nvim-dap; optional = true; }
     { plugin = nvim-dap-ui; optional = true; }
+    # inline variable values while stepping — packadd'ed in user/dap.lua.
+    { plugin = nvim-dap-virtual-text; optional = true; }
     { plugin = debugprint-nvim; optional = true; }
+
+    # ============================================================================
+    # TESTING (neotest — run/debug tests inline)
+    # ============================================================================
+    # nvim-nio is neotest's async runtime — eager lib, like promise-async.
+    nvim-nio
+    { plugin = neotest; optional = true; }
+    # adapters are packadd'ed in user/neotest.lua before setup; the rust
+    # adapter ships inside rustaceanvim (rustaceanvim.neotest).
+    { plugin = neotest-java; optional = true; }
+    { plugin = neotest-jest; optional = true; }
+    { plugin = neotest-vitest; optional = true; }
 
     # ============================================================================
     # UTILITIES & PRODUCTIVITY
@@ -160,6 +187,10 @@
     auto-session
     { plugin = todo-comments-nvim; optional = true; }
     { plugin = neoscroll-nvim; optional = true; }
+    # quicker — editable, syntax-highlighted quickfix; lazy on DeferredUIEnter.
+    { plugin = quicker-nvim; optional = true; }
+    # overseer — task runner (build/watch/scripts) with dap integration.
+    { plugin = overseer-nvim; optional = true; }
     # neogen — lazy via lz.n on its <leader>nc key.
     { plugin = neogen; optional = true; }
 

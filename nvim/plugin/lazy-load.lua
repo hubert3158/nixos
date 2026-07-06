@@ -325,10 +325,97 @@ require("lz.n").load({
 		end,
 	},
 	{
-		"nvim-spectre",
-		cmd = "Spectre",
+		"grug-far.nvim",
+		cmd = "GrugFar",
+		keys = {
+			{ "<leader>S", desc = "Search & Replace (grug-far)" },
+			{ "<leader>sw", desc = "Search & Replace word under cursor" },
+			{ "<leader>sw", mode = "v", desc = "Search & Replace selection" },
+			{ "<leader>sf", desc = "Search & Replace in current file" },
+		},
 		after = function()
-			require("user.spectre")
+			require("user.grug-far")
+		end,
+	},
+	{
+		"neotest",
+		keys = {
+			{ "<leader>Tt", desc = "Test nearest" },
+			{ "<leader>Tf", desc = "Test file" },
+			{ "<leader>Ta", desc = "Test all (cwd)" },
+			{ "<leader>Td", desc = "Debug nearest test (DAP)" },
+			{ "<leader>Ts", desc = "Toggle test summary" },
+			{ "<leader>To", desc = "Open test output" },
+			{ "<leader>TO", desc = "Toggle test output panel" },
+			{ "]t", desc = "Next failed test" },
+			{ "[t", desc = "Previous failed test" },
+		},
+		after = function()
+			require("user.neotest")
+		end,
+	},
+	{
+		"diffview.nvim",
+		cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
+		after = function()
+			require("diffview").setup()
+		end,
+	},
+	{
+		"octo.nvim",
+		cmd = "Octo",
+		after = function()
+			require("octo").setup()
+		end,
+	},
+	{
+		-- <leader>rn (user/keymaps.lua) is expr → types ":IncRename <cword>",
+		-- which trips this cmd trigger.
+		"inc-rename.nvim",
+		cmd = "IncRename",
+		after = function()
+			require("inc_rename").setup({})
+		end,
+	},
+	{
+		"nvim-treesitter-context",
+		event = { "BufReadPre", "BufNewFile" },
+		after = function()
+			require("treesitter-context").setup({
+				max_lines = 4,
+				multiline_threshold = 2,
+			})
+		end,
+	},
+	{
+		"quicker.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("quicker").setup({
+				keys = {
+					{
+						">",
+						function()
+							require("quicker").expand({ before = 2, after = 2, add_to_existing = true })
+						end,
+						desc = "Expand quickfix context",
+					},
+					{
+						"<",
+						function()
+							require("quicker").collapse()
+						end,
+						desc = "Collapse quickfix context",
+					},
+				},
+			})
+		end,
+	},
+	{
+		"overseer.nvim",
+		cmd = { "OverseerRun", "OverseerToggle", "OverseerInfo", "OverseerBuild" },
+		after = function()
+			require("overseer").setup()
 		end,
 	},
 	{

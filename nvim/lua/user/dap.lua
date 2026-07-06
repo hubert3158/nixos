@@ -2,11 +2,15 @@
 -- (nvim-dap and nvim-dap-ui are opt plugins).
 
 vim.cmd.packadd("nvim-dap-ui")
+vim.cmd.packadd("nvim-dap-virtual-text")
 
 local dap = require("dap")
 local dapui = require("dapui")
 
 dapui.setup()
+
+-- Inline variable values next to code while stepping
+require("nvim-dap-virtual-text").setup({})
 
 -- Open DAP UI automatically on debugging start
 dap.listeners.after.event_initialized["dapui_config"] = function()

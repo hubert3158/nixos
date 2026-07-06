@@ -8,6 +8,9 @@
 -- managed there are marked `optional = true` in packages/neovim/plugins.nix
 -- so they are NOT sourced at startup.
 
+-- Byte-compile + cache Lua modules (must run before any require)
+vim.loader.enable()
+
 -- Leader keys must be set before any keymaps/plugins
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","

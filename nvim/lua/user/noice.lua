@@ -1,4 +1,6 @@
 require("noice").setup({
+  -- Render :IncRename input inline at the cursor
+  presets = { inc_rename = true },
   lsp = {
     -- Route LSP markdown through Noice's TreeSitter renderer.
     -- Silences the two healthcheck warnings and avoids the

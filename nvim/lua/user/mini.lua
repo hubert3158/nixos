@@ -11,4 +11,17 @@ require("mini.map").setup({
 })
 require("mini.indentscope").setup({})
 require("mini.cursorword").setup({})
-require("mini.ai").setup({})
+-- Treesitter textobjects (queries from nvim-treesitter-textobjects, eager in
+-- plugins.nix): vaf/vif function, vac/vic class, vao/vio conditional/loop.
+local ai = require("mini.ai")
+ai.setup({
+	n_lines = 200,
+	custom_textobjects = {
+		f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+		c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+		o = ai.gen_spec.treesitter({
+			a = { "@conditional.outer", "@loop.outer" },
+			i = { "@conditional.inner", "@loop.inner" },
+		}),
+	},
+})
