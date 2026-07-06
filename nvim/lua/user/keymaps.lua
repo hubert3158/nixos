@@ -108,7 +108,15 @@ map("n", "<leader>gc", ":Git commit<CR>", { silent = true, desc = "Git Commit" }
 map("n", "<leader>gp", ":Git push<CR>", { silent = true, desc = "Git Push" })
 
 -- Diffview (commands are lz.n stubs until first use)
-map("n", "<leader>gd", "<cmd>DiffviewOpen<CR>", { silent = true, desc = "Diffview: working tree diff" })
+map("n", "<leader>gd", function()
+	-- toggle: close if a diffview is open, open otherwise
+	local ok, lib = pcall(require, "diffview.lib")
+	if ok and lib.get_current_view() then
+		vim.cmd("DiffviewClose")
+	else
+		vim.cmd("DiffviewOpen")
+	end
+end, { silent = true, desc = "Diffview: toggle working tree diff" })
 map("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { silent = true, desc = "Diffview: file history" })
 map("n", "<leader>gH", "<cmd>DiffviewFileHistory<CR>", { silent = true, desc = "Diffview: repo history" })
 
