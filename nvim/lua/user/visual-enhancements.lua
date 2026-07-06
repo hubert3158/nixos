@@ -14,9 +14,8 @@ function M.setup()
 
 	require("lualine").setup({
 		options = {
-			-- nixpkgs' catppuccin ships lualine themes as catppuccin-<flavour>.lua
-			-- (no plain "catppuccin" module) — name the flavour explicitly.
-			theme = "catppuccin-mocha",
+			-- kanagawa.nvim ships a lualine theme that follows the active variant
+			theme = "kanagawa",
 			globalstatus = true,
 			disabled_filetypes = { statusline = { "dashboard" } },
 			component_separators = { left = "", right = "" },

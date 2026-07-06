@@ -21,8 +21,9 @@
     # ============================================================================
     # COLORSCHEME & UI
     # ============================================================================
-    # catppuccin setup lives in nvim/init.lua (single source of truth).
-    catppuccin-nvim
+    # kanagawa setup lives in nvim/init.lua (single source of truth).
+    # Matches the helix theme (modules/home-manager/programs/helix.nix).
+    kanagawa-nvim
     { plugin = lualine-nvim; optional = true; }
     # bufferline setup runs inside user/visual-enhancements.setup() (lualine's
     # DeferredUIEnter hook packadds it first).

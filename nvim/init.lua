@@ -24,48 +24,14 @@ vim.cmd.packadd("cfilter")
 -- ============================================================================
 -- Colorscheme — single source of truth (do not also configure in plugins.nix)
 -- ============================================================================
-require("catppuccin").setup({
-	flavour = "mocha",
-	integrations = {
-		aerial = true,
-		barbecue = {
-			dim_dirname = true,
-			bold_basename = true,
-			dim_context = false,
-			alt_background = false,
-		},
-		blink_cmp = true,
-		dap = true,
-		dap_ui = true,
-		dashboard = true,
-		fidget = true,
-		gitsigns = true,
-		harpoon = true,
-		indent_blankline = { enabled = true },
-		lsp_trouble = true,
-		markdown = true,
-		mini = { enabled = true },
-		native_lsp = {
-			enabled = true,
-			underlines = {
-				errors = { "undercurl" },
-				hints = { "undercurl" },
-				warnings = { "undercurl" },
-				information = { "undercurl" },
-			},
-		},
-		navic = { enabled = true },
-		neotree = true,
-		noice = true,
-		notify = true,
-		render_markdown = true,
-		telescope = { enabled = true },
-		treesitter = true,
-		ufo = true,
-		which_key = true,
-	},
+-- kanagawa "wave" matches helix's built-in kanagawa theme
+-- (kanagawa.nvim ships highlight groups for treesitter/telescope/dap/etc.
+-- out of the box — no integrations table needed).
+require("kanagawa").setup({
+	theme = "wave",
+	background = { dark = "wave", light = "lotus" },
 })
-vim.cmd.colorscheme("catppuccin")
+vim.cmd.colorscheme("kanagawa")
 
 -- ============================================================================
 -- Session restore — must be set up before VimEnter, so loaded eagerly

@@ -3,7 +3,7 @@
 local notify = require("notify")
 
 notify.setup({
-	background_colour = "#1e1e2e", -- catppuccin mocha base
+	background_colour = "#1f1f28", -- kanagawa wave base (sumiInk3)
 	merge_duplicates = true,
 	timeout = 3000,
 	max_height = function()
