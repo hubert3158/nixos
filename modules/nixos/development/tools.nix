@@ -177,11 +177,23 @@ in
       TERMINAL = "kitty";
     };
 
-    # Prisma environment variables
-    environment.variables = lib.mkIf cfg.enablePrisma {
-      PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
-      PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
-      PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
-    };
+    environment.variables = lib.mkMerge [
+      # Prisma environment variables
+      (lib.mkIf cfg.enablePrisma {
+        PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
+        PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
+        PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
+      })
+
+      # Playwright: point npm playwright-core at Nix-built browsers instead of
+      # letting it download glibc-linked ones that can't run on NixOS.
+      # Browsers match playwright-driver's version — npm playwright-core must be
+      # on the same minor version to resolve them (older versions keep working
+      # via CHROME_PATH / the chrome channel, unaffected by these vars).
+      {
+        PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+        PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+      }
+    ];
   };
 }
