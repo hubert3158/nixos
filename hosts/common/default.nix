@@ -108,6 +108,7 @@ in {
 
   modules.services.openssh.enable = true;
   modules.services.flatpak.enable = true;
+  modules.services.appimage.enable = true;
   modules.services.printing.enable = true;
   # cloudflared is enabled per-host (tunnel id/hostname live in the host config)
 

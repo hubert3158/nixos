@@ -8,6 +8,7 @@
     ./postgresql.nix
     ./openssh.nix
     ./flatpak.nix
+    ./appimage.nix
     ./printing.nix
   ];
 }
