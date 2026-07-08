@@ -77,8 +77,6 @@ require("kanagawa").setup({
 			-- ══ Chrome: thin ink separators, glowing cursor line number ══
 			WinSeparator = { fg = p.sumiInk4 },
 			CursorLineNr = { fg = p.carpYellow, bold = true },
-			TreesitterContext = { bg = theme.ui.bg_p1 },
-			TreesitterContextBottom = { underline = true, sp = p.waveBlue2 },
 			WhichKeyFloat = { bg = theme.ui.bg_m3 },
 
 			-- ══ Noice command palette ══

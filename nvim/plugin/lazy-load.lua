@@ -378,16 +378,6 @@ require("lz.n").load({
 		end,
 	},
 	{
-		"nvim-treesitter-context",
-		event = { "BufReadPre", "BufNewFile" },
-		after = function()
-			require("treesitter-context").setup({
-				max_lines = 4,
-				multiline_threshold = 2,
-			})
-		end,
-	},
-	{
 		-- colors come from the RainbowDelimiter* kanagawa overrides (init.lua);
 		-- plugin auto-activates per buffer once sourced, no setup() call.
 		"rainbow-delimiters.nvim",
