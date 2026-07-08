@@ -115,7 +115,7 @@
         "exec": "/home/hubert/nixos/home-manager-config-files/waybar/docker.sh",
         "return-type": "json",
         "interval": 15,
-        "on-click": "kitty -e docker stats"
+        "on-click": "kitty --class waybar-tui -e docker stats"
     },
 
     "idle_inhibitor": {
@@ -165,7 +165,7 @@
         "interval": 5,
         "format": "󰻠  {usage}%",
         "tooltip": true,
-        "on-click": "kitty -e btop"
+        "on-click": "kitty --class waybar-tui -e btop"
     },
 
     "temperature": {
@@ -183,7 +183,7 @@
         "interval": 5,
         "format": "󰍛  {percentage}%",
         "tooltip-format": "{used:0.1f} / {total:0.1f} GiB",
-        "on-click": "kitty -e btop"
+        "on-click": "kitty --class waybar-tui -e btop"
     },
 
     "pulseaudio": {
@@ -215,7 +215,7 @@
         "tooltip-format-ethernet": "{ifname}\n{ipaddr}/{cidr} via {gwaddr}\n{bandwidthDownBytes}↓  {bandwidthUpBytes}↑",
         "tooltip-format-disconnected": "no connection",
         "interval": 5,
-        "on-click": "kitty -e nmtui"
+        "on-click": "kitty --class waybar-tui -e nmtui"
     },
 
     "bluetooth": {
@@ -226,7 +226,7 @@
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-        "on-click": "kitty -e bluetoothctl"
+        "on-click": "kitty --class waybar-tui -e bluetoothctl"
     },
 
     "custom/dnd": {

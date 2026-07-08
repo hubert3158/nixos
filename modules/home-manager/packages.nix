@@ -59,6 +59,9 @@ in {
       [
         keychain
         waybar
+        brightnessctl # XF86MonBrightness binds in hyprland.conf
+        playerctl # XF86Audio media binds in hyprland.conf
+        libnotify # notify-send for mako
         dejavu_fonts
         alacritty-theme
         swayimg
