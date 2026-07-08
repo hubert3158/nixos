@@ -95,6 +95,8 @@
 
               modules.desktop.hyprland.enable = true;
               modules.desktop.hyprlock.enable = true;
+              modules.desktop.hypridle.enable = true;
+              modules.desktop.swayosd.enable = true;
               modules.desktop.hyprpaper.enable = true;
               modules.desktop.i3.enable = true;
               modules.desktop.xdg.enable = true;

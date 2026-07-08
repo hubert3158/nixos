@@ -5,7 +5,9 @@
   imports = [
     ./hyprland.nix
     ./hyprlock.nix
+    ./hypridle.nix
     ./hyprpaper.nix
+    ./swayosd.nix
     ./i3.nix
     ./xdg.nix
     ./fuzzel.nix

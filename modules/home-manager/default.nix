@@ -19,6 +19,30 @@
 
   # Note: nixpkgs.config is set at the flake level when using useGlobalPkgs
 
+  # Cursor theme — consistent across Hyprland, GTK, and XWayland
+  home.pointerCursor = {
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+    size = 24;
+    gtk.enable = true;
+    x11.enable = true;
+  };
+
+  # Dark GTK apps (pavucontrol, file pickers) + icon theme for fuzzel/dolphin
+  gtk = {
+    enable = true;
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+    gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+  };
+
   # Session variables
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$HOME/.npm-global/bin:$PATH";

@@ -26,7 +26,7 @@
 @define-color flamingo #f0c6c6;
 
 * {
-    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", sans-serif;
+    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", "Noto Sans CJK JP", sans-serif;
     font-size: 13px;
     font-weight: 600;
     min-height: 0;
@@ -126,6 +126,12 @@ window#waybar.empty #window {
 
 #mpris.paused {
     color: @overlay0;
+}
+
+#custom-cava {
+    color: @teal;
+    font-size: 14px;
+    padding: 0 12px 0 4px;
 }
 
 /* ── center ──────────────────────────────────────────────── */

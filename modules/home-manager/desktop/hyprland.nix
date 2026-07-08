@@ -28,6 +28,12 @@ in
       xwayland.enable = cfg.enableXwayland;
       # Disable systemd integration as it conflicts with uwsm
       systemd.enable = false;
+      # Plugins are loaded before extraConfig sources the dotfile, so the
+      # plugin{} block and overview binds there resolve correctly.
+      plugins = [
+        pkgs.hyprlandPlugins.hyprspace # workspace overview (Mod+grave)
+        pkgs.hyprlandPlugins.hypr-dynamic-cursors # cursor tilt + shake-to-find
+      ];
       extraConfig = ''source = ${cfg.configFile} '';
     };
   };
