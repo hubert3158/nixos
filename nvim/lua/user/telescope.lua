@@ -35,7 +35,22 @@ require("telescope").setup({
 		entry_prefix = "  ",
 		multi_icon = " ",
 		results_title = false,
-		path_display = { "truncate" },
+		-- Replicates the builtin "truncate" style with a fast-event guard.
+		-- Upstream bug: path_truncate calls nvim_get_current_buf while finder
+		-- results arrive in a fast event context (E5560, "Finder failed").
+		-- telescope guards path_abs with vim.in_fast_event() but not truncate.
+		path_display = function(opts, path)
+			if opts.__length == nil then
+				if vim.in_fast_event() then
+					return path -- can't measure the window here; truncate on the next safe call
+				end
+				local status = require("telescope.state").get_status(vim.api.nvim_get_current_buf())
+				opts.__length = vim.api.nvim_win_get_width(status.layout.results.winid)
+					- #status.picker.selection_caret
+					- 2
+			end
+			return require("plenary.strings").truncate(path, opts.__length - (opts.__prefix or 0), nil, -1)
+		end,
 		-- ripgrep respects .gitignore by default
 		vimgrep_arguments = ignore.get_rg_args(),
 		-- Dynamic patterns from .gitignore + base binary patterns
