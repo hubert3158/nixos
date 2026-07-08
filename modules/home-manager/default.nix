@@ -41,6 +41,9 @@
     };
     gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
     gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+    # adw-gtk3 is a GTK3-only theme; GTK4/libadwaita apps style themselves.
+    # null = new HM 26.05 default (silences legacy-default eval warning).
+    gtk4.theme = null;
   };
 
   # Session variables
