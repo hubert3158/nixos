@@ -21,26 +21,29 @@ local opts = {
 	server = {
 		capabilities = ok_blink and blink.get_lsp_capabilities() or nil,
 		on_attach = function(client, bufnr)
-			-- Keep the shared LSP maps (gd / gD / gi / K / [d]d / [e]e / <leader>ee / gs).
+			-- Keep the shared LSP maps (gd / gD / gi / K / [d]d / [e]e / <leader>ca|cd / gs).
 			on_attach(client, bufnr)
 
 			local function map(lhs, rhs, desc)
 				vim.keymap.set("n", lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
 			end
 
+			-- Same-key overrides of the generic run maps (user/keymaps.lua):
+			-- <leader>rr/rp/rd mean run/pick/debug in EVERY language — rust buffers
+			-- just swap in the cargo-aware backend. Tests go through neotest
+			-- (<leader>t*, rust adapter wired in user/neotest.lua); Cargo.toml opens
+			-- via the generic <leader>rc project-manifest map.
+			--
 			-- BANG (`RustLsp! run`) = execute_last_runnable: first press opens the
 			-- picker and caches the choice; every press after re-runs that target
-			-- from ANY cursor position (no "no runnable at position" error). This is
-			-- the <leader>tt → type `cargo run` replacement. Output in a terminal split.
-			map("<leader>rr", function() vim.cmd.RustLsp({ "run", bang = true }) end, "Rust: run (last runnable)")
+			-- from ANY cursor position (no "no runnable at position" error).
+			-- Output in a terminal split.
+			map("<leader>rr", function() vim.cmd.RustLsp({ "run", bang = true }) end, "Run last cargo runnable")
 			-- No bang = always re-open the picker, to switch which target runs.
-			map("<leader>rR", function() vim.cmd.RustLsp("runnables") end, "Rust: pick runnable")
-			map("<leader>rt", function() vim.cmd.RustLsp({ "testables", bang = true }) end, "Rust: test (last)")
-			map("<leader>rd", function() vim.cmd.RustLsp({ "debuggables", bang = true }) end, "Rust: debug (last)")
-			map("<leader>rm", function() vim.cmd.RustLsp("expandMacro") end, "Rust: expand macro")
-			map("<leader>rc", function() vim.cmd.RustLsp("openCargo") end, "Rust: open Cargo.toml")
+			map("<leader>rp", function() vim.cmd.RustLsp("runnables") end, "Pick cargo runnable")
+			map("<leader>rd", function() vim.cmd.RustLsp({ "debuggables", bang = true }) end, "Debug last cargo target")
 			-- rustaceanvim's richer hover with grouped code actions (overrides plain K).
-			map("K", function() vim.cmd.RustLsp({ "hover", "actions" }) end, "Rust: hover actions")
+			map("K", function() vim.cmd.RustLsp({ "hover", "actions" }) end, "Rust hover actions")
 		end,
 		default_settings = {
 			["rust-analyzer"] = {

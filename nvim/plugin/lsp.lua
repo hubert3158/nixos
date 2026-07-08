@@ -250,11 +250,11 @@ local servers = {
 		on_attach = function(client, bufnr)
 			general_on_attach(client, bufnr)
 			-- Auto fix-on-save was running EslintFixAll over the whole project
-			-- graph per :w on big monorepos. Bind it to a key instead.
-			-- <leader>el (not <leader>ef — that's DAP Show Frames).
-			vim.keymap.set("n", "<leader>el", "<cmd>EslintFixAll<cr>", {
+			-- graph per :w on big monorepos. Bind it to a key instead
+			-- (<leader>c = code group, see user/keymaps.lua).
+			vim.keymap.set("n", "<leader>ce", "<cmd>EslintFixAll<cr>", {
 				buffer = bufnr,
-				desc = "ESLint: fix all in buffer",
+				desc = "ESLint fix all in buffer",
 			})
 		end,
 		capabilities = general_capabilities,

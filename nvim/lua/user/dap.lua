@@ -74,54 +74,41 @@ dap.configurations.typescript = js_ts_configs
 dap.configurations.typescriptreact = js_ts_configs
 
 -- ============================================================================
--- Keymaps
+-- Keymaps — <leader>d = debug (namespace registry: user/keymaps.lua).
+-- F-keys follow the VSCode standard: F5 continue, F9 breakpoint, F10 step
+-- over, F11 step into. <leader>rd (run group) re-runs the last session.
 -- ============================================================================
 local map = vim.keymap.set
 
-map("n", "<F1>", function()
-	dapui.toggle()
-end, { silent = true, desc = "Toggle DAP UI" })
-map("n", "<F5>", function()
-	dap.step_over()
-end, { silent = true, desc = "DAP Step Over" })
-map("n", "<F6>", function()
-	dap.continue()
-end, { silent = true, desc = "DAP Continue" })
-map("n", "<F4>", function()
-	dap.step_into()
-end, { silent = true, desc = "DAP Step Into" })
-map("n", "<F3>", function()
-	dap.step_out()
-end, { silent = true, desc = "DAP Step Out" })
-
--- DAP widgets
-map("n", "<leader>eh", function()
-	require("dap.ui.widgets").hover()
-end, { silent = true, desc = "DAP Hover Variable" })
-map("n", "<leader>es", function()
-	local widgets = require("dap.ui.widgets")
-	widgets.centered_float(widgets.scopes)
-end, { silent = true, desc = "DAP Show Scopes" })
-map("n", "<leader>ef", function()
-	local widgets = require("dap.ui.widgets")
-	widgets.centered_float(widgets.frames)
-end, { silent = true, desc = "DAP Show Frames" })
-map("n", "<leader>ed", function()
-	dap.disconnect()
-end, { silent = true, desc = "DAP Disconnect" })
+-- Session control
+map("n", "<F5>", dap.continue, { silent = true, desc = "Debug: continue" })
+map("n", "<F10>", dap.step_over, { silent = true, desc = "Debug: step over" })
+map("n", "<F11>", dap.step_into, { silent = true, desc = "Debug: step into" })
+map("n", "<leader>dc", dap.continue, { silent = true, desc = "Continue" })
+map("n", "<leader>dO", dap.step_over, { silent = true, desc = "Step over" })
+map("n", "<leader>di", dap.step_into, { silent = true, desc = "Step into" })
+map("n", "<leader>do", dap.step_out, { silent = true, desc = "Step out" })
+map("n", "<leader>dd", dap.disconnect, { silent = true, desc = "Disconnect" })
 
 -- Breakpoints
-map("n", "<leader>eb", function()
-	dap.toggle_breakpoint()
-end, { silent = true, desc = "Toggle Breakpoint" })
-map("n", "<leader>eB", function()
+map("n", "<F9>", dap.toggle_breakpoint, { silent = true, desc = "Debug: toggle breakpoint" })
+map("n", "<leader>db", dap.toggle_breakpoint, { silent = true, desc = "Toggle breakpoint" })
+map("n", "<leader>dB", function()
 	dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-end, { silent = true, desc = "Set Conditional Breakpoint" })
-map("n", "<leader>eC", function()
-	dap.clear_breakpoints()
-end, { silent = true, desc = "Clear All Breakpoints" })
+end, { silent = true, desc = "Conditional breakpoint" })
+map("n", "<leader>dC", dap.clear_breakpoints, { silent = true, desc = "Clear all breakpoints" })
 
--- REPL
-map("n", "<leader>er", function()
-	dap.repl.open()
-end, { silent = true, desc = "Open DAP REPL" })
+-- Inspection
+map("n", "<leader>du", dapui.toggle, { silent = true, desc = "Toggle debug UI" })
+map("n", "<leader>dh", function()
+	require("dap.ui.widgets").hover()
+end, { silent = true, desc = "Hover variable" })
+map("n", "<leader>ds", function()
+	local widgets = require("dap.ui.widgets")
+	widgets.centered_float(widgets.scopes)
+end, { silent = true, desc = "Show scopes" })
+map("n", "<leader>df", function()
+	local widgets = require("dap.ui.widgets")
+	widgets.centered_float(widgets.frames)
+end, { silent = true, desc = "Show frames" })
+map("n", "<leader>dr", dap.repl.open, { silent = true, desc = "Open REPL" })

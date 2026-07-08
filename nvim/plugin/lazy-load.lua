@@ -152,14 +152,14 @@ require("lz.n").load({
 	{
 		"harpoon2",
 		keys = {
-			{ "<leader>pa", desc = "Harpoon add file" },
-			{ "<leader>pl", desc = "Harpoon quick menu" },
-			{ "<leader>p1", desc = "Harpoon file 1" },
-			{ "<leader>p2", desc = "Harpoon file 2" },
-			{ "<leader>p3", desc = "Harpoon file 3" },
-			{ "<leader>p4", desc = "Harpoon file 4" },
-			{ "<leader>pp", desc = "Harpoon prev" },
-			{ "<leader>pn", desc = "Harpoon next" },
+			{ "<leader>ha", desc = "Harpoon add file" },
+			{ "<leader>hh", desc = "Harpoon quick menu" },
+			{ "<leader>hp", desc = "Harpoon previous" },
+			{ "<leader>hn", desc = "Harpoon next" },
+			{ "<leader>1", desc = "Harpoon file 1" },
+			{ "<leader>2", desc = "Harpoon file 2" },
+			{ "<leader>3", desc = "Harpoon file 3" },
+			{ "<leader>4", desc = "Harpoon file 4" },
 		},
 		after = function()
 			require("user.harpoon")
@@ -204,7 +204,7 @@ require("lz.n").load({
 	{
 		"yazi.nvim",
 		keys = {
-			{ "<leader>y", function() require("yazi").yazi() end, desc = "Open [Y]azi" },
+			{ "<leader>y", function() require("yazi").yazi() end, desc = "Open yazi" },
 		},
 		after = function()
 			require("yazi").setup()
@@ -239,7 +239,7 @@ require("lz.n").load({
 	{
 		"neogen",
 		keys = {
-			{ "<leader>nc", function() require("neogen").generate() end, desc = " [C]omment Documentation Generation" },
+			{ "<leader>cg", function() require("neogen").generate() end, desc = "Generate doc comment" },
 		},
 		after = function()
 			require("neogen").setup()
@@ -260,16 +260,18 @@ require("lz.n").load({
 		"codecompanion.nvim",
 		cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
 		keys = {
-			{ "<leader>cc", desc = "Open chat" },
-			{ "<leader>ca", desc = "Actions" },
-			{ "<leader>ct", desc = "Toggle chat" },
-			{ "<leader>ci", desc = "Inline assistant" },
-			{ "<leader>cb", desc = "Add buffer to chat" },
-			{ "<leader>cv", desc = "Add selection to chat", mode = "v" },
-			{ "<leader>cs", desc = "Stop request" },
-			{ "<leader>ce", desc = "Explain code", mode = "v" },
-			{ "<leader>cr", desc = "Review code", mode = "v" },
-			{ "<leader>cx", desc = "Fix code", mode = "v" },
+			{ "<leader>ac", desc = "Toggle chat" },
+			{ "<leader>ac", desc = "Toggle chat", mode = "v" },
+			{ "<leader>an", desc = "New chat" },
+			{ "<leader>aa", desc = "Action palette" },
+			{ "<leader>ai", desc = "Inline assistant" },
+			{ "<leader>ai", desc = "Inline assistant", mode = "v" },
+			{ "<leader>ab", desc = "Add buffer to chat" },
+			{ "<leader>av", desc = "Add selection to chat", mode = "v" },
+			{ "<leader>as", desc = "Stop request" },
+			{ "<leader>ae", desc = "Explain selection", mode = "v" },
+			{ "<leader>ar", desc = "Review selection", mode = "v" },
+			{ "<leader>ax", desc = "Fix selection", mode = "v" },
 		},
 		after = function()
 			require("user.codeCompanion")
@@ -328,10 +330,10 @@ require("lz.n").load({
 		"grug-far.nvim",
 		cmd = "GrugFar",
 		keys = {
-			{ "<leader>S", desc = "Search & Replace (grug-far)" },
-			{ "<leader>sw", desc = "Search & Replace word under cursor" },
-			{ "<leader>sw", mode = "v", desc = "Search & Replace selection" },
-			{ "<leader>sf", desc = "Search & Replace in current file" },
+			{ "<leader>sr", desc = "Search & replace in project" },
+			{ "<leader>sw", desc = "Search & replace word under cursor" },
+			{ "<leader>sw", mode = "v", desc = "Search & replace selection" },
+			{ "<leader>sf", desc = "Search & replace in current file" },
 		},
 		after = function()
 			require("user.grug-far")
@@ -340,13 +342,14 @@ require("lz.n").load({
 	{
 		"neotest",
 		keys = {
-			{ "<leader>Tt", desc = "Test nearest" },
-			{ "<leader>Tf", desc = "Test file" },
-			{ "<leader>Ta", desc = "Test all (cwd)" },
-			{ "<leader>Td", desc = "Debug nearest test (DAP)" },
-			{ "<leader>Ts", desc = "Toggle test summary" },
-			{ "<leader>To", desc = "Open test output" },
-			{ "<leader>TO", desc = "Toggle test output panel" },
+			{ "<leader>tt", desc = "Test nearest" },
+			{ "<leader>tf", desc = "Test file" },
+			{ "<leader>ta", desc = "Test all (cwd)" },
+			{ "<leader>td", desc = "Debug nearest test" },
+			{ "<leader>ts", desc = "Toggle test summary" },
+			{ "<leader>tS", desc = "Stop test run" },
+			{ "<leader>to", desc = "Open test output" },
+			{ "<leader>tO", desc = "Toggle test output panel" },
 			{ "]t", desc = "Next failed test" },
 			{ "[t", desc = "Previous failed test" },
 		},
@@ -369,7 +372,7 @@ require("lz.n").load({
 		end,
 	},
 	{
-		-- <leader>rn (user/keymaps.lua) is expr → types ":IncRename <cword>",
+		-- <leader>cr (user/keymaps.lua) is expr → types ":IncRename <cword>",
 		-- which trips this cmd trigger.
 		"inc-rename.nvim",
 		cmd = "IncRename",

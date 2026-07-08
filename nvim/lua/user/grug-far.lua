@@ -6,20 +6,20 @@ local grug = require("grug-far")
 
 grug.setup({})
 
-vim.keymap.set("n", "<leader>S", function()
+-- <leader>s = search/replace (namespace registry: user/keymaps.lua;
+-- <leader>ss = native :%s substitute lives there)
+vim.keymap.set("n", "<leader>sr", function()
 	grug.open()
-end, { desc = "Search & Replace (grug-far)" })
+end, { desc = "Search & replace in project" })
 
 vim.keymap.set("n", "<leader>sw", function()
 	grug.open({ prefills = { search = vim.fn.expand("<cword>") } })
-end, { desc = "Search & Replace word under cursor" })
+end, { desc = "Search & replace word under cursor" })
 
 vim.keymap.set("v", "<leader>sw", function()
 	grug.with_visual_selection()
-end, { desc = "Search & Replace selection" })
+end, { desc = "Search & replace selection" })
 
--- <leader>sf (NOT <leader>sp — that's the global "toggle spell" map in
--- user/keymaps.lua)
 vim.keymap.set("n", "<leader>sf", function()
 	grug.open({ prefills = { paths = vim.fn.expand("%") } })
-end, { desc = "Search & Replace in current file" })
+end, { desc = "Search & replace in current file" })

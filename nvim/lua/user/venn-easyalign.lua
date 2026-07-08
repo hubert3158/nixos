@@ -25,11 +25,7 @@ function _G.Toggle_venn()
 	end
 end
 
--- Use the official toggle function with our keybinding
-vim.keymap.set("n", "<leader>vv", function()
-	Toggle_venn()
-end, { noremap = true, silent = true, desc = "Toggle Venn ASCII Drawing Mode" })
-
--- Vim-easy-align keybindings
-vim.keymap.set({ "n", "x" }, "ga", "<Plug>(EasyAlign)", { noremap = false, silent = true, desc = "Easy Align" })
+-- The toggle key (<leader>uv) and the easy-align map (ga) live in
+-- user/keymaps.lua — this file only loads on the :VBox cmd trigger
+-- (plugin/lazy-load.lua), so maps defined here would be dead until then.
 

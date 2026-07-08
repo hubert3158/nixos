@@ -24,32 +24,33 @@ neotest.setup({
 })
 
 -- ============================================================================
--- Keymaps (<leader>T* — <leader>t* is taken by toggles/ToggleTerm)
+-- Keymaps — <leader>t = test (namespace registry: user/keymaps.lua).
+-- Same keys for every language; adapters above pick the backend.
 -- ============================================================================
 local map = vim.keymap.set
 
-map("n", "<leader>Tt", function()
+map("n", "<leader>tt", function()
 	neotest.run.run()
 end, { silent = true, desc = "Test nearest" })
-map("n", "<leader>Tf", function()
+map("n", "<leader>tf", function()
 	neotest.run.run(vim.fn.expand("%"))
 end, { silent = true, desc = "Test file" })
-map("n", "<leader>Ta", function()
+map("n", "<leader>ta", function()
 	neotest.run.run(vim.fn.getcwd())
 end, { silent = true, desc = "Test all (cwd)" })
-map("n", "<leader>Td", function()
+map("n", "<leader>td", function()
 	neotest.run.run({ strategy = "dap" })
-end, { silent = true, desc = "Debug nearest test (DAP)" })
-map("n", "<leader>TS", function()
+end, { silent = true, desc = "Debug nearest test" })
+map("n", "<leader>tS", function()
 	neotest.run.stop()
 end, { silent = true, desc = "Stop test run" })
-map("n", "<leader>Ts", function()
+map("n", "<leader>ts", function()
 	neotest.summary.toggle()
 end, { silent = true, desc = "Toggle test summary" })
-map("n", "<leader>To", function()
+map("n", "<leader>to", function()
 	neotest.output.open({ enter = true })
 end, { silent = true, desc = "Open test output" })
-map("n", "<leader>TO", function()
+map("n", "<leader>tO", function()
 	neotest.output_panel.toggle()
 end, { silent = true, desc = "Toggle test output panel" })
 map("n", "]t", function()

@@ -1,113 +1,224 @@
--- Global keymaps. Plugin-specific maps that should only exist once the
--- plugin is loaded live in their plugin's config module instead
--- (user/dap.lua, user/kulala.lua, user/harpoon.lua, user/telescope.lua).
+-- ═══════════════════════════════════════════════════════════════════════════
+-- KEYBINDING PHILOSOPHY
+-- ═══════════════════════════════════════════════════════════════════════════
+-- Influences: Helix space mode (leader = discoverable menu of pickers/actions),
+-- Doom Emacs / LazyVim (mnemonic single-letter domains), vim-unimpaired
+-- (bracket pairs for prev/next), vim tradition (localleader = filetype).
+--
+-- 1. ONE PREFIX = ONE DOMAIN. Each <leader> letter owns exactly one topic and
+--    is registered as a which-key group (plugin/which-key.lua). Press <leader>
+--    and pause: the popup reads as a menu, like Helix's space mode.
+--
+-- 2. SAME KEY, SAME CONCEPT, EVERY LANGUAGE. Generic maps dispatch to generic
+--    backends (overseer for run, DAP for debug, neotest for tests). Language
+--    plugins override the SAME lhs buffer-locally with a richer backend
+--    (rust: <leader>rr becomes cargo runnables via rustaceanvim). Muscle
+--    memory transfers; the buffer decides the implementation.
+--
+-- 3. FILETYPE-ONLY KEYS LIVE ON LOCALLEADER (,). Java build commands and HTTP
+--    request keys mean nothing outside their filetype, so they stay out of
+--    the global <leader> namespace (ftplugin/java.lua, user/kulala.lua).
+--
+-- 4. NEVER CLOBBER BUILT-INS. { } remain paragraph motions. Prev/next pairs
+--    are unimpaired-style: [d ]d diagnostics, [e ]e errors, [q ]q quickfix,
+--    [t ]t failed tests, [h ]h git hunks, [a ]a outline symbols.
+--
+-- 5. DESCRIPTIONS: verb-first sentence case ("Find files"). No [B]racket
+--    markup — which-key already highlights the key itself.
+--
+-- ─────────────────────────────────────────────────────────────────────────────
+-- NAMESPACE REGISTRY (owner → where the maps live)
+-- ─────────────────────────────────────────────────────────────────────────────
+--   <leader>a    AI (CodeCompanion)         user/codeCompanion.lua
+--   <leader>b    buffers                    here (<S-h>/<S-l> = prev/next)
+--   <leader>c    code: LSP, format, docs    here + user/lsp-on-attach.lua + plugin/lsp.lua
+--   <leader>d    debug (DAP)                user/dap.lua (F5/F9/F10/F11 = VSCode)
+--   <leader>D    database (dadbod)          here
+--   <leader>e/E  explorer (neo-tree)        here
+--   <leader>f    find (telescope)           here + user/telescope.lua
+--   <leader>g    git                        here + user/gitsigns.lua + plugin/lazy-load.lua
+--   <leader>h    harpoon                    user/harpoon.lua (+ <leader>1..4 select)
+--   <leader>m    markdown                   here
+--   <leader>r    run / tasks                here (generic; rust overrides in user/rustaceanvim.lua)
+--   <leader>s    search & replace           here + user/grug-far.lua
+--   <leader>t    test (neotest)             user/neotest.lua
+--   <leader>u    UI toggles                 here + plugin/notify.lua + user/lsp-on-attach.lua
+--   <leader>x    diagnostics lists          here (Trouble)
+--   <leader>w    save (kept as the ONLY w-map so it fires instantly)
+--   <leader>y/Y  clipboard yank (v) / yazi (n, plugin/lazy-load.lua)
+--   <leader>/    toggle comment      <leader>| <leader>-  splits
+--   <C-\>        terminal (toggleterm)      ,  localleader = filetype maps
+-- ═══════════════════════════════════════════════════════════════════════════
 
 local map = vim.keymap.set
 
 -- ============================================================================
--- Telescope (commands are stubs until telescope loads on DeferredUIEnter;
--- <leader>ff / <leader>fF are defined in user/telescope.lua)
+-- Editing basics
 -- ============================================================================
-map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { silent = true, desc = "Find Old Files" })
-map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { silent = true, desc = "Live Grep" })
-map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { silent = true, desc = "Find Buffers" })
-map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { silent = true, desc = "Find Help Tags" })
-map("n", "<leader>fs", "<cmd>Telescope builtin<CR>", { silent = true, desc = "Search Telescope Builtins" })
-map("n", "<leader>fc", "<cmd>Telescope commands<CR>", { silent = true, desc = "Find Commands" })
-map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { silent = true, desc = "Find Keymaps" })
-map("n", "<leader>fm", "<cmd>Telescope marks<CR>", { silent = true, desc = "Find Marks" })
-map("n", "<leader>cd", "<cmd>Telescope zoxide list<cr>", { silent = true, desc = "Zoxide Directory Jump" })
+map("n", "<leader>w", ":w<CR>", { silent = true, desc = "Save file" })
+map({ "n", "i" }, "<C-s>", "<cmd>w<CR>", { silent = true, desc = "Save file" })
 
--- ============================================================================
--- Neo-tree
--- ============================================================================
-map("n", "<leader>nf", "<cmd>Neotree reveal<CR>", { silent = true, desc = "Find file in neo-tree" })
-map("n", "<leader>nt", "<cmd>Neotree toggle<CR>", { silent = true, desc = "Toggle neo-tree" })
-
--- ============================================================================
--- Lint + format
--- ============================================================================
-map("n", "<leader>nn", function()
-	print("Linting and Formatting...")
-	require("lint").try_lint()
-	require("conform").format({ async = false, lsp_fallback = true })
-end, { desc = "Lint then Format with Conform" })
-
--- neogen <leader>nc lives in its lz.n keys spec (plugin/lazy-load.lua) —
--- neogen is opt; a direct require here would error before it loads.
-
--- ============================================================================
--- Buffers, tabs, windows
--- ============================================================================
--- <leader>q (quit) removed on purpose — too easy to fat-finger; use :q
-map("n", "<leader>l", ":bnext<CR>", { silent = true, desc = "Next Buffer" })
-map("n", "<leader>h", ":bprev<CR>", { silent = true, desc = "Previous Buffer" })
-for i = 1, 5 do
-	map("n", "<leader>" .. i, i .. "gt", { silent = true, desc = "Go to Tab " .. i })
-end
-map("n", "<leader>bd", ":bd<CR>", { silent = true, desc = "Close Buffer" })
-map("n", "<leader>bo", ":%bd|e#|bd#<CR>", { silent = true, desc = "Close All Buffers Except Current" })
-
-map("n", "<leader>sv", ":vsp<CR>", { silent = true, desc = "Vertical Split" })
-map("n", "<leader>sh", ":sp<CR>", { silent = true, desc = "Horizontal Split" })
-
--- Window navigation
-map("n", "<C-h>", "<C-w>h", { silent = true, desc = "Move to Left Window" })
-map("n", "<C-j>", "<C-w>j", { silent = true, desc = "Move to Lower Window" })
-map("n", "<C-k>", "<C-w>k", { silent = true, desc = "Move to Upper Window" })
-map("n", "<C-l>", "<C-w>l", { silent = true, desc = "Move to Right Window" })
-
--- Window resizing
-map("n", "<C-Up>", ":resize -2<CR>", { silent = true, desc = "Decrease Window Height" })
-map("n", "<C-Down>", ":resize +2<CR>", { silent = true, desc = "Increase Window Height" })
-map("n", "<C-Left>", ":vertical resize -2<CR>", { silent = true, desc = "Decrease Window Width" })
-map("n", "<C-Right>", ":vertical resize +2<CR>", { silent = true, desc = "Increase Window Width" })
+map("n", "<Esc>", "<cmd>nohlsearch<CR>", { silent = true, desc = "Clear search highlight" })
 
 -- Move selection up/down
-map("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move Selection Down" })
-map("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move Selection Up" })
+map("v", "<A-j>", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
+map("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
 
 -- Better indenting
-map("v", "<", "<gv", { silent = true, desc = "Indent Left and Reselect" })
-map("v", ">", ">gv", { silent = true, desc = "Indent Right and Reselect" })
+map("v", "<", "<gv", { silent = true, desc = "Indent left and reselect" })
+map("v", ">", ">gv", { silent = true, desc = "Indent right and reselect" })
 
--- Save (no other <leader>w* maps — keeps it instant, no timeoutlen wait)
-map("n", "<leader>w", ":w<CR>", { silent = true, desc = "Save File" })
+-- Clipboard (n-mode <leader>y opens yazi — see plugin/lazy-load.lua)
+map("v", "<leader>y", '"+y', { silent = true, desc = "Yank to system clipboard" })
+map("n", "<leader>Y", 'gg"+yG', { silent = true, desc = "Yank buffer to clipboard" })
 
--- ============================================================================
--- Clipboard
--- ============================================================================
-map("v", "<leader>y", '"+y', { silent = true, desc = "Yank to System Clipboard" })
-map("n", "<leader>Y", 'gg"+yG', { silent = true, desc = "Yank Entire Buffer to Clipboard" })
-
--- ============================================================================
--- Search / replace / toggles
--- ============================================================================
-map(
-	"n",
-	"<leader>sr",
-	":%s/\\<<C-r><C-w>\\>//g<Left><Left>",
-	{ desc = "Search and Replace Word Under Cursor" }
-)
+-- Commenting (Comment.nvim)
+map("n", "<leader>/", function()
+	require("Comment.api").toggle.linewise.current()
+end, { silent = true, desc = "Toggle comment" })
 map(
 	"v",
-	"<leader>sr",
-	'"zy:%s/\\(<C-r>z\\)/\\1/g<Left><Left><Left>',
-	{ desc = "Search and Replace Selection with Capture Group" }
+	"<leader>/",
+	'<ESC><cmd>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
+	{ silent = true, desc = "Toggle comment on selection" }
 )
-map("n", "<leader>tl", ":set relativenumber!<CR>", { silent = true, desc = "[T]oggle Relative [L]ine Numbers" })
-map("n", "<leader>ch", ":nohlsearch<CR>", { silent = true, desc = "Clear Search Highlighting" })
-map("n", "<leader>sp", ":set spell!<CR>", { silent = true, desc = "Toggle Spell Check" })
-map("n", "<leader>tw", ":set wrap!<CR>", { silent = true, desc = "[T]oggle [W]rap Mode" })
+
+-- Align (vim-easy-align, start plugin)
+map({ "n", "x" }, "ga", "<Plug>(EasyAlign)", { remap = true, silent = true, desc = "Easy align" })
 
 -- ============================================================================
--- Git (vim-fugitive)
+-- Windows & splits
 -- ============================================================================
-map("n", "<leader>gs", ":Git<CR>", { silent = true, desc = "Git Status" })
-map("n", "<leader>gc", ":Git commit<CR>", { silent = true, desc = "Git Commit" })
-map("n", "<leader>gp", ":Git push<CR>", { silent = true, desc = "Git Push" })
+map("n", "<C-h>", "<C-w>h", { silent = true, desc = "Move to left window" })
+map("n", "<C-j>", "<C-w>j", { silent = true, desc = "Move to lower window" })
+map("n", "<C-k>", "<C-w>k", { silent = true, desc = "Move to upper window" })
+map("n", "<C-l>", "<C-w>l", { silent = true, desc = "Move to right window" })
 
--- Diffview (commands are lz.n stubs until first use)
+map("n", "<leader>|", ":vsp<CR>", { silent = true, desc = "Split vertical" })
+map("n", "<leader>-", ":sp<CR>", { silent = true, desc = "Split horizontal" })
+
+map("n", "<C-Up>", ":resize -2<CR>", { silent = true, desc = "Decrease window height" })
+map("n", "<C-Down>", ":resize +2<CR>", { silent = true, desc = "Increase window height" })
+map("n", "<C-Left>", ":vertical resize -2<CR>", { silent = true, desc = "Decrease window width" })
+map("n", "<C-Right>", ":vertical resize +2<CR>", { silent = true, desc = "Increase window width" })
+
+-- ============================================================================
+-- Buffers (<leader>1..4 select harpoon files — user/harpoon.lua; tabs: gt/gT)
+-- ============================================================================
+map("n", "<S-l>", ":bnext<CR>", { silent = true, desc = "Next buffer" })
+map("n", "<S-h>", ":bprev<CR>", { silent = true, desc = "Previous buffer" })
+map("n", "<leader>bd", ":bd<CR>", { silent = true, desc = "Delete buffer" })
+map("n", "<leader>bo", ":%bd|e#|bd#<CR>", { silent = true, desc = "Delete other buffers" })
+
+-- ============================================================================
+-- Find (telescope; <leader>ff / <leader>fF live in user/telescope.lua)
+-- ============================================================================
+map("n", "<leader>fg", "<cmd>Telescope live_grep<CR>", { silent = true, desc = "Grep project" })
+map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { silent = true, desc = "Find buffers" })
+map("n", "<leader>fr", "<cmd>Telescope oldfiles<CR>", { silent = true, desc = "Find recent files" })
+map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { silent = true, desc = "Find help" })
+map("n", "<leader>fk", "<cmd>Telescope keymaps<CR>", { silent = true, desc = "Find keymaps" })
+map("n", "<leader>fm", "<cmd>Telescope marks<CR>", { silent = true, desc = "Find marks" })
+map("n", "<leader>fc", "<cmd>Telescope commands<CR>", { silent = true, desc = "Find commands" })
+map("n", "<leader>ft", "<cmd>Telescope builtin<CR>", { silent = true, desc = "Find telescope pickers" })
+map("n", "<leader>fz", "<cmd>Telescope zoxide list<CR>", { silent = true, desc = "Jump to directory (zoxide)" })
+
+-- ============================================================================
+-- Explorer (neo-tree)
+-- ============================================================================
+map("n", "<leader>e", "<cmd>Neotree toggle<CR>", { silent = true, desc = "Toggle explorer" })
+map("n", "<leader>E", "<cmd>Neotree reveal<CR>", { silent = true, desc = "Reveal file in explorer" })
+
+-- ============================================================================
+-- Search & replace (grug-far project-wide maps live in user/grug-far.lua:
+-- <leader>sr project, <leader>sw word/selection, <leader>sf current file)
+-- ============================================================================
+map("n", "<leader>ss", ":%s/\\<<C-r><C-w>\\>//g<Left><Left>", { desc = "Substitute word under cursor" })
+map("v", "<leader>ss", '"zy:%s/\\(<C-r>z\\)/\\1/g<Left><Left><Left>', { desc = "Substitute selection" })
+
+-- ============================================================================
+-- Code (<leader>ca code action + <leader>cd line diagnostics are buffer-local
+-- LSP maps in user/lsp-on-attach.lua; <leader>ce eslint fix in plugin/lsp.lua;
+-- <leader>cg generate docs in plugin/lazy-load.lua)
+-- ============================================================================
+map("n", "<leader>cf", function()
+	require("lint").try_lint()
+	require("conform").format({ async = false, lsp_fallback = true })
+end, { desc = "Format & lint buffer" })
+
+-- LSP rename with live preview (inc-rename.nvim loads on the :IncRename cmd)
+map("n", "<leader>cr", function()
+	return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true, desc = "Rename symbol (live preview)" })
+
+-- Code outline (aerial)
+map("n", "<leader>cs", "<cmd>AerialToggle!<CR>", { silent = true, desc = "Toggle symbols outline" })
+map("n", "[a", "<cmd>AerialPrev<CR>", { silent = true, desc = "Previous symbol" })
+map("n", "]a", "<cmd>AerialNext<CR>", { silent = true, desc = "Next symbol" })
+
+-- ============================================================================
+-- Run / tasks — generic backends; rust buffers override rr/rp/rd with cargo
+-- runnables (user/rustaceanvim.lua). Tests are <leader>t (neotest).
+-- ============================================================================
+local function overseer()
+	-- overseer is opt (lz.n cmd trigger); force-load before using its API
+	require("lz.n").trigger_load("overseer.nvim")
+	return require("overseer")
+end
+
+map("n", "<leader>rr", function()
+	local ov = overseer()
+	local tasks = ov.list_tasks({ recent_first = true })
+	if #tasks == 0 then
+		vim.cmd("OverseerRun")
+	else
+		ov.run_action(tasks[1], "restart")
+	end
+end, { silent = true, desc = "Run last task (or pick)" })
+map("n", "<leader>rp", "<cmd>OverseerRun<CR>", { silent = true, desc = "Pick task to run" })
+map("n", "<leader>rt", "<cmd>OverseerToggle<CR>", { silent = true, desc = "Toggle task list" })
+
+map("n", "<leader>rd", function()
+	local ok, dap = pcall(require, "dap")
+	if ok then
+		dap.run_last()
+	else
+		vim.notify("DAP not loaded yet", vim.log.levels.WARN)
+	end
+end, { silent = true, desc = "Debug last session" })
+
+-- Open the project manifest for the current buffer's language
+local manifest_by_ft = {
+	rust = { "Cargo.toml" },
+	javascript = { "package.json" },
+	javascriptreact = { "package.json" },
+	typescript = { "package.json" },
+	typescriptreact = { "package.json" },
+	java = { "pom.xml", "build.gradle", "build.gradle.kts" },
+	python = { "pyproject.toml", "setup.py" },
+	go = { "go.mod" },
+	zig = { "build.zig" },
+	nix = { "flake.nix" },
+}
+map("n", "<leader>rc", function()
+	local names = manifest_by_ft[vim.bo.filetype]
+		or { "Cargo.toml", "package.json", "pyproject.toml", "go.mod", "pom.xml", "flake.nix" }
+	local found = vim.fs.find(names, { upward = true, path = vim.fn.expand("%:p:h") })[1]
+	if found then
+		vim.cmd.edit(found)
+	else
+		vim.notify("No project manifest found", vim.log.levels.WARN)
+	end
+end, { silent = true, desc = "Open project manifest" })
+
+-- ============================================================================
+-- Git (hunk maps ]h [h / stage / reset / blame live in user/gitsigns.lua;
+-- <leader>gg lazygit in plugin/lazy-load.lua)
+-- ============================================================================
+map("n", "<leader>gs", ":Git<CR>", { silent = true, desc = "Git status" })
+map("n", "<leader>gc", ":Git commit<CR>", { silent = true, desc = "Git commit" })
+map("n", "<leader>gp", ":Git push<CR>", { silent = true, desc = "Git push" })
+
 map("n", "<leader>gd", function()
 	-- toggle: close if a diffview is open, open otherwise
 	local ok, lib = pcall(require, "diffview.lib")
@@ -116,89 +227,46 @@ map("n", "<leader>gd", function()
 	else
 		vim.cmd("DiffviewOpen")
 	end
-end, { silent = true, desc = "Diffview: toggle working tree diff" })
-map("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { silent = true, desc = "Diffview: file history" })
-map("n", "<leader>gH", "<cmd>DiffviewFileHistory<CR>", { silent = true, desc = "Diffview: repo history" })
+end, { silent = true, desc = "Toggle working tree diff" })
+map("n", "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", { silent = true, desc = "File history" })
+map("n", "<leader>gH", "<cmd>DiffviewFileHistory<CR>", { silent = true, desc = "Repo history" })
 
 -- ============================================================================
--- Quickfix
+-- Diagnostics lists (Trouble)
 -- ============================================================================
-map("n", "]q", ":cnext<CR>", { silent = true, desc = "Next Quickfix Item" })
-map("n", "[q", ":cprev<CR>", { silent = true, desc = "Previous Quickfix Item" })
-
--- Undo tree
-map("n", "<leader><F5>", ":UndotreeToggle<CR>", { silent = true, desc = "Toggle Undo Tree" })
-
--- Toggle terminal
-map("n", "<leader>tt", "<cmd>ToggleTerm<CR>", { silent = true, desc = "Toggle Terminal" })
-
--- ============================================================================
--- Commenting (Comment.nvim)
--- ============================================================================
-map("n", "<leader>/", function()
-	require("Comment.api").toggle.linewise.current()
-end, { silent = true, desc = "Toggle Comment" })
-map(
-	"v",
-	"<leader>/",
-	'<ESC><cmd>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
-	{ silent = true, desc = "Toggle Comment in Selection" }
-)
-
--- ============================================================================
--- Trouble
--- ============================================================================
-map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { silent = true, desc = "Toggle Diagnostics (Trouble)" })
+map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { silent = true, desc = "Diagnostics" })
+map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { silent = true, desc = "Buffer diagnostics" })
 map(
 	"n",
 	"<leader>xe",
 	"<cmd>Trouble diagnostics toggle filter.severity=ERROR<cr>",
-	{ silent = true, desc = "Show Errors Only (Trouble)" }
+	{ silent = true, desc = "Errors only" }
 )
-map(
-	"n",
-	"<leader>xX",
-	"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-	{ silent = true, desc = "Toggle Diagnostics for Buffer (Trouble)" }
-)
-map("n", "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", { silent = true, desc = "Toggle Symbols (Trouble)" })
-map(
-	"n",
-	"<leader>xl",
-	"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-	{ silent = true, desc = "Toggle LSP (Trouble)" }
-)
-map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { silent = true, desc = "Toggle Location List (Trouble)" })
-map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { silent = true, desc = "Toggle Quickfix List (Trouble)" })
-map("n", "<leader>xt", "<cmd>Trouble todo<cr>", { silent = true, desc = "Show TODOs (Trouble)" })
-map(
-	"n",
-	"<leader>xw",
-	"<cmd>Trouble diagnostics toggle focus=false<cr>",
-	{ silent = true, desc = "Workspace Diagnostics (Trouble)" }
-)
-map("n", "<leader>xT", "<cmd>TodoTelescope<cr>", { silent = true, desc = "Search TODOs with Telescope" })
+map("n", "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", { silent = true, desc = "Symbols" })
+map("n", "<leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", { silent = true, desc = "LSP references" })
+map("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { silent = true, desc = "Location list" })
+map("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { silent = true, desc = "Quickfix list" })
+map("n", "<leader>xt", "<cmd>Trouble todo<cr>", { silent = true, desc = "Todos" })
+map("n", "<leader>xT", "<cmd>TodoTelescope<cr>", { silent = true, desc = "Search todos" })
 map("n", "<leader>xd", function()
 	require("telescope").extensions["todo-comments"].todo({
 		default_text = "DEBUGPRINT | DEV | todo!",
 	})
-end, { silent = true, desc = "Search DEBUGPRINT / DEV / todo! in TODOs" })
+end, { silent = true, desc = "Search debug markers" })
+
+map("n", "]q", ":cnext<CR>", { silent = true, desc = "Next quickfix item" })
+map("n", "[q", ":cprev<CR>", { silent = true, desc = "Previous quickfix item" })
 
 -- ============================================================================
--- Yazi — <leader>y (n-mode) lives in its lz.n keys spec (plugin/lazy-load.lua)
+-- Database (vim-dadbod-ui)
 -- ============================================================================
-
--- ============================================================================
--- vim-dadbod-ui
--- ============================================================================
-map("n", "<leader>dt", function()
-	-- Check if any DBUI windows are open
+map("n", "<leader>Dt", function()
+	-- Close all DBUI windows if any are open, otherwise open the drawer
 	local dbui_wins = {}
 	for _, win in ipairs(vim.api.nvim_list_wins()) do
 		local buf = vim.api.nvim_win_get_buf(win)
 		local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 		local buf_name = vim.api.nvim_buf_get_name(buf)
-		-- Match DBUI drawer, query buffers, and result buffers
 		if ft == "dbui" or ft == "dbout" or string.match(buf_name, "dbui") or string.match(buf_name, "DBUIQuery") then
 			table.insert(dbui_wins, win)
 		end
@@ -213,30 +281,36 @@ map("n", "<leader>dt", function()
 	else
 		vim.cmd("DBUIToggle")
 	end
-end, { silent = true, desc = "Toggle Database UI" })
-map("n", "<leader>df", ":DBUIFindBuffer<CR>", { silent = true, desc = "Find Database Buffer" })
-map("n", "<leader>dr", ":DBUIRenameBuffer<CR>", { silent = true, desc = "Rename Database Buffer" })
-map("n", "<leader>da", ":DBUIAddConnection<CR>", { silent = true, desc = "Add Database Connection" })
-map("n", "<leader>dl", ":DBUILastQueryInfo<CR>", { silent = true, desc = "Last Query Info" })
-map("v", "<leader>ds", ":DB<CR>", { silent = true, desc = "Execute Selected Query" })
-map("n", "<leader>ds", ":DB<CR>", { silent = true, desc = "Execute Current Query" })
-map("n", "<leader>dw", ":w<CR>", { silent = true, desc = "Save Query Buffer" })
+end, { silent = true, desc = "Toggle database UI" })
+map("n", "<leader>Df", ":DBUIFindBuffer<CR>", { silent = true, desc = "Find database buffer" })
+map("n", "<leader>Dr", ":DBUIRenameBuffer<CR>", { silent = true, desc = "Rename database buffer" })
+map("n", "<leader>Da", ":DBUIAddConnection<CR>", { silent = true, desc = "Add database connection" })
+map("n", "<leader>Dl", ":DBUILastQueryInfo<CR>", { silent = true, desc = "Last query info" })
+map({ "n", "v" }, "<leader>Ds", ":DB<CR>", { silent = true, desc = "Execute query" })
 
 -- ============================================================================
--- Misc
+-- Markdown
 -- ============================================================================
-map("n", "<leader>rr", "<cmd>:!!<CR>", { silent = true, desc = "[R]erun last shell command" })
-map("n", "<leader>mm", function()
-	-- mini.nvim loads on DeferredUIEnter; guard the first-instant race
-	local ok, minimap = pcall(require, "mini.map")
-	if ok then
-		minimap.toggle()
+map("n", "<leader>mp", "<Plug>MarkdownPreviewToggle", { silent = true, desc = "Toggle preview" })
+map("n", "<leader>mP", function()
+	if vim.g.mkdp_enabled == 1 then
+		vim.g.mkdp_enabled = 0
+		print("Markdown Preview Plugin: DISABLED")
+	else
+		vim.g.mkdp_enabled = 1
+		print("Markdown Preview Plugin: ENABLED")
 	end
-end, { silent = true, desc = "[M]ini [M]ap Toggle" })
-map("n", "<leader>mt", "<cmd>Twilight<CR>", { silent = true, desc = "[M]isc [T]wilight" })
+end, { silent = true, desc = "Toggle preview plugin on/off" })
 
--- markdown-preview.nvim
-map("n", "<leader>mp", "<Plug>MarkdownPreviewToggle", { silent = true, desc = "Toggle Markdown [P]review" })
+-- render-markdown.nvim (loaded on markdown ft; pcall for non-markdown buffers)
+map("n", "<leader>mr", function()
+	local ok = pcall(function()
+		require("render-markdown").toggle()
+	end)
+	if not ok then
+		vim.notify("render-markdown not loaded (markdown buffers only)", vim.log.levels.WARN)
+	end
+end, { silent = true, desc = "Toggle inline rendering" })
 
 -- Open current file in Obsidian (native mermaid render + click-to-zoom).
 -- Requires the file to live inside a registered Obsidian vault.
@@ -249,54 +323,29 @@ map("n", "<leader>mo", function()
 	local uri = "obsidian://open?path=" .. vim.uri_encode(path)
 	vim.fn.jobstart({ "xdg-open", uri }, { detach = true })
 	vim.notify("Obsidian: " .. vim.fn.expand("%:t"), vim.log.levels.INFO)
-end, { silent = true, desc = "Open current file in [O]bsidian" })
+end, { silent = true, desc = "Open in Obsidian" })
 
-map("n", "<leader>mP", function()
-	if vim.g.mkdp_enabled == 1 then
-		vim.g.mkdp_enabled = 0
-		print("Markdown Preview Plugin: DISABLED")
-	else
-		vim.g.mkdp_enabled = 1
-		print("Markdown Preview Plugin: ENABLED")
+-- ============================================================================
+-- UI toggles (<leader>uh inlay hints: user/lsp-on-attach.lua;
+-- <leader>un dismiss notifications: plugin/notify.lua)
+-- ============================================================================
+map("n", "<leader>ul", ":set relativenumber!<CR>", { silent = true, desc = "Toggle relative line numbers" })
+map("n", "<leader>uw", ":set wrap!<CR>", { silent = true, desc = "Toggle line wrap" })
+map("n", "<leader>us", ":set spell!<CR>", { silent = true, desc = "Toggle spell check" })
+map("n", "<leader>uu", ":UndotreeToggle<CR>", { silent = true, desc = "Toggle undo tree" })
+map("n", "<leader>ut", "<cmd>Twilight<CR>", { silent = true, desc = "Toggle twilight dimming" })
+map("n", "<leader>uc", "<cmd>ToggleSmearCursor<CR>", { silent = true, desc = "Toggle smear cursor" })
+map("n", "<leader>up", "<cmd>DisableHeavyFeatures<CR>", { silent = true, desc = "Performance mode on" })
+map("n", "<leader>uP", "<cmd>EnableHeavyFeatures<CR>", { silent = true, desc = "Performance mode off" })
+map("n", "<leader>um", function()
+	-- mini.nvim loads on DeferredUIEnter; guard the first-instant race
+	local ok, minimap = pcall(require, "mini.map")
+	if ok then
+		minimap.toggle()
 	end
-end, { silent = true, desc = "Toggle Markdown [P]lugin On/Off" })
-
--- render-markdown.nvim (loaded on markdown ft; pcall for non-markdown buffers)
-map("n", "<leader>mr", function()
-	local ok = pcall(function()
-		require("render-markdown").toggle()
-	end)
-	if not ok then
-		vim.notify("render-markdown not loaded (markdown buffers only)", vim.log.levels.WARN)
-	end
-end, { silent = true, desc = "Toggle Markdown [R]endering" })
-
--- ============================================================================
--- Aerial (code outline)
--- ============================================================================
-map("n", "<leader>a", "<cmd>AerialToggle!<CR>", { silent = true, desc = "Toggle Aerial Code Outline" })
-map("n", "{", "<cmd>AerialPrev<CR>", { silent = true, desc = "Jump to Previous Symbol" })
-map("n", "}", "<cmd>AerialNext<CR>", { silent = true, desc = "Jump to Next Symbol" })
-
--- ============================================================================
--- Performance toggles (commands defined in user/commands.lua)
--- ============================================================================
-map("n", "<leader>tc", "<cmd>ToggleSmearCursor<CR>", { silent = true, desc = "[T]oggle Smear [C]ursor" })
-map("n", "<leader>tp", "<cmd>DisableHeavyFeatures<CR>", { silent = true, desc = "[T]oggle [P]erformance mode (disable heavy features)" })
-map("n", "<leader>tP", "<cmd>EnableHeavyFeatures<CR>", { silent = true, desc = "[T]oggle [P]erformance mode (enable heavy features)" })
-
--- Java/Spring Boot (command defined in plugin/lsp.lua)
-map("n", "<leader>jw", "<cmd>JavaCleanWorkspace<CR>", { silent = true, desc = "[J]ava Clean [W]orkspace" })
-
--- ============================================================================
--- LSP rename with live preview (inc-rename.nvim, loads on cmd via lz.n)
--- ============================================================================
-map("n", "<leader>rn", function()
-	return ":IncRename " .. vim.fn.expand("<cword>")
-end, { expr = true, desc = "LSP [R]e[n]ame (live preview)" })
-
--- ============================================================================
--- Overseer task runner (commands are lz.n stubs until first use)
--- ============================================================================
-map("n", "<leader>or", "<cmd>OverseerRun<CR>", { silent = true, desc = "[O]verseer [R]un task" })
-map("n", "<leader>ot", "<cmd>OverseerToggle<CR>", { silent = true, desc = "[O]verseer [T]oggle task list" })
+end, { silent = true, desc = "Toggle minimap" })
+map("n", "<leader>uv", function()
+	-- venn is opt (lz.n cmd trigger); force-load before toggling draw mode
+	require("lz.n").trigger_load("venn.nvim")
+	_G.Toggle_venn()
+end, { silent = true, desc = "Toggle venn drawing mode" })
