@@ -1,0 +1,258 @@
+// Waybar configuration — Catppuccin Macchiato
+// Live-editable: symlinked from ~/.config/waybar/config, style reloads on save.
+{
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 0,
+    "reload_style_on_change": true,
+
+    "modules-left": [
+        "custom/os",
+        "hyprland/workspaces",
+        "hyprland/window",
+        "mpris"
+    ],
+    "modules-center": [
+        "clock",
+        "custom/weather"
+    ],
+    "modules-right": [
+        "privacy",
+        "systemd-failed-units",
+        "custom/docker",
+        "tray",
+        "idle_inhibitor",
+        "custom/clipboard",
+        "cpu",
+        "temperature",
+        "memory",
+        "pulseaudio",
+        "backlight",
+        "network",
+        "bluetooth",
+        "custom/dnd",
+        "battery",
+        "custom/power"
+    ],
+
+    "custom/os": {
+        "format": "󱄅",
+        "tooltip": false,
+        "on-click": "fuzzel"
+    },
+
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e-1",
+        "on-scroll-down": "hyprctl dispatch workspace e+1",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
+    },
+
+    "hyprland/window": {
+        "format": "{title}",
+        "max-length": 35,
+        "separate-outputs": true,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "󰈹  $1",
+            "(.*) - Google Chrome": "󰊯  $1",
+            "(.*) - Visual Studio Code": "󰨞  $1",
+            "(.*) - kitty": "󰆍  $1"
+        }
+    },
+
+    "mpris": {
+        "format": "{player_icon} {dynamic}",
+        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "dynamic-len": 30,
+        "dynamic-order": ["title", "artist"],
+        "player-icons": {
+            "default": "󰐊",
+            "spotify": "󰓇",
+            "chromium": "󰊯",
+            "firefox": "󰈹"
+        },
+        "status-icons": {
+            "paused": "󰏤"
+        },
+        "tooltip-format": "{player}: {title} — {artist}"
+    },
+
+    "custom/weather": {
+        "exec": "/home/hubert/nixos/home-manager-config-files/waybar/weather.sh",
+        "return-type": "json",
+        "interval": 1800,
+        "on-click": "xdg-open https://wttr.in"
+    },
+
+    "privacy": {
+        "icon-spacing": 8,
+        "icon-size": 14,
+        "modules": [
+            { "type": "screenshare" },
+            { "type": "audio-in" }
+        ]
+    },
+
+    "systemd-failed-units": {
+        "hide-on-ok": true,
+        "format": "󰀦 {nr_failed}",
+        "system": true,
+        "user": true
+    },
+
+    "custom/docker": {
+        "exec": "/home/hubert/nixos/home-manager-config-files/waybar/docker.sh",
+        "return-type": "json",
+        "interval": 15,
+        "on-click": "kitty -e docker stats"
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰾪"
+        },
+        "tooltip-format-activated": "caffeine on — screen stays awake",
+        "tooltip-format-deactivated": "caffeine off"
+    },
+
+    "custom/clipboard": {
+        "format": "󰅍",
+        "on-click": "cliphist list | fuzzel --dmenu --width 70 --lines 15 | cliphist decode | wl-copy",
+        "tooltip": false
+    },
+
+    "clock": {
+        "interval": 60,
+        "format": "󰥔  {:%H:%M}",
+        "format-alt": "󰸗  {:%A, %d %B %Y}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#eed49f'><b>{}</b></span>",
+                "days": "<span color='#cad3f5'>{}</span>",
+                "weekdays": "<span color='#7dc4e4'><b>{}</b></span>",
+                "today": "<span color='#8aadf4'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 10
+    },
+
+    "cpu": {
+        "interval": 5,
+        "format": "󰻠  {usage}%",
+        "tooltip": true,
+        "on-click": "kitty -e btop"
+    },
+
+    "temperature": {
+        "interval": 5,
+        "hwmon-path-abs": "/sys/devices/pci0000:00/0000:00:18.3/hwmon",
+        "input-filename": "temp1_input",
+        "critical-threshold": 85,
+        "format": "{icon} {temperatureC}°",
+        "format-critical": "󱃂 {temperatureC}°",
+        "format-icons": ["󱃃", "󰔏", "󱃂"],
+        "tooltip-format": "CPU {temperatureC}°C"
+    },
+
+    "memory": {
+        "interval": 5,
+        "format": "󰍛  {percentage}%",
+        "tooltip-format": "{used:0.1f} / {total:0.1f} GiB",
+        "on-click": "kitty -e btop"
+    },
+
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "format-muted": "󰝟  {volume}%",
+        "format-bluetooth": "󰂰  {volume}%",
+        "format-icons": {
+            "headphone": "󰋋",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "scroll-step": 5,
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "tooltip-format": "{desc}"
+    },
+
+    "backlight": {
+        "format": "{icon}  {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "tooltip": false
+    },
+
+    "network": {
+        "format-wifi": "{icon}  {essid}",
+        "format-ethernet": "󰈀  wired",
+        "format-disconnected": "󰤭  offline",
+        "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ipaddr}/{cidr} via {gwaddr}\n{bandwidthDownBytes}↓  {bandwidthUpBytes}↑",
+        "tooltip-format-ethernet": "{ifname}\n{ipaddr}/{cidr} via {gwaddr}\n{bandwidthDownBytes}↓  {bandwidthUpBytes}↑",
+        "tooltip-format-disconnected": "no connection",
+        "interval": 5,
+        "on-click": "kitty -e nmtui"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂱 {num_connections}",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "on-click": "kitty -e bluetoothctl"
+    },
+
+    "custom/dnd": {
+        "exec": "makoctl mode | grep -q do-not-disturb && printf '󰂛' || printf '󰂚'",
+        "interval": "once",
+        "exec-on-event": true,
+        "on-click": "makoctl mode -t do-not-disturb",
+        "tooltip": false
+    },
+
+    "battery": {
+        "interval": 30,
+        "states": {
+            "warning": 20,
+            "critical": 10
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󰂄  {capacity}%",
+        "format-plugged": "󰚥  {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "{timeTo}\n{power:.1f} W"
+    },
+
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "on-click": "/home/hubert/nixos/home-manager-config-files/waybar/power-menu.sh"
+    }
+}

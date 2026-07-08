@@ -1,0 +1,291 @@
+/*
+ * Waybar style — Catppuccin Macchiato
+ * Matches hyprlock palette and the cyan Hyprland border accent.
+ * Edits apply live (reload_style_on_change).
+ */
+
+@define-color base     #24273a;
+@define-color mantle   #1e2030;
+@define-color crust    #181926;
+@define-color surface0 #363a4f;
+@define-color surface1 #494d64;
+@define-color overlay0 #6e738d;
+@define-color subtext0 #a5adcb;
+@define-color text     #cad3f5;
+
+@define-color blue     #8aadf4;
+@define-color sapphire #7dc4e4;
+@define-color sky      #91d7e3;
+@define-color teal     #8bd5ca;
+@define-color green    #a6da95;
+@define-color yellow   #eed49f;
+@define-color peach    #f5a97f;
+@define-color red      #ed8796;
+@define-color mauve    #c6a0f6;
+@define-color lavender #b7bdf8;
+@define-color flamingo #f0c6c6;
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: @text;
+}
+
+tooltip {
+    background: @mantle;
+    border: 1px solid @surface1;
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: @text;
+    padding: 4px;
+}
+
+/* ── islands ─────────────────────────────────────────────── */
+
+.modules-left,
+.modules-center,
+.modules-right {
+    background: alpha(@base, 0.88);
+    border: 1px solid alpha(@surface1, 0.55);
+    border-radius: 12px;
+    padding: 0 4px;
+}
+
+/* ── left ────────────────────────────────────────────────── */
+
+#custom-os {
+    color: @sapphire;
+    font-size: 16px;
+    padding: 0 12px 0 14px;
+}
+
+#custom-os:hover {
+    color: @sky;
+}
+
+#workspaces {
+    padding: 0 4px;
+}
+
+#workspaces button {
+    color: @overlay0;
+    background: transparent;
+    border-radius: 8px;
+    padding: 0 8px;
+    margin: 4px 2px;
+    transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.68);
+}
+
+#workspaces button.empty {
+    color: alpha(@overlay0, 0.5);
+}
+
+#workspaces button:hover {
+    color: @text;
+    background: alpha(@surface1, 0.7);
+    box-shadow: none;
+    text-shadow: none;
+}
+
+#workspaces button.active {
+    color: @crust;
+    background: @sapphire;
+    padding: 0 16px;
+}
+
+#workspaces button.urgent {
+    color: @crust;
+    background: @red;
+}
+
+#window {
+    color: @subtext0;
+    font-style: italic;
+    font-weight: 400;
+    padding: 0 14px;
+}
+
+window#waybar.empty #window {
+    padding: 0;
+}
+
+#mpris {
+    color: @teal;
+    padding: 0 14px;
+}
+
+#mpris.paused {
+    color: @overlay0;
+}
+
+/* ── center ──────────────────────────────────────────────── */
+
+#clock {
+    color: @sky;
+    padding: 0 16px;
+}
+
+#custom-weather {
+    color: @yellow;
+    padding: 0 14px 0 4px;
+}
+
+/* ── right ───────────────────────────────────────────────── */
+
+#tray,
+#cpu,
+#temperature,
+#memory,
+#pulseaudio,
+#backlight,
+#network,
+#bluetooth,
+#custom-dnd,
+#battery,
+#custom-power,
+#custom-docker,
+#custom-clipboard,
+#idle_inhibitor,
+#systemd-failed-units {
+    padding: 0 10px;
+}
+
+#privacy {
+    padding: 0 10px;
+    color: @red;
+}
+
+#systemd-failed-units {
+    color: @red;
+}
+
+#custom-docker {
+    color: @sapphire;
+}
+
+#custom-docker.hidden {
+    padding: 0;
+    margin: 0;
+    font-size: 0;
+}
+
+#idle_inhibitor {
+    color: @overlay0;
+}
+
+#idle_inhibitor.activated {
+    color: @peach;
+}
+
+#custom-clipboard {
+    color: @lavender;
+}
+
+#tray {
+    padding: 0 12px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+#cpu {
+    color: @teal;
+}
+
+#temperature {
+    color: @peach;
+}
+
+#temperature.critical {
+    color: @red;
+    animation: blink 0.8s steps(2) infinite alternate;
+}
+
+#memory {
+    color: @mauve;
+}
+
+#pulseaudio {
+    color: @lavender;
+}
+
+#pulseaudio.muted {
+    color: @overlay0;
+}
+
+#backlight {
+    color: @yellow;
+}
+
+#network {
+    color: @blue;
+}
+
+#network.disconnected {
+    color: @red;
+}
+
+#bluetooth {
+    color: @sapphire;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+    color: @overlay0;
+}
+
+#custom-dnd {
+    color: @flamingo;
+}
+
+#battery {
+    color: @green;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: @teal;
+}
+
+#battery.warning:not(.charging) {
+    color: @yellow;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+    animation: blink 0.8s steps(2) infinite alternate;
+}
+
+#custom-power {
+    color: @red;
+    font-size: 15px;
+    border-radius: 0 11px 11px 0;
+    padding: 0 14px 0 10px;
+    margin-left: 2px;
+}
+
+#custom-power:hover {
+    background: alpha(@red, 0.25);
+}
+
+@keyframes blink {
+    to {
+        background-color: @red;
+        color: @crust;
+    }
+}
