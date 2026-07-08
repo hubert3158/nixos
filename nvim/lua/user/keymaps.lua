@@ -180,9 +180,9 @@ map(
 map("n", "<leader>xT", "<cmd>TodoTelescope<cr>", { silent = true, desc = "Search TODOs with Telescope" })
 map("n", "<leader>xd", function()
 	require("telescope").extensions["todo-comments"].todo({
-		default_text = "DEBUGPRINT | DEV",
+		default_text = "DEBUGPRINT | DEV | todo!",
 	})
-end, { silent = true, desc = "Search 'DEBUGPRINT' in TODOs" })
+end, { silent = true, desc = "Search DEBUGPRINT / DEV / todo! in TODOs" })
 
 -- ============================================================================
 -- Yazi — <leader>y (n-mode) lives in its lz.n keys spec (plugin/lazy-load.lua)
