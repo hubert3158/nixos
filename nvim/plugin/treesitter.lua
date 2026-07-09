@@ -3,6 +3,12 @@ vim.filetype.add({
 	extension = {
 		http = "http",
 	},
+	pattern = {
+		-- dadbod-ui saved queries are often extensionless (e.g. db_ui/nexus/temp);
+		-- without a filetype, commentstring stays empty and gcc breaks.
+		-- Negative priority = fallback only, so connections.json etc. keep their ft.
+		[".*/db_ui/.*"] = { "sql", { priority = -math.huge } },
+	},
 })
 
 -- Register kulala_http treesitter parser from Nix-built grammar
