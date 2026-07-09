@@ -10,7 +10,7 @@ in
 
     font = lib.mkOption {
       type = lib.types.str;
-      default = "JetBrains Mono";
+      default = "Maple Mono NF";
       description = "Font family";
     };
 
@@ -22,7 +22,8 @@ in
 
     colorScheme = lib.mkOption {
       type = lib.types.str;
-      default = "Catppuccin Frappe";
+      # matches the rest of the Ink & Wave design system (docs/THEME.md)
+      default = "Kanagawa (Gogh)";
       description = "Color scheme";
     };
 
@@ -46,11 +47,12 @@ in
           keys = {
             {key="n", mods="SHIFT|CTRL", action=wezterm.action.ToggleFullScreen},
           },
-          window_background_image = '${config.home.homeDirectory}/nixos/images/wallpaper.png',
+          window_background_image = '${config.home.homeDirectory}/nixos/images/walls/great-wave-ink.png',
           window_background_image_hsb = {
-            brightness = 0.5,
-            hue = 0.5,
-            saturation = 0.7,
+            -- ghost the wave into the ink so text stays readable
+            brightness = 0.18,
+            hue = 1.0,
+            saturation = 0.9,
           },
         }
       '';

@@ -46,6 +46,15 @@
     gtk4.theme = null;
   };
 
+  # Qt apps (dolphin, qt file dialogs) follow the dark GTK look instead of
+  # rendering unthemed-light next to everything else
+  qt = {
+    enable = true;
+    platformTheme.name = "adwaita";
+    style.name = "adwaita-dark";
+    style.package = with pkgs; [ adwaita-qt adwaita-qt6 ];
+  };
+
   # Session variables
   home.sessionVariables = {
     PATH = "$HOME/.local/bin:$HOME/.npm-global/bin:$PATH";

@@ -27,6 +27,12 @@ in
       default = false;
       description = "Enable kernel settings for JProfiler (perf_event_paranoid, kptr_restrict)";
     };
+
+    enablePlymouth = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Graphical boot splash instead of scrolling kernel text";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -49,5 +55,17 @@ in
       "kernel.perf_event_paranoid" = 1;
       "kernel.kptr_restrict" = 0;
     };
+
+    # Silent boot with plymouth splash — text logs still reachable via ESC
+    boot.plymouth.enable = cfg.enablePlymouth;
+    boot.consoleLogLevel = lib.mkIf cfg.enablePlymouth 3;
+    boot.initrd.verbose = lib.mkIf cfg.enablePlymouth false;
+    boot.kernelParams = lib.mkIf cfg.enablePlymouth [
+      "quiet"
+      "splash"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
   };
 }

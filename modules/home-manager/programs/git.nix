@@ -63,7 +63,8 @@ in
       enableGitIntegration = true;
       options = {
         features = "decorations";
-        syntax-theme = "Monokai Extended";
+        # "ansi" follows the terminal palette → kanagawa (docs/THEME.md)
+        syntax-theme = "ansi";
         line-numbers = true;
         side-by-side = true;
       };

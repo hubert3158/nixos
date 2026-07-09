@@ -1,4 +1,4 @@
-// Waybar configuration — Catppuccin Macchiato
+// Waybar configuration — Kanagawa Ink & Wave (docs/THEME.md)
 // Live-editable: symlinked from ~/.config/waybar/config, style reloads on save.
 {
     "layer": "top",
@@ -35,7 +35,8 @@
         "backlight",
         "network",
         "bluetooth",
-        "custom/dnd",
+        "custom/wallpaper",
+        "custom/notification",
         "battery",
         "custom/power"
     ],
@@ -162,10 +163,10 @@
             "mode": "month",
             "on-scroll": 1,
             "format": {
-                "months": "<span color='#eed49f'><b>{}</b></span>",
-                "days": "<span color='#cad3f5'>{}</span>",
-                "weekdays": "<span color='#7dc4e4'><b>{}</b></span>",
-                "today": "<span color='#8aadf4'><b><u>{}</u></b></span>"
+                "months": "<span color='#E6C384'><b>{}</b></span>",
+                "days": "<span color='#DCD7BA'>{}</span>",
+                "weekdays": "<span color='#7FB4CA'><b>{}</b></span>",
+                "today": "<span color='#7E9CD8'><b><u>{}</u></b></span>"
             }
         },
         "actions": {
@@ -248,12 +249,32 @@
         "on-click": "kitty --class waybar-tui -e bluetoothctl"
     },
 
-    "custom/dnd": {
-        "exec": "makoctl mode | grep -q do-not-disturb && printf '󰂛' || printf '󰂚'",
-        "interval": "once",
-        "exec-on-event": true,
-        "on-click": "makoctl mode -t do-not-disturb",
-        "tooltip": false
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "󰂚",
+            "dnd-notification": "󰂛",
+            "dnd-none": "󰂛",
+            "inhibited-notification": "󱅫",
+            "inhibited-none": "󰂚",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰂛"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+
+    "custom/wallpaper": {
+        "format": "󰸉",
+        "tooltip-format": "next wallpaper",
+        "on-click": "wallpaper next",
+        "on-click-right": "wallpaper random"
     },
 
     "battery": {

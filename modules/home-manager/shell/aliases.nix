@@ -53,13 +53,12 @@ in {
       # Python
       "p" = "python";
 
-      # FZF file finder
+      # FZF file finder — colors come from programs.fzf (kanagawa, tools/fzf.nix)
       "f" = ''
         fzf \
         -i \
-        --margin 5% --padding 5% --border --preview 'cat {}' \
-        --bind 'enter:execute(nvim {})' \
-        --color bg:#222222,preview-bg:#333333
+        --margin 5% --padding 5% --border --preview 'bat --color=always --style=plain {}' \
+        --bind 'enter:execute(nvim {})'
       '';
 
       # Git restore with FZF
@@ -82,7 +81,7 @@ in {
           --header '󰋚 History Search | ENTER: execute, CTRL-Y: copy, CTRL-E: edit, ESC: cancel' \
           --prompt '󰞷 ' \
           --pointer '󰁕' \
-          --color 'header:italic:underline,label:blue,prompt:cyan,pointer:green,marker:yellow' \
+          --color 'header:italic:underline' \
           | sed 's/^[ ]*[0-9]*[ ]*//')
         if [[ -n "$selected" ]]; then
           print -s "$selected"

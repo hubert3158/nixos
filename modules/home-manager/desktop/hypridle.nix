@@ -28,7 +28,9 @@ in
       enable = true;
       settings = {
         general = {
-          lock_cmd = "pidof hyprlock || hyprlock"; # never spawn a second locker
+          # hyprlock 0.9.5: grace is a CLI flag now (general:grace was removed);
+          # auto-lock gets a 10s mouse-move grace, manual lock (wlogout) doesn't
+          lock_cmd = "pidof hyprlock || hyprlock --grace 10"; # never spawn a second locker
           before_sleep_cmd = "loginctl lock-session"; # lock before suspend
           after_sleep_cmd = "hyprctl dispatch dpms on";
         };

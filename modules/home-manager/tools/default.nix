@@ -10,5 +10,7 @@
     ./delta.nix
     ./htop.nix
     ./uv-tools.nix
+    ./fastfetch.nix
+    ./cava.nix
   ];
 }

@@ -1,0 +1,295 @@
+/*
+ * SwayNC — Kanagawa Ink & Wave (docs/THEME.md)
+ * Live-editable: `swaync-client --reload-css` applies changes.
+ * Frosted glass comes from hyprland layer blur (namespace swaync-*).
+ */
+
+@define-color sumiInk0 #16161D;
+@define-color sumiInk1 #181820;
+@define-color sumiInk2 #1A1A22;
+@define-color sumiInk3 #1F1F28;
+@define-color sumiInk4 #2A2A37;
+@define-color sumiInk5 #363646;
+@define-color sumiInk6 #54546D;
+@define-color waveBlue1 #223249;
+@define-color waveBlue2 #2D4F67;
+@define-color fujiWhite #DCD7BA;
+@define-color oldWhite #C8C093;
+@define-color fujiGray #727169;
+@define-color crystalBlue #7E9CD8;
+@define-color springBlue #7FB4CA;
+@define-color oniViolet #957FB8;
+@define-color carpYellow #E6C384;
+@define-color springGreen #98BB6C;
+@define-color waveAqua #7AA89F;
+@define-color waveRed #E46876;
+@define-color peachRed #FF5D62;
+
+* {
+  font-family: "Maple Mono NF", "JetBrainsMono Nerd Font", "Noto Sans CJK JP", sans-serif;
+  font-size: 13px;
+}
+
+/* ── notification toasts ─────────────────────────────────── */
+
+.notification-row {
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notification {
+  background: alpha(@sumiInk2, 0.92);
+  border: 1px solid alpha(@sumiInk6, 0.55);
+  border-radius: 12px;
+  margin: 6px 10px;
+  box-shadow: 0 4px 16px alpha(@sumiInk0, 0.55);
+  padding: 0;
+}
+
+.notification-content {
+  background: transparent;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.notification.critical {
+  border: 1px solid @peachRed;
+}
+
+.notification.low {
+  border: 1px solid alpha(@sumiInk5, 0.6);
+}
+
+.close-button {
+  background: alpha(@sumiInk5, 0.8);
+  color: @fujiWhite;
+  text-shadow: none;
+  padding: 0;
+  border-radius: 100%;
+  margin-top: 12px;
+  margin-right: 14px;
+  min-width: 22px;
+  min-height: 22px;
+}
+
+.close-button:hover {
+  background: @waveRed;
+  color: @sumiInk0;
+}
+
+.notification-default-action,
+.notification-action {
+  padding: 4px;
+  margin: 0;
+  box-shadow: none;
+  background: transparent;
+  border: none;
+  color: @fujiWhite;
+}
+
+.notification-action {
+  border-top: 1px solid alpha(@sumiInk5, 0.5);
+  border-radius: 0 0 12px 12px;
+}
+
+.notification-action:hover {
+  background: alpha(@waveBlue1, 0.7);
+  color: @crystalBlue;
+}
+
+.summary {
+  font-size: 14px;
+  font-weight: 700;
+  color: @fujiWhite;
+}
+
+.time {
+  font-size: 11px;
+  color: @fujiGray;
+  margin-right: 24px;
+}
+
+.body {
+  font-size: 13px;
+  color: @oldWhite;
+}
+
+.body-image {
+  border-radius: 10px;
+}
+
+/* progress bar inside notifications */
+progressbar {
+  min-height: 6px;
+  border-radius: 100px;
+}
+
+progressbar trough {
+  background: @waveBlue1;
+  border-radius: 100px;
+}
+
+progressbar progress {
+  background: @crystalBlue;
+  border-radius: 100px;
+}
+
+/* ── control center ──────────────────────────────────────── */
+
+.control-center {
+  background: alpha(@sumiInk1, 0.88);
+  border: 1px solid alpha(@sumiInk6, 0.55);
+  border-radius: 14px;
+  box-shadow: 0 8px 28px alpha(@sumiInk0, 0.65);
+  margin: 4px;
+  padding: 8px;
+}
+
+.control-center .notification {
+  background: alpha(@sumiInk3, 0.95);
+}
+
+.control-center-list {
+  background: transparent;
+}
+
+.control-center-list-placeholder {
+  color: @fujiGray;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+/* title widget */
+.widget-title {
+  margin: 4px 6px 8px 6px;
+  color: @fujiWhite;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.widget-title > button {
+  font-size: 12px;
+  color: @fujiWhite;
+  background: alpha(@sumiInk5, 0.8);
+  border: 1px solid alpha(@sumiInk6, 0.4);
+  border-radius: 10px;
+  padding: 4px 12px;
+}
+
+.widget-title > button:hover {
+  background: @waveRed;
+  color: @sumiInk0;
+}
+
+/* do-not-disturb widget */
+.widget-dnd {
+  margin: 4px 6px;
+  color: @oldWhite;
+  font-size: 13px;
+}
+
+.widget-dnd > switch {
+  border-radius: 100px;
+  background: @sumiInk5;
+  border: 1px solid alpha(@sumiInk6, 0.5);
+}
+
+.widget-dnd > switch:checked {
+  background: @oniViolet;
+}
+
+.widget-dnd > switch slider {
+  background: @fujiWhite;
+  border-radius: 100px;
+}
+
+/* mpris widget — album art card */
+.widget-mpris {
+  margin: 4px 6px;
+}
+
+.widget-mpris-player {
+  background: alpha(@sumiInk3, 0.95);
+  border: 1px solid alpha(@sumiInk6, 0.4);
+  border-radius: 12px;
+  padding: 10px;
+  margin: 4px 0;
+}
+
+.widget-mpris-title {
+  color: @fujiWhite;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.widget-mpris-subtitle {
+  color: @fujiGray;
+  font-size: 12px;
+}
+
+.widget-mpris button {
+  color: @springBlue;
+  background: transparent;
+  border-radius: 100px;
+}
+
+.widget-mpris button:hover {
+  background: alpha(@waveBlue1, 0.8);
+}
+
+/* volume / backlight sliders */
+.widget-volume,
+.widget-backlight {
+  background: alpha(@sumiInk3, 0.95);
+  border: 1px solid alpha(@sumiInk6, 0.4);
+  border-radius: 12px;
+  color: @springBlue;
+  margin: 4px 6px;
+  padding: 6px 10px;
+}
+
+.widget-volume scale trough,
+.widget-backlight scale trough {
+  background: @waveBlue1;
+  border-radius: 100px;
+  min-height: 8px;
+}
+
+.widget-volume scale highlight {
+  background: @waveAqua;
+  border-radius: 100px;
+}
+
+.widget-backlight scale highlight {
+  background: @carpYellow;
+  border-radius: 100px;
+}
+
+.widget-volume scale slider,
+.widget-backlight scale slider {
+  background: @fujiWhite;
+  border-radius: 100px;
+  min-width: 14px;
+  min-height: 14px;
+}
+
+/* inhibitors widget */
+.widget-inhibitors {
+  margin: 4px 6px;
+  color: @carpYellow;
+  font-size: 13px;
+}
+
+.widget-inhibitors > button {
+  font-size: 12px;
+  color: @fujiWhite;
+  background: alpha(@sumiInk5, 0.8);
+  border-radius: 10px;
+  padding: 4px 12px;
+}
+
+.widget-inhibitors > button:hover {
+  background: @carpYellow;
+  color: @sumiInk0;
+}

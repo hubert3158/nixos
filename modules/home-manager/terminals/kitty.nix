@@ -1,4 +1,5 @@
-# Kitty terminal configuration
+# Kitty terminal configuration — Kanagawa Wave (Ink & Wave design system)
+# Palette reference: docs/THEME.md
 { config, lib, pkgs, ... }:
 
 let
@@ -10,7 +11,7 @@ in
 
     fontName = lib.mkOption {
       type = lib.types.str;
-      default = "JetBrainsMono Nerd Font";
+      default = "Maple Mono NF";
       description = "Font family";
     };
 
@@ -35,7 +36,7 @@ in
       font = {
         name = cfg.fontName;
         size = cfg.fontSize;
-        package = pkgs.nerd-fonts.jetbrains-mono;
+        package = pkgs.maple-mono.NF;
       };
 
       settings = {
@@ -55,50 +56,56 @@ in
         # edits. Manual reload (ctrl+shift+f5) still works.
         auto_reload_config = -1;
 
-        # Catppuccin Macchiato over the red-moon background image
-        background = "#181926";
-        background_image = "${config.home.homeDirectory}/nixos/images/kitty-wallpaper.jpg";
+        # ── Kanagawa Wave over a ghosted ink-wave background image ──
+        # kitty paints the image wherever a cell's bg equals the default
+        # background — which includes ALL of neovim — so the tint must be
+        # near-total or code drowns in the artwork. 0.95 = faint ghost texture.
+        background = "#1F1F28";
+        background_image = "${config.home.homeDirectory}/nixos/images/walls/great-wave-ink.png";
         background_image_layout = "cscaled";
-        background_tint = "0.25"; # darken the image so text stays readable
+        background_tint = "0.95";
 
-        foreground = "#cad3f5";
-        selection_background = "#494d64";
-        selection_foreground = "#cad3f5";
-        cursor = "#f4dbd6";
-        cursor_text_color = "#24273a";
+        foreground = "#DCD7BA";
+        selection_background = "#2D4F67";
+        selection_foreground = "#C8C093";
+        cursor = "#C8C093";
+        cursor_text_color = "#1F1F28";
 
         # animated cursor smear — pure nerd candy
         cursor_trail = 3;
         cursor_trail_decay = "0.1 0.4";
 
-        url_color = "#8aadf4";
-        window_padding_width = 6;
+        url_color = "#7FB4CA";
+        window_padding_width = 8;
 
-        # tab bar, macchiato powerline
+        # tab bar — ink powerline, crystalBlue active tab
         tab_bar_style = "powerline";
         tab_powerline_style = "slanted";
-        active_tab_background = "#7dc4e4";
-        active_tab_foreground = "#181926";
-        inactive_tab_background = "#1e2030";
-        inactive_tab_foreground = "#6e738d";
+        active_tab_background = "#7E9CD8";
+        active_tab_foreground = "#16161D";
+        inactive_tab_background = "#16161D";
+        inactive_tab_foreground = "#727169";
+        tab_bar_background = "#16161D";
 
-        # 16-color palette
-        color0 = "#494d64";
-        color8 = "#5b6078";
-        color1 = "#ed8796";
-        color9 = "#ed8796";
-        color2 = "#a6da95";
-        color10 = "#a6da95";
-        color3 = "#eed49f";
-        color11 = "#eed49f";
-        color4 = "#8aadf4";
-        color12 = "#8aadf4";
-        color5 = "#f5bde6";
-        color13 = "#f5bde6";
-        color6 = "#8bd5ca";
-        color14 = "#8bd5ca";
-        color7 = "#b8c0e0";
-        color15 = "#a5adcb";
+        # 16-color palette — Kanagawa Wave
+        color0 = "#16161D";
+        color8 = "#727169";
+        color1 = "#C34043";
+        color9 = "#E82424";
+        color2 = "#76946A";
+        color10 = "#98BB6C";
+        color3 = "#C0A36E";
+        color11 = "#E6C384";
+        color4 = "#7E9CD8";
+        color12 = "#7FB4CA";
+        color5 = "#957FB8";
+        color13 = "#938AA9";
+        color6 = "#6A9589";
+        color14 = "#7AA89F";
+        color7 = "#C8C093";
+        color15 = "#DCD7BA";
+        color16 = "#FFA066";
+        color17 = "#FF5D62";
       };
 
       keybindings = {

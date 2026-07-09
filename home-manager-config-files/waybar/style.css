@@ -1,32 +1,39 @@
 /*
- * Waybar style — Catppuccin Macchiato
- * Matches hyprlock palette and the cyan Hyprland border accent.
+ * Waybar style — Kanagawa Ink & Wave (docs/THEME.md)
+ * Three frosted ink islands; hyprland layerrule blurs what shows through.
  * Edits apply live (reload_style_on_change).
  */
 
-@define-color base     #24273a;
-@define-color mantle   #1e2030;
-@define-color crust    #181926;
-@define-color surface0 #363a4f;
-@define-color surface1 #494d64;
-@define-color overlay0 #6e738d;
-@define-color subtext0 #a5adcb;
-@define-color text     #cad3f5;
+@define-color sumiInk0 #16161D;
+@define-color sumiInk1 #181820;
+@define-color sumiInk2 #1A1A22;
+@define-color sumiInk3 #1F1F28;
+@define-color sumiInk4 #2A2A37;
+@define-color sumiInk5 #363646;
+@define-color sumiInk6 #54546D;
+@define-color waveBlue1 #223249;
+@define-color waveBlue2 #2D4F67;
 
-@define-color blue     #8aadf4;
-@define-color sapphire #7dc4e4;
-@define-color sky      #91d7e3;
-@define-color teal     #8bd5ca;
-@define-color green    #a6da95;
-@define-color yellow   #eed49f;
-@define-color peach    #f5a97f;
-@define-color red      #ed8796;
-@define-color mauve    #c6a0f6;
-@define-color lavender #b7bdf8;
-@define-color flamingo #f0c6c6;
+@define-color fujiWhite #DCD7BA;
+@define-color oldWhite #C8C093;
+@define-color fujiGray #727169;
+
+@define-color crystalBlue #7E9CD8;
+@define-color springBlue #7FB4CA;
+@define-color oniViolet #957FB8;
+@define-color springViolet #938AA9;
+@define-color dragonBlue #658594;
+@define-color carpYellow #E6C384;
+@define-color roninYellow #FF9E3B;
+@define-color surimiOrange #FFA066;
+@define-color springGreen #98BB6C;
+@define-color waveAqua #7AA89F;
+@define-color sakuraPink #D27E99;
+@define-color waveRed #E46876;
+@define-color peachRed #FF5D62;
 
 * {
-    font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", "Noto Sans CJK JP", sans-serif;
+    font-family: "Maple Mono NF", "JetBrainsMono Nerd Font", "Symbols Nerd Font", "Noto Sans CJK JP", sans-serif;
     font-size: 13px;
     font-weight: 600;
     min-height: 0;
@@ -36,41 +43,42 @@
 
 window#waybar {
     background: transparent;
-    color: @text;
+    color: @fujiWhite;
 }
 
 tooltip {
-    background: @mantle;
-    border: 1px solid @surface1;
+    background: @sumiInk2;
+    border: 1px solid @sumiInk6;
     border-radius: 10px;
 }
 
 tooltip label {
-    color: @text;
+    color: @fujiWhite;
     padding: 4px;
 }
 
-/* ── islands ─────────────────────────────────────────────── */
+/* ── islands: layered ink glass ──────────────────────────── */
 
 .modules-left,
 .modules-center,
 .modules-right {
-    background: alpha(@base, 0.88);
-    border: 1px solid alpha(@surface1, 0.55);
+    background: linear-gradient(140deg, alpha(@sumiInk1, 0.92), alpha(@sumiInk3, 0.86));
+    border: 1px solid alpha(@sumiInk6, 0.55);
     border-radius: 12px;
     padding: 0 4px;
+    box-shadow: 0 4px 12px alpha(@sumiInk0, 0.45);
 }
 
 /* ── left ────────────────────────────────────────────────── */
 
 #custom-os {
-    color: @sapphire;
+    color: @crystalBlue;
     font-size: 16px;
     padding: 0 12px 0 14px;
 }
 
 #custom-os:hover {
-    color: @sky;
+    color: @springBlue;
 }
 
 #workspaces {
@@ -78,7 +86,7 @@ tooltip label {
 }
 
 #workspaces button {
-    color: @overlay0;
+    color: @fujiGray;
     background: transparent;
     border-radius: 8px;
     padding: 0 8px;
@@ -87,29 +95,30 @@ tooltip label {
 }
 
 #workspaces button.empty {
-    color: alpha(@overlay0, 0.5);
+    color: alpha(@fujiGray, 0.45);
 }
 
 #workspaces button:hover {
-    color: @text;
-    background: alpha(@surface1, 0.7);
+    color: @fujiWhite;
+    background: alpha(@sumiInk5, 0.8);
     box-shadow: none;
     text-shadow: none;
 }
 
 #workspaces button.active {
-    color: @crust;
-    background: @sapphire;
+    color: @sumiInk0;
+    background: linear-gradient(120deg, @crystalBlue, @oniViolet);
     padding: 0 16px;
+    text-shadow: 0 1px 2px alpha(@sumiInk0, 0.25);
 }
 
 #workspaces button.urgent {
-    color: @crust;
-    background: @red;
+    color: @sumiInk0;
+    background: @waveRed;
 }
 
 #window {
-    color: @subtext0;
+    color: @oldWhite;
     font-style: italic;
     font-weight: 400;
     padding: 0 14px;
@@ -120,16 +129,16 @@ window#waybar.empty #window {
 }
 
 #mpris {
-    color: @teal;
+    color: @waveAqua;
     padding: 0 14px;
 }
 
 #mpris.paused {
-    color: @overlay0;
+    color: @fujiGray;
 }
 
 #custom-cava {
-    color: @teal;
+    color: @waveAqua;
     font-size: 14px;
     padding: 0 12px 0 4px;
 }
@@ -137,12 +146,12 @@ window#waybar.empty #window {
 /* ── center ──────────────────────────────────────────────── */
 
 #clock {
-    color: @sky;
+    color: @springBlue;
     padding: 0 16px;
 }
 
 #custom-weather {
-    color: @yellow;
+    color: @carpYellow;
     padding: 0 14px 0 4px;
 }
 
@@ -156,11 +165,12 @@ window#waybar.empty #window {
 #backlight,
 #network,
 #bluetooth,
-#custom-dnd,
+#custom-notification,
 #battery,
 #custom-power,
 #custom-docker,
 #custom-clipboard,
+#custom-wallpaper,
 #idle_inhibitor,
 #systemd-failed-units {
     padding: 0 10px;
@@ -168,15 +178,15 @@ window#waybar.empty #window {
 
 #privacy {
     padding: 0 10px;
-    color: @red;
+    color: @waveRed;
 }
 
 #systemd-failed-units {
-    color: @red;
+    color: @waveRed;
 }
 
 #custom-docker {
-    color: @sapphire;
+    color: @springBlue;
 }
 
 #custom-docker.hidden {
@@ -186,15 +196,23 @@ window#waybar.empty #window {
 }
 
 #idle_inhibitor {
-    color: @overlay0;
+    color: @dragonBlue;
 }
 
 #idle_inhibitor.activated {
-    color: @peach;
+    color: @roninYellow;
 }
 
 #custom-clipboard {
-    color: @lavender;
+    color: @springViolet;
+}
+
+#custom-wallpaper {
+    color: @oniViolet;
+}
+
+#custom-wallpaper:hover {
+    color: @crystalBlue;
 }
 
 #tray {
@@ -210,75 +228,75 @@ window#waybar.empty #window {
 }
 
 #cpu {
-    color: @teal;
+    color: @waveAqua;
 }
 
 #temperature {
-    color: @peach;
+    color: @surimiOrange;
 }
 
 #temperature.critical {
-    color: @red;
+    color: @peachRed;
     animation: blink 0.8s steps(2) infinite alternate;
 }
 
 #memory {
-    color: @mauve;
+    color: @sakuraPink;
 }
 
 #pulseaudio {
-    color: @lavender;
+    color: @oniViolet;
 }
 
 #pulseaudio.muted {
-    color: @overlay0;
+    color: @fujiGray;
 }
 
 #backlight {
-    color: @yellow;
+    color: @carpYellow;
 }
 
 #network {
-    color: @blue;
+    color: @crystalBlue;
 }
 
 #network.disconnected {
-    color: @red;
+    color: @waveRed;
 }
 
 #bluetooth {
-    color: @sapphire;
+    color: @springBlue;
 }
 
 #bluetooth.disabled,
 #bluetooth.off {
-    color: @overlay0;
+    color: @fujiGray;
 }
 
-#custom-dnd {
-    color: @flamingo;
+#custom-notification {
+    color: @carpYellow;
 }
 
 #battery {
-    color: @green;
+    color: @springGreen;
 }
 
 #battery.charging,
 #battery.plugged {
-    color: @teal;
+    color: @waveAqua;
 }
 
 #battery.warning:not(.charging) {
-    color: @yellow;
+    color: @roninYellow;
 }
 
 #battery.critical:not(.charging) {
-    color: @red;
+    color: @peachRed;
     animation: blink 0.8s steps(2) infinite alternate;
 }
 
 #custom-power {
-    color: @red;
+    color: @peachRed;
     font-size: 15px;
     border-radius: 0 11px 11px 0;
     padding: 0 14px 0 10px;
@@ -286,12 +304,12 @@ window#waybar.empty #window {
 }
 
 #custom-power:hover {
-    background: alpha(@red, 0.25);
+    background: alpha(@peachRed, 0.25);
 }
 
 @keyframes blink {
     to {
-        background-color: @red;
-        color: @crust;
+        background-color: @peachRed;
+        color: @sumiInk0;
     }
 }

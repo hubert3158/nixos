@@ -51,16 +51,12 @@ in
 
       # Hyprland utilities
       hyprland
-      hyprpaper
       hyprlock
 
-      # Sway utilities (compatible with Hyprland)
-      swaybg
-      swayidle
-      swaylock
-
-      # Notification daemon
-      mako
+      # NOTE: retired cruft removed — hyprpaper/swaybg (awww owns wallpapers),
+      # swayidle/swaylock (hypridle/hyprlock own idle+lock), mako (swaync owns
+      # notifications; two daemons would fight over org.freedesktop.Notifications),
+      # dmenu (fuzzel dmenu mode)
 
       # Screenshot tools
       grim
@@ -71,7 +67,6 @@ in
 
       # Application launcher
       fuzzel
-      dmenu
 
       # Bar
       waybar

@@ -97,13 +97,16 @@
               modules.desktop.hyprlock.enable = true;
               modules.desktop.hypridle.enable = true;
               modules.desktop.swayosd.enable = true;
-              modules.desktop.hyprpaper.enable = true;
+              # hyprpaper retired → swww (awww): animated transitions + `wallpaper` CLI
+              modules.desktop.swww.enable = true;
               modules.desktop.i3.enable = true;
               modules.desktop.xdg.enable = true;
               modules.desktop.fuzzel.enable = true;
               modules.desktop.flameshot.enable = true;
               modules.desktop.waybar.enable = true;
-              modules.desktop.mako.enable = true;
+              # mako retired → swaync: control center + mpris + sliders
+              modules.desktop.swaync.enable = true;
+              modules.desktop.wlogout.enable = true;
 
               modules.programs.git.enable = true;
               modules.programs.ssh.enable = true;
@@ -125,6 +128,8 @@
               modules.tools.zoxide.enable = true;
               modules.tools.fzf.enable = true;
               modules.tools.htop.enable = true;
+              modules.tools.fastfetch.enable = true;
+              modules.tools.cava.enable = true;
 
               modules.packages.enable = true;
               # Heavy Java IDE suite only where Java work happens

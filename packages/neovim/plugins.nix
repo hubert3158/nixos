@@ -76,8 +76,10 @@ in
       config = "lua << EOF\nrequire(\"nvim-web-devicons\").setup()\nEOF\n";
     }
     { plugin = nvim-notify; }
-    # barbecue (winbar breadcrumbs) — lazy via lz.n on DeferredUIEnter.
-    { plugin = barbecue-nvim; optional = true; }
+    # dropbar (winbar breadcrumbs, replaced barbecue) — lazy on DeferredUIEnter.
+    { plugin = dropbar-nvim; optional = true; }
+    # tiny-inline-diagnostic — styled cursor-line diagnostics; lazy on BufReadPre.
+    { plugin = tiny-inline-diagnostic-nvim; optional = true; }
     # indent-blankline / colorizer / smartcolumn — setup lazy via lz.n.
     { plugin = indent-blankline-nvim; optional = true; }
     { plugin = nvim-colorizer-lua; optional = true; }
@@ -134,7 +136,7 @@ in
     { plugin = rustaceanvim; optional = true; }
     # fidget (LSP progress UI) — lazy via lz.n on LspAttach.
     { plugin = fidget-nvim; optional = true; }
-    nvim-navic
+    # nvim-navic removed — it only fed barbecue, which dropbar replaced.
     # inc-rename — live rename preview (noice renders it inline); lazy on cmd.
     { plugin = inc-rename-nvim; optional = true; }
 

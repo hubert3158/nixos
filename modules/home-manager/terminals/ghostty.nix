@@ -1,4 +1,5 @@
-# Ghostty terminal configuration
+# Ghostty terminal configuration — Kanagawa Wave (Ink & Wave design system)
+# Colors are inlined (not a named theme) so they can't drift from docs/THEME.md.
 { config, lib, pkgs, ... }:
 
 let
@@ -10,7 +11,7 @@ in
 
     fontFamily = lib.mkOption {
       type = lib.types.str;
-      default = "JetBrainsMono Nerd Font";
+      default = "Maple Mono NF";
       description = "Font family";
     };
 
@@ -20,16 +21,10 @@ in
       description = "Font size";
     };
 
-    theme = lib.mkOption {
-      type = lib.types.str;
-      default = "Arthur";
-      description = "Color theme";
-    };
-
     backgroundOpacity = lib.mkOption {
       type = lib.types.number;
-      default = 0.9;
-      description = "Background opacity (0.0 - 1.0)";
+      default = 0.92;
+      description = "Background opacity (0.0 - 1.0); hyprland blurs what shows through";
     };
   };
 
@@ -42,12 +37,38 @@ in
         "copy-on-select" = true;
         "font-family" = cfg.fontFamily;
         "font-size" = cfg.fontSize;
-        "font-style" = "light";
+        # ligatures deliberately off (carried over from the JetBrainsMono setup)
         "font-feature" = "-calt,-liga,-dlig";
-        "font-style-bold" = "false";
-        "shell-integration" = "fish";
-        "theme" = cfg.theme;
+        "shell-integration" = "zsh";
         "background-opacity" = cfg.backgroundOpacity;
+        "window-padding-x" = 8;
+        "window-padding-y" = 6;
+
+        # ── Kanagawa Wave ──
+        "background" = "#1F1F28";
+        "foreground" = "#DCD7BA";
+        "cursor-color" = "#C8C093";
+        "cursor-text" = "#1F1F28";
+        "selection-background" = "#2D4F67";
+        "selection-foreground" = "#C8C093";
+        "palette" = [
+          "0=#16161D"
+          "1=#C34043"
+          "2=#76946A"
+          "3=#C0A36E"
+          "4=#7E9CD8"
+          "5=#957FB8"
+          "6=#6A9589"
+          "7=#C8C093"
+          "8=#727169"
+          "9=#E82424"
+          "10=#98BB6C"
+          "11=#E6C384"
+          "12=#7FB4CA"
+          "13=#938AA9"
+          "14=#7AA89F"
+          "15=#DCD7BA"
+        ];
       };
     };
   };

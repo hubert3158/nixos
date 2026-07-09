@@ -18,6 +18,8 @@ in
   config = lib.mkIf cfg.enable {
     programs.bat = {
       enable = true;
+      # "ansi" follows the terminal's 16-color palette → kanagawa everywhere
+      config.theme = "ansi";
       extraPackages = lib.mkIf cfg.enableExtras (with pkgs.bat-extras; [
         batdiff
         batman

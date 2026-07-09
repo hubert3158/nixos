@@ -16,7 +16,7 @@ in
 
     font = lib.mkOption {
       type = lib.types.str;
-      default = "JetBrainsMono Nerd Font:size=14";
+      default = "Maple Mono NF:size=14";
       description = "Font for fuzzel";
     };
   };
@@ -40,19 +40,19 @@ in
           inner-pad = 10;
         };
 
-        # Catppuccin Macchiato — matches waybar/hyprland/mako
+        # Kanagawa Ink & Wave — matches waybar/hyprland/swaync (docs/THEME.md)
         colors = {
-          background = "24273add";
-          text = "cad3f5ff";
-          placeholder = "6e738dff";
-          prompt = "7dc4e4ff";
-          input = "cad3f5ff";
-          match = "8bd5caff";
-          selection = "494d64ff";
-          selection-text = "cad3f5ff";
-          selection-match = "8bd5caff";
-          counter = "6e738dff";
-          border = "7dc4e4ee";
+          background = "1f1f28e6";
+          text = "dcd7baff";
+          placeholder = "727169ff";
+          prompt = "7e9cd8ff";
+          input = "dcd7baff";
+          match = "e6c384ff";
+          selection = "223249ff";
+          selection-text = "dcd7baff";
+          selection-match = "e6c384ff";
+          counter = "727169ff";
+          border = "7e9cd8ee";
         };
 
         border = {
