@@ -102,6 +102,8 @@
               modules.desktop.xdg.enable = true;
               modules.desktop.fuzzel.enable = true;
               modules.desktop.flameshot.enable = true;
+              modules.desktop.waybar.enable = true;
+              modules.desktop.mako.enable = true;
 
               modules.programs.git.enable = true;
               modules.programs.ssh.enable = true;

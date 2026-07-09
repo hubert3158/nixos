@@ -12,5 +12,7 @@
     ./xdg.nix
     ./fuzzel.nix
     ./flameshot.nix
+    ./waybar.nix
+    ./mako.nix
   ];
 }
