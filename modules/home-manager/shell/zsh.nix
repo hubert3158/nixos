@@ -36,6 +36,8 @@ in {
       };
 
       initContent = ''
+        unalias gsd 2>/dev/null
+
         # ---- Vi editing mode ----
         bindkey -v
         export KEYTIMEOUT=1
@@ -66,8 +68,15 @@ in {
         # Handy: edit & re-run last command in $EDITOR
         alias fcvim='fc -e "$EDITOR"'
 
-        # Use kitty's ssh kitten when inside kitty (auto-copies terminfo)
-        if [[ -n "$KITTY_WINDOW_ID" ]]; then
+        # git log compare against default branch
+        glc() {
+          local base=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+          [ -z "$base" ] && base="main"
+          git log "$base"... --left-right --oneline "$@"
+        }
+
+        # Use kitty's ssh kitten when inside kitty (but not inside tmux)
+        if [[ -n "$KITTY_WINDOW_ID" && -z "$TMUX" ]]; then
           alias ssh="kitten ssh"
         fi
       '';

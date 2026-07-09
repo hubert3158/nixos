@@ -16,7 +16,7 @@ in
 
     font = lib.mkOption {
       type = lib.types.str;
-      default = "Monofur Nerd Font:size=24";
+      default = "JetBrainsMono Nerd Font:size=14";
       description = "Font for fuzzel";
     };
   };
@@ -29,28 +29,35 @@ in
           terminal = cfg.terminal;
           layer = "overlay";
           font = cfg.font;
-          icon-theme = "breeze";
+          prompt = "\"❯ \"";
+          icon-theme = "Papirus-Dark";
           icons = true;
           fields = "name,generic,comment,categories,filename,keywords";
-          width = 30;
-          horizontal-pad = 40;
-          vertical-pad = 8;
-          inner-pad = 8;
+          width = 34;
+          lines = 12;
+          horizontal-pad = 24;
+          vertical-pad = 16;
+          inner-pad = 10;
         };
 
+        # Catppuccin Macchiato — matches waybar/hyprland/mako
         colors = {
-          background = "001d2ecc";
-          text = "blanchedalmond";
-          match = "mediumseagreen";
-          selection = "000000cc";
-          selection-text = "mediumseagreen";
-          selection-match = "mediumseagreen";
-          border = "001d2e";
+          background = "24273add";
+          text = "cad3f5ff";
+          placeholder = "6e738dff";
+          prompt = "7dc4e4ff";
+          input = "cad3f5ff";
+          match = "8bd5caff";
+          selection = "494d64ff";
+          selection-text = "cad3f5ff";
+          selection-match = "8bd5caff";
+          counter = "6e738dff";
+          border = "7dc4e4ee";
         };
 
         border = {
-          width = 1;
-          radius = 0;
+          width = 2;
+          radius = 12;
         };
 
         dmenu = {

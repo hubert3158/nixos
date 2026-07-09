@@ -4,14 +4,13 @@
   inputs = {
     # Core inputs
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    # Pinned nixpkgs for flameshot — flameshot v14 + xdg-desktop-portal-hyprland 1.3.12
+    # have a Screenshot interface ABI mismatch (interface declared but not exposed to
+    # clients, causing 30s portal timeout). Revisit when nixpkgs ships compatible versions.
+    nixpkgs-flameshot.url = "github:NixOS/nixpkgs/13043924aaa7375ce482ebe2494338e058282925";
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Secrets management
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -20,9 +19,11 @@
 
     # Neovim development
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
-    eldritch-nvim = {
-      url = "github:eldritch-theme/eldritch.nvim";
-      flake = false;
+
+    # Claude Desktop (aaddrick) — FHS variant w/ MCP + Cowork sandboxing
+    claude-desktop = {
+      url = "github:aaddrick/claude-desktop-debian";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -30,7 +31,6 @@
     self,
     nixpkgs,
     home-manager,
-    sops-nix,
     flake-utils,
     gen-luarc,
     ...
@@ -60,9 +60,6 @@
         {
           nixpkgs.config = {
             allowUnfree = true;
-            permittedInsecurePackages = [
-              "emacs-29.4"
-            ];
           };
         }
 
@@ -74,9 +71,6 @@
 
         # Overlays
         (import ./overlays { inherit inputs; })
-
-        # sops-nix module
-        sops-nix.nixosModules.sops
 
         # Home Manager
         home-manager.nixosModules.home-manager
@@ -101,6 +95,8 @@
 
               modules.desktop.hyprland.enable = true;
               modules.desktop.hyprlock.enable = true;
+              modules.desktop.hypridle.enable = true;
+              modules.desktop.swayosd.enable = true;
               modules.desktop.hyprpaper.enable = true;
               modules.desktop.i3.enable = true;
               modules.desktop.xdg.enable = true;
@@ -111,10 +107,13 @@
               modules.programs.ssh.enable = true;
               modules.programs.gpg.enable = true;
               modules.programs.tmux.enable = true;
-              modules.programs.neovim.enable = true;
               modules.programs.browsers.enable = true;
               modules.programs.media.enable = true;
               modules.programs.nixIndex.enable = true;
+              modules.programs.opencode.enable = true;
+              modules.programs.emacs.enable = true;
+              modules.programs.emacs.daemon = true;
+              modules.programs.helix.enable = true;
 
               modules.fileManagers.yazi.enable = true;
               modules.fileManagers.ranger.enable = true;
@@ -126,6 +125,10 @@
               modules.tools.htop.enable = true;
 
               modules.packages.enable = true;
+              # Heavy Java IDE suite only where Java work happens
+              modules.packages.enableJetbrains = hostname == "work";
+              # Network/security testing tools (zenmap, bettercap, nmap, ...)
+              modules.packages.enablePentest = true;
 
               # Add nvim-pkg from overlay
               home.packages = [ pkgs.nvim-pkg ];
@@ -158,11 +161,6 @@
           lua-language-server
           stylua
           luajitPackages.luacheck
-
-          # Secrets management
-          sops
-          age
-          ssh-to-age
         ];
 
         shellHook = ''
@@ -176,7 +174,6 @@
           echo "Available commands:"
           echo "  nixos-rebuild build --flake .#work   - Build work config"
           echo "  nixos-rebuild build --flake .#home   - Build home config"
-          echo "  sops secrets/secrets.yaml            - Edit secrets"
         '';
       };
     });

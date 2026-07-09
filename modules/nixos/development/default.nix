@@ -5,5 +5,6 @@
   imports = [
     ./languages.nix
     ./tools.nix
+    ./nix-ld.nix
   ];
 }

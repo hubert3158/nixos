@@ -10,7 +10,7 @@ in
 
     savePath = lib.mkOption {
       type = lib.types.str;
-      default = "/home/hubert/Pictures/Screenshots";
+      default = "${config.home.homeDirectory}/Pictures/Screenshots";
       description = "Path to save screenshots";
     };
   };
@@ -23,7 +23,7 @@ in
         General = {
           disabledTrayIcon = true;
           showStartupLaunchMessage = false;
-          useGrimAdapter = true;  # Wayland screenshot adapter
+          useGrimAdapter = true;
           savePath = cfg.savePath;
         };
 

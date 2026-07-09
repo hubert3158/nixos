@@ -4,8 +4,10 @@
 local opt_local = vim.opt_local
 
 -- Performance settings for large Java files
-opt_local.foldmethod = "expr" -- Use treesitter for folding (faster than syntax)
-opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+-- NOTE: no foldmethod/foldexpr override here — nvim-ufo owns folding
+-- (options.lua foldlevel=99 + user/nvimUfo.lua treesitter/indent provider).
+-- The previous "nvim_treesitter#foldexpr()" was the removed master-branch
+-- Vimscript API and broke both folds and ufo on java buffers.
 opt_local.synmaxcol = 300 -- Increase slightly for Java (longer lines common)
 
 -- Indentation for Java
@@ -30,48 +32,44 @@ if buf_size > 200000 then -- > 200KB
 	vim.notify("Large Java file detected - some features disabled for performance", vim.log.levels.WARN)
 end
 
--- Java-specific keybindings
+-- Java-specific keybindings — localleader (,), buffer-local, per the
+-- filetype-maps rule in user/keymaps.lua. Java-only commands have no
+-- business in the global <leader> namespace.
 local map = vim.keymap.set
 local opts = { buffer = true, silent = true }
 
--- Quick imports organization
+-- Build / project (jdtls)
+map("n", "<localleader>o", "<cmd>JavaOrganizeImports<CR>", vim.tbl_extend("force", opts, { desc = "Organize imports" }))
+map("n", "<localleader>b", "<cmd>JavaBuildProject<CR>", vim.tbl_extend("force", opts, { desc = "Build project" }))
+map("n", "<localleader>c", "<cmd>JavaCleanBuild<CR>", vim.tbl_extend("force", opts, { desc = "Clean and build" }))
+map("n", "<localleader>u", "<cmd>JavaUpdateProject<CR>", vim.tbl_extend("force", opts, { desc = "Update project" }))
 map(
 	"n",
-	"<leader>jo",
-	"<cmd>JavaOrganizeImports<CR>",
-	vim.tbl_extend("force", opts, { desc = "[J]ava [O]rganize imports" })
-)
-
--- Build commands
-map("n", "<leader>jb", "<cmd>JavaBuildProject<CR>", vim.tbl_extend("force", opts, { desc = "[J]ava [B]uild project" }))
-map("n", "<leader>jc", "<cmd>JavaCleanBuild<CR>", vim.tbl_extend("force", opts, { desc = "[J]ava [C]lean and build" }))
-map(
-	"n",
-	"<leader>ju",
-	"<cmd>JavaUpdateProject<CR>",
-	vim.tbl_extend("force", opts, { desc = "[J]ava [U]pdate project" })
+	"<localleader>w",
+	"<cmd>JavaCleanWorkspace<CR>",
+	vim.tbl_extend("force", opts, { desc = "Clean jdtls workspace" })
 )
 
 -- Quick navigation for Spring Boot
-map("n", "<leader>jt", function()
+map("n", "<localleader>m", function()
 	require("telescope.builtin").lsp_document_symbols({ symbols = { "method", "function" } })
-end, vim.tbl_extend("force", opts, { desc = "[J]ava [T]est methods" }))
+end, vim.tbl_extend("force", opts, { desc = "Find methods" }))
 
-map("n", "<leader>jC", function()
+map("n", "<localleader>C", function()
 	require("telescope.builtin").lsp_document_symbols({ symbols = { "class" } })
-end, vim.tbl_extend("force", opts, { desc = "[J]ava [C]lasses" }))
+end, vim.tbl_extend("force", opts, { desc = "Find classes" }))
 
 -- Spring Boot specific: find REST endpoints
-map("n", "<leader>je", function()
+map("n", "<localleader>e", function()
 	require("telescope.builtin").live_grep({ default_text = "@.*Mapping" })
-end, vim.tbl_extend("force", opts, { desc = "[J]ava [E]ndpoints (Spring)" }))
+end, vim.tbl_extend("force", opts, { desc = "Find endpoints (Spring)" }))
 
 -- Find Spring components
-map("n", "<leader>js", function()
+map("n", "<localleader>s", function()
 	require("telescope.builtin").live_grep({
 		default_text = "@(Service|Repository|Controller|Component|RestController)",
 	})
-end, vim.tbl_extend("force", opts, { desc = "[J]ava [S]pring components" }))
+end, vim.tbl_extend("force", opts, { desc = "Find Spring components" }))
 
 -- Disable some expensive LSP features for better responsiveness
 vim.api.nvim_create_autocmd("LspAttach", {

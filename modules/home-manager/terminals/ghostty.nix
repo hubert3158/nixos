@@ -41,7 +41,7 @@ in
       settings = {
         "copy-on-select" = true;
         "font-family" = cfg.fontFamily;
-        "font-size " = cfg.fontSize;
+        "font-size" = cfg.fontSize;
         "font-style" = "light";
         "font-feature" = "-calt,-liga,-dlig";
         "font-style-bold" = "false";

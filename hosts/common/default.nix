@@ -1,5 +1,9 @@
 # Common configuration shared by all hosts
-{pkgs, ...}: {
+{pkgs, ...}: let
+  cocoindex = pkgs.callPackage ../../packages/cocoindex {};
+  ccline = pkgs.callPackage ../../packages/ccline {};
+  sigmap = pkgs.callPackage ../../packages/sigmap {};
+in {
   # ============================================================================
   # ENABLE ALL MODULES
   # ============================================================================
@@ -9,7 +13,7 @@
     enable = true;
     loader = "systemd-boot";
     configurationLimit = 20;
-    enableJProfiler = true;
+    # enableJProfiler set per-host (relaxes kernel hardening)
   };
 
   # Networking
@@ -51,6 +55,7 @@
     enable = true;
     enableFlakes = true;
     stateVersion = "24.11";
+    gc.enable = true; # weekly, --delete-older-than 30d
   };
 
   # ============================================================================
@@ -98,13 +103,14 @@
   modules.services.postgresql = {
     enable = true;
     package = pkgs.postgresql_15;
-    listenAddresses = "*";
-    enableRemoteAccess = true;
+    # localhost-only listen + default pg_hba (module defaults)
   };
 
   modules.services.openssh.enable = true;
   modules.services.flatpak.enable = true;
+  modules.services.appimage.enable = true;
   modules.services.printing.enable = true;
+  # cloudflared is enabled per-host (tunnel id/hostname live in the host config)
 
   # ============================================================================
   # DEVELOPMENT MODULES
@@ -150,11 +156,14 @@
   programs.nm-applet.enable = true;
 
   # Fonts
+  fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
     corefonts
     noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
     noto-fonts-color-emoji
     liberation_ttf
     fira-code
@@ -166,14 +175,11 @@
 
   # Additional system packages not covered by modules
   environment.systemPackages = with pkgs; [
-    # Terminal emulators
-    alacritty
-    kdePackages.konsole
+    # Terminals: kitty/wezterm/ghostty are home-manager modules
     kitty.terminfo
 
-    # File managers
-    kdePackages.dolphin
-    kdePackages.breeze-icons
+    # File managers: ranger + yazi (yazi via home-manager module)
+    kdePackages.breeze-icons # icon theme for Qt apps
     ranger
 
     # Media & documents
@@ -194,20 +200,17 @@
     poppler
     poppler-utils
     ntp
-    weston
-    lightdm
     w3m
     wikiman
     tealdeer
     postman
     networkmanagerapplet
     miller
-    kdePackages.kdenlive
+    # kdePackages.kdenlive
     inetutils
     gopass
 
-    # IDE
-    eclipses.eclipse-jee
+    # IDE (heavy Java IDEs live behind modules.packages.enableJetbrains)
     dbeaver-bin
 
     # Communication
@@ -219,13 +222,40 @@
     balena-cli
     zsh-powerlevel10k
     zellij
-    claude-code
 
-    awscli
-    antigravity
+    awscli2
+    # antigravity
     libmaxminddb
+    # claude-desktop-fhs  # disabled: upstream patches (aaddrick) fail against Claude Desktop 1.9659.2 — addTrustedFolder anchor + #412 spawn regex no longer match. Re-enable when aaddrick/claude-desktop-debian updates.
+
+    # AI / Claude Code tooling — replaces previous npm-global installs.
+    claude-code # @anthropic-ai/claude-code CLI
+    ccline # @cometix/ccline statusline (custom pkg, Rust binary)
+    cocoindex # incremental indexing engine for agents (Python+Rust)
+    sigmap # AI context engine CLI (gen-context / gen-project-map)
   ];
 
   # Environment shells
   environment.shells = with pkgs; [zsh];
+
+  # ============================================================================
+  # SYSTEM MAINTENANCE & PERFORMANCE
+  # ============================================================================
+
+  # Compressed RAM swap — the work machine has no disk swap at all;
+  # without this a single OOM kills the session.
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
+
+  # Periodic SSD TRIM
+  services.fstrim.enable = true;
+
+  # Don't let /tmp accumulate across boots
+  boot.tmp.cleanOnBoot = true;
+
+  # Skip rebuilding the NixOS options manual — it regenerates whenever
+  # custom module options change (often, in this repo)
+  documentation.nixos.enable = false;
 }

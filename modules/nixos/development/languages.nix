@@ -78,17 +78,22 @@ in
       (lib.optionals cfg.enableNode [
         nodejs
         nodejs_22
-        nodePackages.nodemon
-        nodePackages.eslint
-        nodePackages.serve
-        nodePackages.prettier
-        nodePackages.pm2
-        nodePackages.htmlhint
-        nodePackages.typescript
+        nodemon
+        eslint
+        serve
+        prettier
+        pm2
+        htmlhint
+        typescript
         pnpm
         yarn
         prettierd
         eslint_d
+        # LSP servers for Doom (javascript +lsp) / (web +lsp) / (yaml +lsp).
+        # ts-ls backs js/ts/jsx/tsx; vscode-langservers-extracted (in tools.nix)
+        # provides html/css/json/eslint servers.
+        typescript-language-server
+        yaml-language-server
       ])
 
       # Python packages
@@ -98,17 +103,30 @@ in
         python3Packages.black
         python3Packages.flake8
         pyright
+        uv
       ])
 
       # Go packages
       ++ (lib.optionals cfg.enableGo [
         go
-        gotools
+        gotools       # goimports
+        gopls         # Go LSP
+        delve         # dlv — DAP debugger (dape built-in `dlv` config)
+        golangci-lint # linter (flycheck-golangci-lint)
       ])
 
       # Rust packages
       ++ (lib.optionals cfg.enableRust [
         rustup
+        # rust-analyzer / rustfmt / clippy intentionally NOT installed from
+        # nixpkgs: the nixpkgs builds are pinned to nixpkgs' rustc (stable)
+        # while cargo/rustc come from rustup (nightly default). Mixing the two
+        # poisons target/ caches ("crate compiled by an incompatible version
+        # of rustc") and the stable RA proc-macro server can't load dylibs
+        # built by nightly cargo. All three resolve through rustup's proxy
+        # shims to the active toolchain's own components instead
+        # (`rustup component add rust-analyzer clippy rustfmt` — already done),
+        # so every tool is always ABI-consistent with the compiler in use.
       ])
 
       # Java packages
@@ -130,6 +148,10 @@ in
         ccls
         libclang
         glibc.dev
+        gdb           # dape built-in `gdb` c/c++ DAP config
+        lldb          # provides lldb-dap for dape's `lldb-dap` config
+        # Windows cross-compiler (x86_64-w64-mingw32-gcc), fully cached upstream
+        pkgsCross.mingwW64.buildPackages.gcc
       ])
 
       # Zig packages
@@ -150,7 +172,6 @@ in
             jsonlite
           ];
         })
-        rstudio
       ]);
   };
 }

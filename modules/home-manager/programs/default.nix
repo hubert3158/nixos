@@ -7,9 +7,11 @@
     ./ssh.nix
     ./gpg.nix
     ./tmux.nix
-    ./neovim.nix
     ./browsers.nix
     ./media.nix
     ./nix-index.nix
+    ./opencode.nix
+    ./emacs.nix
+    ./helix.nix
   ];
 }

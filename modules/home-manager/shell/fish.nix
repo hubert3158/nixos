@@ -14,9 +14,8 @@ in
       enable = true;
       interactiveShellInit = ''
         set -g fish_greeting ""
-        set -Ux EDITOR nvim
-        set -Ux VISUAL nvim
-        set -Ux PAGER less
+        # EDITOR/VISUAL/PAGER come from environment.sessionVariables —
+        # `set -Ux` here would persist universal vars outside Nix management.
 
         # Enable Starship prompt
         starship init fish | source

@@ -9,7 +9,6 @@
     ./users.nix
     ./security.nix
     ./nix-settings.nix
-    ./secrets.nix
 
     # Submodule directories
     ./desktop

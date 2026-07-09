@@ -61,17 +61,11 @@ in
       package = pkgs.wireshark;
     };
 
-    # Prisma environment variables
-    environment.variables = lib.mkIf cfg.enablePrisma {
-      PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
-      PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
-      PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
-    };
-
     environment.systemPackages = with pkgs;
       # Core development tools
       [
         git
+        gh
         vim
         curl
         wget
@@ -91,11 +85,14 @@ in
       # LSP servers
       ++ (lib.optionals cfg.enableLSP [
         nil  # Nix LSP
-        vscode-langservers-extracted
+        vscode-langservers-extracted        # html/css/json/eslint servers
         nginx-language-server
         sqls
         semgrep
         marksman
+        graphql-language-service-cli        # graphql-lsp — (graphql +lsp)
+        terraform-ls                        # terraform LSP (terraform-mode)
+        dockerfile-language-server          # docker-langserver — (docker +lsp)
       ])
 
       # Formatters
@@ -123,13 +120,16 @@ in
 
       # Linters
       ++ [
-        hadolint
-        libxml2
+        hadolint     # Dockerfile (flycheck dockerfile-hadolint)
+        libxml2      # xmllint
+        shellcheck   # shell — bash-language-server shells out to it for diagnostics
+        tflint       # Terraform (flycheck terraform-tflint)
+        yamllint     # YAML (flycheck yaml-yamllint)
       ]
 
       # Misc tools
       ++ [
-        gnupg
+        # gnupg comes from the security module (next to gpg-agent config)
         openssl
         zip
         unzip
@@ -143,11 +143,29 @@ in
         audit
       ]
 
+      # Playwright (E2E testing)
+      # google-chrome is referenced by the systemd.tmpfiles rule below that satisfies
+      # playwright-cli's hardcoded /opt/google/chrome/chrome lookup on Linux.
+      ++ [
+        playwright-driver
+        google-chrome
+      ]
+
       # Prisma
       ++ (lib.optionals cfg.enablePrisma [
-        nodePackages.prisma
+        prisma
         prisma-engines
       ]);
+
+    # playwright-cli hardcodes /opt/google/chrome/chrome for the "chrome" channel on Linux
+    # (--browser only accepts chrome|firefox|webkit|msedge, no chromium, no env override).
+    # Symlink it to the Nix-managed google-chrome so the lookup resolves.
+    systemd.tmpfiles.rules = [
+      "d /opt               0755 root root - -"
+      "d /opt/google        0755 root root - -"
+      "d /opt/google/chrome 0755 root root - -"
+      "L+ /opt/google/chrome/chrome - - - - ${pkgs.google-chrome}/bin/google-chrome-stable"
+    ];
 
     # Session variables for editors/tools
     environment.sessionVariables = {
@@ -156,8 +174,26 @@ in
       BROWSER = "firefox";
       FILE_MANAGER = "ranger";
       PDF_VIEWER = "zathura";
-      MUSIC_PLAYER = "mpv";
-      TERMINAL = "alacritty";
+      TERMINAL = "kitty";
     };
+
+    environment.variables = lib.mkMerge [
+      # Prisma environment variables
+      (lib.mkIf cfg.enablePrisma {
+        PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
+        PRISMA_QUERY_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/query-engine";
+        PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
+      })
+
+      # Playwright: point npm playwright-core at Nix-built browsers instead of
+      # letting it download glibc-linked ones that can't run on NixOS.
+      # Browsers match playwright-driver's version — npm playwright-core must be
+      # on the same minor version to resolve them (older versions keep working
+      # via CHROME_PATH / the chrome channel, unaffected by these vars).
+      {
+        PLAYWRIGHT_BROWSERS_PATH = "${pkgs.playwright-driver.browsers}";
+        PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+      }
+    ];
   };
 }

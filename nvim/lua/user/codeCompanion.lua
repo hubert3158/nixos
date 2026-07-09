@@ -261,19 +261,74 @@ ${context.code}
 					},
 				})
 			end,
+
+			zai = function()
+				return require("codecompanion.adapters").extend("openai_compatible", {
+					name = "zai",
+					env = {
+						url = "https://api.z.ai/api/paas/v4",
+						api_key = "cmd: gpg --batch --quiet --decrypt ~/.password-store/keys/api/zai.gpg",
+						chat_url = "/chat/completions",
+					},
+					headers = {
+						["Content-Type"] = "application/json",
+						["Authorization"] = "Bearer ${api_key}",
+					},
+					handlers = {
+						-- Custom form_tools to strip strict mode for zai compatibility
+						form_tools = function(self, tools)
+							if not self.opts.tools or not tools then
+								return nil
+							end
+							if vim.tbl_count(tools) == 0 then
+								return nil
+							end
+
+							local transformed = {}
+							for _, tool in pairs(tools) do
+								for _, schema in pairs(tool) do
+									-- Deep copy and remove strict fields
+									local clean_schema = vim.deepcopy(schema)
+									clean_schema.strict = nil
+									if clean_schema["function"] then
+										clean_schema["function"].strict = nil
+									end
+									table.insert(transformed, clean_schema)
+								end
+							end
+
+							return { tools = transformed }
+						end,
+					},
+					schema = {
+						model = {
+							choices = {
+								"GLM-4.7",
+								"GLM-4.6V",
+							},
+							default = "GLM-4.7",
+						},
+						temperature = {
+							default = 0.1,
+						},
+						max_tokens = {
+							default = 8000,
+						},
+					},
+				})
+			end,
 		},
 	},
 })
 
--- Keymaps
-vim.keymap.set({ "n", "v" }, "<leader>cc", "<cmd>CodeCompanionChat<cr>", { desc = "Open chat" })
-vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<cr>", { desc = "Actions" })
-vim.keymap.set({ "n", "v" }, "<leader>ct", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "Toggle chat" })
-vim.keymap.set("n", "<leader>ci", "<cmd>CodeCompanion<cr>", { desc = "Inline assistant" })
-vim.keymap.set("v", "<leader>ci", "<cmd>CodeCompanion<cr>", { desc = "Inline assistant" })
-vim.keymap.set("n", "<leader>cb", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add buffer to chat" })
-vim.keymap.set("v", "<leader>cv", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add selection to chat" })
-vim.keymap.set("n", "<leader>cs", "<cmd>CodeCompanionChat Stop<cr>", { desc = "Stop request" })
-vim.keymap.set("v", "<leader>ce", "<cmd>CodeCompanion /explain<cr>", { desc = "Explain code" })
-vim.keymap.set("v", "<leader>cr", "<cmd>CodeCompanion /review<cr>", { desc = "Review code" })
-vim.keymap.set("v", "<leader>cx", "<cmd>CodeCompanion /fix<cr>", { desc = "Fix code" })
+-- Keymaps — <leader>a = ai (namespace registry: user/keymaps.lua)
+vim.keymap.set({ "n", "v" }, "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "Toggle chat" })
+vim.keymap.set({ "n", "v" }, "<leader>an", "<cmd>CodeCompanionChat<cr>", { desc = "New chat" })
+vim.keymap.set("n", "<leader>aa", "<cmd>CodeCompanionActions<cr>", { desc = "Action palette" })
+vim.keymap.set({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanion<cr>", { desc = "Inline assistant" })
+vim.keymap.set("n", "<leader>ab", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add buffer to chat" })
+vim.keymap.set("v", "<leader>av", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add selection to chat" })
+vim.keymap.set("n", "<leader>as", "<cmd>CodeCompanionChat Stop<cr>", { desc = "Stop request" })
+vim.keymap.set("v", "<leader>ae", "<cmd>CodeCompanion /explain<cr>", { desc = "Explain selection" })
+vim.keymap.set("v", "<leader>ar", "<cmd>CodeCompanion /review<cr>", { desc = "Review selection" })
+vim.keymap.set("v", "<leader>ax", "<cmd>CodeCompanion /fix<cr>", { desc = "Fix selection" })

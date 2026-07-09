@@ -34,8 +34,17 @@ require("lint").linters_by_ft = {
 	terraform = { "tflint" },
 
 	sql = { "sqlfluff" }, -- (Uncomment if you install and want to use sqlfluff for linting)
-	javascript = { "eslint_d" },
-	javascriptreact = { "eslint_d" },
-	typescript = { "eslint_d" },
-	typescriptreact = { "eslint_d" },
+	-- JS/TS lint handled by the eslint LSP server. Running eslint_d here too
+	-- triples the work per save on big monorepos.
 }
+
+-- Lint after save (async; deferred so it never blocks the write)
+vim.api.nvim_create_autocmd("BufWritePost", {
+	group = vim.api.nvim_create_augroup("LintOnSave", { clear = true }),
+	pattern = "*",
+	callback = function()
+		vim.defer_fn(function()
+			require("lint").try_lint()
+		end, 100)
+	end,
+})

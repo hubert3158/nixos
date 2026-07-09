@@ -1,4 +1,9 @@
 # Function for creating a Neovim derivation
+#
+# Forked and customized from the kickstart-nix.nvim template:
+#   https://github.com/nix-community/kickstart-nix.nvim
+# Local additions: pkgs-wrapNeovim arg, blink-fuzzy-lib + kulalaParser params,
+# and inline wrapNeovimUnstable call (already aligned with upstream 8da1f2e).
 {
   pkgs,
   lib,
@@ -34,7 +39,7 @@ let
     plugin = null;
     config = null;
     optional = false;
-    runtime = {};
+
   };
 
   externalPackages = extraPackages ++ (optionals withSqlite [pkgs.sqlite]);
@@ -48,11 +53,6 @@ let
     ))
   plugins;
 
-  neovimConfig = pkgs-wrapNeovim.neovimUtils.makeNeovimConfig {
-    inherit extraPython3Packages withPython3 withRuby withNodeJs viAlias vimAlias;
-    plugins = normalizedPlugins;
-  };
-
   # Filter nvim config directory
   nvimRtpSrc = let
     src = ../../nvim;
@@ -60,7 +60,7 @@ let
     lib.cleanSourceWith {
       inherit src;
       name = "nvim-rtp-src";
-      filter = path: tyoe: let
+      filter = path: type: let
         srcPrefix = toString src + "/";
         relPath = lib.removePrefix srcPrefix (toString path);
       in
@@ -151,13 +151,12 @@ let
     optionalString (resolvedExtraLuaPackages != [])
     ''--suffix LUA_PATH ";" "${concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages}"'';
 
-  neovim-wrapped = pkgs-wrapNeovim.wrapNeovimUnstable neovim-unwrapped (neovimConfig
-    // {
+  neovim-wrapped = pkgs-wrapNeovim.wrapNeovimUnstable neovim-unwrapped {
+      inherit extraPython3Packages withPython3 withRuby withNodeJs viAlias vimAlias;
+      plugins = normalizedPlugins;
       luaRcContent = initLua;
       wrapperArgs =
-        escapeShellArgs neovimConfig.wrapperArgs
-        + " "
-        + extraMakeWrapperArgs
+        extraMakeWrapperArgs
         + " "
         + extraMakeWrapperLuaCArgs
         + " "
@@ -165,7 +164,7 @@ let
         + " "
         + blinkFuzzyLuaCArgs;
       wrapRc = true;
-    });
+    };
 
   isCustomAppName = appName != null && appName != "nvim";
 in

@@ -35,7 +35,9 @@ cmp.setup({
 			},
 		},
 		documentation = {
-			auto_show = true,
+			-- auto_show=false keeps the doc panel off the keystroke hot path.
+			-- Use <C-space> to peek docs on demand.
+			auto_show = false,
 			auto_show_delay_ms = 200,
 			update_delay_ms = 50,
 		},
@@ -52,9 +54,21 @@ cmp.setup({
 			scrollbar = true,
 			direction_priority = { "s", "n" },
 			auto_show = true,
+			draw = {
+				-- treesitter-highlight LSP item labels; icon | label | kind
+				treesitter = { "lsp" },
+				columns = {
+					{ "kind_icon" },
+					{ "label", "label_description", gap = 1 },
+					{ "kind", gap = 1 },
+				},
+			},
 		},
 		list = {
-			selection = { preselect = true, auto_insert = true },
+			-- auto_insert=false stops blink from previewing the selection
+			-- into the buffer mid-stream; cuts visible text churn while
+			-- tsserver streams late completion items.
+			selection = { preselect = true, auto_insert = false },
 		},
 		trigger = {
 			show_on_keyword = true,
@@ -71,7 +85,9 @@ cmp.setup({
 			ghost_text = { enabled = true },
 		},
 	},
-	signature = { enabled = true },
+	-- noice.nvim owns signature_help rendering; running both has positioning
+	-- bugs (saghen/blink.cmp #618, #1685). Disable blink's renderer.
+	signature = { enabled = false },
 	sources = {
 		default = {
 			"lsp",
@@ -136,5 +152,5 @@ cmp.setup({
 		},
 	},
 
-	fuzzy = { implementation = "prefer_rust" },
+	fuzzy = { implementation = "prefer_rust", use_proximity = true },
 })
