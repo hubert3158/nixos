@@ -68,7 +68,10 @@ in
     # bufferline setup runs inside user/visual-enhancements.setup() (lualine's
     # DeferredUIEnter hook packadds it first).
     { plugin = bufferline-nvim; optional = true; }
-    { plugin = dashboard-nvim; }
+    # snacks: dashboard (chafa-rendered wave image) + inline images only —
+    # every module that overlaps the existing stack is explicitly disabled in
+    # nvim/plugin/dashboard.lua. Eager: dashboard must exist before first paint.
+    { plugin = snacks-nvim; }
     # noice setup lazy via lz.n on DeferredUIEnter (+ overrides for vim.lsp.util).
     { plugin = noice-nvim; optional = true; }
     {
@@ -76,8 +79,12 @@ in
       config = "lua << EOF\nrequire(\"nvim-web-devicons\").setup()\nEOF\n";
     }
     { plugin = nvim-notify; }
-    # dropbar (winbar breadcrumbs, replaced barbecue) — lazy on DeferredUIEnter.
-    { plugin = dropbar-nvim; optional = true; }
+    # dropbar (winbar breadcrumbs, replaced barbecue) — EAGER on purpose:
+    # auto-session restores winbar='%{%v:lua.dropbar()%}' (sessionoptions has
+    # localoptions) before any lazy hook fires, so the _G.dropbar global must
+    # exist at startup or every restored window spams E5108 "attempt to call
+    # global 'dropbar' (a nil value)". Its plugin file defines the global.
+    { plugin = dropbar-nvim; }
     # tiny-inline-diagnostic — styled cursor-line diagnostics; lazy on BufReadPre.
     { plugin = tiny-inline-diagnostic-nvim; optional = true; }
     # indent-blankline / colorizer / smartcolumn — setup lazy via lz.n.

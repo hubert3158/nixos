@@ -76,7 +76,12 @@ in
         cursor_trail_decay = "0.1 0.4";
 
         url_color = "#7FB4CA";
+        url_style = "curly";
         window_padding_width = 8;
+        hide_window_decorations = "yes";
+        # unfocused kitty splits fade slightly — pairs with the hyprland
+        # terminal-depth windowrule for layered ink
+        inactive_text_alpha = "0.85";
 
         # tab bar — ink powerline, crystalBlue active tab
         tab_bar_style = "powerline";

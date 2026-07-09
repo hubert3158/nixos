@@ -28,7 +28,7 @@ function M.setup()
 			-- kanagawa.nvim ships a lualine theme that follows the active variant
 			theme = "kanagawa",
 			globalstatus = true,
-			disabled_filetypes = { statusline = { "dashboard" } },
+			disabled_filetypes = { statusline = { "dashboard", "snacks_dashboard" } },
 			-- bubble statusline: rounded section caps, thin ink dividers
 			component_separators = { left = "", right = "" },
 			section_separators = { left = "", right = "" },

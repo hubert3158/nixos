@@ -61,9 +61,10 @@ in {
         waybar
         brightnessctl # XF86MonBrightness binds in hyprland.conf
         playerctl # XF86Audio media binds in hyprland.conf
-        libnotify # notify-send for mako
+        libnotify # notify-send for swaync
         hyprpicker # color picker on Mod+Shift+C
         cava # audio visualizer (waybar module + terminal)
+        chafa # image → terminal art (nvim snacks dashboard wave header)
         dejavu_fonts
         alacritty-theme
         swayimg

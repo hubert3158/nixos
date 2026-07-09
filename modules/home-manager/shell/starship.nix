@@ -42,6 +42,15 @@ in
           "$character"
         ];
 
+        # quiet clock on the right edge
+        right_format = "$time";
+        time = {
+          disabled = false;
+          time_format = "%H:%M";
+          style = "fg:fuji_gray";
+          format = "[󰥔 $time]($style)";
+        };
+
         palettes.kanagawa = {
           sumi_ink0 = "#16161D";
           sumi_ink4 = "#2A2A37";

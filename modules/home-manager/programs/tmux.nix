@@ -1,4 +1,4 @@
-# Tmux configuration
+# Tmux configuration — Kanagawa Ink & Wave statusline (docs/THEME.md)
 {
   config,
   lib,
@@ -31,53 +31,6 @@ in {
         sensible
         yank
         resurrect
-        {
-          plugin = catppuccin;
-          extraConfig = ''
-            # ╭──────────────────────────────────────────────────────────╮
-            # │                    🎨 CATPPUCCIN MOCHA                   │
-            # ╰──────────────────────────────────────────────────────────╯
-            set -g @catppuccin_flavor 'mocha'
-
-            # ── Window Styling ───────────────────────────────────────────
-            set -g @catppuccin_window_status_style "rounded"
-            set -g @catppuccin_window_number_position "left"
-
-            # Default windows - subtle but visible
-            set -g @catppuccin_window_default_fill "number"
-            set -g @catppuccin_window_default_text " #W"
-
-            # Current window - bold and highlighted
-            set -g @catppuccin_window_current_fill "number"
-            set -g @catppuccin_window_current_text " #W#{?window_zoomed_flag, 󰊓,}"
-
-            # ── Status Bar Styling ───────────────────────────────────────
-            set -g @catppuccin_status_left_separator  ""
-            set -g @catppuccin_status_right_separator ""
-            set -g @catppuccin_status_fill "icon"
-            set -g @catppuccin_status_connect_separator "no"
-            set -g @catppuccin_status_background "default"
-
-            # ── Module Icons ─────────────────────────────────────────────
-            set -g @catppuccin_directory_icon " "
-            set -g @catppuccin_session_icon " "
-            set -g @catppuccin_user_icon " "
-            set -g @catppuccin_host_icon "󰒋 "
-            set -g @catppuccin_date_time_icon "󰃰 "
-
-            # ── Module Text ──────────────────────────────────────────────
-            set -g @catppuccin_directory_text "#{b:pane_current_path}"
-            set -g @catppuccin_date_time_text "%H:%M"
-
-            # ── Status Bar Layout ────────────────────────────────────────
-            set -g @catppuccin_status_modules_left "session"
-            set -g @catppuccin_status_modules_right "directory date_time"
-
-            # ── Pane Styling ─────────────────────────────────────────────
-            set -g @catppuccin_pane_border_style "fg=#313244"
-            set -g @catppuccin_pane_active_border_style "fg=#89b4fa"
-          '';
-        }
       ];
 
       extraConfig = ''
@@ -92,21 +45,37 @@ in {
         set -g default-terminal "tmux-256color"
         set -ag terminal-overrides ",xterm-256color:RGB"
 
-        # ── Status Bar Position ──────────────────────────────────────
+        # ╭──────────────────────────────────────────────────────────╮
+        # │        Kanagawa Ink & Wave — hand-rolled powerline       │
+        # │  sumiInk0 16161D · waveBlue2 2D4F67 · crystalBlue 7E9CD8 │
+        # ╰──────────────────────────────────────────────────────────╯
         set -g status-position top
         set -g status-justify left
+        set -g status-style "bg=#16161D,fg=#DCD7BA"
+        set -g status-left-length 40
+        set -g status-right-length 80
+
+        # session pill — crystalBlue cap
+        set -g status-left "#[fg=#16161D,bg=#7E9CD8,bold] 󰆍 #S #[fg=#7E9CD8,bg=#16161D]  "
+
+        # windows — inactive ink, active waveBlue pill
+        set -g window-status-format "#[fg=#727169,bg=#16161D]  #I #W  "
+        set -g window-status-current-format "#[fg=#2D4F67,bg=#16161D]#[fg=#DCD7BA,bg=#2D4F67,bold] #I #W#{?window_zoomed_flag, 󰊓,} #[fg=#2D4F67,bg=#16161D]"
+        set -g window-status-separator ""
+
+        # right: cwd (oniViolet) · clock (springBlue)
+        set -g status-right "#[fg=#957FB8] #{b:pane_current_path} #[fg=#54546D]│#[fg=#7FB4CA] 󰃰 %H:%M #[fg=#7E9CD8,bg=#16161D]#[fg=#16161D,bg=#7E9CD8,bold] 波 #[default]"
 
         # ── Pane Borders ─────────────────────────────────────────────
         set -g pane-border-lines heavy
-        set -g pane-border-style "fg=#313244"
-        set -g pane-active-border-style "fg=#89b4fa"
+        set -g pane-border-style "fg=#2A2A37"
+        set -g pane-active-border-style "fg=#7E9CD8"
 
-        # ── Message Styling ──────────────────────────────────────────
-        set -g message-style "fg=#cdd6f4,bg=#313244"
-        set -g message-command-style "fg=#cdd6f4,bg=#313244"
-
-        # ── Mode Styling (copy mode etc) ─────────────────────────────
-        set -g mode-style "fg=#1e1e2e,bg=#f5c2e7"
+        # ── Message / Copy-mode Styling ──────────────────────────────
+        set -g message-style "fg=#DCD7BA,bg=#223249"
+        set -g message-command-style "fg=#DCD7BA,bg=#223249"
+        set -g mode-style "fg=#DCD7BA,bg=#2D4F67"
+        set -g clock-mode-colour "#7E9CD8"
 
         # ── Window Behavior ──────────────────────────────────────────
         set -g base-index 0

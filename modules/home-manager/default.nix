@@ -44,6 +44,16 @@
     # adw-gtk3 is a GTK3-only theme; GTK4/libadwaita apps style themselves.
     # null = new HM 26.05 default (silences legacy-default eval warning).
     gtk4.theme = null;
+    # kanagawa crystalBlue accent — libadwaita picks up the @define-color
+    # overrides, so selected rows/switches match the rest of the desktop
+    gtk3.extraCss = ''
+      @define-color accent_bg_color #7E9CD8;
+      @define-color accent_color #7E9CD8;
+    '';
+    gtk4.extraCss = ''
+      @define-color accent_bg_color #7E9CD8;
+      @define-color accent_color #7E9CD8;
+    '';
   };
 
   # Qt apps (dolphin, qt file dialogs) follow the dark GTK look instead of

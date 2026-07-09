@@ -58,7 +58,7 @@ let
       awww img "$target" \
         --transition-type "$t" \
         --transition-pos "$pos" \
-        --transition-fps 60 \
+        --transition-fps 144 \
         --transition-duration 1.2 \
         --transition-bezier .43,1.19,1,.4
 

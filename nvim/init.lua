@@ -84,9 +84,14 @@ require("kanagawa").setup({
 			NoiceCmdlinePopupBorder = { fg = p.crystalBlue },
 			NoiceCmdlineIcon = { fg = p.surimiOrange },
 
-			-- ══ Dashboard ══
-			DashboardHeader = { fg = p.crystalBlue },
-			DashboardFooter = { fg = p.fujiGray, italic = true },
+			-- ══ Dashboard (snacks) ══
+			SnacksDashboardHeader = { fg = p.crystalBlue },
+			SnacksDashboardFooter = { fg = p.fujiGray, italic = true },
+			SnacksDashboardIcon = { fg = p.springBlue },
+			SnacksDashboardKey = { fg = p.carpYellow, bold = true },
+			SnacksDashboardDesc = { fg = theme.ui.fg },
+			SnacksDashboardTitle = { fg = theme.ui.special, bold = true },
+			SnacksDashboardDir = { fg = p.fujiGray },
 
 			-- ══ Rainbow delimiters: muted kanagawa inks, no neon ══
 			RainbowDelimiterRed = { fg = p.waveRed },

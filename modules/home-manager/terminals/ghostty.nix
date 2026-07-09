@@ -44,6 +44,10 @@ in
         "window-padding-x" = 8;
         "window-padding-y" = 6;
 
+        # glowing kanagawa cursor trail (GLSL, GPU) — live-editable repo file
+        "custom-shader" = "${config.home.homeDirectory}/nixos/dotfiles/ghostty/shaders/cursor_blaze.glsl";
+        "custom-shader-animation" = true;
+
         # ── Kanagawa Wave ──
         "background" = "#1F1F28";
         "foreground" = "#DCD7BA";

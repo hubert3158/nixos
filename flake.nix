@@ -109,6 +109,7 @@
               modules.desktop.wlogout.enable = true;
 
               modules.programs.git.enable = true;
+              modules.programs.lazygit.enable = true;
               modules.programs.ssh.enable = true;
               modules.programs.gpg.enable = true;
               modules.programs.tmux.enable = true;

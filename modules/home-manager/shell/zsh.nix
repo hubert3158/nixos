@@ -38,6 +38,14 @@ in {
       initContent = ''
         unalias gsd 2>/dev/null
 
+        # ---- fastfetch greeting (kanagawa fetch, tools/fastfetch.nix) ----
+        # top-level interactive shells only: skip tmux panes, nested shells,
+        # nvim :terminal, and non-interactive contexts
+        if [[ -o interactive && -z "$TMUX" && -z "$NVIM" && -z "$_FF_GREETED" ]]; then
+          export _FF_GREETED=1
+          command -v fastfetch >/dev/null && fastfetch
+        fi
+
         # ---- Vi editing mode ----
         bindkey -v
         export KEYTIMEOUT=1

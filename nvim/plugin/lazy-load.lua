@@ -17,14 +17,6 @@ require("lz.n").load({
 		end,
 	},
 	{
-		-- winbar breadcrumbs (clickable LSP/treesitter path)
-		"dropbar.nvim",
-		event = "DeferredUIEnter",
-		after = function()
-			require("dropbar").setup({})
-		end,
-	},
-	{
 		-- styled cursor-line diagnostics; disables virtual_text after load
 		"tiny-inline-diagnostic.nvim",
 		event = { "BufReadPre", "BufNewFile" },
