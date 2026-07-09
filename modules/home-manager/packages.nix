@@ -75,7 +75,6 @@ in {
         # zed-editor
         lazygit
         ripgrep
-        rtk
         sd
 
         # Language servers
