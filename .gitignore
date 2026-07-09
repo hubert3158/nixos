@@ -1,6 +1,5 @@
 hardware-configuration.nix
 node_modules/
-.luarc.json
 result
 result-*
 .direnv/

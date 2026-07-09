@@ -28,12 +28,15 @@ end
 
 require("telescope").setup({
 	defaults = {
-		-- sumi-e block look: colors come from kanagawa overrides (init.lua);
-		-- glyphs here just give the prompt/selection some calligraphy
+		-- sumi-e block look: colors come from kanagawa overrides (init.lua).
+		-- selection_caret must NOT be a byte-prefix of entry_prefix and must keep
+		-- the same display width (2 cells): update_prefix() finds the old prefix by
+		-- byte comparison, and an all-space caret matches every line — each deselect
+		-- then leaks one extra leading space (rows drift right while moving j/k).
 		prompt_prefix = "   ",
-		selection_caret = " ",
+		selection_caret = "❯ ",
 		entry_prefix = "  ",
-		multi_icon = " ",
+		multi_icon = "+",
 		results_title = false,
 		-- Replicates the builtin "truncate" style with a fast-event guard.
 		-- Upstream bug: path_truncate calls nvim_get_current_buf while finder
