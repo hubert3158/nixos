@@ -85,9 +85,9 @@ in
           truncation_symbol = "…/";
           substitutions = {
             "Documents" = "󰈙 ";
-            "Downloads" = " ";
+            "Downloads" = "󰉍 ";
             "Music" = "󰝚 ";
-            "Pictures" = " ";
+            "Pictures" = "󰉏 ";
             "nixos" = "󱄅 nixos";
           };
         };
