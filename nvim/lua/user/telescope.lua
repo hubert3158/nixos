@@ -42,7 +42,19 @@ require("telescope").setup({
 		-- Upstream bug: path_truncate calls nvim_get_current_buf while finder
 		-- results arrive in a fast event context (E5560, "Finder failed").
 		-- telescope guards path_abs with vim.in_fast_event() but not truncate.
+		-- A custom path_display also replaces frecency's default, which is what
+		-- relativized its absolute paths — so relativize here before truncating
+		-- (left-truncated: the tail/filename always stays visible).
 		path_display = function(opts, path)
+			local rel = opts.cwd and vim.fs.relpath(opts.cwd, path)
+			if rel then
+				path = rel
+			else
+				local home = os.getenv("HOME")
+				if home and vim.startswith(path, home .. "/") then
+					path = "~" .. path:sub(#home + 1)
+				end
+			end
 			if opts.__length == nil then
 				if vim.in_fast_event() then
 					return path -- can't measure the window here; truncate on the next safe call
@@ -96,6 +108,7 @@ require("telescope").setup({
 		frecency = {
 			-- Database is stored in data directory
 			db_safe_mode = false, -- Faster writes
+			show_filter_column = false, -- drop "workspace/" tag column — path gets full width
 			show_scores = false, -- Hide frecency scores in results
 			show_unindexed = true, -- Show files not yet in database
 			ignore_patterns = { "*.git/*", "*/tmp/*", "*/node_modules/*" },
