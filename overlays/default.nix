@@ -27,6 +27,23 @@
       });
     })
 
+    # inline-snapshot 0.32.5: 3 of its own unit tests fail on the current
+    # nixpkgs pin (upstream test breakage, not a runtime problem). It is a
+    # check-time dep of python openai, so the failure cascades into the whole
+    # python312 env. Skip its tests. Must go through pythonPackagesExtensions
+    # so every python version's package set (incl. python312Packages) picks
+    # up the override — a top-level attr override wouldn't reach openai's deps.
+    (final: prev: {
+      pythonPackagesExtensions = (prev.pythonPackagesExtensions or []) ++ [
+        (pyfinal: pyprev: {
+          inline-snapshot = pyprev.inline-snapshot.overridePythonAttrs (old: {
+            doCheck = false;
+            doInstallCheck = false;
+          });
+        })
+      ];
+    })
+
     # vscode-langservers-extracted 4.10.0 ships *ServerMain.js bundles that are
     # CommonJS (babel-injected top-level `require("core-js/...")`) except for a
     # single stray esbuild artifact, `createRequire(import.meta.url)`. That lone
