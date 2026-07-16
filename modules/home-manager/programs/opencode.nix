@@ -24,7 +24,8 @@ in {
 
     theme = lib.mkOption {
       type = lib.types.str;
-      default = "catppuccin";
+      # built-in kanagawa theme — matches the Ink & Wave design system (docs/THEME.md)
+      default = "kanagawa";
       description = "TUI theme";
     };
   };

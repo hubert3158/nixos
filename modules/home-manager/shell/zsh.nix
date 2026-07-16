@@ -19,7 +19,8 @@ in {
 
       autosuggestion = {
         enable = true;
-        highlight = "fg=red,bold,underline";
+        # fujiGray ghost text — quiet, on-palette (docs/THEME.md)
+        highlight = "fg=#727169,italic";
       };
 
       oh-my-zsh = {
@@ -90,9 +91,8 @@ in {
       '';
 
       profileExtra = ''
-              zi() {
-                zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide cd {}
-              }
+              # NOTE: no custom zi() here — zoxide ships a built-in interactive `zi`
+              # that this used to shadow with a broken duplicate.
 
               zia() {
                 zoxide query -i "$@" | fzf --height 40% --reverse --inline-info | xargs -I {} zoxide add {}

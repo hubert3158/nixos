@@ -1,5 +1,7 @@
 require('neoscroll').setup({
-  mappings = { '<C-u>', '<C-d>' },
+  -- must cover every key in lazy-load.lua's trigger list, or the triggering
+  -- press falls through as an unanimated stock jump
+  mappings = { '<C-u>', '<C-d>', '<C-b>', '<C-f>' },
   hide_cursor = true,
   stop_eof = true,
   respect_scrolloff = false,

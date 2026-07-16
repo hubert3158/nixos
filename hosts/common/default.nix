@@ -157,6 +157,13 @@ in {
 
   # Fonts
   fonts.fontDir.enable = true;
+
+  # Anything asking fontconfig for generic "monospace" (GTK inspectors, some
+  # Electron apps, fallback CSS) gets Maple Mono instead of DejaVu
+  fonts.fontconfig.defaultFonts = {
+    monospace = [ "Maple Mono NF" "JetBrainsMono Nerd Font" ];
+  };
+
   fonts.packages = with pkgs; [
     # Maple Mono NF — primary terminal/UI mono (Ink & Wave, docs/THEME.md)
     maple-mono.NF

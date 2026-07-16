@@ -5,6 +5,10 @@ Hokusai's *Great Wave off Kanagawa*. Deep sumi-ink backgrounds, washed paper
 foregrounds, and sparing mineral-pigment accents. Neovim and Helix already spoke
 this language; the desktop now speaks it too.
 
+Machine-readable twin: `lib/palette.nix` (wired into every module as the
+`palette` specialArg — use it for all new .nix theming instead of inlining hex).
+`scripts/theme-lint.sh` checks the live-symlinked CSS surfaces against it.
+
 ## Palette (Kanagawa Wave)
 
 ### Ink layers (backgrounds, darkest → lightest)
@@ -51,7 +55,16 @@ this language; the desktop now speaks it too.
 | peachRed      | `#FF5D62` | error, critical, power |
 | samuraiRed    | `#E82424` | maximum alarm (blink states) |
 | springViolet1 | `#938AA9` | violet-gray — subtle chrome |
+| springViolet2 | `#9CABCA` | violet-blue — htop accents |
 | dragonBlue    | `#658594` | dimmed blue — idle states |
+| lightBlue     | `#A3D4D5` | pale aqua — cava gradient top |
+
+### Winter washes (diff/status backgrounds)
+
+| Name        | Hex       | Use |
+|-------------|-----------|-----|
+| winterRed   | `#43242B` | diff removed (delta), htop critical bars |
+| winterGreen | `#2B3328` | diff added (delta) |
 
 ## Component accent map
 

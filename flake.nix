@@ -25,6 +25,12 @@
       url = "github:aaddrick/claude-desktop-debian";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Kanagawa flavor for yazi (Ink & Wave, docs/THEME.md)
+    kanagawa-yazi = {
+      url = "github:dangooddd/kanagawa.yazi";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -35,6 +41,10 @@
     gen-luarc,
     ...
   }: let
+    # Ink & Wave palette — single machine-readable source of truth for .nix
+    # surfaces (docs/THEME.md is the human-readable companion)
+    palette = import ./lib/palette.nix;
+
     # Supported systems
     supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
 
@@ -54,7 +64,7 @@
     # Helper function to create a NixOS host
     mkHost = hostname: system: nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs palette; };
       modules = [
         # Nixpkgs configuration
         {
@@ -79,7 +89,7 @@
             useUserPackages = true;
             useGlobalPkgs = true;
             backupFileExtension = "backup";
-            extraSpecialArgs = { inherit inputs; };
+            extraSpecialArgs = { inherit inputs palette; };
             users.hubert = { pkgs, ... }: {
               imports = [ ./modules/home-manager ];
 

@@ -14,7 +14,6 @@
     ./fuzzel.nix
     ./flameshot.nix
     ./waybar.nix
-    ./mako.nix
     ./swaync.nix
     ./wlogout.nix
   ];

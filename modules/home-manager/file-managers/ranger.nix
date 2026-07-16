@@ -10,7 +10,9 @@ in
 
     colorscheme = lib.mkOption {
       type = lib.types.str;
-      default = "solarized";
+      # "default" rides the terminal's 16-color ANSI palette, which is already
+      # Kanagawa Wave in kitty/ghostty/wezterm (docs/THEME.md)
+      default = "default";
       description = "Ranger colorscheme";
     };
   };

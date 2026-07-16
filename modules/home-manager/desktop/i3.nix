@@ -1,5 +1,6 @@
-# i3 window manager user configuration
-{ config, lib, pkgs, ... }:
+# i3 window manager user configuration — X11 fallback session, themed to
+# Ink & Wave (lib/palette.nix) so dropping back to i3 doesn't mean stock blue
+{ config, lib, pkgs, palette, ... }:
 
 let
   cfg = config.modules.desktop.i3;
@@ -36,12 +37,79 @@ in
         enable = true;
         config = {
           fonts = {
-            names = [ "DejaVu Sans Mono" "FontAwesome5Free" ];
-            style = "Bold Semi-Condensed";
+            names = [ "Maple Mono NF" "Noto Sans CJK JP" ];
+            style = "Bold";
             size = 11.0;
           };
           modifier = cfg.modifier;
           terminal = cfg.terminal;
+
+          colors = {
+            background = palette.sumiInk3;
+            focused = {
+              border = palette.crystalBlue;
+              childBorder = palette.crystalBlue;
+              background = palette.sumiInk3;
+              text = palette.fujiWhite;
+              indicator = palette.oniViolet;
+            };
+            focusedInactive = {
+              border = palette.sumiInk6;
+              childBorder = palette.sumiInk6;
+              background = palette.sumiInk0;
+              text = palette.oldWhite;
+              indicator = palette.sumiInk6;
+            };
+            unfocused = {
+              border = palette.sumiInk4;
+              childBorder = palette.sumiInk4;
+              background = palette.sumiInk0;
+              text = palette.fujiGray;
+              indicator = palette.sumiInk4;
+            };
+            urgent = {
+              border = palette.waveRed;
+              childBorder = palette.waveRed;
+              background = palette.sumiInk3;
+              text = palette.fujiWhite;
+              indicator = palette.waveRed;
+            };
+          };
+
+          bars = [
+            {
+              position = "top";
+              fonts = {
+                names = [ "Maple Mono NF" "Noto Sans CJK JP" ];
+                size = 11.0;
+              };
+              colors = {
+                background = palette.sumiInk0;
+                statusline = palette.fujiWhite;
+                separator = palette.sumiInk6;
+                focusedWorkspace = {
+                  border = palette.crystalBlue;
+                  background = palette.crystalBlue;
+                  text = palette.sumiInk0;
+                };
+                activeWorkspace = {
+                  border = palette.waveBlue1;
+                  background = palette.waveBlue1;
+                  text = palette.fujiWhite;
+                };
+                inactiveWorkspace = {
+                  border = palette.sumiInk0;
+                  background = palette.sumiInk0;
+                  text = palette.fujiGray;
+                };
+                urgentWorkspace = {
+                  border = palette.waveRed;
+                  background = palette.waveRed;
+                  text = palette.sumiInk0;
+                };
+              };
+            }
+          ];
           keybindings = let
             modifier = config.xsession.windowManager.i3.config.modifier;
           in lib.mkOptionDefault {

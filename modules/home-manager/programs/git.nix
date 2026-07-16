@@ -1,5 +1,5 @@
 # Git configuration
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, palette, ... }:
 
 let
   cfg = config.modules.programs.git;
@@ -62,11 +62,28 @@ in
       enable = true;
       enableGitIntegration = true;
       options = {
-        features = "decorations";
-        # "ansi" follows the terminal palette → kanagawa (docs/THEME.md)
-        syntax-theme = "ansi";
-        line-numbers = true;
-        side-by-side = true;
+        # points at the [delta "kanagawa"] feature below — the old
+        # `features = "decorations"` referenced a section that never
+        # existed, so every style here was a silent no-op
+        features = "kanagawa";
+        kanagawa = {
+          # "ansi" follows the terminal palette → kanagawa (docs/THEME.md)
+          syntax-theme = "ansi";
+          line-numbers = true;
+          side-by-side = true;
+          # winter washes: syntax highlighting on tinted ink backgrounds
+          minus-style = "syntax ${palette.winterRed}";
+          minus-emph-style = "syntax ${palette.ansiRed}";
+          plus-style = "syntax ${palette.winterGreen}";
+          plus-emph-style = "syntax ${palette.ansiGreen}";
+          line-numbers-minus-style = palette.ansiRed;
+          line-numbers-plus-style = palette.ansiGreen;
+          line-numbers-zero-style = palette.sumiInk6;
+          file-style = "bold ${palette.carpYellow}";
+          file-decoration-style = "ul ${palette.sumiInk6}";
+          hunk-header-style = "syntax italic ${palette.springViolet1}";
+          hunk-header-decoration-style = "ul ${palette.sumiInk6}";
+        };
       };
     };
 

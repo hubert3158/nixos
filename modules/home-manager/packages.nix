@@ -185,10 +185,6 @@ in {
         cmatrix
         fastfetch
         frotz
-      ])
-      # Zsh tools
-      ++ [
-        zsh-autocomplete
-      ];
+      ]);
   };
 }

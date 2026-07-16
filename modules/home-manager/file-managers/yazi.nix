@@ -1,5 +1,5 @@
-# Yazi file manager configuration
-{ config, lib, pkgs, ... }:
+# Yazi file manager configuration — Kanagawa flavor (Ink & Wave, docs/THEME.md)
+{ config, lib, pkgs, inputs, ... }:
 
 let
   cfg = config.modules.fileManagers.yazi;
@@ -10,10 +10,26 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # preview backends (pdftoppm, ffmpeg) come from hosts/common systemPackages
+
     programs.yazi = {
       enable = true;
       shellWrapperName = "y";
       enableZshIntegration = true;
+
+      # pinned flake input (dangooddd/kanagawa.yazi) — was previously unthemed,
+      # the one file manager outside the design system
+      flavors.kanagawa = inputs.kanagawa-yazi;
+      theme.flavor = {
+        dark = "kanagawa";
+        light = "kanagawa";
+      };
+
+      plugins.full-border = pkgs.yaziPlugins.full-border;
+      initLua = ''
+        require("full-border"):setup()
+      '';
+
       settings.yazi = {
         opener = [
           {

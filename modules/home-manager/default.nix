@@ -32,6 +32,12 @@
   # Dark GTK apps (pavucontrol, file pickers) + icon theme for fuzzel/dolphin
   gtk = {
     enable = true;
+    # explicit UI font — otherwise GTK falls back to whatever fontconfig
+    # picks for "Sans" (was DejaVu-adjacent, off-system)
+    font = {
+      name = "Noto Sans";
+      size = 11;
+    };
     theme = {
       name = "adw-gtk3-dark";
       package = pkgs.adw-gtk3;

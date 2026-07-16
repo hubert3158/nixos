@@ -178,6 +178,22 @@
         "type": "github"
       }
     },
+    "kanagawa-yazi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767367243,
+        "narHash": "sha256-Yz0zRVzmgbrk0m7OkItxIK6W0WkPze/t09pWFgziNrw=",
+        "owner": "dangooddd",
+        "repo": "kanagawa.yazi",
+        "rev": "04985d12842b06bdb3ad5f1b3d7abc631059b7f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dangooddd",
+        "repo": "kanagawa.yazi",
+        "type": "github"
+      }
+    },
     "luvit-meta": {
       "flake": false,
       "locked": {
@@ -291,6 +307,7 @@
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
         "home-manager": "home-manager",
+        "kanagawa-yazi": "kanagawa-yazi",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-flameshot": "nixpkgs-flameshot"
       }
