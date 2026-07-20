@@ -255,8 +255,12 @@ in {
   # without this a single OOM kills the session.
   zramSwap = {
     enable = true;
-    memoryPercent = 50;
+    memoryPercent = 100;
   };
+
+  # zram has no seek penalty — the default 8-page swap-in readaround
+  # (page-cluster 3) only adds latency on every fault
+  boot.kernel.sysctl."vm.page-cluster" = 0;
 
   # Periodic SSD TRIM
   services.fstrim.enable = true;
