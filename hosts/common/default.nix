@@ -258,9 +258,22 @@ in {
     memoryPercent = 100;
   };
 
-  # zram has no seek penalty — the default 8-page swap-in readaround
-  # (page-cluster 3) only adds latency on every fault
-  boot.kernel.sysctl."vm.page-cluster" = 0;
+  # VM tuning for zram-primary swap (kernel-doc / Pop!_OS values):
+  # zram has no seek penalty, so swap early and cheap instead of
+  # stalling on reclaim; page-cluster 0 kills the 8-page readaround.
+  boot.kernel.sysctl = {
+    "vm.page-cluster" = 0;
+    "vm.swappiness" = 180;
+    "vm.watermark_boost_factor" = 0;
+    "vm.watermark_scale_factor" = 125;
+    # vite + IDEs + browsers exhaust the default 524288 watcher ceiling
+    "fs.inotify.max_user_watches" = 1048576;
+    "fs.inotify.max_user_instances" = 1024;
+  };
+
+  # Kill the biggest memory hog before the kernel OOM-kills the session
+  # (the work machine swaps to zram only — no disk swap to absorb spikes)
+  services.earlyoom.enable = true;
 
   # Periodic SSD TRIM
   services.fstrim.enable = true;

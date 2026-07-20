@@ -36,6 +36,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # Latest stable kernel — newer amdgpu + amd_pstate for the Zen 2 APUs.
+    # Cached on cache.nixos.org (verified before adding), no local compile.
+    boot.kernelPackages = pkgs.linuxPackages_latest;
+
     boot.loader = lib.mkMerge [
       (lib.mkIf (cfg.loader == "systemd-boot") {
         systemd-boot.enable = true;

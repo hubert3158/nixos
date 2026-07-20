@@ -15,16 +15,6 @@ in {
     xdg = {
       enable = true;
       desktopEntries = {
-        evolution = {
-          name = "Evolution";
-          genericName = "Application";
-          exec = "evolution";
-          terminal = false;
-          categories = ["Email" "Application" "Network"];
-          mimeType = ["text/html" "text/xml"];
-          comment = "It is a email client bro";
-        };
-
         swayimg = {
           name = "swayimg";
           genericName = "Image Viewer";

@@ -59,6 +59,11 @@ in
     # auto-optimise-store, which slows every build)
     nix.optimise.automatic = true;
 
+    # Builds must never stutter the desktop — run the daemon at idle
+    # CPU/IO priority; it still uses every core when the machine is free
+    nix.daemonCPUSchedPolicy = "idle";
+    nix.daemonIOSchedClass = "idle";
+
     # Extra binary cache for nix-community packages
     nix.settings.substituters = [ "https://nix-community.cachix.org" ];
     nix.settings.trusted-public-keys = [

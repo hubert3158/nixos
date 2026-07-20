@@ -8,13 +8,14 @@
   ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [];
+  boot.initrd.kernelModules = [ "amdgpu" ];  # early KMS — modeset before userspace
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/171c3e75-1b84-4914-840b-bd8bccf3ad1a";
     fsType = "ext4";
+    options = [ "noatime" ];
   };
 
   fileSystems."/boot" = {
@@ -26,7 +27,7 @@
   fileSystems."/nix/store" = {
     device = "/dev/disk/by-uuid/9c498fa9-290c-44ef-914f-aa0987369009";
     fsType = "ext4";
-    options = [ "defaults" ];
+    options = [ "defaults" "noatime" ];
   };
 
   swapDevices = [
