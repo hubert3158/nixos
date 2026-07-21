@@ -128,7 +128,9 @@
               modules.programs.nixIndex.enable = true;
               modules.programs.opencode.enable = true;
               modules.programs.emacs.enable = true;
-              modules.programs.emacs.daemon = true;
+              # daemon disabled — resident emacs server was eating ~340M RAM.
+              # Re-enable for instant `emacsclient` startup.
+              # modules.programs.emacs.daemon = true;
               modules.programs.helix.enable = true;
 
               modules.fileManagers.yazi.enable = true;
