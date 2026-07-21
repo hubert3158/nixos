@@ -121,6 +121,10 @@
               modules.programs.git.enable = true;
               modules.programs.lazygit.enable = true;
               modules.programs.ssh.enable = true;
+              # Work SSH hosts + private keys decrypted from gopass (repo is
+              # public) — work machine only
+              modules.programs.ssh.workHostsFromPass = hostname == "work";
+              modules.programs.ssh.keysFromPass = hostname == "work";
               modules.programs.gpg.enable = true;
               modules.programs.tmux.enable = true;
               modules.programs.browsers.enable = true;
