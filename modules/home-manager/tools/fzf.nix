@@ -1,5 +1,5 @@
-# FZF fuzzy finder configuration
-{ config, lib, pkgs, ... }:
+# FZF fuzzy finder — Ink & Wave (lib/palette.nix, docs/THEME.md)
+{ config, lib, pkgs, palette, ... }:
 
 let
   cfg = config.modules.tools.fzf;
@@ -15,19 +15,19 @@ in
       enableZshIntegration = true;
       # Kanagawa Wave (docs/THEME.md) — rounded frosted look
       colors = {
-        "bg+" = "#223249";
-        bg = "#1F1F28";
-        spinner = "#7FB4CA";
-        hl = "#E6C384";
-        fg = "#DCD7BA";
-        header = "#957FB8";
-        info = "#658594";
-        pointer = "#7E9CD8";
-        marker = "#98BB6C";
-        "fg+" = "#DCD7BA";
-        prompt = "#7E9CD8";
-        "hl+" = "#E6C384";
-        border = "#54546D";
+        "bg+" = palette.waveBlue1;
+        bg = palette.sumiInk3;
+        spinner = palette.springBlue;
+        hl = palette.carpYellow;
+        fg = palette.fujiWhite;
+        header = palette.oniViolet;
+        info = palette.dragonBlue;
+        pointer = palette.crystalBlue;
+        marker = palette.springGreen;
+        "fg+" = palette.fujiWhite;
+        prompt = palette.crystalBlue;
+        "hl+" = palette.carpYellow;
+        border = palette.sumiInk6;
       };
       defaultOptions = [
         "--border=rounded"

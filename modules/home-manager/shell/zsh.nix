@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  palette,
   ...
 }: let
   cfg = config.modules.shell.zsh;
@@ -20,7 +21,7 @@ in {
       autosuggestion = {
         enable = true;
         # fujiGray ghost text — quiet, on-palette (docs/THEME.md)
-        highlight = "fg=#727169,italic";
+        highlight = "fg=${palette.fujiGray},italic";
       };
 
       oh-my-zsh = {

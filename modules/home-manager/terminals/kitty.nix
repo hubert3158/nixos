@@ -1,6 +1,6 @@
 # Kitty terminal configuration — Kanagawa Wave (Ink & Wave design system)
-# Palette reference: docs/THEME.md
-{ config, lib, pkgs, ... }:
+# Colours from lib/palette.nix; keep in lockstep with ghostty.nix / wezterm.nix
+{ config, lib, pkgs, palette, ... }:
 
 let
   cfg = config.modules.terminals.kitty;
@@ -60,22 +60,22 @@ in
         # kitty paints the image wherever a cell's bg equals the default
         # background — which includes ALL of neovim — so the tint must be
         # near-total or code drowns in the artwork. 0.95 = faint ghost texture.
-        background = "#1F1F28";
+        background = palette.sumiInk3;
         background_image = "${config.home.homeDirectory}/nixos/images/walls/great-wave-ink.png";
         background_image_layout = "cscaled";
         background_tint = "0.95";
 
-        foreground = "#DCD7BA";
-        selection_background = "#2D4F67";
-        selection_foreground = "#C8C093";
-        cursor = "#C8C093";
-        cursor_text_color = "#1F1F28";
+        foreground = palette.fujiWhite;
+        selection_background = palette.waveBlue2;
+        selection_foreground = palette.oldWhite;
+        cursor = palette.oldWhite;
+        cursor_text_color = palette.sumiInk3;
 
         # animated cursor smear — pure nerd candy
         cursor_trail = 3;
         cursor_trail_decay = "0.1 0.4";
 
-        url_color = "#7FB4CA";
+        url_color = palette.springBlue;
         url_style = "curly";
         window_padding_width = 8;
         hide_window_decorations = "yes";
@@ -86,31 +86,31 @@ in
         # tab bar — ink powerline, crystalBlue active tab
         tab_bar_style = "powerline";
         tab_powerline_style = "slanted";
-        active_tab_background = "#7E9CD8";
-        active_tab_foreground = "#16161D";
-        inactive_tab_background = "#16161D";
-        inactive_tab_foreground = "#727169";
-        tab_bar_background = "#16161D";
+        active_tab_background = palette.crystalBlue;
+        active_tab_foreground = palette.sumiInk0;
+        inactive_tab_background = palette.sumiInk0;
+        inactive_tab_foreground = palette.fujiGray;
+        tab_bar_background = palette.sumiInk0;
 
-        # 16-color palette — Kanagawa Wave
-        color0 = "#16161D";
-        color8 = "#727169";
-        color1 = "#C34043";
-        color9 = "#E82424";
-        color2 = "#76946A";
-        color10 = "#98BB6C";
-        color3 = "#C0A36E";
-        color11 = "#E6C384";
-        color4 = "#7E9CD8";
-        color12 = "#7FB4CA";
-        color5 = "#957FB8";
-        color13 = "#938AA9";
-        color6 = "#6A9589";
-        color14 = "#7AA89F";
-        color7 = "#C8C093";
-        color15 = "#DCD7BA";
-        color16 = "#FFA066";
-        color17 = "#FF5D62";
+        # 16-color palette — Kanagawa Wave (normal 0-7, bright 8-15)
+        color0 = palette.sumiInk0;
+        color8 = palette.fujiGray;
+        color1 = palette.ansiRed;
+        color9 = palette.samuraiRed;
+        color2 = palette.ansiGreen;
+        color10 = palette.springGreen;
+        color3 = palette.ansiYellow;
+        color11 = palette.carpYellow;
+        color4 = palette.crystalBlue;
+        color12 = palette.springBlue;
+        color5 = palette.oniViolet;
+        color13 = palette.springViolet1;
+        color6 = palette.ansiCyan;
+        color14 = palette.waveAqua2;
+        color7 = palette.oldWhite;
+        color15 = palette.fujiWhite;
+        color16 = palette.surimiOrange;
+        color17 = palette.peachRed;
       };
 
       keybindings = {

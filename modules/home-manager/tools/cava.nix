@@ -1,7 +1,7 @@
 # Cava (standalone terminal visualizer) — Kanagawa gradient
 # The waybar cava has its own config (home-manager-config-files/waybar/cava.conf);
 # this themes the full-screen `cava` command.
-{ config, lib, ... }:
+{ config, lib, palette, ... }:
 
 let
   cfg = config.modules.tools.cava;
@@ -31,12 +31,12 @@ in
       ; kanagawa: crystalBlue → oniViolet → springBlue → waveAqua wash
       gradient = 1
       gradient_count = 6
-      gradient_color_1 = '#2D4F67'
-      gradient_color_2 = '#658594'
-      gradient_color_3 = '#7E9CD8'
-      gradient_color_4 = '#957FB8'
-      gradient_color_5 = '#7FB4CA'
-      gradient_color_6 = '#A3D4D5'
+      gradient_color_1 = '${palette.waveBlue2}'
+      gradient_color_2 = '${palette.dragonBlue}'
+      gradient_color_3 = '${palette.crystalBlue}'
+      gradient_color_4 = '${palette.oniViolet}'
+      gradient_color_5 = '${palette.springBlue}'
+      gradient_color_6 = '${palette.lightBlue}'
 
       [smoothing]
       noise_reduction = 77

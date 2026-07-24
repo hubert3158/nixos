@@ -1,5 +1,5 @@
 # Home-Manager modules aggregator
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, palette, ... }:
 
 {
   imports = [
@@ -54,12 +54,12 @@
     # kanagawa crystalBlue accent — libadwaita picks up the @define-color
     # overrides, so selected rows/switches match the rest of the desktop
     gtk3.extraCss = ''
-      @define-color accent_bg_color #7E9CD8;
-      @define-color accent_color #7E9CD8;
+      @define-color accent_bg_color ${palette.crystalBlue};
+      @define-color accent_color ${palette.crystalBlue};
     '';
     gtk4.extraCss = ''
-      @define-color accent_bg_color #7E9CD8;
-      @define-color accent_color #7E9CD8;
+      @define-color accent_bg_color ${palette.crystalBlue};
+      @define-color accent_color ${palette.crystalBlue};
     '';
   };
 

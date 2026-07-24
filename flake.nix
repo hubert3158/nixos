@@ -42,8 +42,11 @@
     ...
   }: let
     # Ink & Wave palette — single machine-readable source of truth for .nix
-    # surfaces (docs/THEME.md is the human-readable companion)
+    # surfaces (docs/THEME.md is the human-readable companion).
+    # `colors` re-encodes those hexes for surfaces that don't take #RRGGBB
+    # (hyprland rgb(), GTK rgba(), fastfetch SGR escapes, fuzzel bare hex).
     palette = import ./lib/palette.nix;
+    colors = import ./lib/color.nix { inherit (nixpkgs) lib; };
 
     # Supported systems
     supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
@@ -64,7 +67,7 @@
     # Helper function to create a NixOS host
     mkHost = hostname: system: nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit inputs palette; };
+      specialArgs = { inherit inputs palette colors; };
       modules = [
         # Nixpkgs configuration
         {
@@ -89,7 +92,7 @@
             useUserPackages = true;
             useGlobalPkgs = true;
             backupFileExtension = "backup";
-            extraSpecialArgs = { inherit inputs palette; };
+            extraSpecialArgs = { inherit inputs palette colors; };
             users.hubert = { pkgs, ... }: {
               imports = [ ./modules/home-manager ];
 

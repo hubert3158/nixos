@@ -1,6 +1,9 @@
 # Hyprlock configuration — Kanagawa ink over a blurred desktop screenshot
-# (Ink & Wave design system, docs/THEME.md)
-{ config, lib, pkgs, ... }:
+# (Ink & Wave design system, docs/THEME.md).
+# Colours come from lib/palette.nix via `colors.hypr` — hyprlang accepts
+# rgb(RRGGBB), so the decimal rgb(220, 215, 186) triples this file used to
+# carry (unsearchable, un-lintable) are gone.
+{ config, lib, pkgs, palette, colors, ... }:
 
 let
   cfg = config.modules.desktop.hyprlock;
@@ -48,7 +51,7 @@ in
             text = "cmd[update:1000] date +'%H:%M'";
             font_family = "Maple Mono NF";
             font_size = 110;
-            color = "rgb(220, 215, 186)";
+            color = colors.hypr palette.fujiWhite;
             position = "0, 180";
             halign = "center";
             valign = "center";
@@ -60,7 +63,7 @@ in
             text = "cmd[update:60000] date +'%A, %d %B'";
             font_family = "Maple Mono NF";
             font_size = 22;
-            color = "rgb(127, 180, 202)";
+            color = colors.hypr palette.springBlue;
             position = "0, 80";
             halign = "center";
             valign = "center";
@@ -72,7 +75,7 @@ in
             text = "「 波 に 乗 れ 」";
             font_family = "Noto Sans CJK JP";
             font_size = 14;
-            color = "rgb(114, 113, 105)";
+            color = colors.hypr palette.fujiGray;
             position = "0, 40";
             halign = "center";
             valign = "center";
@@ -83,7 +86,7 @@ in
             text = "󰌾  $USER";
             font_family = "Maple Mono NF";
             font_size = 15;
-            color = "rgb(200, 192, 147)";
+            color = colors.hypr palette.oldWhite;
             position = "0, -160";
             halign = "center";
             valign = "center";
@@ -94,7 +97,7 @@ in
             text = "cmd[update:2000] ${nowPlaying}";
             font_family = "Maple Mono NF";
             font_size = 13;
-            color = "rgb(122, 168, 159)";
+            color = colors.hypr palette.waveAqua2;
             position = "0, -210";
             halign = "center";
             valign = "center";
@@ -113,13 +116,15 @@ in
             dots_center = true;
             fade_on_empty = false;
             font_family = "Maple Mono NF";
-            font_color = "rgb(220, 215, 186)";
-            inner_color = "rgba(31, 31, 40, 0.85)";
-            outer_color = "rgb(126, 156, 216)";
-            check_color = "rgb(230, 195, 132)";
-            fail_color = "rgb(255, 93, 98)";
+            font_color = colors.hypr palette.fujiWhite;
+            inner_color = colors.hyprA palette.sumiInk3 "d9"; # 0.85 alpha
+            outer_color = colors.hypr palette.crystalBlue;
+            check_color = colors.hypr palette.carpYellow;
+            fail_color = colors.hypr palette.peachRed;
             fail_text = "<i>wrong ($ATTEMPTS)</i>";
-            placeholder_text = "<span foreground='##727169'>password…</span>";
+            # pango markup inside hyprlang: a literal '#' must be written '##',
+            # otherwise hyprlang treats the rest of the line as a comment
+            placeholder_text = "<span foreground='##${colors.bare palette.fujiGray}'>password…</span>";
             shadow_passes = 2;
           }
         ];

@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  palette,
   ...
 }: let
   cfg = config.modules.programs.tmux;
@@ -46,36 +47,36 @@ in {
         set -ag terminal-overrides ",xterm-256color:RGB"
 
         # ╭──────────────────────────────────────────────────────────╮
-        # │        Kanagawa Ink & Wave — hand-rolled powerline       │
-        # │  sumiInk0 16161D · waveBlue2 2D4F67 · crystalBlue 7E9CD8 │
+        # │        Kanagawa Ink & Wave — hand-rolled powerline        │
+        # │        colours from lib/palette.nix (docs/THEME.md)       │
         # ╰──────────────────────────────────────────────────────────╯
         set -g status-position top
         set -g status-justify left
-        set -g status-style "bg=#16161D,fg=#DCD7BA"
+        set -g status-style "bg=${palette.sumiInk0},fg=${palette.fujiWhite}"
         set -g status-left-length 40
         set -g status-right-length 80
 
         # session pill — crystalBlue cap
-        set -g status-left "#[fg=#16161D,bg=#7E9CD8,bold] 󰆍 #S #[fg=#7E9CD8,bg=#16161D]  "
+        set -g status-left "#[fg=${palette.sumiInk0},bg=${palette.crystalBlue},bold] 󰆍 #S #[fg=${palette.crystalBlue},bg=${palette.sumiInk0}]  "
 
         # windows — inactive ink, active waveBlue pill
-        set -g window-status-format "#[fg=#727169,bg=#16161D]  #I #W  "
-        set -g window-status-current-format "#[fg=#2D4F67,bg=#16161D]#[fg=#DCD7BA,bg=#2D4F67,bold] #I #W#{?window_zoomed_flag, 󰊓,} #[fg=#2D4F67,bg=#16161D]"
+        set -g window-status-format "#[fg=${palette.fujiGray},bg=${palette.sumiInk0}]  #I #W  "
+        set -g window-status-current-format "#[fg=${palette.waveBlue2},bg=${palette.sumiInk0}]#[fg=${palette.fujiWhite},bg=${palette.waveBlue2},bold] #I #W#{?window_zoomed_flag, 󰊓,} #[fg=${palette.waveBlue2},bg=${palette.sumiInk0}]"
         set -g window-status-separator ""
 
-        # right: cwd (oniViolet) · clock (springBlue)
-        set -g status-right "#[fg=#957FB8] #{b:pane_current_path} #[fg=#54546D]│#[fg=#7FB4CA] 󰃰 %H:%M #[fg=#7E9CD8,bg=#16161D]#[fg=#16161D,bg=#7E9CD8,bold] 波 #[default]"
+        # right: cwd (oniViolet) · clock (springBlue) · 波 cap
+        set -g status-right "#[fg=${palette.oniViolet}] #{b:pane_current_path} #[fg=${palette.sumiInk6}]│#[fg=${palette.springBlue}] 󰃰 %H:%M #[fg=${palette.crystalBlue},bg=${palette.sumiInk0}]#[fg=${palette.sumiInk0},bg=${palette.crystalBlue},bold] 波 #[default]"
 
         # ── Pane Borders ─────────────────────────────────────────────
         set -g pane-border-lines heavy
-        set -g pane-border-style "fg=#2A2A37"
-        set -g pane-active-border-style "fg=#7E9CD8"
+        set -g pane-border-style "fg=${palette.sumiInk4}"
+        set -g pane-active-border-style "fg=${palette.crystalBlue}"
 
         # ── Message / Copy-mode Styling ──────────────────────────────
-        set -g message-style "fg=#DCD7BA,bg=#223249"
-        set -g message-command-style "fg=#DCD7BA,bg=#223249"
-        set -g mode-style "fg=#DCD7BA,bg=#2D4F67"
-        set -g clock-mode-colour "#7E9CD8"
+        set -g message-style "fg=${palette.fujiWhite},bg=${palette.waveBlue1}"
+        set -g message-command-style "fg=${palette.fujiWhite},bg=${palette.waveBlue1}"
+        set -g mode-style "fg=${palette.fujiWhite},bg=${palette.waveBlue2}"
+        set -g clock-mode-colour "${palette.crystalBlue}"
 
         # ── Window Behavior ──────────────────────────────────────────
         set -g base-index 0

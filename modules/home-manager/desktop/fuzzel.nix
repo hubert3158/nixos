@@ -1,8 +1,10 @@
-# Fuzzel application launcher configuration
-{ config, lib, pkgs, ... }:
+# Fuzzel application launcher — Ink & Wave (lib/palette.nix, docs/THEME.md)
+{ config, lib, pkgs, palette, colors, ... }:
 
 let
   cfg = config.modules.desktop.fuzzel;
+  # aliased: the fuzzel settings block has its own `colors` attribute
+  ink = colors;
 in
 {
   options.modules.desktop.fuzzel = {
@@ -10,8 +12,11 @@ in
 
     terminal = lib.mkOption {
       type = lib.types.str;
-      default = "alacritty";
-      description = "Terminal to use for terminal applications";
+      # must be a terminal that is actually installed — fuzzel spawns this for
+      # any Terminal=true desktop entry, and silently does nothing if it's
+      # missing. (Was "alacritty", which this config has never installed.)
+      default = "kitty";
+      description = "Terminal used to launch Terminal=true desktop entries";
     };
 
     font = lib.mkOption {
@@ -40,19 +45,20 @@ in
           inner-pad = 10;
         };
 
-        # Kanagawa Ink & Wave — matches waybar/hyprland/swaync (docs/THEME.md)
+        # Kanagawa Ink & Wave — matches waybar/hyprland/swaync (docs/THEME.md).
+        # fuzzel takes bare RRGGBBAA, no '#'.
         colors = {
-          background = "1f1f28e6";
-          text = "dcd7baff";
-          placeholder = "727169ff";
-          prompt = "7e9cd8ff";
-          input = "dcd7baff";
-          match = "e6c384ff";
-          selection = "223249ff";
-          selection-text = "dcd7baff";
-          selection-match = "e6c384ff";
-          counter = "727169ff";
-          border = "7e9cd8ee";
+          background = ink.fuzzel palette.sumiInk3 "e6";
+          text = ink.fuzzel palette.fujiWhite "ff";
+          placeholder = ink.fuzzel palette.fujiGray "ff";
+          prompt = ink.fuzzel palette.crystalBlue "ff";
+          input = ink.fuzzel palette.fujiWhite "ff";
+          match = ink.fuzzel palette.carpYellow "ff";
+          selection = ink.fuzzel palette.waveBlue1 "ff";
+          selection-text = ink.fuzzel palette.fujiWhite "ff";
+          selection-match = ink.fuzzel palette.carpYellow "ff";
+          counter = ink.fuzzel palette.fujiGray "ff";
+          border = ink.fuzzel palette.crystalBlue "ee";
         };
 
         border = {

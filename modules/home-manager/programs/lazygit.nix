@@ -1,6 +1,6 @@
 # Lazygit — Kanagawa Ink & Wave theme (docs/THEME.md)
 # Used daily via nvim <leader>gg (lazygit.nvim) and the CLI.
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, palette, ... }:
 
 let
   cfg = config.modules.programs.lazygit;
@@ -19,15 +19,15 @@ in
           showFileTree = true;
           border = "rounded";
           theme = {
-            activeBorderColor = [ "#7E9CD8" "bold" ];
-            inactiveBorderColor = [ "#54546D" ];
-            searchingActiveBorderColor = [ "#E6C384" "bold" ];
-            optionsTextColor = [ "#7FB4CA" ];
-            selectedLineBgColor = [ "#223249" ];
-            cherryPickedCommitBgColor = [ "#2D4F67" ];
-            cherryPickedCommitFgColor = [ "#E6C384" ];
-            unstagedChangesColor = [ "#E46876" ];
-            defaultFgColor = [ "#DCD7BA" ];
+            activeBorderColor = [ palette.crystalBlue "bold" ];
+            inactiveBorderColor = [ palette.sumiInk6 ];
+            searchingActiveBorderColor = [ palette.carpYellow "bold" ];
+            optionsTextColor = [ palette.springBlue ];
+            selectedLineBgColor = [ palette.waveBlue1 ];
+            cherryPickedCommitBgColor = [ palette.waveBlue2 ];
+            cherryPickedCommitFgColor = [ palette.carpYellow ];
+            unstagedChangesColor = [ palette.waveRed ];
+            defaultFgColor = [ palette.fujiWhite ];
           };
         };
         # new-schema pagers array (git.paging was removed; the old key trips

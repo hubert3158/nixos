@@ -101,6 +101,50 @@ require("kanagawa").setup({
 			RainbowDelimiterGreen = { fg = p.springGreen },
 			RainbowDelimiterViolet = { fg = p.oniViolet },
 			RainbowDelimiterCyan = { fg = p.waveAqua2 },
+
+			-- ══ Indent guides: one quiet layer, one lit layer ══
+			-- ibl draws every level in flat ink; mini.indentscope lights only
+			-- the scope under the cursor. Same ▏ stroke as the window
+			-- separators, so all three read as one drawn line.
+			IblIndent = { fg = p.sumiInk4 },
+			IblWhitespace = { fg = p.sumiInk4 },
+			IblScope = { fg = p.sumiInk6 }, -- ibl's own scope is off; defined so it can't fall back to neon
+			MiniIndentscopeSymbol = { fg = p.crystalBlue },
+			MiniIndentscopePrefix = { nocombine = true },
+
+			-- ══ Markdown: descending ink ramp, not a diff ══
+			-- render-markdown links H1Bg→DiffText, H2Bg→DiffAdd,
+			-- H3Bg→DiffChange, H4Bg→DiffDelete by default, so under kanagawa a
+			-- document renders in the winter diff washes — headings read as a
+			-- merge conflict. Replaced with an ink ramp: deep water → ink →
+			-- nothing. Plugin links its groups with `default = true`, so these
+			-- win. Shape (glyphs, widths) lives in lua/user/render-markdown.lua.
+			RenderMarkdownH1 = { fg = p.crystalBlue, bold = true },
+			RenderMarkdownH2 = { fg = p.oniViolet, bold = true },
+			RenderMarkdownH3 = { fg = p.springBlue, bold = true },
+			RenderMarkdownH4 = { fg = p.carpYellow, bold = true },
+			RenderMarkdownH5 = { fg = p.waveAqua2, bold = true },
+			RenderMarkdownH6 = { fg = p.fujiGray, bold = true, italic = true },
+			RenderMarkdownH1Bg = { bg = p.waveBlue1 },
+			RenderMarkdownH2Bg = { bg = p.sumiInk5 },
+			RenderMarkdownH3Bg = { bg = p.sumiInk4 },
+			RenderMarkdownH4Bg = { bg = p.sumiInk2 },
+			RenderMarkdownH5Bg = { bg = "NONE" },
+			RenderMarkdownH6Bg = { bg = "NONE" },
+			-- code slabs sink below the page instead of the default
+			-- ColorColumn link (which reads as an 80-column ruler)
+			RenderMarkdownCode = { bg = theme.ui.bg_m3 },
+			RenderMarkdownCodeInline = { bg = p.sumiInk4, fg = p.carpYellow },
+			RenderMarkdownCodeBorder = { bg = theme.ui.bg_m3, fg = theme.ui.bg_m3 },
+			RenderMarkdownBullet = { fg = p.crystalBlue },
+			RenderMarkdownQuote = { fg = p.dragonBlue },
+			RenderMarkdownDash = { fg = p.sumiInk6 },
+			RenderMarkdownLink = { fg = p.springBlue, underline = true },
+			RenderMarkdownTableHead = { fg = p.oniViolet, bold = true },
+			RenderMarkdownTableRow = { fg = p.fujiGray },
+			RenderMarkdownChecked = { fg = p.springGreen },
+			RenderMarkdownUnchecked = { fg = p.fujiGray },
+			RenderMarkdownTodo = { fg = p.carpYellow },
 		}
 	end,
 })

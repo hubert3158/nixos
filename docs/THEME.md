@@ -5,9 +5,27 @@ Hokusai's *Great Wave off Kanagawa*. Deep sumi-ink backgrounds, washed paper
 foregrounds, and sparing mineral-pigment accents. Neovim and Helix already spoke
 this language; the desktop now speaks it too.
 
-Machine-readable twin: `lib/palette.nix` (wired into every module as the
-`palette` specialArg — use it for all new .nix theming instead of inlining hex).
-`scripts/theme-lint.sh` checks the live-symlinked CSS surfaces against it.
+Machine-readable twin: `lib/palette.nix`, wired into every NixOS and
+home-manager module as the `palette` specialArg. **No module inlines hex** —
+every themed `.nix` file takes `palette` and interpolates from it.
+
+`lib/color.nix` (the `colors` specialArg) re-encodes those hexes for surfaces
+that don't take `#RRGGBB`:
+
+| Helper | Output | Used by |
+|--------|--------|---------|
+| `colors.hypr c` | `rgb(1F1F28)` | hyprlock |
+| `colors.hyprA c "ee"` | `rgba(7E9CD8ee)` | hyprland / hyprlock |
+| `colors.css c "0.92"` | `rgba(126, 156, 216, 0.92)` | wlogout, swayosd, GTK |
+| `colors.fuzzel c "e6"` | `1f1f28e6` | fuzzel |
+| `colors.ansiFg c` | `38;2;126;156;216` | fastfetch |
+| `colors.norm c` | `0.494118, 0.611765, 0.847059` | plymouth script |
+
+`scripts/theme-lint.sh` enforces all of it: it scans every tracked `.css`,
+`.conf`, `.nix` and `.lua` file (141 today) for `#RRGGBB`, `##RRGGBB`,
+`rgb(...)` and `rgba(...)` literals and fails on anything not in
+`lib/palette.nix`. Issue references like `rust-lang/rust#141402` are skipped;
+add `# theme-lint: allow` to a line for a deliberate exception.
 
 ## Palette (Kanagawa Wave)
 
@@ -80,8 +98,12 @@ Machine-readable twin: `lib/palette.nix` (wired into every module as the
 |------|------|
 | Terminal / code | **Maple Mono NF** (rounded, ligatures, cursive italics) |
 | Bar / shell UI  | Maple Mono NF, fallback JetBrainsMono Nerd Font |
+| GTK app UI      | Noto Sans 11 (`modules/home-manager/default.nix`) |
 | CJK             | Noto Sans CJK JP (waybar 一二三 workspace numerals, 「」quotes) |
 | Icons           | Nerd Font glyphs — waybar uses nf-md (`󰀀`-series) only |
+
+CJK numerals are a recurring motif, not a one-off: waybar workspaces (一二三),
+markdown heading icons in Neovim, and the 「墨と波」 boot mark all use them.
 
 JetBrainsMono Nerd Font stays installed as fallback and for anything that
 renders wider glyph coverage.
@@ -109,5 +131,21 @@ renders wider glyph coverage.
 | fastfetch / cava / fzf / bat | `modules/home-manager/tools/*.nix` |
 | Neovim | `nvim/init.lua` (kanagawa overrides — the original source of truth) |
 | Helix | `modules/home-manager/programs/helix.nix` |
-| SDDM | `modules/nixos/desktop/sddm.nix` (astronaut / japanese_aesthetic) |
-| Boot splash | `modules/nixos/boot.nix` (plymouth) |
+| SDDM | `modules/nixos/desktop/sddm.nix` (astronaut / japanese_aesthetic, chrome recoloured via `themeConfig`) |
+| Boot splash | `packages/plymouth-ink-wave/` (custom script theme), enabled in `modules/nixos/boot.nix` |
+
+### Neovim: who draws what
+
+Two plugins can draw the same chrome; the split is deliberate.
+
+| Surface | Owner | Notes |
+|---------|-------|-------|
+| Indent guides (every level) | `ibl` | flat `sumiInk4`, `▏`, static |
+| Current scope | `mini.indentscope` | `crystalBlue`, animated; `ibl`'s own scope is **off** |
+| Colour column | `smartcolumn.nvim` | not set statically in `options.lua` |
+| Markdown colours | `nvim/init.lua` | shape lives in `lua/user/render-markdown.lua` |
+
+Markdown headings use a descending ink ramp — `waveBlue1 → sumiInk5 →
+sumiInk4 → sumiInk2 → none`. The plugin's defaults link heading backgrounds to
+the `Diff*` groups, which under kanagawa renders a document as a merge
+conflict; the overrides in `init.lua` replace that.

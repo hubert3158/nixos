@@ -1,7 +1,7 @@
 # SwayOSD — on-screen display for volume / brightness / caps-lock keys.
 # hyprland.conf binds call swayosd-client (with wpctl/brightnessctl fallback
 # so the keys keep working before the first rebuild).
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, palette, colors, ... }:
 
 let
   cfg = config.modules.desktop.swayosd;
@@ -20,10 +20,11 @@ in
     # Kanagawa ink pill (docs/THEME.md) — swayosd reads ~/.config/swayosd/style.css
     xdg.configFile."swayosd/style.css".text = ''
       window#osd {
-        background: alpha(#1F1F28, 0.95);
-        border: 1px solid alpha(#54546D, 0.55);
+        background: alpha(${palette.sumiInk3}, 0.95);
+        border: 1px solid alpha(${palette.sumiInk6}, 0.55);
         border-radius: 14px;
         padding: 12px 20px;
+        box-shadow: 0 4px 16px ${colors.css palette.sumiInk0 "0.45"};
       }
 
       #container {
@@ -31,7 +32,7 @@ in
       }
 
       image, label {
-        color: #DCD7BA;
+        color: ${palette.fujiWhite};
       }
 
       progressbar {
@@ -44,13 +45,20 @@ in
       trough {
         min-height: 6px;
         border-radius: 999px;
-        background: #223249;
+        background: ${palette.waveBlue1};
       }
 
       progress {
         min-height: 6px;
         border-radius: 999px;
-        background: #7E9CD8;
+        background: ${palette.crystalBlue};
+      }
+
+      /* muted state — the pill dims instead of staying accent-blue */
+      window#osd.muted progress,
+      window#osd image.muted {
+        background: ${palette.sumiInk6};
+        color: ${palette.fujiGray};
       }
     '';
   };

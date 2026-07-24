@@ -1,8 +1,14 @@
 # Boot and bootloader configuration
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, palette, colors, ... }:
 
 let
   cfg = config.modules.boot;
+
+  # 「墨と波」 boot splash — same palette as the desktop, so the machine never
+  # flashes a stock theme on the way up.
+  inkWavePlymouth = pkgs.callPackage ../../packages/plymouth-ink-wave {
+    inherit palette colors;
+  };
 in
 {
   options.modules.boot = {
@@ -61,7 +67,11 @@ in
     };
 
     # Silent boot with plymouth splash — text logs still reachable via ESC
-    boot.plymouth.enable = cfg.enablePlymouth;
+    boot.plymouth = {
+      enable = cfg.enablePlymouth;
+      theme = lib.mkIf cfg.enablePlymouth "ink-wave";
+      themePackages = lib.mkIf cfg.enablePlymouth [ inkWavePlymouth ];
+    };
     boot.consoleLogLevel = lib.mkIf cfg.enablePlymouth 3;
     boot.initrd.verbose = lib.mkIf cfg.enablePlymouth false;
     boot.kernelParams = lib.mkIf cfg.enablePlymouth [

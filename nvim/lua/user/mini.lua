@@ -9,8 +9,48 @@ require("mini.map").setup({
 		require("mini.map").gen_integration.diagnostic(),
 	},
 })
-require("mini.indentscope").setup({})
-require("mini.cursorword").setup({})
+
+-- Current-scope indicator — the ACTIVE half of the indent hierarchy.
+-- ibl (user/indent-blankline.lua) draws every level in flat sumiInk4 and has
+-- its own scope feature disabled; this one glows crystalBlue and animates, so
+-- exactly one line is ever "lit". Symbol matches the ▏ used by ibl and by
+-- fillchars vert, so all three read as the same ink stroke.
+local indentscope = require("mini.indentscope")
+indentscope.setup({
+	symbol = "▏",
+	draw = {
+		delay = 60,
+		-- ease out: quick to appear, settles gently (~90ms total on shallow
+		-- scopes) — matches the emphasizedDecel feel of the hyprland beziers
+		animation = indentscope.gen_animation.quadratic({
+			easing = "out",
+			duration = 12,
+			unit = "step",
+		}),
+	},
+	options = { try_as_border = true },
+})
+
+-- Surfaces that paint their own chrome shouldn't get a scope line through it
+vim.api.nvim_create_autocmd("FileType", {
+	group = vim.api.nvim_create_augroup("MiniIndentscopeDisable", { clear = true }),
+	pattern = {
+		"dashboard",
+		"snacks_dashboard",
+		"help",
+		"man",
+		"neo-tree",
+		"Trouble",
+		"trouble",
+		"toggleterm",
+		"lazy",
+		"mason",
+	},
+	callback = function()
+		vim.b.miniindentscope_disable = true
+	end,
+})
+
 -- Treesitter textobjects (queries from nvim-treesitter-textobjects, eager in
 -- plugins.nix): vaf/vif function, vac/vic class, vao/vio conditional/loop.
 local ai = require("mini.ai")

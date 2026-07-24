@@ -1,6 +1,8 @@
 # Starship prompt — Kanagawa powerline ribbon (Ink & Wave design system)
 # Segments flow ink-dark → light: os ▸ directory ▸ git ▸ langs ▸ duration
-{ config, lib, pkgs, ... }:
+# Colours from lib/palette.nix, re-exported as a starship palette so the
+# format strings can stay readable (bg:crystal_blue rather than bg:#7E9CD8).
+{ config, lib, pkgs, palette, ... }:
 
 let
   cfg = config.modules.shell.starship;
@@ -52,20 +54,20 @@ in
         };
 
         palettes.kanagawa = {
-          sumi_ink0 = "#16161D";
-          sumi_ink4 = "#2A2A37";
-          sumi_ink5 = "#363646";
-          wave_blue2 = "#2D4F67";
-          crystal_blue = "#7E9CD8";
-          spring_blue = "#7FB4CA";
-          oni_violet = "#957FB8";
-          carp_yellow = "#E6C384";
-          spring_green = "#98BB6C";
-          wave_red = "#E46876";
-          peach_red = "#FF5D62";
-          fuji_white = "#DCD7BA";
-          old_white = "#C8C093";
-          fuji_gray = "#727169";
+          sumi_ink0 = palette.sumiInk0;
+          sumi_ink4 = palette.sumiInk4;
+          sumi_ink5 = palette.sumiInk5;
+          wave_blue2 = palette.waveBlue2;
+          crystal_blue = palette.crystalBlue;
+          spring_blue = palette.springBlue;
+          oni_violet = palette.oniViolet;
+          carp_yellow = palette.carpYellow;
+          spring_green = palette.springGreen;
+          wave_red = palette.waveRed;
+          peach_red = palette.peachRed;
+          fuji_white = palette.fujiWhite;
+          old_white = palette.oldWhite;
+          fuji_gray = palette.fujiGray;
         };
 
         os = {

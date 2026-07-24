@@ -1,17 +1,18 @@
 # Fastfetch — Kanagawa-tinted system fetch (Ink & Wave design system)
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, palette, colors, ... }:
 
 let
   cfg = config.modules.tools.fastfetch;
-  # kanagawa truecolor escapes
-  crystalBlue = "38;2;126;156;216";
-  oniViolet = "38;2;149;127;184";
-  springBlue = "38;2;127;180;202";
-  carpYellow = "38;2;230;195;132";
-  springGreen = "38;2;152;187;108";
-  waveAqua = "38;2;122;168;159";
-  sakuraPink = "38;2;210;126;153";
-  fujiWhite = "38;2;220;215;186";
+  # fastfetch takes raw SGR parameters, not hex — lib/color.nix converts, so
+  # these stay derived from lib/palette.nix instead of hand-typed triples
+  crystalBlue = colors.ansiFg palette.crystalBlue;
+  oniViolet = colors.ansiFg palette.oniViolet;
+  springBlue = colors.ansiFg palette.springBlue;
+  carpYellow = colors.ansiFg palette.carpYellow;
+  springGreen = colors.ansiFg palette.springGreen;
+  waveAqua = colors.ansiFg palette.waveAqua2;
+  sakuraPink = colors.ansiFg palette.sakuraPink;
+  fujiWhite = colors.ansiFg palette.fujiWhite;
 in
 {
   options.modules.tools.fastfetch = {
@@ -46,7 +47,7 @@ in
           "break"
           {
             type = "custom";
-            format = "{#38;2;126;156;216}╭── 「 波 に 乗 れ 」──────────────────╮";
+            format = "{#${crystalBlue}}╭── 「 波 に 乗 れ 」──────────────────╮";
           }
           {
             type = "title";
@@ -90,7 +91,7 @@ in
           }
           {
             type = "custom";
-            format = "{#38;2;126;156;216}├──────────────────────────────────────┤";
+            format = "{#${crystalBlue}}├──────────────────────────────────────┤";
           }
           {
             type = "cpu";
@@ -119,7 +120,7 @@ in
           }
           {
             type = "custom";
-            format = "{#38;2;126;156;216}╰──────────────────────────────────────╯";
+            format = "{#${crystalBlue}}╰──────────────────────────────────────╯";
           }
           "break"
           {

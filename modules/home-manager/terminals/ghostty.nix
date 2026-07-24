@@ -1,6 +1,7 @@
 # Ghostty terminal configuration — Kanagawa Wave (Ink & Wave design system)
-# Colors are inlined (not a named theme) so they can't drift from docs/THEME.md.
-{ config, lib, pkgs, ... }:
+# Colours come from lib/palette.nix rather than a named ghostty theme, so they
+# can't drift from kitty.nix / wezterm.nix / docs/THEME.md.
+{ config, lib, pkgs, palette, ... }:
 
 let
   cfg = config.modules.terminals.ghostty;
@@ -49,29 +50,29 @@ in
         "custom-shader-animation" = true;
 
         # ── Kanagawa Wave ──
-        "background" = "#1F1F28";
-        "foreground" = "#DCD7BA";
-        "cursor-color" = "#C8C093";
-        "cursor-text" = "#1F1F28";
-        "selection-background" = "#2D4F67";
-        "selection-foreground" = "#C8C093";
+        "background" = palette.sumiInk3;
+        "foreground" = palette.fujiWhite;
+        "cursor-color" = palette.oldWhite;
+        "cursor-text" = palette.sumiInk3;
+        "selection-background" = palette.waveBlue2;
+        "selection-foreground" = palette.oldWhite;
         "palette" = [
-          "0=#16161D"
-          "1=#C34043"
-          "2=#76946A"
-          "3=#C0A36E"
-          "4=#7E9CD8"
-          "5=#957FB8"
-          "6=#6A9589"
-          "7=#C8C093"
-          "8=#727169"
-          "9=#E82424"
-          "10=#98BB6C"
-          "11=#E6C384"
-          "12=#7FB4CA"
-          "13=#938AA9"
-          "14=#7AA89F"
-          "15=#DCD7BA"
+          "0=${palette.sumiInk0}"
+          "1=${palette.ansiRed}"
+          "2=${palette.ansiGreen}"
+          "3=${palette.ansiYellow}"
+          "4=${palette.crystalBlue}"
+          "5=${palette.oniViolet}"
+          "6=${palette.ansiCyan}"
+          "7=${palette.oldWhite}"
+          "8=${palette.fujiGray}"
+          "9=${palette.samuraiRed}"
+          "10=${palette.springGreen}"
+          "11=${palette.carpYellow}"
+          "12=${palette.springBlue}"
+          "13=${palette.springViolet1}"
+          "14=${palette.waveAqua2}"
+          "15=${palette.fujiWhite}"
         ];
       };
     };

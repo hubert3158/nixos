@@ -15,7 +15,7 @@ require("todo-comments").setup({
 		PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
 		NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
 		TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
-		DEV = { icon = " ", color = "#FF5555", alt = { "DEVELOPMENT", "DEBUGPRINT" } },
+		DEV = { icon = " ", color = "dev", alt = { "DEVELOPMENT", "DEBUGPRINT" } },
 	},
 
 	gui_style = {
@@ -41,15 +41,17 @@ require("todo-comments").setup({
 		max_line_len = 400, -- ignore lines longer than this
 		exclude = {}, -- list of file types to exclude highlighting
 	},
-	-- list of named colors where we try to extract the guifg from the
-	-- list of highlight groups or use the hex color if hl not found as a fallback
+	-- Named colors: first entry that resolves to a real highlight group wins,
+	-- trailing hex is the fallback. Fallbacks are Kanagawa Wave (docs/THEME.md)
+	-- so a missing hl group degrades to on-palette ink instead of tailwind neon.
 	colors = {
-		error = { "DiagnosticError", "ErrorMsg", "#DC2626" },
-		warning = { "DiagnosticWarn", "WarningMsg", "#FBBF24" },
-		info = { "DiagnosticInfo", "#2563EB" },
-		hint = { "DiagnosticHint", "#10B981" },
-		default = { "Identifier", "#7C3AED" },
-		test = { "Identifier", "#FF00FF" },
+		error = { "DiagnosticError", "ErrorMsg", "#FF5D62" }, -- peachRed
+		warning = { "DiagnosticWarn", "WarningMsg", "#FF9E3B" }, -- roninYellow
+		info = { "DiagnosticInfo", "#7FB4CA" }, -- springBlue
+		hint = { "DiagnosticHint", "#7AA89F" }, -- waveAqua2
+		default = { "Identifier", "#957FB8" }, -- oniViolet
+		test = { "Identifier", "#D27E99" }, -- sakuraPink
+		dev = { "#E6C384" }, -- carpYellow — scratch/debug markers, always visible
 	},
 	search = {
 		command = "rg",
