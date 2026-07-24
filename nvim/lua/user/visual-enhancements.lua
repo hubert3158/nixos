@@ -1,9 +1,153 @@
--- Statusline + bufferline configuration. Loaded via lz.n on DeferredUIEnter.
+-- Statusline + bufferline. Loaded via lz.n on DeferredUIEnter.
 -- Dashboard config lives in plugin/dashboard.lua (must be eager for first paint).
+--
+-- 「墨と波」 Ink & Wave (docs/THEME.md). The statusline is a hand-rolled
+-- kanagawa theme rather than lualine's bundled one, for two reasons:
+--   · the mode cap is a kanji (常 挿 視 命 …), and each mode owns a pigment,
+--     so the left end of the bar is a colour you read before you read text;
+--   · the segments are the same ink ramp as the waybar islands, so the two
+--     bars stacked on one screen read as one surface.
+--
+-- Every hex below is a lib/palette.nix value — scripts/theme-lint.sh enforces
+-- that, and duplicating the literals here (rather than reaching into the
+-- kanagawa plugin's internals) keeps this file independent of that plugin's
+-- private API.
 
 local M = {}
 
+-- ── palette (Kanagawa Wave) ────────────────────────────────────────────
+local P = {
+	sumiInk0 = "#16161D",
+	sumiInk1 = "#181820",
+	sumiInk2 = "#1A1A22",
+	sumiInk3 = "#1F1F28",
+	sumiInk4 = "#2A2A37",
+	sumiInk5 = "#363646",
+	sumiInk6 = "#54546D",
+	waveBlue1 = "#223249",
+	waveBlue2 = "#2D4F67",
+	fujiWhite = "#DCD7BA",
+	oldWhite = "#C8C093",
+	fujiGray = "#727169",
+	crystalBlue = "#7E9CD8",
+	springBlue = "#7FB4CA",
+	oniViolet = "#957FB8",
+	springViolet = "#938AA9",
+	dragonBlue = "#658594",
+	carpYellow = "#E6C384",
+	springGreen = "#98BB6C",
+	waveAqua = "#7AA89F",
+	sakuraPink = "#D27E99",
+	surimiOrange = "#FFA066",
+	waveRed = "#E46876",
+	peachRed = "#FF5D62",
+	samuraiRed = "#E82424",
+}
+
+-- ── glyphs ─────────────────────────────────────────────────────────────
+-- Written as \u{…} escapes rather than pasted characters on purpose: the
+-- previous revision of this file had silently lost every one of them to an
+-- editor round-trip and had been running with `icon = ""` for the branch, the
+-- diff counts, the separators and the REC badge. An escape either compiles or
+-- it doesn't. Every codepoint below is present in Maple Mono NF.
+local G = {
+	sep_left = "\u{E0B6}", -- powerline left half circle
+	sep_right = "\u{E0B4}", -- powerline right half circle
+	trunc_left = "\u{E0B2}", -- powerline left triangle
+	trunc_right = "\u{E0B0}", -- powerline right triangle
+	branch = "\u{E0A0}", -- powerline git branch
+	added = "\u{F0415}", -- md plus
+	modified = "\u{F03EB}", -- md pencil
+	removed = "\u{F0374}", -- md minus
+	error = "\u{F015A}", -- md close-circle
+	warn = "\u{F002A}", -- md alert
+	info = "\u{F02FD}", -- md information
+	hint = "\u{F0336}", -- md lightbulb
+	lsp = "\u{F048B}", -- md server-network
+	readonly = "\u{F033E}", -- md lock
+	record = "\u{F044A}", -- md record-circle
+	location = "\u{F05B}", -- fa crosshairs
+	close = "\u{F0156}", -- md close
+	tree = "\u{F0E56}", -- md file-tree
+}
+
+-- ── mode → kanji ───────────────────────────────────────────────────────
+-- 常 usual · 挿 insert · 視 look · 行 line · 塊 block · 選 select
+-- 換 replace · 命 command · 端 terminal · 確 confirm · 続 more
+local MODE_KANJI = {
+	["NORMAL"] = "常",
+	["O-PENDING"] = "常",
+	["INSERT"] = "挿",
+	["VISUAL"] = "視",
+	["V-LINE"] = "行",
+	["V-BLOCK"] = "塊",
+	["SELECT"] = "選",
+	["S-LINE"] = "選",
+	["S-BLOCK"] = "選",
+	["REPLACE"] = "換",
+	["V-REPLACE"] = "換",
+	["COMMAND"] = "命",
+	["EX"] = "命",
+	["TERMINAL"] = "端",
+	["CONFIRM"] = "確",
+	["MORE"] = "続",
+	["SHELL"] = "端",
+}
+
+-- ── theme ──────────────────────────────────────────────────────────────
+-- b/c are shared: only the mode cap changes pigment, so mode changes read as
+-- a single dot of colour moving, not as the whole bar repainting.
+local b = { fg = P.oldWhite, bg = P.sumiInk4 }
+local c = { fg = P.fujiGray, bg = P.sumiInk1 }
+
+local function cap(colour)
+	return { a = { fg = P.sumiInk0, bg = colour, gui = "bold" }, b = b, c = c }
+end
+
+local theme = {
+	normal = cap(P.crystalBlue),
+	insert = cap(P.springGreen),
+	visual = cap(P.oniViolet),
+	replace = cap(P.peachRed),
+	command = cap(P.carpYellow),
+	terminal = cap(P.waveAqua),
+	inactive = {
+		a = { fg = P.fujiGray, bg = P.sumiInk1 },
+		b = { fg = P.fujiGray, bg = P.sumiInk1 },
+		c = { fg = P.fujiGray, bg = P.sumiInk1 },
+	},
+}
+
+-- ── scroll position as one ink stroke ──────────────────────────────────
+local SCROLL = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
+
+local function scroll_mark()
+	local cur = vim.fn.line(".")
+	local total = vim.fn.line("$")
+	if total <= 1 then
+		return SCROLL[#SCROLL]
+	end
+	local i = math.floor((cur - 1) / (total - 1) * (#SCROLL - 1)) + 1
+	return SCROLL[i]
+end
+
+-- ── attached language servers ──────────────────────────────────────────
+local function lsp_names()
+	local clients = vim.lsp.get_clients({ bufnr = 0 })
+	if #clients == 0 then
+		return ""
+	end
+	local names = {}
+	for _, client in ipairs(clients) do
+		names[#names + 1] = client.name
+	end
+	return G.lsp .. " " .. table.concat(names, "·")
+end
+
 function M.setup()
+	local sekki = require("user.sekki")
+	sekki.setup()
+
 	-- Refresh lualine when recording macros so the REC indicator shows up,
 	-- and notify loudly — a stuck accidental recording silently disables
 	-- blink.cmp and which-key popups (looks like "completion broke").
@@ -13,7 +157,9 @@ function M.setup()
 			require("lualine").refresh()
 			if ev.event == "RecordingEnter" then
 				vim.notify(
-					"Recording macro @" .. vim.fn.reg_recording() .. " — press q to stop\n(completion is disabled while recording)",
+					"Recording macro @"
+						.. vim.fn.reg_recording()
+						.. " — press q to stop\n(completion is disabled while recording)",
 					vim.log.levels.WARN,
 					{ title = "Macro" }
 				)
@@ -25,37 +171,33 @@ function M.setup()
 
 	require("lualine").setup({
 		options = {
-			-- kanagawa.nvim ships a lualine theme that follows the active variant
-			theme = "kanagawa",
+			theme = theme,
 			globalstatus = true,
 			disabled_filetypes = { statusline = { "dashboard", "snacks_dashboard" } },
-			-- bubble statusline: rounded section caps, thin ink dividers
-			component_separators = { left = "", right = "" },
-			section_separators = { left = "", right = "" },
+			-- rounded caps on the sections, a thin ink stroke between
+			-- components — the same ▏ language as ibl and the window separators
+			component_separators = { left = "│", right = "│" },
+			section_separators = { left = G.sep_right, right = G.sep_left },
 		},
 		sections = {
 			lualine_a = {
 				{
 					"mode",
 					fmt = function(str)
-						local mode_map = {
-							["NORMAL"] = "N",
-							["INSERT"] = "I",
-							["VISUAL"] = "V",
-							["V-LINE"] = "VL",
-							["V-BLOCK"] = "VB",
-							["COMMAND"] = "C",
-							["REPLACE"] = "R",
-						}
-						return " " .. (mode_map[str] or str)
+						return " " .. (MODE_KANJI[str] or str) .. " "
 					end,
+					padding = 0,
 				},
 			},
 			lualine_b = {
-				{ "branch", icon = "" },
+				{ "branch", icon = G.branch },
 				{
 					"diff",
-					symbols = { added = " ", modified = " ", removed = " " },
+					symbols = {
+						added = G.added .. " ",
+						modified = G.modified .. " ",
+						removed = G.removed .. " ",
+					},
 					colored = true,
 				},
 			},
@@ -63,8 +205,10 @@ function M.setup()
 				{
 					"filename",
 					path = 1,
-					symbols = { modified = "●", readonly = "🔒", unnamed = "[No Name]" },
+					symbols = { modified = "●", readonly = G.readonly, unnamed = "[no name]" },
 				},
+				{ "searchcount", color = { fg = P.carpYellow, gui = "bold" } },
+				{ "selectioncount", color = { fg = P.oniViolet } },
 			},
 			lualine_x = {
 				{
@@ -73,37 +217,53 @@ function M.setup()
 						if reg == "" then
 							return ""
 						end
-						return "  REC @" .. reg .. " "
+						return " " .. G.record .. " REC @" .. reg .. " "
 					end,
 					cond = function()
 						return vim.fn.reg_recording() ~= ""
 					end,
-					-- kanagawa samuraiRed on light fg — impossible to miss
-					color = { bg = "#E82424", fg = "#DCD7BA", gui = "bold" },
+					-- kanagawa samuraiRed on paper white — impossible to miss
+					color = { bg = P.samuraiRed, fg = P.fujiWhite, gui = "bold" },
 				},
 				{
 					"diagnostics",
 					sources = { "nvim_diagnostic" },
-					symbols = { error = " ", warn = " ", info = " ", hint = "󰌶 " },
+					symbols = {
+						error = G.error .. " ",
+						warn = G.warn .. " ",
+						info = G.info .. " ",
+						hint = G.hint .. " ",
+					},
 					colored = true,
 				},
-				{ "encoding", show_bomb = true },
-				{ "fileformat", icons_enabled = true },
+				{ lsp_names, color = { fg = P.dragonBlue } },
 				{ "filetype", colored = true, icon_only = false },
 			},
 			lualine_y = {
+				-- 七十二候 — the current microseason, quietly, in chrome grey.
+				-- Empty (and therefore invisible) until the async fetch lands.
 				{
-					"progress",
-					fmt = function(str)
-						return str .. " "
+					function()
+						return sekki.segment()
 					end,
+					cond = function()
+						return sekki.current ~= nil
+					end,
+					color = { fg = P.springViolet, gui = "italic" },
 				},
+				{ "progress", padding = { left = 1, right = 1 } },
 			},
 			lualine_z = {
 				{
+					function()
+						return scroll_mark()
+					end,
+					padding = { left = 1, right = 0 },
+				},
+				{
 					"location",
 					fmt = function(str)
-						return " " .. str
+						return G.location .. " " .. str
 					end,
 				},
 			},
@@ -111,22 +271,40 @@ function M.setup()
 		extensions = { "neo-tree", "toggleterm", "trouble" },
 	})
 
-	-- Enhanced bufferline configuration
+	-- ── bufferline ────────────────────────────────────────────────────
 	if pcall(require, "bufferline") then
-		require("bufferline").setup({
+		local bufferline = require("bufferline")
+		bufferline.setup({
 			options = {
 				mode = "buffers",
-				style_preset = require("bufferline").style_preset.minimal,
+				style_preset = bufferline.style_preset.minimal,
 				themable = true,
-				numbers = "none",
+				-- superscript ordinals: the buffer number rides above the
+				-- name instead of stealing a whole column
+				numbers = function(opts)
+					return opts.raise(opts.ordinal)
+				end,
 				indicator = { style = "icon", icon = "▎" },
-				buffer_close_icon = "󰅖",
+				buffer_close_icon = G.close,
 				modified_icon = "●",
-				close_icon = "",
-				left_trunc_marker = "",
-				right_trunc_marker = "",
+				close_icon = G.close,
+				left_trunc_marker = G.trunc_left,
+				right_trunc_marker = G.trunc_right,
 				separator_style = "slant",
 				always_show_bufferline = true,
+				-- unread problems visible without opening the buffer
+				diagnostics = "nvim_lsp",
+				diagnostics_update_in_insert = false,
+				diagnostics_indicator = function(_, _, diag)
+					local parts = {}
+					if diag.error then
+						parts[#parts + 1] = G.error .. " " .. diag.error
+					end
+					if diag.warning then
+						parts[#parts + 1] = G.warn .. " " .. diag.warning
+					end
+					return table.concat(parts, " ")
+				end,
 				hover = {
 					enabled = true,
 					delay = 200,
@@ -135,17 +313,16 @@ function M.setup()
 				offsets = {
 					{
 						filetype = "neo-tree",
-						text = "File Explorer",
-						text_align = "center",
+						text = G.tree .. "  file tree",
+						text_align = "left",
 						separator = true,
+						highlight = "Directory",
 					},
 				},
 			},
 			highlights = {
-				buffer_selected = {
-					bold = true,
-					italic = false,
-				},
+				buffer_selected = { bold = true, italic = false },
+				numbers_selected = { bold = true, italic = false },
 			},
 		})
 	end

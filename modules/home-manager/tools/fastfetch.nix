@@ -120,6 +120,19 @@ in
           }
           {
             type = "custom";
+            format = "{#${crystalBlue}}├──────────────────────────────────────┤";
+          }
+          # 七十二候 — the current five-day microseason (lib/sekki.nix).
+          # `sekki` is a home.packages binary, so this resolves from PATH; the
+          # module simply prints nothing on a machine that doesn't have it.
+          {
+            type = "command";
+            key = "  󰸉 kō";
+            keyColor = springGreen;
+            text = "sekki line 2>/dev/null";
+          }
+          {
+            type = "custom";
             format = "{#${crystalBlue}}╰──────────────────────────────────────╯";
           }
           "break"

@@ -12,5 +12,6 @@
     ./uv-tools.nix
     ./fastfetch.nix
     ./cava.nix
+    ./sekki.nix
   ];
 }

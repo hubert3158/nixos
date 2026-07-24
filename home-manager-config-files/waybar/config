@@ -1,9 +1,15 @@
-// Waybar configuration — Kanagawa Ink & Wave (docs/THEME.md)
-// Live-editable: symlinked from ~/.config/waybar/config, style reloads on save.
+// Waybar — 「墨と波」 Ink & Wave (docs/THEME.md)
+//
+// Three frosted ink islands. Left is identity (os · workspaces · window · now
+// playing), centre is time (七十二候 microseason · clock · weather), right is
+// state (vitals · radios · power).
+//
+// Live-editable: symlinked from ~/.config/waybar/config.
+//   style.css reloads on save;  config changes need `pkill waybar && waybar &`.
 {
     "layer": "top",
     "position": "top",
-    "height": 34,
+    "height": 36,
     "margin-top": 6,
     "margin-left": 10,
     "margin-right": 10,
@@ -13,21 +19,21 @@
     "modules-left": [
         "custom/os",
         "hyprland/workspaces",
+        "hyprland/submap",
         "hyprland/window",
         "mpris",
         "custom/cava"
     ],
     "modules-center": [
+        "custom/sekki",
         "clock",
         "custom/weather"
     ],
     "modules-right": [
         "privacy",
         "systemd-failed-units",
-        "custom/docker",
+        "group/utils",
         "tray",
-        "idle_inhibitor",
-        "custom/clipboard",
         "cpu",
         "temperature",
         "memory",
@@ -35,16 +41,18 @@
         "backlight",
         "network",
         "bluetooth",
-        "custom/wallpaper",
-        "custom/notification",
         "battery",
+        "custom/notification",
         "custom/power"
     ],
+
+    // ── left ────────────────────────────────────────────────────────────
 
     "custom/os": {
         "format": "󱄅",
         "tooltip": false,
-        "on-click": "fuzzel"
+        "on-click": "fuzzel",
+        "on-click-right": "sekki notify"
     },
 
     "hyprland/workspaces": {
@@ -73,15 +81,27 @@
         }
     },
 
+    // active hyprland submap (resize mode) — empty and invisible otherwise
+    "hyprland/submap": {
+        "format": "󰌌 {}",
+        "max-length": 14,
+        "tooltip": false
+    },
+
     "hyprland/window": {
         "format": "{title}",
-        "max-length": 35,
+        "max-length": 38,
         "separate-outputs": true,
         "rewrite": {
             "(.*) — Mozilla Firefox": "󰈹  $1",
             "(.*) - Google Chrome": "󰊯  $1",
             "(.*) - Visual Studio Code": "󰨞  $1",
-            "(.*) - kitty": "󰆍  $1"
+            "(.*) - kitty": "󰆍  $1",
+            "(.*) - NVIM": "  $1",
+            "nvim (.*)": "  $1",
+            "(.*) — Dolphin": "󰉋  $1",
+            "Spotify( Premium)?": "󰓇  spotify",
+            "Slack \\| (.*)": "󰒱  $1"
         }
     },
 
@@ -108,50 +128,16 @@
         "tooltip": false
     },
 
-    "custom/weather": {
-        "exec": "/home/hubert/nixos/home-manager-config-files/waybar/weather.sh",
+    // ── centre ──────────────────────────────────────────────────────────
+
+    // 七十二候 — the current five-day microseason (lib/sekki.nix).
+    // Changes ~73 times a year; polled hourly because that costs nothing.
+    "custom/sekki": {
+        "exec": "sekki waybar",
         "return-type": "json",
-        "interval": 1800,
-        "on-click": "xdg-open https://wttr.in"
-    },
-
-    "privacy": {
-        "icon-spacing": 8,
-        "icon-size": 14,
-        "modules": [
-            { "type": "screenshare" },
-            { "type": "audio-in" }
-        ]
-    },
-
-    "systemd-failed-units": {
-        "hide-on-ok": true,
-        "format": "󰀦 {nr_failed}",
-        "system": true,
-        "user": true
-    },
-
-    "custom/docker": {
-        "exec": "/home/hubert/nixos/home-manager-config-files/waybar/docker.sh",
-        "return-type": "json",
-        "interval": 15,
-        "on-click": "kitty --class waybar-tui -e docker stats"
-    },
-
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "󰅶",
-            "deactivated": "󰾪"
-        },
-        "tooltip-format-activated": "caffeine on — screen stays awake",
-        "tooltip-format-deactivated": "caffeine off"
-    },
-
-    "custom/clipboard": {
-        "format": "󰅍",
-        "on-click": "cliphist list | fuzzel --dmenu --width 70 --lines 15 | cliphist decode | wl-copy",
-        "tooltip": false
+        "interval": 3600,
+        "on-click": "sekki notify",
+        "tooltip": true
     },
 
     "clock": {
@@ -174,6 +160,92 @@
             "on-scroll-up": "shift_up",
             "on-scroll-down": "shift_down"
         }
+    },
+
+    "custom/weather": {
+        "exec": "/home/hubert/nixos/home-manager-config-files/waybar/weather.sh",
+        "return-type": "json",
+        "interval": 1800,
+        "on-click": "xdg-open https://wttr.in"
+    },
+
+    // ── right ───────────────────────────────────────────────────────────
+
+    "privacy": {
+        "icon-spacing": 8,
+        "icon-size": 14,
+        "modules": [
+            { "type": "screenshare" },
+            { "type": "audio-in" }
+        ]
+    },
+
+    "systemd-failed-units": {
+        "hide-on-ok": true,
+        "format": "󰀦 {nr_failed}",
+        "system": true,
+        "user": true
+    },
+
+    // Utility drawer — click-actions, not readouts, so they stay folded away
+    // behind one glyph and slide out on hover. Nothing here needs watching.
+    "group/utils": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 350,
+            "transition-left-to-right": false,
+            "children-class": "utils-child",
+            "click-to-reveal": false
+        },
+        "modules": [
+            "custom/utils",
+            "custom/docker",
+            "custom/screenshot",
+            "custom/clipboard",
+            "custom/wallpaper",
+            "idle_inhibitor"
+        ]
+    },
+
+    "custom/utils": {
+        "format": "󰇘",
+        "tooltip": false
+    },
+
+    "custom/docker": {
+        "exec": "/home/hubert/nixos/home-manager-config-files/waybar/docker.sh",
+        "return-type": "json",
+        "interval": 15,
+        "on-click": "kitty --class waybar-tui -e docker stats"
+    },
+
+    "custom/screenshot": {
+        "format": "󰄀",
+        "tooltip": false,
+        "on-click": "flameshot gui"
+    },
+
+    "custom/clipboard": {
+        "format": "󰅍",
+        "on-click": "cliphist list | fuzzel --dmenu --width 70 --lines 15 | cliphist decode | wl-copy",
+        "tooltip": false
+    },
+
+    "custom/wallpaper": {
+        "format": "󰸉",
+        "tooltip-format": "next wallpaper",
+        "on-click": "wallpaper next",
+        "on-click-right": "wallpaper random"
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰾪"
+        },
+        "tooltip-format-activated": "caffeine on — screen stays awake",
+        "tooltip-format-deactivated": "caffeine off"
     },
 
     "tray": {
@@ -249,6 +321,19 @@
         "on-click": "kitty --class waybar-tui -e bluetoothctl"
     },
 
+    "battery": {
+        "interval": 30,
+        "states": {
+            "warning": 20,
+            "critical": 10
+        },
+        "format": "{icon}  {capacity}%",
+        "format-charging": "󰂄  {capacity}%",
+        "format-plugged": "󰚥  {capacity}%",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "{timeTo}\n{power:.1f} W"
+    },
+
     "custom/notification": {
         "tooltip": false,
         "format": "{icon}",
@@ -268,26 +353,6 @@
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true
-    },
-
-    "custom/wallpaper": {
-        "format": "󰸉",
-        "tooltip-format": "next wallpaper",
-        "on-click": "wallpaper next",
-        "on-click-right": "wallpaper random"
-    },
-
-    "battery": {
-        "interval": 30,
-        "states": {
-            "warning": 20,
-            "critical": 10
-        },
-        "format": "{icon}  {capacity}%",
-        "format-charging": "󰂄  {capacity}%",
-        "format-plugged": "󰚥  {capacity}%",
-        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "tooltip-format": "{timeTo}\n{power:.1f} W"
     },
 
     "custom/power": {

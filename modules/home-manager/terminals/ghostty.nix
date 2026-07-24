@@ -44,6 +44,19 @@ in
         "background-opacity" = cfg.backgroundOpacity;
         "window-padding-x" = 8;
         "window-padding-y" = 6;
+        "window-padding-balance" = true;
+
+        # same leading as kitty (modify_font cell_height 108%) so the two
+        # terminals are typographically interchangeable
+        "adjust-cell-height" = "8%";
+
+        # a blinking cursor repaints its cell forever; the shader below is the
+        # motion budget for this terminal
+        "cursor-style-blink" = false;
+        "mouse-hide-while-typing" = true;
+        # unfocused splits recede — mirrors kitty's inactive_text_alpha and the
+        # hyprland terminal-depth windowrule
+        "unfocused-split-opacity" = 0.9;
 
         # glowing kanagawa cursor trail (GLSL, GPU) — live-editable repo file
         "custom-shader" = "${config.home.homeDirectory}/nixos/dotfiles/ghostty/shaders/cursor_blaze.glsl";

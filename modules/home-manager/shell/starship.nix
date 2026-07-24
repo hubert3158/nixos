@@ -21,7 +21,12 @@ in
         add_newline = true;
         palette = "kanagawa";
 
+        # The ribbon now sits inside a printed margin rule: ╭ opens the block,
+        # ╰ hands off to the caret. Two hairlines cost nothing to render and
+        # turn a scrollback of prompts into visibly separated entries — you can
+        # find where the last command started without reading any of it.
         format = lib.concatStrings [
+          "[╭─](fuji_gray)"
           "[](crystal_blue)"
           "$os"
           "[](bg:wave_blue2 fg:crystal_blue)"
@@ -36,21 +41,35 @@ in
           "$python"
           "$java"
           "$nix_shell"
+          "$docker_context"
+          "$direnv"
           "[](fg:sumi_ink5 bg:sumi_ink0)"
           "$cmd_duration"
           "$jobs"
+          "$status"
           "[ ](fg:sumi_ink0)"
           "$line_break"
+          "[╰─](fuji_gray)"
           "$character"
         ];
 
-        # quiet clock on the right edge
-        right_format = "$time";
+        # quiet clock + charge on the right edge
+        right_format = "$battery$time";
         time = {
           disabled = false;
           time_format = "%H:%M";
           style = "fg:fuji_gray";
           format = "[󰥔 $time]($style)";
+        };
+
+        battery = {
+          format = "[$symbol$percentage]($style) ";
+          display = [
+            { threshold = 20; style = "fg:peach_red"; }
+            { threshold = 40; style = "fg:carp_yellow"; }
+          ];
+          charging_symbol = "󰂄 ";
+          discharging_symbol = "󰁽 ";
         };
 
         palettes.kanagawa = {
@@ -144,6 +163,24 @@ in
           style = "bg:sumi_ink5 fg:crystal_blue";
           format = "[ $symbol $state ]($style)";
         };
+        # only surfaces in directories that actually carry a Dockerfile /
+        # compose file, so it costs nothing in the other 99% of prompts
+        docker_context = {
+          symbol = "󰡨";
+          style = "bg:sumi_ink5 fg:spring_blue";
+          format = "[ $symbol $context ]($style)";
+          only_with_files = true;
+        };
+        # reads DIRENV_* out of the environment — no subprocess, no stat
+        direnv = {
+          disabled = false;
+          symbol = "󱁿";
+          style = "bg:sumi_ink5 fg:oni_violet";
+          format = "[ $symbol $allowed ]($style)";
+          allowed_msg = "";
+          not_allowed_msg = "!";
+          denied_msg = "✘";
+        };
 
         cmd_duration = {
           min_time = 500;
@@ -155,6 +192,18 @@ in
           symbol = "󰒲";
           style = "bg:sumi_ink0 fg:oni_violet";
           format = "[ $symbol $number ]($style)";
+        };
+
+        # a failed command names its own exit code instead of leaving you to
+        # remember that 130 was the Ctrl-C
+        status = {
+          disabled = false;
+          symbol = "󰅚";
+          signal_symbol = "󱐋";
+          style = "bg:sumi_ink0 fg:peach_red";
+          format = "[ $symbol $common_meaning$signal_name$maybe_int ]($style)";
+          map_symbol = true;
+          pipestatus = true;
         };
 
         character = {

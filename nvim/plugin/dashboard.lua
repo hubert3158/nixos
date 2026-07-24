@@ -10,6 +10,12 @@ local haikus = {
 	{ "波に乗れ バグも流れて 春の海", "ride the wave — even bugs drift away — spring sea" },
 	{ "月光や コンパイル待つ 静けさよ", "moonlight — the stillness of waiting for the compile" },
 	{ "初雪や コミット一つ 澄みわたる", "first snow — a single commit, perfectly clean" },
+	{ "秋深し 隣は何を デプロイする", "deep autumn — what is my neighbour deploying?" },
+	{ "夏草や 兵どもが 夢の跡", "summer grass — all that remains of a rewrite" },
+	{ "静けさや 岩にしみ入る ログの声", "such stillness — the log seeps into the rock" },
+	{ "行く春や 消したブランチ 帰らざる", "spring departs — the deleted branch never returns" },
+	{ "灯を消して なほ残りたる 型の error", "lights out — and still the type error remains" },
+	{ "朝もやに 立ち上がる server 一つ", "in the morning mist — a single server rises" },
 }
 math.randomseed(os.time())
 local haiku = haikus[math.random(#haikus)]
@@ -43,13 +49,22 @@ require("snacks").setup({
 				{ icon = " ", key = "c", desc = "Config", action = ":edit $MYVIMRC" },
 				{ icon = "󰗼 ", key = "q", desc = "Quit", action = ":qa" },
 			},
+			-- The old ANSI-Shadow block letters were three times heavier than
+			-- anything else on this screen and fought the ink wash below them.
+			-- This is the same word in a half-block face — one stroke weight,
+			-- ▒ shading in place of a drop shadow, sitting inside its own
+			-- margin rule like a print colophon.
+			-- Lines are centred by snacks (it measures display width, so the
+			-- double-width kanji line lands correctly) — no manual padding.
 			header = table.concat({
-				" ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗",
-				" ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║",
-				" ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
-				" ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
-				" ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
-				" ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
+				"──────────────────────────────────────",
+				"",
+				"░█▀█░█▀▀░█▀█░█░█░▀█▀░█▄█",
+				"░█░█░█▀▀░█░█░▀▄▀░░█░░█░█",
+				"░▀░▀░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀",
+				"",
+				"墨 と 波  ·  i n k   a n d   w a v e",
+				"──────────────────────────────────────",
 			}, "\n"),
 		},
 		sections = {

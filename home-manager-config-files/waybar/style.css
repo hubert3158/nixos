@@ -1,7 +1,19 @@
 /*
- * Waybar style — Kanagawa Ink & Wave (docs/THEME.md)
- * Three frosted ink islands; hyprland layerrule blurs what shows through.
- * Edits apply live (reload_style_on_change).
+ * Waybar — 「墨と波」 Ink & Wave (docs/THEME.md)
+ *
+ * Three frosted ink islands floating over the wallpaper; hyprland's layerrule
+ * blurs (and xrays) what shows through, so the glass costs one cheap pass over
+ * the wallpaper texture rather than the whole window stack.
+ *
+ * Design rules that keep this fast:
+ *   · no idle animations — the bar only repaints on hover, state change or the
+ *     rare critical blink. A "breathing" logo would repaint 60×/s forever.
+ *   · no transforms/filters — GTK3 has neither; depth comes from layered
+ *     gradients, an inset hairline and a soft drop shadow.
+ *   · every module is its own pill with a 150 ms colour+background transition;
+ *     GTK only redraws the widget under the pointer.
+ *
+ * Edits apply live (reload_style_on_change). Colours: lib/palette.nix.
  */
 
 @define-color sumiInk0 #16161D;
@@ -20,6 +32,7 @@
 
 @define-color crystalBlue #7E9CD8;
 @define-color springBlue #7FB4CA;
+@define-color lightBlue #A3D4D5;
 @define-color oniViolet #957FB8;
 @define-color springViolet #938AA9;
 @define-color dragonBlue #658594;
@@ -32,6 +45,8 @@
 @define-color waveRed #E46876;
 @define-color peachRed #FF5D62;
 
+/* ══ base ═══════════════════════════════════════════════════════════════ */
+
 * {
     font-family: "Maple Mono NF", "JetBrainsMono Nerd Font", "Symbols Nerd Font", "Noto Sans CJK JP", sans-serif;
     font-size: 13px;
@@ -39,6 +54,9 @@
     min-height: 0;
     border: none;
     border-radius: 0;
+    /* kill GTK's default focus outline on click-through modules */
+    box-shadow: none;
+    text-shadow: none;
 }
 
 window#waybar {
@@ -47,116 +65,49 @@ window#waybar {
 }
 
 tooltip {
-    background: @sumiInk2;
-    border: 1px solid @sumiInk6;
-    border-radius: 10px;
+    background: linear-gradient(150deg, @sumiInk2, @sumiInk1);
+    border: 1px solid alpha(@sumiInk6, 0.7);
+    border-radius: 12px;
 }
 
 tooltip label {
     color: @fujiWhite;
-    padding: 4px;
+    padding: 6px 4px;
 }
 
-/* ── islands: layered ink glass ──────────────────────────── */
+/* ══ islands ════════════════════════════════════════════════════════════
+ * Two stacked background layers: a 6%-tall lit edge along the top (the light
+ * catching the rim of the glass) over the ink gradient itself.
+ */
 
 .modules-left,
 .modules-center,
 .modules-right {
-    background: linear-gradient(140deg, alpha(@sumiInk1, 0.92), alpha(@sumiInk3, 0.86));
-    border: 1px solid alpha(@sumiInk6, 0.55);
-    border-radius: 12px;
-    padding: 0 4px;
-    box-shadow: 0 4px 12px alpha(@sumiInk0, 0.45);
+    background:
+        linear-gradient(180deg, alpha(@sumiInk6, 0.45) 0%, alpha(@sumiInk6, 0) 7%),
+        linear-gradient(140deg, alpha(@sumiInk1, 0.94), alpha(@sumiInk3, 0.86));
+    border: 1px solid alpha(@sumiInk6, 0.5);
+    border-radius: 14px;
+    padding: 0 5px;
+    box-shadow: 0 6px 16px alpha(@sumiInk0, 0.5);
 }
 
-/* ── left ────────────────────────────────────────────────── */
-
-#custom-os {
-    color: @crystalBlue;
-    font-size: 16px;
-    padding: 0 12px 0 14px;
-}
-
-#custom-os:hover {
-    color: @springBlue;
-}
-
-#workspaces {
-    padding: 0 4px;
-}
-
-#workspaces button {
-    color: @fujiGray;
-    background: transparent;
-    border-radius: 8px;
-    padding: 0 8px;
-    margin: 4px 2px;
-    transition: all 0.3s cubic-bezier(0.55, -0.68, 0.48, 1.68);
-}
-
-#workspaces button.empty {
-    color: alpha(@fujiGray, 0.45);
-}
-
-#workspaces button:hover {
-    color: @fujiWhite;
-    background: alpha(@sumiInk5, 0.8);
-    box-shadow: none;
-    text-shadow: none;
-}
-
-#workspaces button.active {
-    color: @sumiInk0;
-    background: linear-gradient(120deg, @crystalBlue, @oniViolet);
-    padding: 0 16px;
-    text-shadow: 0 1px 2px alpha(@sumiInk0, 0.25);
-}
-
-#workspaces button.urgent {
-    color: @sumiInk0;
-    background: @waveRed;
-}
-
-#window {
-    color: @oldWhite;
-    font-style: italic;
-    font-weight: 400;
-    padding: 0 14px;
-}
-
-window#waybar.empty #window {
-    padding: 0;
-}
-
-#mpris {
-    color: @waveAqua;
-    padding: 0 14px;
-}
-
-#mpris.paused {
-    color: @fujiGray;
-}
-
-#custom-cava {
-    color: @waveAqua;
-    font-size: 14px;
-    padding: 0 12px 0 4px;
-}
-
-/* ── center ──────────────────────────────────────────────── */
-
-#clock {
-    color: @springBlue;
-    padding: 0 16px;
-}
-
-#custom-weather {
-    color: @carpYellow;
-    padding: 0 14px 0 4px;
-}
-
-/* ── right ───────────────────────────────────────────────── */
-
+/* every readout/button is its own pill inside the island */
+#custom-os,
+#custom-sekki,
+#clock,
+#custom-weather,
+#window,
+#mpris,
+#custom-cava,
+#custom-utils,
+#custom-docker,
+#custom-screenshot,
+#custom-clipboard,
+#custom-wallpaper,
+#idle_inhibitor,
+#systemd-failed-units,
+#privacy,
 #tray,
 #cpu,
 #temperature,
@@ -165,24 +116,237 @@ window#waybar.empty #window {
 #backlight,
 #network,
 #bluetooth,
-#custom-notification,
 #battery,
+#custom-notification,
 #custom-power,
-#custom-docker,
-#custom-clipboard,
-#custom-wallpaper,
-#idle_inhibitor,
-#systemd-failed-units {
+#submap {
+    margin: 4px 1px;
     padding: 0 10px;
+    border-radius: 9px;
+    background: transparent;
+    transition: background 150ms ease, color 150ms ease, box-shadow 150ms ease;
 }
+
+/* generic hover: the pill lights up, the glyph keeps its own accent colour */
+#custom-os:hover,
+#custom-sekki:hover,
+#clock:hover,
+#custom-weather:hover,
+#mpris:hover,
+#custom-utils:hover,
+#custom-docker:hover,
+#custom-screenshot:hover,
+#custom-clipboard:hover,
+#custom-wallpaper:hover,
+#idle_inhibitor:hover,
+#cpu:hover,
+#temperature:hover,
+#memory:hover,
+#pulseaudio:hover,
+#backlight:hover,
+#network:hover,
+#bluetooth:hover,
+#battery:hover,
+#custom-notification:hover {
+    background: alpha(@sumiInk5, 0.8);
+    box-shadow: inset 0 1px 0 alpha(@sumiInk6, 0.55);
+}
+
+/* ══ left island ════════════════════════════════════════════════════════ */
+
+/* the nix mark, sitting in its own crystal well */
+#custom-os {
+    color: @crystalBlue;
+    font-size: 16px;
+    padding: 0 12px 0 13px;
+    margin-left: 2px;
+    background: alpha(@waveBlue1, 0.55);
+    box-shadow: inset 0 1px 0 alpha(@crystalBlue, 0.25);
+}
+
+#custom-os:hover {
+    color: @sumiInk0;
+    background: linear-gradient(135deg, @crystalBlue, @springBlue);
+}
+
+#workspaces {
+    padding: 0 2px;
+    margin: 0 2px;
+    background: transparent;
+}
+
+/* CJK numerals need the CJK face — Maple's coverage stops short of 一..十 */
+#workspaces button,
+#custom-sekki {
+    font-family: "Noto Sans CJK JP", "Maple Mono NF", sans-serif;
+}
+
+/*
+ * waybar's hyprland/workspaces only emits .empty / .active / .visible /
+ * .special / .persistent / .urgent — there is no .occupied class. So the base
+ * rule IS the occupied look (has windows, not focused: paper-white with a
+ * faint ink underline) and .empty walks it back. Cascade order matters here.
+ */
+#workspaces button {
+    color: @oldWhite;
+    background: transparent;
+    border-radius: 9px;
+    padding: 0 9px;
+    margin: 4px 2px;
+    box-shadow: inset 0 -2px 0 alpha(@dragonBlue, 0.8);
+    /* the overshoot bezier makes the active pill spring open */
+    transition: all 260ms cubic-bezier(0.18, 0.9, 0.28, 1.08);
+}
+
+#workspaces button.empty {
+    color: alpha(@fujiGray, 0.4);
+    box-shadow: none;
+}
+
+#workspaces button:hover {
+    color: @fujiWhite;
+    background: alpha(@sumiInk5, 0.85);
+    box-shadow: inset 0 -2px 0 alpha(@crystalBlue, 0.6);
+}
+
+#workspaces button.active {
+    color: @sumiInk0;
+    background: linear-gradient(120deg, @crystalBlue 0%, @oniViolet 55%, @springBlue 100%);
+    padding: 0 17px;
+    box-shadow:
+        inset 0 1px 0 alpha(@fujiWhite, 0.28),
+        0 2px 10px alpha(@crystalBlue, 0.35);
+    text-shadow: 0 1px 2px alpha(@sumiInk0, 0.3);
+}
+
+#workspaces button.urgent {
+    color: @sumiInk0;
+    background: linear-gradient(120deg, @waveRed, @peachRed);
+    box-shadow: 0 2px 10px alpha(@peachRed, 0.4);
+}
+
+/* hyprland submap (resize mode) — only ever visible while a submap is held */
+#submap {
+    color: @sumiInk0;
+    background: linear-gradient(120deg, @carpYellow, @surimiOrange);
+    font-weight: 700;
+    padding: 0 12px;
+}
+
+#window {
+    color: @oldWhite;
+    font-style: italic;
+    font-weight: 400;
+    padding: 0 12px;
+}
+
+window#waybar.empty #window {
+    padding: 0;
+    margin: 0;
+}
+
+#mpris {
+    color: @waveAqua;
+    padding: 0 12px;
+}
+
+#mpris.paused {
+    color: @fujiGray;
+    font-style: italic;
+}
+
+/* the visualizer reads as ink splash, not as a widget — no pill, no hover */
+#custom-cava {
+    color: @lightBlue;
+    font-size: 14px;
+    padding: 0 10px 0 2px;
+    text-shadow: 0 0 8px alpha(@waveAqua, 0.45);
+}
+
+/* ══ centre island ══════════════════════════════════════════════════════ */
+
+/*
+ * 七十二候 — the five-day microseason. Tinted by the season it belongs to, so
+ * the centre of the bar slowly walks the palette across the year:
+ * spring sakura → summer green → autumn orange → winter blue.
+ */
+#custom-sekki {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0 13px;
+    color: @springViolet;
+}
+
+#custom-sekki.spring {
+    color: @sakuraPink;
+    text-shadow: 0 0 10px alpha(@sakuraPink, 0.35);
+}
+
+#custom-sekki.summer {
+    color: @springGreen;
+    text-shadow: 0 0 10px alpha(@springGreen, 0.35);
+}
+
+#custom-sekki.autumn {
+    color: @surimiOrange;
+    text-shadow: 0 0 10px alpha(@surimiOrange, 0.35);
+}
+
+#custom-sekki.winter {
+    color: @springBlue;
+    text-shadow: 0 0 10px alpha(@springBlue, 0.35);
+}
+
+#clock {
+    color: @fujiWhite;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 14px;
+    background: alpha(@waveBlue1, 0.5);
+    box-shadow: inset 0 1px 0 alpha(@springBlue, 0.2);
+}
+
+#clock:hover {
+    color: @springBlue;
+}
+
+#custom-weather {
+    color: @carpYellow;
+    padding: 0 12px 0 8px;
+}
+
+/* ══ right island ═══════════════════════════════════════════════════════ */
 
 #privacy {
-    padding: 0 10px;
     color: @waveRed;
+    padding: 0 8px;
 }
 
 #systemd-failed-units {
-    color: @waveRed;
+    color: @peachRed;
+    background: alpha(@waveRed, 0.12);
+}
+
+/* ── utility drawer ────────────────────────────────────────────────────
+ * Folded: one 󰇘 glyph. Hovered: docker · screenshot · clipboard · wallpaper ·
+ * caffeine slide out to the left. Zero cost while folded — the children are
+ * not realised until the revealer opens.
+ */
+#custom-utils {
+    color: @springViolet;
+    font-size: 15px;
+    padding: 0 9px;
+}
+
+#custom-utils:hover {
+    color: @crystalBlue;
+}
+
+.utils-child {
+    margin: 4px 1px;
+    padding: 0 9px;
+    border-radius: 9px;
+    transition: background 150ms ease, color 150ms ease;
 }
 
 #custom-docker {
@@ -195,12 +359,8 @@ window#waybar.empty #window {
     font-size: 0;
 }
 
-#idle_inhibitor {
-    color: @dragonBlue;
-}
-
-#idle_inhibitor.activated {
-    color: @roninYellow;
+#custom-screenshot {
+    color: @waveAqua;
 }
 
 #custom-clipboard {
@@ -215,8 +375,17 @@ window#waybar.empty #window {
     color: @crystalBlue;
 }
 
+#idle_inhibitor {
+    color: @dragonBlue;
+}
+
+#idle_inhibitor.activated {
+    color: @roninYellow;
+    text-shadow: 0 0 8px alpha(@roninYellow, 0.4);
+}
+
 #tray {
-    padding: 0 12px;
+    padding: 0 10px;
 }
 
 #tray > .passive {
@@ -226,6 +395,8 @@ window#waybar.empty #window {
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
 }
+
+/* ── vitals ─────────────────────────────────────────────────────────── */
 
 #cpu {
     color: @waveAqua;
@@ -243,6 +414,8 @@ window#waybar.empty #window {
 #memory {
     color: @sakuraPink;
 }
+
+/* ── audio · light · radios ─────────────────────────────────────────── */
 
 #pulseaudio {
     color: @oniViolet;
@@ -277,6 +450,8 @@ window#waybar.empty #window {
     color: @carpYellow;
 }
 
+/* ── battery ────────────────────────────────────────────────────────── */
+
 #battery {
     color: @springGreen;
 }
@@ -295,16 +470,21 @@ window#waybar.empty #window {
     animation: blink 0.8s steps(2) infinite alternate;
 }
 
+/* ── power ──────────────────────────────────────────────────────────── */
+
 #custom-power {
     color: @peachRed;
     font-size: 15px;
-    border-radius: 0 11px 11px 0;
-    padding: 0 14px 0 10px;
-    margin-left: 2px;
+    padding: 0 13px 0 11px;
+    margin-right: 2px;
+    background: alpha(@peachRed, 0.1);
+    box-shadow: inset 0 1px 0 alpha(@peachRed, 0.2);
 }
 
 #custom-power:hover {
-    background: alpha(@peachRed, 0.25);
+    color: @sumiInk0;
+    background: linear-gradient(135deg, @peachRed, @waveRed);
+    box-shadow: 0 2px 10px alpha(@peachRed, 0.45);
 }
 
 @keyframes blink {

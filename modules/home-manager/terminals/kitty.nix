@@ -83,9 +83,27 @@ in
         # terminal-depth windowrule for layered ink
         inactive_text_alpha = "0.85";
 
-        # tab bar — ink powerline, crystalBlue active tab
+        # Ligatures stay on (Maple Mono's are the point of the font) but melt
+        # away under the cursor, so `!=` is two editable characters again the
+        # moment you land on it.
+        disable_ligatures = "cursor";
+
+        # A blinking cursor is a repaint of the whole cell twice a second,
+        # forever, on a machine that renders a blurred bar above it. The
+        # cursor_trail below already carries the motion.
+        cursor_blink_interval = 0;
+
+        # long jobs announce themselves when the window isn't focused
+        notify_on_cmd_finish = "unfocused 15.0";
+
+        # tab bar as a title bar — ink powerline, crystalBlue active tab
+        tab_bar_edge = "top";
         tab_bar_style = "powerline";
         tab_powerline_style = "slanted";
+        tab_bar_min_tabs = 2;
+        tab_title_template = "{fmt.bold}{bell_symbol}{activity_symbol}{index}{fmt.nobold} {title[:20]}";
+        active_tab_font_style = "bold";
+        inactive_tab_font_style = "italic";
         active_tab_background = palette.crystalBlue;
         active_tab_foreground = palette.sumiInk0;
         inactive_tab_background = palette.sumiInk0;
@@ -112,6 +130,26 @@ in
         color16 = palette.surimiOrange;
         color17 = palette.peachRed;
       };
+
+      # Directives that legitimately repeat can't live in `settings` (an attrset
+      # can only hold one of each key).
+      extraConfig = ''
+        # ── typography ──
+        # Maple Mono is drawn tight; 8% more leading turns a wall of code into
+        # lines you can scan. The underline tweaks are for LSP undercurls —
+        # at the default position they collide with descenders in this face.
+        modify_font cell_height 108%
+        modify_font underline_position 130%
+        modify_font underline_thickness 120%
+
+        # ── CJK ──
+        # The Ink & Wave chrome speaks kanji in several places (statusline mode
+        # cap 常挿視, 七十二候 names, workspace numerals). Maple Mono NF has no
+        # CJK block, so pin those ranges to Noto rather than letting fontconfig
+        # pick a different fallback per glyph.
+        symbol_map U+3000-U+303F,U+3040-U+30FF,U+31F0-U+31FF,U+FF00-U+FFEF Noto Sans CJK JP
+        symbol_map U+4E00-U+9FFF Noto Sans CJK JP
+      '';
 
       keybindings = {
         "ctrl+c" = "copy_or_interrupt";
