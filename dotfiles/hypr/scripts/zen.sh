@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# 禅 — zen mode. One keystroke between "workstation" and "reading room".
+# dhyan — dhyan mode. One keystroke between "workstation" and "reading room".
+# (dhyan and zen are the same Sanskrit word, dhyana, taking two routes out.)
 #
 # On:  the bar folds away, the gaps open into wide paper margins, the border
 #      thins to a hairline. Nothing is killed and nothing is restarted, so the
@@ -28,7 +29,7 @@ if [ -f "$state" ]; then
         keyword decoration:rounding 10 ; \
         keyword decoration:dim_strength 0.12" >/dev/null
     pkill -SIGUSR1 waybar || true
-    note "禅  zen off" "back to the grid"
+    note "ध्यान  dhyan off" "back to the grid"
 else
     : >"$state"
     hyprctl --batch "\
@@ -38,5 +39,5 @@ else
         keyword decoration:rounding 16 ; \
         keyword decoration:dim_strength 0.3" >/dev/null
     pkill -SIGUSR1 waybar || true
-    note "禅  zen on" "one thing at a time"
+    note "ध्यान  dhyan on" "one thing at a time"
 fi

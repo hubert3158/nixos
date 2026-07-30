@@ -1,4 +1,4 @@
-# Colour helpers for the Ink & Wave palette (lib/palette.nix).
+# Colour helpers for the Himal palette (lib/palette.nix).
 #
 # lib/palette.nix stays pure data ("#RRGGBB" strings only) so scripts/theme-lint.sh
 # can scrape it. Surfaces that need a different encoding — hyprland's rgb()/rgba(),

@@ -12,6 +12,7 @@
     ./uv-tools.nix
     ./fastfetch.nix
     ./cava.nix
-    ./sekki.nix
+    ./patro.nix
+    ./ukhaan.nix
   ];
 }

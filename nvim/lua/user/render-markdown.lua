@@ -1,4 +1,4 @@
--- render-markdown — Ink & Wave document rendering (docs/THEME.md).
+-- render-markdown — Himal document rendering (docs/THEME.md).
 --
 -- COLORS ARE NOT SET HERE. The plugin's defaults link heading backgrounds to
 -- the Diff* groups (H1Bg=DiffText, H2Bg=DiffAdd, H3Bg=DiffChange,
@@ -21,7 +21,7 @@ require("render-markdown").setup({
 		-- CJK numerals, same language as the waybar workspace pills
 		-- (docs/THEME.md typography). Double-width by design — the icon column
 		-- reads as a carved stamp rather than a bullet.
-		icons = { "一 ", "二 ", "三 ", "四 ", "五 ", "六 " },
+		icons = { "1 ", "2 ", "3 ", "4 ", "5 ", "6 " },
 		-- bar hugs the heading text instead of bleeding to the window edge
 		width = "block",
 		right_pad = 2,

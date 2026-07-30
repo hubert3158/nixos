@@ -1,24 +1,43 @@
 -- Dashboard — snacks.nvim (replaced dashboard-nvim). Configured eagerly so
 -- the start screen renders correctly on first paint.
--- The wave header is the actual great-wave-ink wallpaper rendered by chafa.
+-- The header image is the wallpaper rendered by chafa.
 -- Every snacks module that overlaps the existing stack is explicitly off:
 -- notifier (nvim-notify), indent (ibl), scroll (neoscroll), bigfile (user/
 -- bigfile), statuscolumn (ufo/signcolumn), input/picker (telescope), etc.
 
-local haikus = {
-	{ "古池や 蛙飛び込む コードの音", "the old pond — a frog leaps in — the sound of code" },
-	{ "波に乗れ バグも流れて 春の海", "ride the wave — even bugs drift away — spring sea" },
-	{ "月光や コンパイル待つ 静けさよ", "moonlight — the stillness of waiting for the compile" },
-	{ "初雪や コミット一つ 澄みわたる", "first snow — a single commit, perfectly clean" },
-	{ "秋深し 隣は何を デプロイする", "deep autumn — what is my neighbour deploying?" },
-	{ "夏草や 兵どもが 夢の跡", "summer grass — all that remains of a rewrite" },
-	{ "静けさや 岩にしみ入る ログの声", "such stillness — the log seeps into the rock" },
-	{ "行く春や 消したブランチ 帰らざる", "spring departs — the deleted branch never returns" },
-	{ "灯を消して なほ残りたる 型の error", "lights out — and still the type error remains" },
-	{ "朝もやに 立ち上がる server 一つ", "in the morning mist — a single server rises" },
-}
+-- ukhaan — a Nepali proverb, drawn fresh on every start screen.
+--
+-- Reads lib/ukhaan.tsv, the same table the `ukhaan` CLI embeds
+-- (modules/home-manager/tools/ukhaan.nix). One file read and a split, not a
+-- subprocess: the dashboard paints eagerly, and the perf rule in
+-- docs/THEME.md is that nothing forks on the startup path for a decoration.
+--
+-- The romanised column, not the Devanagari one: this line lands in a monospace
+-- grid, where Devanagari's pre-base vowel signs and conjuncts come apart, one
+-- codepoint per cell. Devanagari lives on the surfaces that shape proportional
+-- text — waybar, hyprlock, notifications, the boot splash.
+local function pick_ukhaan()
+	local ok, lines = pcall(vim.fn.readfile, vim.fn.expand("~/nixos/lib/ukhaan.tsv"))
+	if not ok or type(lines) ~= "table" then
+		return { "", "" }
+	end
+	local rows = {}
+	for _, l in ipairs(lines) do
+		if l:sub(1, 1) ~= "#" and l ~= "" then
+			local _, roman, meaning = l:match("^([^\t]*)\t([^\t]*)\t(.*)$")
+			if roman and roman ~= "" then
+				rows[#rows + 1] = { roman, meaning or "" }
+			end
+		end
+	end
+	if #rows == 0 then
+		return { "", "" }
+	end
+	return rows[math.random(#rows)]
+end
+
 math.randomseed(os.time())
-local haiku = haikus[math.random(#haikus)]
+local haiku = pick_ukhaan()
 
 require("snacks").setup({
 	-- overlap guards — this config uses snacks for dashboard + image only
@@ -55,7 +74,7 @@ require("snacks").setup({
 			-- ▒ shading in place of a drop shadow, sitting inside its own
 			-- margin rule like a print colophon.
 			-- Lines are centred by snacks (it measures display width, so the
-			-- double-width kanji line lands correctly) — no manual padding.
+			-- mark line lands correctly) — no manual padding.
 			header = table.concat({
 				"──────────────────────────────────────",
 				"",
@@ -63,7 +82,7 @@ require("snacks").setup({
 				"░█░█░█▀▀░█░█░▀▄▀░░█░░█░█",
 				"░▀░▀░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀",
 				"",
-				"墨 と 波  ·  i n k   a n d   w a v e",
+				"h i m a l  ·  h i m a l a y a",
 				"──────────────────────────────────────",
 			}, "\n"),
 		},

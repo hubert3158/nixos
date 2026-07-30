@@ -1,5 +1,5 @@
 # Hyprlock configuration — Kanagawa ink over a blurred desktop screenshot
-# (Ink & Wave design system, docs/THEME.md).
+# (Himal design system, docs/THEME.md).
 # Colours come from lib/palette.nix via `colors.hypr` — hyprlang accepts
 # rgb(RRGGBB), so the decimal rgb(220, 215, 186) triples this file used to
 # carry (unsearchable, un-lintable) are gone.
@@ -69,10 +69,10 @@ in
             valign = "center";
             shadow_passes = 2;
           }
-          # 「波に乗れ」 — ride the wave
+          # ukalo — the climb
           {
             monitor = "";
-            text = "「 波 に 乗 れ 」";
+            text = "॥ उ का लो ॥";
             font_family = "Noto Sans CJK JP";
             font_size = 14;
             color = colors.hypr palette.fujiGray;

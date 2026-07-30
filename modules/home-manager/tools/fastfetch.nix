@@ -1,4 +1,4 @@
-# Fastfetch — Kanagawa-tinted system fetch (Ink & Wave design system)
+# Fastfetch — Kanagawa-tinted system fetch (Himal design system)
 { config, lib, pkgs, palette, colors, ... }:
 
 let
@@ -47,7 +47,11 @@ in
           "break"
           {
             type = "custom";
-            format = "{#${crystalBlue}}╭── 「 波 に 乗 れ 」──────────────────╮";
+            # Romanised, not ukalo: this box is drawn in a terminal and
+            # every rule below it is 40 display columns. Devanagari is
+            # single-width where the old CJK was double, so the frame would
+            # come apart — and it inks a size small beside the Latin anyway.
+            format = "{#${crystalBlue}}╭── u k a l o ─────────────────────────╮";
           }
           {
             type = "title";
@@ -122,14 +126,14 @@ in
             type = "custom";
             format = "{#${crystalBlue}}├──────────────────────────────────────┤";
           }
-          # 七十二候 — the current five-day microseason (lib/sekki.nix).
-          # `sekki` is a home.packages binary, so this resolves from PATH; the
+          # Bikram Sambat — today's Bikram Sambat date (lib/patro.nix).
+          # `patro` is a home.packages binary, so this resolves from PATH; the
           # module simply prints nothing on a machine that doesn't have it.
           {
             type = "command";
-            key = "  󰸉 kō";
+            key = "  󰸉 patro";
             keyColor = springGreen;
-            text = "sekki line 2>/dev/null";
+            text = "patro line 2>/dev/null";
           }
           {
             type = "custom";

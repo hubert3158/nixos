@@ -1,4 +1,4 @@
-# Wlogout — full-screen power menu (Ink & Wave design system)
+# Wlogout — full-screen power menu (Himal design system)
 # Six frosted ink cards over the blurred desktop (hyprland layerrule blurs
 # the logout_dialog namespace). Launch: `wlogout -b 3 --protocol layer-shell`.
 { config, lib, pkgs, palette, colors, ... }:

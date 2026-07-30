@@ -4,9 +4,9 @@
 let
   cfg = config.modules.boot;
 
-  # 「墨と波」 boot splash — same palette as the desktop, so the machine never
+  # Himal boot splash — same palette as the desktop, so the machine never
   # flashes a stock theme on the way up.
-  inkWavePlymouth = pkgs.callPackage ../../packages/plymouth-ink-wave {
+  himalPlymouth = pkgs.callPackage ../../packages/plymouth-himal {
     inherit palette colors;
   };
 in
@@ -69,8 +69,8 @@ in
     # Silent boot with plymouth splash — text logs still reachable via ESC
     boot.plymouth = {
       enable = cfg.enablePlymouth;
-      theme = lib.mkIf cfg.enablePlymouth "ink-wave";
-      themePackages = lib.mkIf cfg.enablePlymouth [ inkWavePlymouth ];
+      theme = lib.mkIf cfg.enablePlymouth "himal";
+      themePackages = lib.mkIf cfg.enablePlymouth [ himalPlymouth ];
     };
     boot.consoleLogLevel = lib.mkIf cfg.enablePlymouth 3;
     boot.initrd.verbose = lib.mkIf cfg.enablePlymouth false;

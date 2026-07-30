@@ -71,7 +71,7 @@ vec2 getRectangleCenter(vec4 rectangle) {
     return vec2(rectangle.x + (rectangle.z / 2.), rectangle.y - (rectangle.w / 2.));
 }
 
-// Kanagawa Ink & Wave (docs/THEME.md): crystalBlue trail, oniViolet accent
+// Kanagawa Wave — Himal (docs/THEME.md): crystalBlue trail, oniViolet accent
 const vec4 TRAIL_COLOR = vec4(0.494, 0.612, 0.847, 1.0); // crystalBlue #7E9CD8
 const vec4 CURRENT_CURSOR_COLOR = TRAIL_COLOR;
 const vec4 PREVIOUS_CURSOR_COLOR = TRAIL_COLOR;

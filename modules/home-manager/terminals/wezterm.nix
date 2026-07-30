@@ -1,4 +1,4 @@
-# Wezterm terminal configuration — Kanagawa Wave (Ink & Wave design system)
+# Wezterm terminal configuration — Kanagawa Wave (Himal design system)
 # Palette from lib/palette.nix; keep in lockstep with kitty.nix / ghostty.nix
 { config, lib, pkgs, palette, ... }:
 
@@ -41,7 +41,7 @@ in
           keys = {
             {key="n", mods="SHIFT|CTRL", action=wezterm.action.ToggleFullScreen},
           },
-          -- exact Ink & Wave values (lib/palette.nix), not the drifted
+          -- exact Himal values (lib/palette.nix), not the drifted
           -- "Kanagawa (Gogh)" named scheme — mirrors kitty.nix
           colors = {
             foreground = "${palette.fujiWhite}",

@@ -38,7 +38,7 @@ g.mkdp_preview_options = {
 g.mkdp_markdown_css = ""
 g.mkdp_highlight_css = ""
 g.mkdp_port = ""
-g.mkdp_page_title = "「${name}」"
+g.mkdp_page_title = "${name}"
 g.mkdp_filetypes = { "markdown", "mdown", "mkd", "mkdn", "mdx", "md" }
 g.mkdp_enabled = 1
 

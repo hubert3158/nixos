@@ -1,4 +1,4 @@
-# Tmux configuration — Kanagawa Ink & Wave statusline (docs/THEME.md)
+# Tmux configuration — Himal statusline, Kanagawa Wave palette (docs/THEME.md)
 {
   config,
   lib,
@@ -37,7 +37,7 @@
   '';
 
   # ╭────────────────────────────────────────────────────────────────────╮
-  # │  Ink & Wave statusline construction (docs/THEME.md)                 │
+  # │  Himal statusline construction (docs/THEME.md)                     │
   # ╰────────────────────────────────────────────────────────────────────╯
   p = palette;
 
@@ -69,28 +69,35 @@
     + "${fg colour}${bg p.sumiInk0}${slantOut}";
 
   # The session pill is tmux's mode cap, borrowing Neovim's grammar from
-  # lua/user/visual-enhancements.lua: one kanji, one pigment, and *only* that
-  # cap changes colour, so entering copy mode reads as one dot of colour
-  # moving rather than the whole bar repainting. Kanji reused verbatim:
-  # 常 usual · 命 command (prefix pending) · 視 look (copy mode).
+  # lua/user/visual-enhancements.lua: one short label, one pigment, and *only*
+  # that cap changes colour, so entering copy mode reads as one dot of colour
+  # moving rather than the whole bar repainting.
   modeCap =
     "#{?client_prefix,"
-    + pill p.carpYellow " 命 #S "
+    + pill p.carpYellow " CMD #S "
     + ",#{?pane_in_mode,"
-    + pill p.oniViolet " 視 #S "
+    + pill p.oniViolet " VIS #S "
     + ","
-    + pill p.crystalBlue " 常 #S "
+    + pill p.crystalBlue " NOR #S "
     + "}}";
 
-  # Window numbers as CJK numerals — the same motif as waybar's 一二三
-  # workspaces and the Neovim mode cap. Past 九 it falls back to the arabic
-  # index. Ten string compares per window per redraw; nothing forks.
-  cjkDigits = ["〇" "一" "二" "三" "四" "五" "六" "七" "八" "九"];
-  cjkIndex =
-    lib.foldr
-    (i: acc: "#{?#{==:#{window_index},${toString i}},${builtins.elemAt cjkDigits i},${acc}}")
-    "#{window_index}"
-    (lib.range 0 9);
+  # Window numbers stay in the terminal's own face.
+  #
+  # Devanagari numerals were tried here — waybar wears 123 and the motif ought
+  # to carry down. Measured at kitty's 19px rendering size, Maple Mono NF's '0'
+  # inks 11x14 px; the best-matching Devanagari '0' available (Annapurna SIL
+  # Bold) inks 11x12, Noto Sans Devanagari 10x11, FreeSerif 10x8. Devanagari
+  # digits are drawn to a shorter body than Latin cap-height by design, and no
+  # face closes that gap. They land on the grid correctly — every numeral gets
+  # exactly one cell — but they read a size small next to the window names
+  # beside them, and kitty has no per-fallback scale knob (`modify_font` is
+  # global, `symbol_map` takes only a family).
+  #
+  # So the grid keeps one script and stays optically uniform. The Devanagari
+  # lives on the GUI surfaces (waybar, hyprlock, notifications, plymouth),
+  # where Pango shapes proportional text and there is no Latin cell to be
+  # measured against.
+  numIndex = "#{window_index}";
 
   # Per-window state glyphs (nf-md, matching waybar's icon rule).
   winFlags =
@@ -98,22 +105,27 @@
     + "#{?pane_synchronized, 󰓦,}"
     + "#{?window_bell_flag, 󰂚,}";
 
-  # 七十二候 segment, season-tinted exactly like waybar's `custom/sekki`.
-  # `sekki` itself is one `date` plus one awk pass, but the status line is
+  # Bikram Sambat segment, ritu-tinted exactly like waybar's `custom/patro`.
+  # `patro` itself is one `date` plus one awk pass, but the status line is
   # re-expanded on a timer, so the result is cached for an hour — the segment
-  # only ever changes every five days. tmux runs `#()` off the main loop, so
-  # even a cache miss never blocks a redraw.
-  sekkiSegment = pkgs.writeShellScript "tmux-sekki-segment" ''
-    cache="''${XDG_RUNTIME_DIR:-/tmp}/tmux-sekki-segment"
+  # only ever changes at midnight. tmux runs `#()` off the main loop, so even
+  # a cache miss never blocks a redraw.
+  #
+  # `patro term` is the monospace-safe form ("Saun 14"): Nepali month name,
+  # Latin digits, per the script rule at the top of docs/THEME.md.
+  patroSegment = pkgs.writeShellScript "tmux-patro-segment" ''
+    cache="''${XDG_RUNTIME_DIR:-/tmp}/tmux-patro-segment"
     if [ ! -s "$cache" ] || [ -n "$(find "$cache" -mmin +60 2>/dev/null)" ]; then
-      if command -v sekki >/dev/null 2>&1; then
-        case "$(sekki season)" in
-          spring) tint='${p.sakuraPink}' ;;
-          summer) tint='${p.springGreen}' ;;
-          autumn) tint='${p.surimiOrange}' ;;
-          *)      tint='${p.springBlue}' ;;
+      if command -v patro >/dev/null 2>&1; then
+        case "$(patro season)" in
+          basanta) tint='${p.sakuraPink}' ;;
+          grishma) tint='${p.springGreen}' ;;
+          barsha)  tint='${p.springBlue}' ;;
+          sharad)  tint='${p.surimiOrange}' ;;
+          hemanta) tint='${p.springViolet1}' ;;
+          *)       tint='${p.lightBlue}' ;;
         esac
-        printf '#[fg=%s]%s %s' "$tint" "$(sekki kanji)" "$(sekki ko)" >"$cache"
+        printf '#[fg=%s]%s' "$tint" "$(patro term)" >"$cache"
       else
         : >"$cache"
       fi
@@ -135,23 +147,23 @@
   atLeast = cols: wide: narrow:
     "#{?#{e|>=:#{client_width},${toString cols}},${wide},${narrow}}";
 
-  # ≥150: cwd and the microseason ride along. Below that the right island is
-  # clock and cap only. The threshold is deliberately generous — with
-  # `status-justify absolute-centre` the window list is centred against the
-  # *full* bar, so a right island sized to the leftover space still collides
-  # with it and gets trimmed from the left.
+  # ≥150: cwd and the Bikram Sambat date ride along. Below that the right
+  # island is clock and cap only. The threshold is deliberately generous —
+  # with `status-justify absolute-centre` the window list is centred against
+  # the *full* bar, so a right island sized to the leftover space still
+  # collides with it and gets trimmed from the left.
   statusRight =
     atLeast 150
-    ("${fg p.springViolet1}󰉋 #{b:pane_current_path} ${rule} #(${sekkiSegment}) ${rule}")
+    ("${fg p.springViolet1}󰉋 #{b:pane_current_path} ${rule} #(${patroSegment}) ${rule}")
     ""
     + "${fg p.springBlue} 󰃰 %H:%M "
-    + pill p.crystalBlue " 波 ";
+    + pill p.crystalBlue " 󰋯 ";
 
   # ≥110: inactive windows carry their names. Below that the bar compresses to
   # a row of numerals with one named island — the active window.
   windowFormat =
     fg p.fujiGray
-    + atLeast 110 "  ${cjkIndex} #W${winFlags}  " " ${cjkIndex}${winFlags} ";
+    + atLeast 110 "  ${numIndex} #W${winFlags}  " " ${numIndex}${winFlags} ";
 in {
   options.modules.programs.tmux = {
     enable = lib.mkEnableOption "Tmux terminal multiplexer";
@@ -202,7 +214,7 @@ in {
         set -ag terminal-overrides ",xterm-256color:RGB"
 
         # ╭──────────────────────────────────────────────────────────╮
-        # │        Kanagawa Ink & Wave — hand-rolled powerline        │
+        # │        Kanagawa Wave — Himal — hand-rolled powerline        │
         # │        colours from lib/palette.nix (docs/THEME.md)       │
         # ╰──────────────────────────────────────────────────────────╯
         # Three islands, same layout grammar as waybar: session cap on the
@@ -224,16 +236,16 @@ in {
         set -g monitor-bell on
         set -g monitor-activity off
 
-        # session pill — doubles as the mode cap (常 / 命 / 視)
+        # session pill — doubles as the mode cap (NOR / CMD / VIS)
         set -g status-left "${modeCap}"
 
-        # windows — inactive ink, active waveBlue island, CJK numerals
+        # windows — inactive ink, active waveBlue island, Devanagari numerals
         set -g window-status-format "${windowFormat}"
-        set -g window-status-current-format "${fg p.waveBlue2}${bg p.sumiInk0}${slantIn}${bg p.waveBlue2}${fg p.crystalBlue}${bold} ${cjkIndex} ${fg p.fujiWhite}#W${winFlags} ${nobold}${fg p.waveBlue2}${bg p.sumiInk0}${slantOut}"
+        set -g window-status-current-format "${fg p.waveBlue2}${bg p.sumiInk0}${slantIn}${bg p.waveBlue2}${fg p.crystalBlue}${bold} ${numIndex} ${fg p.fujiWhite}#W${winFlags} ${nobold}${fg p.waveBlue2}${bg p.sumiInk0}${slantOut}"
         set -g window-status-separator ""
         set -g window-status-bell-style "fg=${p.carpYellow},bg=${p.sumiInk0}"
 
-        # right: cwd · 七十二候 · clock · 波 cap (first two drop under 132 cols)
+        # right: cwd · Bikram Sambat · clock · Himal cap (first two drop under 150 cols)
         set -g status-right "${statusRight}"
 
         # ── Pane Borders ─────────────────────────────────────────────

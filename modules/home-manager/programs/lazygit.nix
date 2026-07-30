@@ -1,4 +1,4 @@
-# Lazygit — Kanagawa Ink & Wave theme (docs/THEME.md)
+# Lazygit — Kanagawa Wave — Himal theme (docs/THEME.md)
 # Used daily via nvim <leader>gg (lazygit.nvim) and the CLI.
 { config, lib, pkgs, palette, ... }:
 

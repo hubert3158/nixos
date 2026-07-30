@@ -1,4 +1,4 @@
-# Kitty terminal configuration — Kanagawa Wave (Ink & Wave design system)
+# Kitty terminal configuration — Kanagawa Wave (Himal design system)
 # Colours from lib/palette.nix; keep in lockstep with ghostty.nix / wezterm.nix
 { config, lib, pkgs, palette, ... }:
 
@@ -56,7 +56,7 @@ in
         # edits. Manual reload (ctrl+shift+f5) still works.
         auto_reload_config = -1;
 
-        # ── Kanagawa Wave over a ghosted ink-wave background image ──
+        # ── Kanagawa Wave over a ghosted wallpaper texture ──
         # kitty paints the image wherever a cell's bg equals the default
         # background — which includes ALL of neovim — so the tint must be
         # near-total or code drowns in the artwork. 0.95 = faint ghost texture.
@@ -142,13 +142,19 @@ in
         modify_font underline_position 130%
         modify_font underline_thickness 120%
 
-        # ── CJK ──
-        # The Ink & Wave chrome speaks kanji in several places (statusline mode
-        # cap 常挿視, 七十二候 names, workspace numerals). Maple Mono NF has no
-        # CJK block, so pin those ranges to Noto rather than letting fontconfig
-        # pick a different fallback per glyph.
-        symbol_map U+3000-U+303F,U+3040-U+30FF,U+31F0-U+31FF,U+FF00-U+FFEF Noto Sans CJK JP
-        symbol_map U+4E00-U+9FFF Noto Sans CJK JP
+        # ── Devanagari ──
+        # Safety net, not chrome. Maple Mono NF has *zero* coverage of
+        # U+0900-097F (verified against its cmap), so without this every
+        # Devanagari character in a terminal — a Nepali filename, a `patro`
+        # invocation, a README — renders as tofu. Pin the block to Noto rather
+        # than letting fontconfig pick a different fallback per glyph.
+        #
+        # The status chrome deliberately does *not* rely on this: Devanagari
+        # numerals ink 2-4px shorter than Maple Mono's at the same size and
+        # kitty cannot scale a fallback, so tmux and the Neovim statusline keep
+        # Latin digits. Full Devanagari lives on the GUI surfaces, where Pango
+        # shapes proportional text properly. See programs/tmux.nix.
+        symbol_map U+0900-U+097F Noto Sans Devanagari
       '';
 
       keybindings = {

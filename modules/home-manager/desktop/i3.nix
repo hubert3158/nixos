@@ -1,5 +1,5 @@
 # i3 window manager user configuration — X11 fallback session, themed to
-# Ink & Wave (lib/palette.nix) so dropping back to i3 doesn't mean stock blue
+# Himal (lib/palette.nix) so dropping back to i3 doesn't mean stock blue
 { config, lib, pkgs, palette, ... }:
 
 let

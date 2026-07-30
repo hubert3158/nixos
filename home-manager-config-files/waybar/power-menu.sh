@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Power menu for the waybar ⏻ button — wlogout ink cards (Ink & Wave).
+# Power menu for the waybar ⏻ button — wlogout ink cards (Himal).
 # Falls back to a fuzzel dmenu if wlogout isn't installed yet.
 
 if command -v wlogout >/dev/null 2>&1; then

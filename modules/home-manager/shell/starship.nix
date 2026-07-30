@@ -1,4 +1,4 @@
-# Starship prompt — Kanagawa powerline ribbon (Ink & Wave design system)
+# Starship prompt — Kanagawa powerline ribbon (Himal design system)
 # Segments flow ink-dark → light: os ▸ directory ▸ git ▸ langs ▸ duration
 # Colours from lib/palette.nix, re-exported as a starship palette so the
 # format strings can stay readable (bg:crystal_blue rather than bg:#7E9CD8).

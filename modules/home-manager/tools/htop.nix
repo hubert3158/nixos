@@ -1,4 +1,4 @@
-# Htop/Btop system monitor configuration — Ink & Wave (lib/palette.nix)
+# Htop/Btop system monitor configuration — Himal (lib/palette.nix)
 { config, lib, pkgs, palette, ... }:
 
 let
@@ -20,7 +20,7 @@ in
     # unmanaged (btop rewrites it on exit) — pick the theme once in btop's
     # menu (ESC → Options → color theme → kanagawa) and it sticks.
     xdg.configFile."btop/themes/kanagawa.theme".text = ''
-      # Kanagawa Wave — Ink & Wave design system
+      # Kanagawa Wave — Himal design system
       theme[main_bg]="${palette.sumiInk3}"
       theme[main_fg]="${palette.fujiWhite}"
       theme[title]="${palette.fujiWhite}"

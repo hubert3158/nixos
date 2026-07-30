@@ -1,4 +1,4 @@
-# 「墨と波」 Ink & Wave — Kanagawa Wave palette
+# Himal Himal — Kanagawa Wave palette
 #
 # Machine-readable source of truth. docs/THEME.md is the human-readable
 # companion — keep the two in sync (scripts/theme-lint.sh checks the

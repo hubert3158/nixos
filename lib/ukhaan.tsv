@@ -1,0 +1,276 @@
+# ukhaan — Nepali proverbs (उखान टुक्का).
+#
+# Tab-separated, three columns: devanagari<TAB>roman<TAB>meaning.
+#
+# TSV rather than .nix because two languages read this file: the `ukhaan` CLI
+# (modules/home-manager/tools/ukhaan.nix) embeds it for awk, and the Neovim
+# dashboard (nvim/plugin/dashboard.lua) reads it directly at first paint. A
+# .nix list would need a second, generated Lua copy; splitting on a tab needs
+# neither. Lines beginning with '#' are comments.
+#
+# Source: github.com/chapainaashish/nepali-ukhaan (MIT, (c) 2023 Aashish
+# Chapain), parsed from that repo's README table. Corrections belong upstream
+# as well as here.
+#
+# The roman column is what terminal surfaces show, per the script rule in
+# docs/THEME.md; the devanagari column is for waybar/notifications.
+अंग्रेजीको काइदा, भुक्नेलाई फाइदा	Angreji ko kaida, bhukne lai faida	Those who are clever can benefit from any situation
+अकटको कुलो, बिकटको खेत, बिर्सेछु दाजै शिलोकको फेद	Akat ko kulo, bikat ko khet, birsechhu daajai silok ko fed	People often forget the help & advice provided by others but remember the benefits they received
+अकबर राजा, बिरबल काजि, इन्साफ दिन्छन खुसिराजि	Akabar raaja, birbal kaaji, insaaf dinchhan khusiraaji	Justice is served by both the powerful and the wise
+अकबरी सुनलाई कसी लाउनु पर्दैन	Akabari sun lai kasi laaunu pardaina	Ramro manche yesai ramro
+अक्चु खाए बक्छु खाए झुसे बारुलो	Akchhu khaaye bakchhu khaaye jhuse baarulo	Someone who has faced stronger challenges is not easily defeated by weaker ones
+अगुल्टोले हानेको कुकुर बिजुलीदेखि तर्सन्छ	Agulto le haaneko kukur bijuli dekhi tarsanchha	Ek choti galti garisakepaxi aarko choti garna bata tarsinxa
+अघि हेर्नु चार हात, पछि हेर्नु बाह्र हात	Aghi hernu chaar haat, pachhi hernu bahra haat	Agadi ra pachadi dubai tira khyal puraunu
+अघिको तीतो पछिको मीठो	Aghi ko tito pachhi ko mitho	Mehanat le fal mitho hunxa
+अचानो को पिर खुकुरी ले जान्दैन	Achaano ko pir khukuri le jaandaina	Dhukha dina manxe le dukha paune manxe ko samsya bujdiaena
+अचार खानु मुलाको, संगत गर्नु ठुलाको	Achaar khaanu mula ko, sangat garnu thula ko	Asal manxe ko sangat gare khushi paixa nabye dukha
+अच्छा साले जुल्फी पाले, लिखाले टांग हाले	Achchhaa saale julfi paale, likhaa le taang haale	Strong foundation, bright outcome. Weak base, poor fate
+अजिङ्गरको आहारा दैवले जुराउँछ	Ajingar ko aahaaraa daiba le jurauchha	Yedi kei kura vagya ma chha vane paincha
+अड्को पड्को तेलको धूप	Adko padko tel ko dhup	The nature of certain things, which briefly sparkle and then vanish
+अदुवा खाई सभामा बस, मुला खाई बन पस	Aduwaa khaayi sabhaa maa basa, mulaa khaayi bana pasa	Choosing words and actions wisely to fit the context
+अनिकालको तोरी, सहकालको जौं	Anikaal ko tori, sahakaal ko jau	Doing things at the opportune moment
+अनिकालको मानु, दिनु न खानु	Anikaal ko maanu, dinu na khaanu	aafulai dukha pareko bela arulai sahayog garnu ki nagarnu
+अनिकालमा लाईफ जोगाउनु, आन्दोलनमा बाईक जोगाउनु	Anikaal maa life jogaunu, andolan maa bike jogaunu	Recognizing what matters most in a given context
+अनिकाले मानू, बाँडिचूडी खानू	Anikaale maanu, badi chudi khaanu	To take advantage of whatever comes your way, even if it's not ideal or appropriate
+अनुहार न दनुवार पोइ खोज्न थाली	Anuhaar na danuwaar poi khojna thaali	Looking for something new rather than being content
+अनुहार न दनुवार, पाण्‍डव सुनुवार	Anuhaar na danuhaar, pandab sunuwar	Chyamata bina furti lagunu
+अन्धाको देशमा आँखा छोप्नु, लङ्‍गडाको देशमा खुट्‍टा खोच्याउनु	Andhaa ko desh maa aankhaa chhopnu, langadaa ko desh maa khuttaa khochchyaunu	Adapting to fit in with the prevailing environment and customs
+अन्धाको सहारा लङ्गडा	Andhaa ko saahaaraa langadaa	Attempting something that is inherently ineffective or counterproductive
+अन्धाको हातमा टुकी	Andha ko hat ma tuki	Empowering someone blindly without care for the hazardous potential consequences
+अन्धोलाई ऐनाको खोजि	Andho lai ainaa ko khoji	Na chaie kura ma chaso bhegta garnu
+अन्नमा भन्दा सन्नमा जोड	Anna ma bhanda Sanna ma jod	Kind words are valued over mere food/provisions
+अन्यायको धन, कहिल्यै मेरो नभन	Anyaaye ko dhan, kahilei mero nabhan	Wealth accumulated through injustice should never be considered as rightfully one's own
+अभागी मोरो हग्न बस्यो, बाह्र हातको घोँचो पस्यो	Abhaagi moro hagna basyo, bahra haat ko ghocho pasyo	Misfortune befalls the unlucky at every turn, even when they try to avoid it
+अभागीको भाई सप्रन्छ, भाग्यमानीको छोरो सप्रन्छ	Abhaagi ko bhai sapranchha, bhaagyamaani ko chhoro sapranchha	No one can escape their destiny
+अराएको काम र भराएको मानोले कति दिन चल्छ	Araayeko kaam ra bharaayeko maano le kati din chalchha	Makeshift solutions and temporary measures can only last for so long
+अरुको बारिको काँक्रो चोर्नी, आफ्नो भने नुनको ढिको नफोर्नी	Aru ko bari ko kakro chorne, aafno bhane nun ko dhiko naforni	It is easy to find faults in others while ignoring one's own shortcomings
+अरुको लाख आमाको काख	Aru ko lakh aama ko kakh	Nothing is comparable with mother's love
+अरूले हात्ती चढे भनेर आफूले धुरी चढ्नु हुँदैन	Aru le hatti chade bhanera aafu le dhuri chadnu hudaina	One should not imitate others' mistakes, but learn from them instead
+अर्काको आङ्गको जुम्रा देख्‍ने, आफ्‍नो आङ्गको भैसी पनि नदेख्‍ने	Arka ko aang ko jumra dekhne, aafno aang ko bhaisi pani nadekhne	It is easy to point others fault but don't realize his own faults
+अर्काको गहना लगाउनु, नाक कान दुखाउनु	Arka ko gahana lagaunu, naak kaan dukhaunu	Envy over others' possessions is a cause of distress
+अर्काको नासो गलपासो	Arkaa ko naaso galpaaso	aruko saman bigrina sakxa
+अर्काको बाच्छो चाटी मुखभरी रौँ	Arka ko bachchho chaati mukh bhari rau	Speaking ill of others to impress is insincere flattery
+अर्काको बारीमा साग छ, मुटु मिचेर के लाग्छ	Arkaa ko baari maa saag chha, mutu michera k laagchha	There is no gain in envying others' prosperity and good fortune
+अर्काको बुद्धिले राजा हुनुभन्दा आफ्नै बुद्धिले जोगी हुनु बेस	Arka ko buddhi le raja hunu bhanda afnai buddhi le jogi junu besh	Aru ko muni basera thulo manxe hunu bhanda aafnaie malik aafaie bayera sano kaam garna jati hunxa
+अर्काको भर भोकभोकै मर	Arkaa ko bhar bhok bhokai mar	Relying solely on others leads to ruin
+अर्तीको कुरा घर्तीको पनि लिनुपर्छ	Arti ko kura gharti ko pani linuparchha	One should consider advice from outsiders as well as insiders
+अर्थ न बर्थ गोविन्द गाई	Artha na bartha gobinda gai	A useless person
+अलिनु पनि नखाऊँ, नूनढिकी पनि नफोरौँ	Alinu pani nakhau, nundhiki pani naforau	One should avoid both excess and deficiency
+अल्छीलाई बल्छी, मर्दलाई जाल	Alchhi lai balchhi, marda lai jaal	The use of flattery to exploit different targets
+अल्छीले जति जैसीले जान्दैन	Alchi le jati jaisi le jaandaina	A person can know more about specific thing than a general educated person
+अल्छे तिघ्रो, स्वादे जिब्रो	Alchhe tighro, swade jibro	Kaam garni jagar chaina khana mitho mitho khojni
+असारमा आली लगाए पो मंसिरमा बाली खान पाइन्छ	Asaar maa aali lagaaye po mangshi maa baali khaana paayinchha	One reaps the rewards of hard work in due time
+असारमा मीत लाए हिलामा हात, मंसिरमा मीत लाए फिलामा हात	Asar ma mit laaye hila ma haat, mangsir ma mit laaye fila ma haat	The rewards of labor vary according to the season
+असारमा सुरुवाल लगाउनेले मंसिरमा पराल चोर्छ	Asaar ma suruwal laguane le mangsir ma paral chorchha	Early and consistent hard work pays off in the long run
+अहंकारी भ्यागुताको ट्वार ट्वारै ठूलो	Ahankari bhyaguto ko twar twar nai thulo	The conceited think their own faults are small
+अँध्यारो काम खोला को गीत	Andhyaro kaam khola ko geet	Work done without proper planning is bound to fail
+आँ गर्दा अलङ्‍कार बुझ्ने	Aa gardaa alangkaar bujhne	Jati bhaneko cha tyo bhanda badi bujhne
+आँखा नदेख्‍ने नेत्रलाल, कान नसुन्‍ने कर्णकान्त	Aankha nadekhne netralaal kana nasunne karnakaanta	People who are unable or unwilling to perceive reality despite having the ability
+आँटी छोरीलाई बाघले नि खाँदैन	Aanti chhori lai baagh le ni khaadaina	Close bond between family members
+आँटेको काम झट्टै श्री गणेश	Aateko kaam jhattai shree ganesh	Tasks done with care and attention get done quickly and smoothly
+आइमाई को रुपै सत्रु, रुपै मित्रु	Ayimaayi ko rupai satru, rupai mitru	True friends accept one as they are are are, for who they are
+आइमाईको पेटमा कुरा पच्दैन	Aayimai ko pet maa kura pachhdaina	A Person who can't keep secrets
+आई बूढी मच्चिंदै, गई बूढी थच्चिंदै	Aaayi budi machchidai, gayi budi thachchidai	Come in like a lion, go out like a lamb
+आई लाग्ने माथि जाई लाग्नु	Aayi laagne maathi jaayi laagne	Biting off more than you can chew
+आउँछ समय पर्खंदैन, बग्छ खोलो फर्कंदैन	Aauchha samaye parkhadaina, bagchha khola farkadaina	Opportunity and flowing river wait for no one, be careful you don't miss out
+आए आँप गए झटारो	Aaye aanp gaye jhataaro	Try everything and explore all the ways if you have nothing to loose
+आए बाउको गए साहुको	Aaye bau ko gaye saahu ko	Taking a chance
+आकाश को राहु, पातलको केतु, एक पटक नपरी कसरी चेतु	Akash ko rahu, paataal ko ketu, ek patak napari kasari chetu?	If you don't experience it once, how will you know (or feel fear)
+आकाशको फल आँखा तरी मर्	Aakas ko fal, aankha tari mar	Aafu le napaune khaie na paune kura laie herera santhustha garni
+आकाशमा थुके मुखमा छिटा	Aakash maa thuke, mukh maa chhitaa	Talking big in front of many people may fall flat in reality
+आखाँले देखेको बिज्ञान भन्दा मनले बुझेको भगवान प्यारो	Ankha le dekheko bigyan bhanda man le dekheko bhagwan pyaro	Careless actions may have unintended consequences
+आगो ताप्नु मुढाको कुरा, सुन्‍नु बुढाको	Aago taapnu muda ko kura sunnu buda ko	Aafu vanda thulo manxe ko aardi upadesh sunna parxa
+आज घर पुगिएला त ? आफ्नै खुट्टालाइ सोध	Aaja ghar pugiyela ta? aafnai khutta lai sodha	Don't rely on others, trust your own abilities and judgment
+आज मर्यो, भोलि ओखति	Aaja maryo, bholi okhati	Dhilo vaye paxi matra kei garna thalni
+आजकालका केटी स्टाइलको भारी टाउकोमा भने डिस्को गर्ने जुम्राको ढाडी	Aajkal kaa keti style ko bhaari tauko maa bhane disko garne jumraa ko dhaadi	All style and no substance
+आजको कामलाई भोलि नभन्नु	Aaja ko kaam lai bholi nabhannu	kaam na sachnu, aaja ko kaam aajai garni / There is not time like present
+आधा गाग्रो छचल्किन्छ	Adha gagro chhachalkinchha	Half-hearted efforts are bound to fail
+आफु भलो त जगत भलो	Aafu bhalo ta jagat bhallo	afuleh pargati garda samaj ko pragati afai hunxa kinaki ek ek jana milera nai samaj banxa
+आफुले खान नपाएको अंगुर अमिलो	Aafule khaana napaayeko angur amilo	Telling bad things about a thing you can't get
+आफू ताक्छु मुडो, बन्चरो ताक्छ घुँडो	Afu taakchhu mudo, bancharo takchha ghundo	Don't be too proud, It may harm you
+आफू नमरी स्वर्ग देखिँदैन	Aafu namari swarga dekhidaina	Aafu le kei kaam gari na heri thaha hunna
+आफै त महादेव उत्तानो पर, कसले देला बर	Aafai ta mahadev uttaano par, kasle delaa bar	Implying ownself don't have enough, forget about giving others
+आफ्नै छोरी नखर्माउली, तन्नेरीलाई दोष	Aafnai chhori nakharmauli, tanneri lai dosh	Aafno dosh naheri aru laie dosh lagaune
+आफ्नो छोराछोरी र अर्काकी स्वास्नी सबैलाई राम्रो लाग्छ	Aafno chora chori ra arkaa ki swasni sabai lai ramro laagchha	A person like their things more than others things
+आफ्नो टाउको फुटे पछि मित को टाउको बेल बराबर	Aafno tauko fute pachhi mit ko tauko bel baraabar	When your own plans fail, blaming others is pointless
+आफ्नो थैली सुरक्षित राखे अर्कालाई दोष लगाउनु पर्दैन	Aafno thaili surakshit raakhe arkaa lai dosh lagaunu pardaina	If you take care of your things, you won't have to blame others for the loss
+आफ्नो थैलोको गाँठो कस्नु, अरुलाई दोष नदिनु	Aafno thailo ko gaatho kasnu, aru lai dosh nadinu	Keep your work yourself and don't blame others
+आफ्नो नुन, आफ्नै पानी, खाउ ज्वाईं कोखा तानी	Aafno nun, aafnai paani, khau juwai kokha taani	Take care of your own needs before worrying about others
+आफ्नो भाग्य आफैले बनाउनु पर्छ	Aafno bhaagya aafai le banaunu parchha	mehanat garera aafno sapana afai pura garna sakinxa rather than wait for things to happen
+आफ्नो रुचि खानु, अर्काको रुचि लाउनु	Aafno ruchhi khaanu, arkaa ko ruchi launu	Focus on your own interests, not others
+आफ्‍नो हात जगन्‍नाथ	Aafno haat jagannaath	We are responsible for our own actions and their consequences
+आमा पनि ब्युटी छोरि पनि ब्युटी बाउले गर्नु पर्ने चुलाको ड्युटी	Ama pani beauty, chori pani beauty, bau le garnu parne chula ko duty	Everyone has their own responsibilities and do their duties
+आमा बाबुको मन छोरा छोरी माथि, छोरा छोरीको मन डिङगो जुत्ता माथि	Aama baabu ko man chhora chhori mathi, chhora chori ko man dingo juttaa maathi	Parental love is unconditional while children tend to be more self-centered in their interests
+आमा बाबुलाई समस्या टार्न गार्हो, छोराछोरीलाई भने स्टाईल नै प्यारो	Aamaa baabu lai samasya taarna gahro, chhora chhori lai bhane style nai pyaaro	Parental love is unconditional while children tend to be more self-centered in their interests
+आमा-बाबा को मन छोरा तिर, छोरा को मन अर्काको छोरी तिर	Aama baba ko man chhora tira, chhora ko man arka ko chhori tira	buwa ama ko maya chora lai chora bane budi kp kura matrai sunne
+आमाको माया आँखाको डिलमा	Ama ko maya ankha ko dil maa	Mother's affection is inherent and taken for granted like the pupil that allows us to see
+आमाबाबुको मन छोराछोरी माथि छोराछोरीको मन ढुंगामुढा माथि	Aamaa baabu ko man chhoraachhori maathi choraa chhori ko man dhungaa mudaa maathi	Parental love is unconditional while children tend to be more self-centered in their interests
+आमा–छोराको ऐंचोपैंचो, बाबु–छोराको लेनदेन	Aamaa-chhoraa ko aicho paicho, baabu-chhoraa ko len den	Relationship between mother and child is based on affection, while between father and child it is more transactional
+आम्दानी चार आनाको खर्च बाह्र आनाको	Aamdani chaar aanaa ko kharchaa bahra aanaa ko	Aaye banda byaye dherai
+आयूको छोरालाई वायूको डर	Aayu ko choora lai baayu ko dar	Hunai nasakne kura dekhi daraune
+आयो गयो माया मोह, आएन गएन को हो को हो	Aayo gayo maya moha, aayena gayena ko ho ko ho	Family/friends who have always been there matter the most
+आलु खाएर पेडाको धाक	Aalu khaayera pedaa ko dhaak	Sano kaam garera thulo kaam ko dhaak dine
+अँध्याराको काम खोलाको गीत	Andhyaro ko kaam khola ko geet	Work without recognition is meaningless
+अगुल्टो पनि नठोसी बल्दैन	Agulto pani nathosi baldaina	Disagreements happen in a relationship
+इन्द्रको अगाडि स्वर्गको बयान	Indra ko agaadi swarga ko bayaan	Kei kura bare derai thaha vayeko manxe laie tei kura bare bayan garnu
+ईट को जवाफ पत्थर ले दिनु	It ko jawaaf patthar le dinu	Tit for Tat
+उही नाम्लो उही कुम्लो	Uhi naamlo uhi kumlo	jati kura garepani aakhir ma afno kaam afai sangha hunxa
+ऋण काढेर घिऊ खानु	Rin kaadhera ghiu khaanu	Gharo vaie rako bela sokhin jiwan juna khojnu
+ऋण लाग्दा नडराउनु, दिन लाग्दा डराउनु	Rin lagdaa nadaraunu, din laagdaa daraunu	Rin lagyo vane tirna sakinxa tara din lagyo vani derai samasya aauna sakxa
+ऋण लिदा पनि नलिनु, दिदा पनि नदिनु	Rin lida pani nalinu, dida pani nadinu	Rin linu ra dinu thik haiena
+एउटा थाप्लो दुईटा नाम्लो	Euta thaplo duita namlo	Euta kaam garna garo vaie rako bela arko kaam thapnu
+एक कान दुई कान मैदान	Ek kaan dui kaan maidaan	Ek jana laie kei kura vane paxi gau vari ka laie tyo kura bare thana hunxa
+एक कानले सुन्यो, अर्को कानले उडायो	Ek kaan le sunyo, arko kaan le udaayo	Aru le vaneko ko kura hawa ma udaune
+एक माघले जाडो जाँदैन	Ek maagh le jaado jaadaina	Ek choti vako kura feri feri huna sakxa
+एकता नै बल हो	Ekataa nai bal ho	Unity is strength
+ओरालो लागेको मृगलाई बाच्छाले पनि खेद्छ	Oraalo laageko mrigha lai bachchhaa le pani khedchha	Tala pare paxi sabai le hepxan
+औंला दिंदा डुँडुल्ना निल्ने	Aulaa didaa dudulnaa nilne	Give him an inch and he will take an yard, don't bite the hand that feed you
+औषधी र उपदेश मीठो हुन्‍नँ	Ausadhi ra updadesh mitho hunna	Aru le deko upadesh kasai laie ni ramro lagdaie na
+औसींमा किनेर, पुर्णेमा फाल्ने	Aunsi maa kinera, purne maa faalne	Saman derai din samma natiknu
+कङ्गालको जात छैन, बोक्सीको गाउँ छैन	Kangaal ko jaat chhaina, boksi ko gaaun chhaina	Jata pani dhalna sakne manxe ko bhar hudaie na
+कच्चा वैद्यको मात्रा यमपुरीको यात्रा	Kachchaa baidhya ko matraa yampurko yaatra	Inexperience can lead to mistakes and challenges
+कता हराइस् नौनी विलौनीमा	Kataa haraayis nauni bilauni maa	Rup pariwartan garnu
+कतै दिन, कतै रात, एकातिर भोक अर्कोतिर भात	Katai din, katai raat, ekaatira bhok arko tira bhaat	Kosaie laie dhuka paie rako bela arko manxe ramaie lo gari rako hunxa
+कसैको आहार कसैको विष	Kasai ko aahar, kasaiko bish	Eutai kura ma bhibid bichar
+कसैलाई लाखा, कसैलाई पाखा	Kasai lai kaakhaa, kasai lai paakhaa	kunailai maya garni kunailai hela garni
+कसैले तपाईं भनोस् नभनोस् आफैं मपाईं	Kasaile tapai bhanos nabhanos aafai mapai	Aafno prasansa aafai garnu
+कहिले सासूको पालो कहिले बुहारीको	Kahile saasu ko paalo kahile buhari ko	Life gives everyone a chance in their own time
+कांही नभएको जात्रा हाँडी गाउँमा	Kahi navayeko jatra haadi gau maa	Kei kaam pani thik sanga nahune
+काग कराउदै गर्छ, पिना सुक्दै गर्छ	Kaag karaudai garchha, pinaa sukdai garcha	Let the haters hate you always do what you want
+काग बाठो भयो भने गु खान्छ	Kaag batho bhayo bhane gu khanchha	Derai jaani huna hunna
+कागको नाम कागले काड्छ	Kaag ko naam kaag le kaadchha	Aafno bhadnam aafai garni
+कागको बिचमा बकुल्ला	Kaag ko bich maa bakulla	Bhinna ko bich ma hunu
+कागलाई बेल पाक्यो, हर्ष न विस्मात्	Kaag lai bel paakyo harsa na bismaat	koi manxe laie nachaie ne kura dinu
+कागले कोइलिलाइ काले भन्छ	Kaag le koili lai kaale bhanchha	Aafu laie naheri aaru ko laie matra bhanu
+कानो गोरुलाई औंसी न पूर्णिमा	Kano goru lai aunshi na purnima	Kaam garna naparni manxe laie sabai din ek naas hunxa
+काम कुरो एकातिर कुम्लो बोकी ठिमीतिर	Kaam kuro ekaa tira kumlo boki Thimi tira	Ek tira kaam xa arko tira jani
+काम गर्दा नोकरले जसरी, खाना खाँदा राजाले जसरी	Kaam garda nokar le jasari, khaba khada raja le jasari	Kaam garna pare paxi kaam garna ni tayar huni ani khana base paxi khana ni majja le khani
+काम गर्ने कालु मकै खाने भालु	Kaam garne kaalu, makai khaane bhaalu	Euta le kaam garni arko le pasansa/upahar paune
+काम गर्ने हनुमान, पगदी कस्ने ढेडु	Kaam garne hanumaan, pagadi kasne dhedu	One does the work other gets the credit
+काम न धाम पेटभरी माम	Kaam na dhaam pet bhari maam	Kaam naie nagari pet bhari khani
+काम साँचे आफूलाई, खान साँचे अरूलाई	Kaam saache aafulai, khaana saache arulai	If you want something done right, do it yourself
+कामीको बिहे, अठार खाँचो	Kaami ko bihe, athaara khaacho	kunai pani euta kaam garna vanda pahila aru dherai kaam garna parni
+कालो अक्षर भैँसी बराबर	Kaalo akshar bhaisi barabar	Doesn't know to read and write
+किन रोइस् मङ्‍गले आफ्‍नै ढंगले	Kina royis mangale aafnai dhangale	aafaile garda kaam bigranu
+कुकुर भुक्दै गर्छ, हात्ती लम्कँदै गर्छ	Kukur bhukdai garchha, hatti lamkidai garchha	Little people will try to stop you, keep moving
+कुकुरलाई मासु पैंचो	Kukur lai maasu paicho	Lending things to someone who doesn’t know the value or they will never return the thing
+कुकुरलाई घ्यू पच्दैन	Kukur lai ghyu pachdaina	Naramro lai jaty ramro garepani pachdaina
+खाइलाग्दो देख्दा पोसो, चपाउँदा मैलो पित्तल	Khailaagdo dekhda poso, chapauda mailo pittal	Something that looks attractive or valuable at first glance may turn out to be worthless upon closer inspection
+खाने मुखलाई जुँगाले छेक्दैन	Khaane mukh lai jungaa le chhekdaina	Where there is will there is way
+खान्न–खान्न लोकाचार, खाएपछि माना चार	Khanna khanna lokachaar, khaaye pachhi maanaa chaar	Acting shy about receiving benefits but taking more than your share when the benefits come
+गर्जने बादल वर्षदैन	Garjane baadal barshadaina	Thunder clouds do not always give rain
+गु पुछेको टालो पनी बेलामा काम लाग्छ	Gu puchheko taalo pani bela maa kaam laagchha	One man's trash is another man's wealth
+गु लाई चलाए गन्ध	gu lai chaleye gandha	Bad things have bad results
+गोलीको घाउ निको हुन्छ, बोली को हुँदैन	Goli ko ghau niko hunchha, boli ko hudaina	pain inflicted by world never heals so be wise and aware about how you talk and converse with people
+घाँटी हेरेर हाड निल्नु	Ghaati herera haad nilnu	To make purchases that only align with your income and budget
+घोडा चड्ने मान्छे लड्छ	Ghoda chadne maanche ladchha	Trying without failing is impossible
+चिन्‍नु न जान्‍नु घचेडी माग्नु	Chinnu na jannu ghachedi maagnu	Seeking assistance from someone you don't know or have no prior relationship with
+चौटा खान गएकी बूढी झोलमा डुबेर मरी	Chauta khaana gayeki budi jhol maa dubera mari	Greed leads to even bigger losses
+जसको बाँदर उसैले नचाउँछ	Jasko baadar, usaile nachauchha	Owner of the property gets to use it for their advantage
+जसको लाठी उसको भैंसी	Jasko lathi usko bhaisi	Jo snagha srot sadhan xa uni mathi hunxa
+जसको शक्ति, उस्को भक्ति	Jasko shakti, usko bhakti	Jo sangha sakhti xa sabai usai ko jai jai kar garxan
+जसको सीता खानु, उसकै गीता गाउनु	Jasko sita khanu, uskai gita gaunu	Jasko nun khayeko xa usaiko ghunghan gaunu
+जसरी आयो, त्यसरी गयो	Jasari aayo, tesari gayo	chitha parera aako paisa useless kaam mai karcha hunxa
+जस्ले पैसालाई चिन्दैन, तेस्लाई पैसा ले पनी चिन्दैन	jasle paisa chindeina teslai paisa le chindeina	If you do not recognize the value of money, you will never have plenty of it
+जसले मह काढ्छ, उसले हात चाट्छ	Jasle maha kaadchha usle haat chaatchha	Fruits of labour are sweet/ The one who does hard work reaps his rewards
+जस्तो गुरु उस्तै चेला	Jasto guru ustai chelaa	teacher leh j sikayo student leh tehi sikxa ra they become similar
+जस्तो देश उस्तै भेष	Jasto desh, ustai bhesh	In Rome do as the romans do
+जस्तो नाम उस्तै काम	Jasto naam ustai kaam	Jasko j naam xa usle testai prakar ko kaam garxa
+जस्तो रोप्यो, तेस्तै फल्छ	Jasto ropyo testai falchha	afu leh jasto byabhar garyo testai byabhar aru leh afu prati garxan
+जहाँ दही, त्यहीँ बाहुनको सही	Jaha dahi, tyahi baahun ko sahi	Paisa jaha aauxa tehaaa baahun ko sahi hunxa
+जहाँ पुग्दैन रवि, त्यहाँ पुग्छन् कवि	Jaha pugdaina ravi, tyaha pugchhan kabi	gahirahi ma kabi haru pugxan jaha samanya manxe pugdainan
+जिउदाको जन्ती, मर्दाको मलामी	Jiuda ko janti mardaa ko malaami	A friend in need is the friend indeed
+जुन गोरुको सिंग छैन उसैको नाम तिखे	Jun goru ko singh chhaina uskai naam tikhe	A person's behavior or actions do not align with their name or reputation
+जुन जोगी आएपनि कानै चिरेको	Jun jogi aaye pani kanai chireko	Every person who does the same thing have similar characteristics/ Everyone who does no work at all
+जुन थालमा खायो, त्यही थालमा हग्छ	Jun thaal maa khaayo, tehi thaal maa hagchha	To insult or disrespect a person who helped you during your tough times
+जो होचो उसको मुखमा घोचो	Jo hocho usko mukh maa ghocho	Whoever is the lowest (in terms of rank/status….etc) gets bullied
+टुहुराको पनि दिन फर्कन्छ	Tuhura ko pani din farkanchha	Every dog has its day. / Everyone has their days
+ढुंगा खोज्दा देउता मिल्नु	Dunga khojda deuta milnu	To get something better while searching for something ordinary
+ताक परे तिवारी नत्र गोतामे	Taak pare tiwari natra gotame	Being an opportunist
+तित्राको मुखै वैरी	Titra ko mukhai bairi	If you too much talk, you will be in trouble
+तैं रानी मै रानी, को भर्ला कुवाको पानी	Tai raani mai raani, ko bharlaa kuwa ko paani	all are avoiding the work
+थुतुनो र मुतुनो जोगाउनु	Thutuno ra mutuno jugaunu	Control your mouth and sexual desire
+थोपा थोपा मिलेर सागर बन्छ	Thopa thopa milera saagar banchha	A penny saved is a penny earned
+दु:खीलाई दिन्छु नभन्‍नू, विधवालाई लान्छु नभन्‍नु	Din ujeli suti bitai, raat ujeli biskun sukai	Dukhi lai dinchhu nabhannu, bidhuwa lai laanchhu nabhannu
+दुर्गंधित भन्ने थाहा पाएपछि उधिनिरहनु पर्दैन	Durgandhi bhanne thaahaa paayepachii udhini rahanu pardaina	Once you know it's smelly, there's no need to dig it up
+दुवै हातमा लड्डु	Dubai haat ma laddu	To gain advantages or positive outcomes in all situations or contexts
+दुश्मन खोज्न टाढा जानु पर्दैन	Dusman khojna tada janu pardaina	You don't have to go to far to find an enemy familiarity breeds contempt
+धन भने पछि महादेव को पनि तीन नेत्र	Dhan bhane paxi mahadev ko pani tin netra	Money really matters
+धान खाने मुसा, चोट पाउने भ्यागुतो	Dhaan khaane musha, chot paune bhyaguto	One get punish for other's mistakes
+नजाने गाउँको बाटो नसोध्नु	Najaane gau ko bato nasodhnu	Don't waste time on things that do not concern you
+नजिकको तीर्थ हेला	Najik ko tirtha hela	The value of things when we use regularly is diminished
+नपत्याउने खोलाले बगाउँछ	Naptyaune khola le bagauchha	The underestimate thing turns out to be a formidable force
+नभरेको गाग्रो छछल किन्छ	nabhareko gagro chalkanxa	Empty vessel sounds much. Half knowledge is dangerous
+नमच्चिने पिङको सय झड्का	Namachine ping ko saya jhadkaa	Someone lacking skills or qualifications pretends to be capable or agile, despite their incompetence
+नाच्न नजान्ने आँगन टेढो	Naachna najaanne agan tedo	Placing the blame on something after being unable to do a task
+नाफा भए पेशा, घाटा भए दशा	Nafa bhaye pesha, ghata bhaye dasha	If you profit, it's a job, if you make a loss you've got bad luck
+पर्छ टर्छ	Parchha tarchha	As it comes, so it goes
+पशुपतिको जात्रा, तिघ्राको व्यापार	Pashupati ko jaatraa, tighraa ko byaapar	To kill two birds with one stone
+पहिले गरेर देखाउनु अनि भन्नु	Pahile garera dekhaunu ani bhannu	First do it then tell it. or Action speaks louder than words
+पाप धुरीबाट कराउँछ	Paap dhuri baata karauchha	Engaging in wrongful actions discreetly or behind the scenes
+फुटेको खप्पर जहां गए पनि ठक्कर	futeko khappar jaha gaye pani thakkar	The broken pot gets bumped wherever it goes
+फोश्रो आशा न देखाऊ नु	fosre asha na dekhaunu	Promise only if you can make it
+बनको बाघले खवोस नखावोस, मनको बाघले खान्छ	Banko baagh le khaaos nakhaaos, man ko bhaag le khaanchha	Anxiety is harmful for you. One should not be oversensitive, or always think of negative situations
+बाघ बुढो भयो भने नि शिकार गर्न छाड्दैन	Baagh budo bhaye pani sikaar garna chhaddaina	If it's in your nature you won't ever stop
+बाँदर को पुच्छर, लौरो न हतियार	Badar ko puchchhar lauro na hatiyaar	Being useless
+बाँदरको हातमा नरिवल	Badar ko haat maa nariwal	For a fragile thing or responsibility falling in the hands of irresponsible people
+बाध दुब्लाएर बिरालो हुदैन	Baag dublaayera biralo hudaina	True nature or essence of something, does not change merely
+बार्‍ह छोरा तेर्‍ह नाति, बूढाको मन तरुनी माथि	Bahra chhoraa tehra naati, buda ko man taruni mathi	Guys gonna always lust after other women
+बिद्या नै धन हो	Bidhya nai dhan ho	Education is Wealth
+बिहे गर्ने अलमल मा केटी खोजै बिर्सियो	Bihe garne almal ma kt khojnai birsiyo	Mukhya kam nai birsinu
+बैगुनीलाई गुनले मार्नु	Baiguni lai gun le maarnu	Kill the ungrateful with gratitude
+बोल्नेको पिठो बिक्छ, नबोल्नेको चामल पनि बिक्दैन	Bolne ko pitho bikchha, nabolne ko chaamal pani bikdaina	person who talks and socialize gains the upperhand
+भाग्यमानीको भूतै कमारो	Bhagyamaani ko bhutai kamaaro	Someone else does the work for a lucky person
+भुक्ने कुकुरले टोक्दैन	Bhukne kukur le tokdaina	Barking dog seldom bites
+भोको पेटले सोच्न सक्दैन	Bhoki pet le sochna sakdaina	When hungry people can't think straight
+भोजन हैन भोक मिठो	Bhojan haina bhok mitho	Hunger doesn't judge the taste of food
+मन परेको फुल सुके पनी रसिलो	Man pareko ful suke pani rasilo	If you like it enough, even the flaws are attractive
+माग्ने लाई छान्ने अधिकार हुँदैन	Maagne lai chhanne adhikaar hudaina	Beggers are not choosers
+माझीको घर माछा उपहार	Majhi ko ghar machha upahar	Gifting something one already has plenty of
+मान्छेमा ईख, सर्पमा बिष नभए कोही डराउदैन	Maanche maa ikh, sarpa maa bish nabhaye kohi daraudaina	Beware of a man's pride like you would a snake's poison
+मामा को घोडामा भान्जा को हे हे	Mama ko ghoda maa bhanjaa ko he he	One enjoys in others property
+माहाभारत सकियो तर सीता कोस्को आमा?	Mahabharat sakiyo tara Sita kosko aama?	Even after an epic issue is resolved, people still obsess over minor or irrelevant details
+मुख मा राम राम बगली मा छुरा	Mukh maa ram ram bavali maa chhuraa	Two-faced people/ The ones who say good things in front of you and back-bite later
+मूर्खको धन रहँदैन	Marukha ko dhan rahadaina	A foolish person tends to spend money too quickly
+मेरो गोरूको बार्‍है टक्‍का	Mero goru ko bahrai takkaa	Being overly stubborn
+मेहनतको फल मिठो हुन्छ	Mehenat ko fal mitho hunchha	Fruits of labor are always sweet
+मौका मा चौका हान्न जान्नु पर्छ	Maukaa maa chaukaa hanna jannu parchha	Seize the opportunity
+मुर्ख तीन पटक हास्छ	Murkha teen patak haaschha	A foolish laughs three times
+राजाको अँगाडि र घोडाको पछाडि नलाग्नु, लात खाइन्छ	Raajaa ko agaadi ra ghodaa ko pachaadi nalaagnu, laat khaayinchha	Know who are prideful and who are incompetent when deciding who to follow
+रात भरि करायो, दक्षिणा हरायो	Raat bhari karaayo, dakshina harayo	Getting much less than expected / You cant always get what you expect
+लगनको बेला हगन	Lagan ko bela hagan	Engaging in inappropriate or disrespectful behavior during moments of significance
+लिखितमको अघाडी बखतम चल्दैन	Likhitam ko agaadi bakhatam chhaldaina	Written proof is more powerful than oral proof
+लुट को धन फुफु को श्राध	Loot ko dhan fupu ko shraadh	Easy come easy go
+लोग्ने स्वास्नीको झगडा परालको आगो	Logne swasni ko jhagada paraal ko aago	Husband & wife's quarrel subsides in a short time
+संगत गुना को फल	Sangat guna ko fal	Positive actions and virtuous behavior lead to favorable outcomes
+साउँको भन्दा ब्याजको माया	Saunko bhanda byaaj ko maya	One giving importance to something of lower value
+साउनको भेललाई बेलामा रोक्न सके बाली राम्रो हुन्छ	Saaun ko bhel lai belaa maa rokna sake baali ramro hunchha	It's better to stop a event that we don't want to go forward in its early stages
+सार्कीको सरापले डिँगो मर्दैन	Saarki ko saraap le dingo mardaina	Hate from someone of lower power status is no concern of one in higher status
+सियो हराएको दमाइँ जस्तो	Siyo haraayeko damai jasto	Acting like you have lost all your identity
+सुख पाए ससुराली जानू, दु:ख पाए मीतकहाँ जानू	Sukhan paaye sasurali jaanu, dukha paaye mit kahaa jaanu	In-laws only care for you when you have everything but only your true friend stays by you when you are in your lowest
+सुगुरलाई स्वर्ग जान्छस् भन्दा त्यहाँ गु खान पाईन्छ भनी उल्टो सोध्छ	Sungur lai swarga jaanchhas bhandaa tyaha gu khaana paayinchha bhanera ulto sodhchha	Someone not recognizing the value of thing he/she is being offered
+सुनलाई खोल लाउनु पर्दैन	Sun lai khol launu pardaina	Something of greater value doesn't need to be looked after
+सूर्यको अगाडि बत्ती	Surya ko agadi batti	Doing something of little to no importance in grand scheme of things
+स्याल कराउनु कुखरा हराउनु	Syaal karaunu kukhura haraunu	Someone being rightfully afraid of past trauma or thing they dealt with in the past
+स्वास्नीको आगाडी किम जोङ्ग पनी बिरालो	Swasni ko agaadi Kim Jong pani biraalo	Even men in power are afraid of their wives
+स्वास्नीमान्छेको थर छैन लोग्ने मान्छेको घर छैन	Swasni maanchhe ko thar chhaina, logne maanchhe ko ghar chhaina	Not having something of importance to one's identity by him/herself anymore
+हँसियाको बिहेमा खुर्पाको गीत	Hasiyaa ko bihe maa khurpaa ko geet	Being happy for someone's sucess than that person themselves
+हग्नन गयो कन्डो बिर्सेयो	Hagna gayo kando birseyo	Forgetting the major/important thing you need for some work or an activity
+हग्नेलाई भन्दा देख्‍नेलाई लाज	Hagne lai bhandaa dekhne lai laaj	Feeling second hand embarrassment of one's action
+हग्ने बेलामा चक खोज्नु	hagne bela ma chak khojnu	antim samaya ma kehi garnu
+हडबड को काम गड्बड हुन्छ	Hadbad ko kaam gadbad hunchha	The work done in hurry is often wrong
+हरेस खाए नि चरेस नखानु	Hares khaaye ni charesh nakhaanu	It's okay to idulge in bad habits but never give up on your life or the thing you are pursing
+हर्‍रो नपाउनेले जाईफल को धाक	Harro napaune le jaifal ko dhaak	One who doesn't even posses a small thing of value, faunting even a bigger thing of much greater value
+हलेदो भन्ने थाहा पाएपछि कोट्याउनु पर्दैन	Hadelo bhanne thaahaa paaye pachhi kotyaunu pardaina	If you know the person, you won't need the details
+हल्लिएको दाँत एकदिन फुक्लन्छ	Halliyeko daat ek din fuklanchha	There eventually is bound be consequences of ones actions
+हातमा पुस्तक मनमा दश थोक	Haat maa pustak, man maa das thok	Overthinking too much, when you need to do the real work
+हाती को दुइटा दात हुन्छ, एउटा खाने अर्को देखाउने	Haatti ko dui woata daant hunchha, euta khaane, arko dekhaaune	Cruelty under politeness
+हात्ती आयो हात्ती आयो फुस्सा	Hatti aayo hatti aayo fussaa	Not getting anything as expected or promised
+हात्ती छिर्‍यो पुच्छर अड्क्यो	Haatti chhiryo, puchhar adkyo	Big problems are resolved but the small one is holding it
+हात्तीको मुखमा जीरा	Hatti ko mukh maa jira	A drop in the ocean
+हावा नचली पात हल्लिंदैन	Hawa nachali paat hallidaina	Bigger event affecting the outcome of smaller event
+हिराको मोल किराले जान्दैन	Hira ko mol kira le jandaina	Insects don't know the value of diamond
+हुने बिरुवाको चिल्लो पात	Hune beruwa ko chillo paat	The prodigies display talent from an early age
+हुने हार, दैव नटार	Hune haar daiba nataar	No one can escape their destiny
+हेर्दाको राम्रो, दिन खानको चाम्रो	Herda ko ramro dina khaana ko chamro	Action not backing up the things you are saying
+हेर्नेको र छेर्नेको भर हुँदैन	Herne ko ra chherne ko bhar hudaina	Don't trust fortune tellers just like you can't trust people with diarrhea (alternately don't trust watchers or cowards)

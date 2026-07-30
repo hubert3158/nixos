@@ -1,5 +1,5 @@
 # SDDM Display Manager configuration — astronaut theme (japanese_aesthetic)
-# Animated Japanese login screen; part of the Ink & Wave design system
+# Animated Japanese login screen; part of the Himal design system
 # (docs/THEME.md). Theme variants: astronaut, japanese_aesthetic, pixel_sakura,
 # black_hole, purple_leaves, ... — switch via the `themeVariant` option.
 #
@@ -18,7 +18,7 @@ let
     themeConfig = {
       # ── type ──
       Font = "Maple Mono NF";
-      HeaderText = "「 波 に 乗 れ 」";
+      HeaderText = "॥ उ का लो ॥";
       RoundCorners = 12; # shell radius from docs/THEME.md
 
       # ── push the artwork back so the ink chrome reads on top of it ──

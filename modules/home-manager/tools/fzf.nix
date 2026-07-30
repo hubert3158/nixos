@@ -1,4 +1,4 @@
-# FZF fuzzy finder — Ink & Wave (lib/palette.nix, docs/THEME.md)
+# FZF fuzzy finder — Himal (lib/palette.nix, docs/THEME.md)
 { config, lib, pkgs, palette, ... }:
 
 let

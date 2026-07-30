@@ -165,7 +165,7 @@ in {
   };
 
   fonts.packages = with pkgs; [
-    # Maple Mono NF — primary terminal/UI mono (Ink & Wave, docs/THEME.md)
+    # Maple Mono NF — primary terminal/UI mono (Himal, docs/THEME.md)
     maple-mono.NF
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono

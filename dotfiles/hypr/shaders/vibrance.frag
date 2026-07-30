@@ -1,5 +1,5 @@
 #version 300 es
-// Vibrance screen shader — Ink & Wave (docs/THEME.md)
+// Vibrance screen shader — Himal (docs/THEME.md)
 // Gently saturates muted colors while leaving already-vivid pixels alone
 // (vibrance, not raw saturation — skin tones and pastels stay natural).
 // Wired via decoration:screen_shader in dotfiles/hypr/hyprland.conf.

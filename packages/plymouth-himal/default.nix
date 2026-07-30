@@ -1,4 +1,4 @@
-# 「墨と波」 Ink & Wave — Plymouth boot splash
+# Himal Himal — Plymouth boot splash
 #
 # The boot splash used to be stock NixOS (plymouth's default theme), which made
 # it the one surface on the machine that didn't speak the design system —
@@ -18,20 +18,20 @@
   lib,
   stdenvNoCC,
   imagemagick,
-  noto-fonts-cjk-sans,
+  noto-fonts,
   palette,
   colors,
 }:
 
 let
-  themeName = "ink-wave";
+  themeName = "himal";
 
   # Plymouth's script language wants normalized channel floats, not hex.
   inkTop = colors.norm palette.sumiInk0;
   inkBottom = colors.norm palette.sumiInk1;
 
   script = ''
-    // 「墨と波」 Ink & Wave — generated from lib/palette.nix, do not hand-edit.
+    // Himal Himal — generated from lib/palette.nix, do not hand-edit.
     // Composition: title mark centred, caption beneath, thin progress rule below.
 
     Window.SetBackgroundTopColor(${inkTop});
@@ -40,14 +40,14 @@ let
     screen_w = Window.GetWidth();
     screen_h = Window.GetHeight();
 
-    // ── 「墨と波」 ───────────────────────────────────────────────────────
+    // ── Himal ──────────────────────────────────────────────────────
     mark.image  = Image("mark.png");
     mark.sprite = Sprite(mark.image);
     mark.x = (screen_w - mark.image.GetWidth())  / 2;
     mark.y = (screen_h - mark.image.GetHeight()) / 2 - 40;
     mark.sprite.SetPosition(mark.x, mark.y, 1);
 
-    // ── 「 波 に 乗 れ 」 ────────────────────────────────────────────────
+    // ── ukalo ───────────────────────────────────────────────────
     caption.image  = Image("caption.png");
     caption.sprite = Sprite(caption.image);
     caption.x = (screen_w - caption.image.GetWidth()) / 2;
@@ -117,7 +117,7 @@ let
   '';
 in
 stdenvNoCC.mkDerivation {
-  pname = "plymouth-theme-ink-wave";
+  pname = "plymouth-theme-himal";
   version = "1.0";
 
   dontUnpack = true;
@@ -133,22 +133,25 @@ stdenvNoCC.mkDerivation {
     # imagemagick shells out to fontconfig, which wants a writable cache dir
     export HOME="$NIX_BUILD_TOP"
 
-    # Located with find rather than a glob: the font lives at
-    # share/fonts/opentype/noto-cjk/, and a hand-written glob silently yields
-    # an empty -font argument if that layout ever shifts.
-    font="$(find ${noto-fonts-cjk-sans}/share/fonts -name 'NotoSansCJK-VF.otf.ttc' | head -n1)"
-    [ -n "$font" ] || { echo "Noto Sans CJK font not found" >&2; exit 1; }
+    # Located with find rather than a glob: a hand-written glob silently
+    # yields an empty -font argument if the package layout ever shifts.
+    #
+    # Devanagari is safe on this surface even though the initrd carries no
+    # fonts: both marks are rasterised to PNG here, at build time. Only the
+    # runtime status messages below go through Image.Text, and those are ASCII.
+    font="$(find ${noto-fonts}/share/fonts -name 'NotoSansDevanagari.ttf' | head -n1)"
+    [ -n "$font" ] || { echo "Noto Sans Devanagari font not found" >&2; exit 1; }
 
-    # 「墨と波」 — the design system's own name, crystalBlue on ink
+    # Himal — the design system's own name, crystalBlue on ink
     magick -background none -fill '${palette.crystalBlue}' \
       -font "$font" -pointsize 68 -kerning 6 \
-      label:'「墨と波」' \
+      label:'॥ हिमाल ॥' \
       mark.png
 
-    # 「 波 に 乗 れ 」 — same line as the lock screen and the fastfetch header
+    # ukalo — the climb; same line as the lock screen and SDDM
     magick -background none -fill '${palette.fujiGray}' \
       -font "$font" -pointsize 18 -kerning 2 \
-      label:'「 波 に 乗 れ 」' \
+      label:'॥ उ का लो ॥' \
       caption.png
 
     # progress rule: sumiInk4 track, crystalBlue fill (scaled at runtime)
@@ -170,8 +173,8 @@ stdenvNoCC.mkDerivation {
     # (nixos/modules/system/boot/plymouth.nix), so it must be absolute.
     cat > "$dir/${themeName}.plymouth" <<EOF
 [Plymouth Theme]
-Name=Ink & Wave
-Description=Kanagawa Wave boot splash (docs/THEME.md)
+Name=Himal
+Description=Himal boot splash, Kanagawa Wave palette (docs/THEME.md)
 ModuleName=script
 
 [script]
@@ -183,7 +186,7 @@ EOF
   '';
 
   meta = {
-    description = "Kanagawa Wave (Ink & Wave) Plymouth boot splash";
+    description = "Himal Plymouth boot splash (Kanagawa Wave palette)";
     platforms = lib.platforms.linux;
   };
 }

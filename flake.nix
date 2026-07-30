@@ -26,7 +26,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Kanagawa flavor for yazi (Ink & Wave, docs/THEME.md)
+    # Kanagawa flavor for yazi (Himal, docs/THEME.md)
     kanagawa-yazi = {
       url = "github:dangooddd/kanagawa.yazi";
       flake = false;
@@ -41,7 +41,7 @@
     gen-luarc,
     ...
   }: let
-    # Ink & Wave palette — single machine-readable source of truth for .nix
+    # Himal palette — single machine-readable source of truth for .nix
     # surfaces (docs/THEME.md is the human-readable companion).
     # `colors` re-encodes those hexes for surfaces that don't take #RRGGBB
     # (hyprland rgb(), GTK rgba(), fastfetch SGR escapes, fuzzel bare hex).
@@ -152,8 +152,10 @@
                 modules.tools.htop.enable = true;
                 modules.tools.fastfetch.enable = true;
                 modules.tools.cava.enable = true;
-                # 七十二候 microseason clock — waybar/neovim/fastfetch all read it
-                modules.tools.sekki.enable = true;
+                # Bikram Sambat calendar — waybar/neovim/fastfetch all read it
+                modules.tools.patro.enable = true;
+                # Nepali proverbs — dashboard footer + SUPER+U
+                modules.tools.ukhaan.enable = true;
 
                 modules.packages.enable = true;
                 # Heavy Java IDE suite only where Java work happens

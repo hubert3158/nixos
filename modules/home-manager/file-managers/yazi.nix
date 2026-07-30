@@ -1,4 +1,4 @@
-# Yazi file manager configuration — Kanagawa flavor (Ink & Wave, docs/THEME.md)
+# Yazi file manager configuration — Kanagawa flavor (Himal, docs/THEME.md)
 { config, lib, pkgs, inputs, ... }:
 
 let

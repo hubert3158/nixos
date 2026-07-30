@@ -1,7 +1,7 @@
-// Waybar — 「墨と波」 Ink & Wave (docs/THEME.md)
+// Waybar — Himal Himal (docs/THEME.md)
 //
 // Three frosted ink islands. Left is identity (os · workspaces · window · now
-// playing), centre is time (七十二候 microseason · clock · weather), right is
+// playing), centre is time (Bikram Sambat date · clock · weather), right is
 // state (vitals · radios · power).
 //
 // Live-editable: symlinked from ~/.config/waybar/config.
@@ -25,7 +25,7 @@
         "custom/cava"
     ],
     "modules-center": [
-        "custom/sekki",
+        "custom/patro",
         "clock",
         "custom/weather"
     ],
@@ -52,22 +52,22 @@
         "format": "󱄅",
         "tooltip": false,
         "on-click": "fuzzel",
-        "on-click-right": "sekki notify"
+        "on-click-right": "patro notify"
     },
 
     "hyprland/workspaces": {
         "format": "{icon}",
         "format-icons": {
-            "1": "一",
-            "2": "二",
-            "3": "三",
-            "4": "四",
-            "5": "五",
-            "6": "六",
-            "7": "七",
-            "8": "八",
-            "9": "九",
-            "10": "十"
+            "1": "१",
+            "2": "२",
+            "3": "३",
+            "4": "४",
+            "5": "५",
+            "6": "६",
+            "7": "७",
+            "8": "८",
+            "9": "९",
+            "10": "१०"
         },
         "on-click": "activate",
         "on-scroll-up": "hyprctl dispatch workspace e-1",
@@ -130,13 +130,14 @@
 
     // ── centre ──────────────────────────────────────────────────────────
 
-    // 七十二候 — the current five-day microseason (lib/sekki.nix).
-    // Changes ~73 times a year; polled hourly because that costs nothing.
-    "custom/sekki": {
-        "exec": "sekki waybar",
+    // Bikram Sambat — today's Bikram Sambat date (lib/patro.nix).
+    // Changes once a day; polled hourly because that costs nothing and keeps
+    // the bar honest across midnight without a timer of its own.
+    "custom/patro": {
+        "exec": "patro waybar",
         "return-type": "json",
         "interval": 3600,
-        "on-click": "sekki notify",
+        "on-click": "patro notify",
         "tooltip": true
     },
 

@@ -1,4 +1,4 @@
-# Fuzzel application launcher — Ink & Wave (lib/palette.nix, docs/THEME.md)
+# Fuzzel application launcher — Himal (lib/palette.nix, docs/THEME.md)
 { config, lib, pkgs, palette, colors, ... }:
 
 let
@@ -45,7 +45,7 @@ in
           inner-pad = 10;
         };
 
-        # Kanagawa Ink & Wave — matches waybar/hyprland/swaync (docs/THEME.md).
+        # Kanagawa Wave — Himal — matches waybar/hyprland/swaync (docs/THEME.md).
         # fuzzel takes bare RRGGBBAA, no '#'.
         colors = {
           background = ink.fuzzel palette.sumiInk3 "e6";

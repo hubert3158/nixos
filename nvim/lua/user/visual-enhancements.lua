@@ -1,10 +1,11 @@
 -- Statusline + bufferline. Loaded via lz.n on DeferredUIEnter.
 -- Dashboard config lives in plugin/dashboard.lua (must be eager for first paint).
 --
--- 「墨と波」 Ink & Wave (docs/THEME.md). The statusline is a hand-rolled
+-- Himal Himal (docs/THEME.md). The statusline is a hand-rolled
 -- kanagawa theme rather than lualine's bundled one, for two reasons:
---   · the mode cap is a kanji (常 挿 視 命 …), and each mode owns a pigment,
---     so the left end of the bar is a colour you read before you read text;
+--   · the mode cap is a three-letter tag (NOR INS VIS CMD …), and each mode
+--     owns a pigment, so the left end of the bar is a colour you read
+--     before you read text;
 --   · the segments are the same ink ramp as the waybar islands, so the two
 --     bars stacked on one screen read as one surface.
 --
@@ -71,27 +72,29 @@ local G = {
 	tree = "\u{F0E56}", -- md file-tree
 }
 
--- ── mode → kanji ───────────────────────────────────────────────────────
--- 常 usual · 挿 insert · 視 look · 行 line · 塊 block · 選 select
--- 換 replace · 命 command · 端 terminal · 確 confirm · 続 more
-local MODE_KANJI = {
-	["NORMAL"] = "常",
-	["O-PENDING"] = "常",
-	["INSERT"] = "挿",
-	["VISUAL"] = "視",
-	["V-LINE"] = "行",
-	["V-BLOCK"] = "塊",
-	["SELECT"] = "選",
-	["S-LINE"] = "選",
-	["S-BLOCK"] = "選",
-	["REPLACE"] = "換",
-	["V-REPLACE"] = "換",
-	["COMMAND"] = "命",
-	["EX"] = "命",
-	["TERMINAL"] = "端",
-	["CONFIRM"] = "確",
-	["MORE"] = "続",
-	["SHELL"] = "端",
+-- ── mode → cap ─────────────────────────────────────────────────────────
+-- Three letters, one cell each, drawn from the terminal's own face. Every
+-- cap is the same width so the bar never reflows when the mode changes, and
+-- the same set is mirrored by the tmux session pill one layer down
+-- (modules/home-manager/programs/tmux.nix).
+local MODE_CAP = {
+	["NORMAL"] = "NOR",
+	["O-PENDING"] = "NOR",
+	["INSERT"] = "INS",
+	["VISUAL"] = "VIS",
+	["V-LINE"] = "V-L",
+	["V-BLOCK"] = "V-B",
+	["SELECT"] = "SEL",
+	["S-LINE"] = "SEL",
+	["S-BLOCK"] = "SEL",
+	["REPLACE"] = "REP",
+	["V-REPLACE"] = "REP",
+	["COMMAND"] = "CMD",
+	["EX"] = "CMD",
+	["TERMINAL"] = "TRM",
+	["CONFIRM"] = "CNF",
+	["MORE"] = "MOR",
+	["SHELL"] = "TRM",
 }
 
 -- ── theme ──────────────────────────────────────────────────────────────
@@ -145,8 +148,8 @@ local function lsp_names()
 end
 
 function M.setup()
-	local sekki = require("user.sekki")
-	sekki.setup()
+	local patro = require("user.patro")
+	patro.setup()
 
 	-- Refresh lualine when recording macros so the REC indicator shows up,
 	-- and notify loudly — a stuck accidental recording silently disables
@@ -184,7 +187,7 @@ function M.setup()
 				{
 					"mode",
 					fmt = function(str)
-						return " " .. (MODE_KANJI[str] or str) .. " "
+						return " " .. (MODE_CAP[str] or str) .. " "
 					end,
 					padding = 0,
 				},
@@ -240,14 +243,14 @@ function M.setup()
 				{ "filetype", colored = true, icon_only = false },
 			},
 			lualine_y = {
-				-- 七十二候 — the current microseason, quietly, in chrome grey.
+				-- Bikram Sambat — today's date, quietly, in chrome grey.
 				-- Empty (and therefore invisible) until the async fetch lands.
 				{
 					function()
-						return sekki.segment()
+						return patro.segment()
 					end,
 					cond = function()
-						return sekki.current ~= nil
+						return patro.current ~= nil
 					end,
 					color = { fg = P.springViolet, gui = "italic" },
 				},

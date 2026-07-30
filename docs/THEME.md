@@ -1,9 +1,26 @@
-# 「墨と波」 Ink & Wave — Design System
+# Himal Himal — Design System
 
-One visual identity across the whole machine: **Kanagawa (wave)** — the palette of
-Hokusai's *Great Wave off Kanagawa*. Deep sumi-ink backgrounds, washed paper
-foregrounds, and sparing mineral-pigment accents. Neovim and Helix already spoke
-this language; the desktop now speaks it too.
+One visual identity across the whole machine. The palette is **Kanagawa
+(wave)** — deep sumi-ink backgrounds, washed paper foregrounds, sparing
+mineral-pigment accents. That name stays: it is upstream, shared with Neovim,
+kitty and Helix, and renaming a colour scheme only breaks the ability to look
+it up.
+
+The *identity* on top of it is Himal — himal, the snow mountains. Deep ink
+below, thin cold light above, and a script that belongs to the person using
+the machine. Nepali is the system language wherever the system speaks.
+
+**The script rule, which every surface below follows:** Nepali *language*
+everywhere, Devanagari *script* only where text is shaped proportionally —
+waybar, hyprlock, notifications, SDDM, the boot splash. Terminal grids
+(tmux, the Neovim statusline, fastfetch) use romanised Nepali and Latin
+digits. This is measured, not aesthetic: at kitty's 19px rendering size Maple
+Mono NF's `0` inks 11×14 px, while Devanagari `0` inks 11×12 in the best
+available face (Annapurna SIL Bold), 10×11 in Noto Sans Devanagari and 10×8 in
+FreeSerif. Devanagari numerals are drawn to a shorter body than Latin
+cap-height by design; they land on the grid correctly but read a size small
+next to Latin, and kitty has no per-fallback scale knob (`modify_font` is
+global, `symbol_map` takes only a family).
 
 Machine-readable twin: `lib/palette.nix`, wired into every NixOS and
 home-manager module as the `palette` specialArg. **No module inlines hex** —
@@ -21,8 +38,8 @@ that don't take `#RRGGBB`:
 | `colors.ansiFg c` | `38;2;126;156;216` | fastfetch |
 | `colors.norm c` | `0.494118, 0.611765, 0.847059` | plymouth script |
 
-A third data file, `lib/sekki.nix`, holds the system's *living* clock — the 72
-Japanese microseasons. See **七十二候** below.
+A third data file, `lib/patro.nix`, holds the system's calendar — Bikram
+Sambat, the one Nepal actually runs on. See **Bikram Sambat** below.
 
 `scripts/theme-lint.sh` enforces all of it: it scans every tracked `.css`,
 `.conf`, `.nix` and `.lua` file (141 today) for `#RRGGBB`, `##RRGGBB`,
@@ -102,51 +119,104 @@ add `# theme-lint: allow` to a line for a deliberate exception.
 | Terminal / code | **Maple Mono NF** (rounded, ligatures, cursive italics) |
 | Bar / shell UI  | Maple Mono NF, fallback JetBrainsMono Nerd Font |
 | GTK app UI      | Noto Sans 11 (`modules/home-manager/default.nix`) |
-| CJK             | Noto Sans CJK JP (waybar 一二三 workspace numerals, 「」quotes) |
+| Devanagari      | Noto Sans Devanagari (waybar 123 workspace numerals, the date) |
 | Icons           | Nerd Font glyphs — waybar uses nf-md (`󰀀`-series) only |
 
-CJK numerals are a recurring motif, not a one-off: waybar workspaces (一二三),
-the Neovim statusline mode cap (常挿視行塊選換命端), markdown heading icons, and
-the 「墨と波」 boot mark all use them.
+Devanagari numerals are the motif on the GUI surfaces: waybar workspaces
+(123) and the Bikram Sambat date. The Neovim statusline mode cap and the tmux
+session pill use three-letter Latin tags (`NOR INS VIS CMD …`) instead, per the
+script rule above.
 
 JetBrainsMono Nerd Font stays installed as fallback and for anything that
-renders wider glyph coverage. Maple Mono NF has **no CJK block** — kitty pins
-the kana/kanji ranges to Noto Sans CJK JP via `symbol_map` (see
-`terminals/kitty.nix`) so the fallback is deterministic rather than
-per-glyph-whatever-fontconfig-picks.
+renders wider glyph coverage. Maple Mono NF has **no Devanagari block at all**
+(verified against its cmap: 0 of 128 codepoints in U+0900-097F) — kitty pins
+that range to Noto Sans Devanagari via `symbol_map` (see `terminals/kitty.nix`)
+so a Nepali filename or README renders rather than turning into tofu. The
+status chrome deliberately does not depend on that fallback.
 
-## 七十二候 — the living clock
+## Bikram Sambat — the calendar
 
-The Japanese almanac splits the year into 24 節気 (*sekki*, solar terms) and
-each of those into three 候 (*kō*) of about five days. Every kō carries a name
-for what the world is doing right now — 東風解凍 "east wind melts the ice",
-腐草為蛍 "rotten grass becomes fireflies", 鶏始乳 "hens start laying eggs".
+Nepal runs on Bikram Sambat, roughly 56–57 years ahead of Gregorian, with a new
+year at Baisakh 1 in mid-April. BS month lengths are **not** formulaic: they
+follow solar longitude, vary between 29 and 32 days, and differ year to year.
+The only correct implementation is a published table, so `lib/patro.nix` *is*
+that table — BS 1975–2100, extracted verbatim from the `nepali-datetime`
+package (PyPI, MIT), which carries the standard panchanga data. Epoch: BS
+1975-01-01 = AD 1918-04-13. **Do not hand-edit month lengths.**
 
-`lib/sekki.nix` is that table (pure data, same contract as `lib/palette.nix`).
-`modules/home-manager/tools/sekki.nix` compiles it into one small CLI:
+`modules/home-manager/tools/patro.nix` compiles it into one small CLI:
 
 | Command | Output |
 |---------|--------|
-| `sekki` | `大暑 · 桐始結花 — paulownia trees produce seeds` |
-| `sekki ko` / `kanji` / `season` | `桐始結花` / `夏` / `summer` |
-| `sekki index` | `34/72` (numbered from 立春, as tradition does) |
-| `sekki waybar` | `{"text":…,"tooltip":…,"class":"summer"}` |
-| `sekki json` | every field — the machine-readable form Neovim reads |
-| `sekki notify` | fires a desktop notification |
+| `patro` | `Saun 14, 2083 · barsha — monsoon` |
+| `patro date` / `roman` / `term` | `Saun 14, 2083` / `Saun 14, 2083` / `Saun 14` |
+| `patro ritu` / `season` / `en` | `barsha` / `barsha` / `monsoon` |
+| `patro waybar` | `{"text":…,"tooltip":…,"class":"barsha"}` |
+| `patro json` | every field — the machine-readable form Neovim reads |
+| `patro notify` | fires a desktop notification |
+
+`term` is the monospace-safe form: Nepali month name, Latin digits, per the
+script rule at the top of this file.
+
+The year is also divided into six **ritu**, two BS months each, and the ritu
+drives an accent colour the way the old microseasons did:
+
+| ritu | Months | Accent |
+|-----|--------|--------|
+| basanta basanta (spring) | Chait, Baisakh | sakuraPink |
+| grishma grishma (summer) | Jestha, Asar | springGreen |
+| barsha barsha (monsoon) | Saun, Bhadau | springBlue |
+| sharad sharad (autumn) | Asoj, Kattik | surimiOrange |
+| hemanta hemanta (pre-winter) | Mangsir, Pus | springViolet1 |
+| shishir shishir (winter) | Magh, Fagun | lightBlue |
 
 Consumers:
 
 | Surface | How it shows up |
 |---------|-----------------|
-| Waybar | `custom/sekki` in the centre island, tinted by season (sakuraPink → springGreen → surimiOrange → springBlue); click for the full name |
-| Neovim | `lualine_y`, fetched **asynchronously** by `lua/user/sekki.lua`; `:Sekki` prints the long form |
-| fastfetch | a `kō` row inside the box |
+| Waybar | `custom/patro` in the centre island, full Devanagari, tinted by ritu; click for the tooltip |
+| Neovim | `lualine_y`, fetched **asynchronously** by `lua/user/patro.lua`; `:Patro` prints the long form |
+| tmux | right island, `patro term`, cached for an hour |
+| fastfetch | a `patro` row inside the box |
 | Hyprland | `SUPER+K` |
 
-Cost: one `date` and one `awk` pass over 72 lines. Waybar polls hourly, Neovim
-asks once off the main loop and again every four hours, nothing touches the
-network. The point is that roughly every five days the machine quietly changes
-its mind about what season it is, and says so in four places at once.
+Cost: one `date` and one `awk` pass over 126 lines. Waybar polls hourly, tmux
+reads an hourly cache, Neovim asks once off the main loop and again every four
+hours, nothing touches the network.
+
+Conversion is verified, not assumed: 479 dates spanning AD 1919–2043 — random
+samples plus every month boundary and every Nepali New Year for BS 2075–2090 —
+were checked against `nepali-datetime`, with zero mismatches.
+
+## ukhaan — the proverbs
+
+`lib/ukhaan.tsv` holds 260 Nepali proverbs (उखान टुक्का) as
+`devanagari<TAB>roman<TAB>meaning`. Sourced from
+[chapainaashish/nepali-ukhaan](https://github.com/chapainaashish/nepali-ukhaan)
+(MIT, © 2023 Aashish Chapain), parsed from that repo's README table. 238 of the
+260 carry an English gloss; the remaining 22 explain in romanised Nepali, which
+is upstream's doing and left as-is.
+
+TSV rather than `.nix` because two languages read it: the `ukhaan` CLI
+(`modules/home-manager/tools/ukhaan.nix`) embeds it for awk, and the Neovim
+dashboard reads it directly. A `.nix` list would need a second generated Lua
+copy; splitting on a tab needs neither.
+
+| Command | Output |
+|---------|--------|
+| `ukhaan` | `Andho lai ainaa ko khoji — …` (roman + meaning) |
+| `ukhaan roman` / `meaning` | either column alone |
+| `ukhaan np` | the proverb in Devanagari, for GUI surfaces |
+| `ukhaan count` | how many are in the table |
+| `ukhaan waybar` / `json` / `notify` | as the other CLIs |
+
+Consumers: the Neovim dashboard footer (one file read at first paint, no
+subprocess) and `SUPER+U`, which fires a notification. The awk pick is seeded
+from `$RANDOM$$` rather than a bare `srand()` — that seeds from whole seconds,
+so two presses inside one second would return the same proverb.
+
+Adding proverbs means adding TSV rows; nothing else needs touching. Send
+corrections upstream too.
 
 ## Shape language
 
@@ -193,7 +263,7 @@ way, in one place:
 - **Neovim's seasonal segment is async.** No subprocess ever runs on the startup
   path for a decoration.
 
-### 禅 zen mode
+### dhyan dhyan mode
 
 `SUPER+Z` (`dotfiles/hypr/scripts/zen.sh`) toggles between "workstation" and
 "reading room": the bar folds away (waybar `SIGUSR1`), gaps open into wide paper
@@ -208,7 +278,8 @@ rather than reloading, so it is instant and costs nothing while idle. **The
 |---------|------|
 | Hyprland | `dotfiles/hypr/hyprland.conf` (live-sourced), `dotfiles/hypr/scripts/` |
 | Waybar | `home-manager-config-files/waybar/` (live symlink) |
-| 七十二候 clock | `lib/sekki.nix` + `modules/home-manager/tools/sekki.nix` |
+| Bikram Sambat calendar | `lib/patro.nix` + `modules/home-manager/tools/patro.nix` |
+| ukhaan proverbs | `lib/ukhaan.tsv` + `modules/home-manager/tools/ukhaan.nix` |
 | SwayNC | `home-manager-config-files/swaync/` (live symlink) |
 | Fuzzel | `modules/home-manager/desktop/fuzzel.nix` |
 | Wlogout | `modules/home-manager/desktop/wlogout.nix` |
@@ -221,7 +292,7 @@ rather than reloading, so it is instant and costs nothing while idle. **The
 | Neovim | `nvim/init.lua` (kanagawa overrides — the original source of truth) |
 | Helix | `modules/home-manager/programs/helix.nix` |
 | SDDM | `modules/nixos/desktop/sddm.nix` (astronaut / japanese_aesthetic, chrome recoloured via `themeConfig`) |
-| Boot splash | `packages/plymouth-ink-wave/` (custom script theme), enabled in `modules/nixos/boot.nix` |
+| Boot splash | `packages/plymouth-himal/` (custom script theme), enabled in `modules/nixos/boot.nix` |
 
 ### Neovim: who draws what
 
@@ -238,8 +309,9 @@ Two plugins can draw the same chrome; the split is deliberate.
 The statusline theme is written out longhand (palette hexes duplicated in the
 file, which theme-lint checks) rather than read from the kanagawa plugin's
 internals, so it can't break on a plugin bump. Only the mode cap changes colour
-between modes — crystalBlue 常 / springGreen 挿 / oniViolet 視 / carpYellow 命 /
-peachRed 換 / waveAqua 端 — so a mode change reads as one dot of colour moving,
+between modes — crystalBlue `NOR` / springGreen `INS` / oniViolet `VIS` /
+carpYellow `CMD` / peachRed `REP` / waveAqua `TRM` — so a mode change reads as
+one dot of colour moving,
 not the whole bar repainting.
 
 Markdown headings use a descending ink ramp — `waveBlue1 → sumiInk5 →
@@ -252,21 +324,21 @@ conflict; the overrides in `init.lua` replace that.
 `modules/home-manager/programs/tmux.nix` borrows three motifs wholesale rather
 than inventing a fourth vocabulary:
 
-- **The session pill is a mode cap.** Same grammar as Neovim's, same kanji:
-  crystalBlue 常 idle, carpYellow 命 while the prefix is pending, oniViolet 視
-  in copy mode. Only the cap changes colour.
-- **Window numbers are CJK numerals** (〇一二三…), the motif waybar already
-  uses for workspaces. Past 九 it falls back to the arabic index.
+- **The session pill is a mode cap.** Same grammar as Neovim's, same tags:
+  crystalBlue `NOR` idle, carpYellow `CMD` while the prefix is pending,
+  oniViolet `VIS` in copy mode. Only the cap changes colour.
+- **Window numbers stay Latin.** Devanagari numerals were tried and measured
+  here; see the script rule at the top of this file for why they didn't stay.
 - **Pills are cut on the slant** (U+E0BA / U+E0BC) — the same angle kitty cuts
   its tabs at under `tab_powerline_style slanted`, so a tmux pill sitting
   under a kitty tab reads as one object.
 
 Layout follows waybar's three islands: session left, windows
 `absolute-centre`, ambient readouts right. The right island holds cwd, the
-七十二候 kō, the clock and a 波 cap.
+Bikram Sambat date, the clock and a 󰋯 himal cap.
 
-Nothing on the bar forks except one `#()` for the microseason, and that reads
-an hourly cache — the segment only changes every five days. Everything else is
+Nothing on the bar forks except one `#()` for the date, and that reads an
+hourly cache — the segment only changes at midnight. Everything else is
 tmux format arithmetic, so a refresh is string compares. `status-interval` is
 30s (tmux-sensible's default is 5) and `monitor-activity` stays **off**: it
 repaints the whole bar every time any background window writes a byte.

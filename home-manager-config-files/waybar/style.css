@@ -1,5 +1,5 @@
 /*
- * Waybar — 「墨と波」 Ink & Wave (docs/THEME.md)
+ * Waybar — Himal Himal (docs/THEME.md)
  *
  * Three frosted ink islands floating over the wallpaper; hyprland's layerrule
  * blurs (and xrays) what shows through, so the glass costs one cheap pass over
@@ -48,7 +48,7 @@
 /* ══ base ═══════════════════════════════════════════════════════════════ */
 
 * {
-    font-family: "Maple Mono NF", "JetBrainsMono Nerd Font", "Symbols Nerd Font", "Noto Sans CJK JP", sans-serif;
+    font-family: "Maple Mono NF", "JetBrainsMono Nerd Font", "Symbols Nerd Font", "Noto Sans Devanagari", sans-serif;
     font-size: 13px;
     font-weight: 600;
     min-height: 0;
@@ -94,7 +94,7 @@ tooltip label {
 
 /* every readout/button is its own pill inside the island */
 #custom-os,
-#custom-sekki,
+#custom-patro,
 #clock,
 #custom-weather,
 #window,
@@ -129,7 +129,7 @@ tooltip label {
 
 /* generic hover: the pill lights up, the glyph keeps its own accent colour */
 #custom-os:hover,
-#custom-sekki:hover,
+#custom-patro:hover,
 #clock:hover,
 #custom-weather:hover,
 #mpris:hover,
@@ -175,10 +175,11 @@ tooltip label {
     background: transparent;
 }
 
-/* CJK numerals need the CJK face — Maple's coverage stops short of 一..十 */
+/* Devanagari needs the Devanagari face — Maple Mono NF has zero coverage of
+ * U+0900-097F, so without this the numerals and the date render as tofu. */
 #workspaces button,
-#custom-sekki {
-    font-family: "Noto Sans CJK JP", "Maple Mono NF", sans-serif;
+#custom-patro {
+    font-family: "Noto Sans Devanagari", "Maple Mono NF", sans-serif;
 }
 
 /*
@@ -266,35 +267,46 @@ window#waybar.empty #window {
 /* ══ centre island ══════════════════════════════════════════════════════ */
 
 /*
- * 七十二候 — the five-day microseason. Tinted by the season it belongs to, so
+ * Bikram Sambat — today's Bikram Sambat date. Tinted by the ritu it falls in, so
  * the centre of the bar slowly walks the palette across the year:
- * spring sakura → summer green → autumn orange → winter blue.
+ * basanta sakura → grishma green → barsha blue → sharad orange → hemanta violet →
+ * shishir pale aqua. Class names are the romanised ritu emitted by `patro waybar`.
  */
-#custom-sekki {
+#custom-patro {
     font-size: 14px;
     font-weight: 500;
     padding: 0 13px;
     color: @springViolet;
 }
 
-#custom-sekki.spring {
+#custom-patro.basanta {
     color: @sakuraPink;
     text-shadow: 0 0 10px alpha(@sakuraPink, 0.35);
 }
 
-#custom-sekki.summer {
+#custom-patro.grishma {
     color: @springGreen;
     text-shadow: 0 0 10px alpha(@springGreen, 0.35);
 }
 
-#custom-sekki.autumn {
+#custom-patro.barsha {
+    color: @springBlue;
+    text-shadow: 0 0 10px alpha(@springBlue, 0.35);
+}
+
+#custom-patro.sharad {
     color: @surimiOrange;
     text-shadow: 0 0 10px alpha(@surimiOrange, 0.35);
 }
 
-#custom-sekki.winter {
-    color: @springBlue;
-    text-shadow: 0 0 10px alpha(@springBlue, 0.35);
+#custom-patro.hemanta {
+    color: @springViolet;
+    text-shadow: 0 0 10px alpha(@springViolet, 0.35);
+}
+
+#custom-patro.shishir {
+    color: @lightBlue;
+    text-shadow: 0 0 10px alpha(@lightBlue, 0.35);
 }
 
 #clock {

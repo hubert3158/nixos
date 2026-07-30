@@ -24,7 +24,7 @@ in {
 
     theme = lib.mkOption {
       type = lib.types.str;
-      # built-in kanagawa theme — matches the Ink & Wave design system (docs/THEME.md)
+      # built-in kanagawa theme — matches the Himal design system (docs/THEME.md)
       default = "kanagawa";
       description = "TUI theme";
     };

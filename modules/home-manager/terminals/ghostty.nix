@@ -1,4 +1,4 @@
-# Ghostty terminal configuration — Kanagawa Wave (Ink & Wave design system)
+# Ghostty terminal configuration — Kanagawa Wave (Himal design system)
 # Colours come from lib/palette.nix rather than a named ghostty theme, so they
 # can't drift from kitty.nix / wezterm.nix / docs/THEME.md.
 { config, lib, pkgs, palette, ... }:
