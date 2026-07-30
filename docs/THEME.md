@@ -215,6 +215,7 @@ rather than reloading, so it is instant and costs nothing while idle. **The
 | Hyprlock | `modules/home-manager/desktop/hyprlock.nix` |
 | Wallpapers (swww) | `modules/home-manager/desktop/swww.nix` + `images/walls/` |
 | Kitty / Ghostty / Wezterm | `modules/home-manager/terminals/*.nix` |
+| Tmux | `modules/home-manager/programs/tmux.nix` |
 | Starship | `modules/home-manager/shell/starship.nix` |
 | fastfetch / cava / fzf / bat | `modules/home-manager/tools/*.nix` |
 | Neovim | `nvim/init.lua` (kanagawa overrides — the original source of truth) |
@@ -245,3 +246,33 @@ Markdown headings use a descending ink ramp — `waveBlue1 → sumiInk5 →
 sumiInk4 → sumiInk2 → none`. The plugin's defaults link heading backgrounds to
 the `Diff*` groups, which under kanagawa renders a document as a merge
 conflict; the overrides in `init.lua` replace that.
+
+### Tmux: the same bar, one layer down
+
+`modules/home-manager/programs/tmux.nix` borrows three motifs wholesale rather
+than inventing a fourth vocabulary:
+
+- **The session pill is a mode cap.** Same grammar as Neovim's, same kanji:
+  crystalBlue 常 idle, carpYellow 命 while the prefix is pending, oniViolet 視
+  in copy mode. Only the cap changes colour.
+- **Window numbers are CJK numerals** (〇一二三…), the motif waybar already
+  uses for workspaces. Past 九 it falls back to the arabic index.
+- **Pills are cut on the slant** (U+E0BA / U+E0BC) — the same angle kitty cuts
+  its tabs at under `tab_powerline_style slanted`, so a tmux pill sitting
+  under a kitty tab reads as one object.
+
+Layout follows waybar's three islands: session left, windows
+`absolute-centre`, ambient readouts right. The right island holds cwd, the
+七十二候 kō, the clock and a 波 cap.
+
+Nothing on the bar forks except one `#()` for the microseason, and that reads
+an hourly cache — the segment only changes every five days. Everything else is
+tmux format arithmetic, so a refresh is string compares. `status-interval` is
+30s (tmux-sensible's default is 5) and `monitor-activity` stays **off**: it
+repaints the whole bar every time any background window writes a byte.
+
+The bar is width-responsive because kitty on this machine swings between 82
+columns tiled and 169 maximised. Below 150 the cwd and microseason drop; below
+110 inactive windows shed their names and the bar compresses to a row of
+numerals with one named island. Both thresholds use `#{e|>=:…}` — the bare
+`#{>=:…}` form compares as *strings*, where `"82" >= "110"` is true.
