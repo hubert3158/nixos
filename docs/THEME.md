@@ -218,13 +218,36 @@ so two presses inside one second would return the same proverb.
 Adding proverbs means adding TSV rows; nothing else needs touching. Send
 corrections upstream too.
 
+## nietzsche — the quotations
+
+`lib/nietzsche.tsv` holds 124 Nietzsche quotations as `quote<TAB>source`, drawn
+from the standard public-domain / Kaufmann–Hollingdale translations. The source
+column names the work and, where it is certain, the section. Quotes that could
+not be traced to a work were deliberately left out — most of the Nietzsche in
+circulation online is apocryphal.
+
+Latin script throughout, so unlike `ukhaan` there is no terminal/GUI split; the
+same text goes to every surface.
+
+| Command | Output |
+|---------|--------|
+| `nietzsche` | `What does not kill me makes me stronger. — Twilight of the Idols, …` |
+| `nietzsche quote` / `source` | either column alone |
+| `nietzsche count` | how many are in the table |
+| `nietzsche waybar` / `json` / `notify` | as the other CLIs |
+
+Consumer: `SUPER+Y`, which fires a notification — the mirror of `SUPER+U` for
+proverbs. Same `$RANDOM$$` seeding as `ukhaan`, for the same reason.
+
+Adding quotations means adding TSV rows; nothing else needs touching.
+
 ## Shape language
 
 - Corner radius: **14px** shell islands (waybar), 12px popups (fuzzel, swaync, tooltips), 9px individual bar pills, 10px windows (hyprland `rounding`)
 - Shell surfaces are **frosted glass**: `rgba(sumiInk1, ~0.9)` + a 7%-tall lit
   edge along the top + hyprland layer blur
 - Borders: 1px `rgba(sumiInk6, ~0.5)` on glass; gradient only on the focused window
-- Motion: material-expressive beziers (see `dotfiles/hypr/hyprland.conf`), 200–400 ms
+- Motion: material-expressive beziers (see `dotfiles/hypr/hyprland.lua`), 200–400 ms
 
 ### Border language
 
@@ -239,7 +262,7 @@ Which gradient a window wears tells you what kind of window it is:
 | group locked | carpYellow → surimiOrange |
 | unfocused | none — inactive borders are fully transparent |
 
-On focus the gradient angle sweeps once (`animation = borderangle, …, once`).
+On focus the gradient angle sweeps once (`hl.animation({ leaf = "borderangle", …, style = "once" })`).
 It is deliberately **not** `loop`: a looping borderangle repaints the border
 every frame for as long as the window is focused, which on the Vega 7 iGPU is a
 permanent tax for an effect nobody is looking at.
@@ -252,14 +275,14 @@ way, in one place:
 - **No idle animations anywhere.** Waybar transitions fire on hover and state
   change only; hyprland's borderangle runs `once`; terminal cursors don't blink.
   Anything that repaints at 60 fps while you aren't looking at it is cut.
-- **`xray 1` on blurred shell layers** (waybar, fuzzel, swayosd). The blur then
+- **`xray = true` on blurred shell layers** (waybar, fuzzel, swayosd). The blur then
   samples the wallpaper only instead of the live window stack, so scrolling a
   terminal doesn't force the bar to re-blur — cheaper *and* calmer.
 - **Blur stays at size 6 / 2 passes**; 3 passes at size 8 dropped frames.
 - **`special = false`** in the blur block — blurring the scratchpad backdrop
   caused fullscreen jitter.
 - **No screen shader.** `vibrance.frag` is a full-screen per-pixel pass every
-  frame; it stays commented out in `hyprland.conf`.
+  frame; it stays commented out in `hyprland.lua`.
 - **Neovim's seasonal segment is async.** No subprocess ever runs on the startup
   path for a decoration.
 
@@ -267,19 +290,49 @@ way, in one place:
 
 `SUPER+Z` (`dotfiles/hypr/scripts/zen.sh`) toggles between "workstation" and
 "reading room": the bar folds away (waybar `SIGUSR1`), gaps open into wide paper
-margins, the border thins to a hairline. It writes hyprctl keywords both ways
-rather than reloading, so it is instant and costs nothing while idle. **The
-"off" values in that script must match the `general`/`decoration` blocks in
-`hyprland.conf`** — hyprctl has no "unset".
+margins, the border thins to a hairline. It pushes both states through
+`hyprctl eval` + `hl.config()` rather than reloading, so it is instant and costs
+nothing while idle. **The "off" values in that script must match the
+`general`/`decoration` blocks in `hyprland.lua`** — there is no "unset".
+
+### Hyprland config format: Lua, not `.conf`
+
+Hyprland 0.56 deprecated the hyprlang `.conf` format and removes it in 0.57, so
+the whole config is Lua (`hl.*` calls). Home Manager writes
+`~/.config/hypr/hyprland.lua` with `configType = "lua"`; that file
+`require()`s `dotfiles/hypr/hyprland.lua` by absolute path, which puts the
+dotfile under Hyprland's inotify watcher — saving it still reloads live, no
+rebuild. (`dofile()` would *not* be watched.)
+
+The translation is mostly mechanical, but three things bite anything that talks
+to a running Hyprland:
+
+| Old (hyprlang) | New (Lua) |
+|----------------|-----------|
+| `hyprctl keyword general:gaps_in 6` | `hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'` |
+| `hyprctl dispatch exit` | `hyprctl dispatch 'hl.dsp.exit()'` |
+| `plugin:dynamic-cursors:mode` | `plugin.dynamic_cursors.mode` (`:` → `.`, `-` → `_`) |
+
+`hyprctl keyword` is refused outright under the Lua manager ("keyword can't
+work with non-legacy parsers. Use eval."), and `hyprctl dispatch` is now just a
+wrapper for `hl.dispatch(...)` — it takes a Lua dispatcher, not a keyword. Every
+caller in this repo (zen.sh, wlogout, hypridle, waybar scroll + power menu) was
+updated; new ones must use the right-hand column.
+
+Plugin config values only exist once the plugin is loaded, which happens after
+the first config pass, so plugin blocks are guarded with
+`if hl.get_config("plugin.<ns>.<key>") ~= nil then` — that keeps the first pass
+free of "unknown config key" errors instead of flashing them on every start.
 
 ## Where each surface is themed
 
 | Surface | File |
 |---------|------|
-| Hyprland | `dotfiles/hypr/hyprland.conf` (live-sourced), `dotfiles/hypr/scripts/` |
+| Hyprland | `dotfiles/hypr/hyprland.lua` (live-`require`d), `dotfiles/hypr/scripts/` |
 | Waybar | `home-manager-config-files/waybar/` (live symlink) |
 | Bikram Sambat calendar | `lib/patro.nix` + `modules/home-manager/tools/patro.nix` |
 | ukhaan proverbs | `lib/ukhaan.tsv` + `modules/home-manager/tools/ukhaan.nix` |
+| Nietzsche quotes | `lib/nietzsche.tsv` + `modules/home-manager/tools/nietzsche.nix` |
 | SwayNC | `home-manager-config-files/swaync/` (live symlink) |
 | Fuzzel | `modules/home-manager/desktop/fuzzel.nix` |
 | Wlogout | `modules/home-manager/desktop/wlogout.nix` |

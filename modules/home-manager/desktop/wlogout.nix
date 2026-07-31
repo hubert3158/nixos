@@ -24,7 +24,9 @@ in
         }
         {
           label = "logout";
-          action = "hyprctl dispatch exit";
+          # Lua config manager: `hyprctl dispatch` wraps hl.dispatch(...), so
+          # the argument is a Lua dispatcher rather than the old `exit` keyword.
+          action = "hyprctl dispatch 'hl.dsp.exit()'";
           text = "󰍃   Logout";
           keybind = "e";
         }

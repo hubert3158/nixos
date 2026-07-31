@@ -59,8 +59,8 @@ in {
       [
         keychain
         waybar
-        brightnessctl # XF86MonBrightness binds in hyprland.conf
-        playerctl # XF86Audio media binds in hyprland.conf
+        brightnessctl # XF86MonBrightness binds in hyprland.lua
+        playerctl # XF86Audio media binds in hyprland.lua
         libnotify # notify-send for swaync
         hyprpicker # color picker on Mod+Shift+C
         cava # audio visualizer (waybar module + terminal)

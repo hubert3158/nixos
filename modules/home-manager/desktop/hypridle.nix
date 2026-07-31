@@ -32,7 +32,9 @@ in
           # auto-lock gets a 10s mouse-move grace, manual lock (wlogout) doesn't
           lock_cmd = "pidof hyprlock || hyprlock --grace 10"; # never spawn a second locker
           before_sleep_cmd = "loginctl lock-session"; # lock before suspend
-          after_sleep_cmd = "hyprctl dispatch dpms on";
+          # `hyprctl dispatch` is a wrapper for hl.dispatch(...) under the Lua
+          # config manager, so it takes a Lua dispatcher, not `dpms on`.
+          after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms({ action = \"on\" })'";
         };
 
         listener = [
@@ -42,8 +44,8 @@ in
           }
           {
             timeout = cfg.dpmsTimeout;
-            on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on";
+            on-timeout = "hyprctl dispatch 'hl.dsp.dpms({ action = \"off\" })'";
+            on-resume = "hyprctl dispatch 'hl.dsp.dpms({ action = \"on\" })'";
           }
         ];
       };

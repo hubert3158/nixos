@@ -10,7 +10,8 @@ chosen=$(printf '󰌾  Lock\n󰍃  Logout\n󰒲  Suspend\n󰜉  Reboot\n󰐥  Sh
 
 case "$chosen" in
     *Lock*)     hyprlock ;;
-    *Logout*)   hyprctl dispatch exit ;;
+    # hyprctl dispatch wraps hl.dispatch(...) under the Lua config manager
+    *Logout*)   hyprctl dispatch 'hl.dsp.exit()' ;;
     *Suspend*)  systemctl suspend ;;
     *Reboot*)   systemctl reboot ;;
     *Shutdown*) systemctl poweroff ;;

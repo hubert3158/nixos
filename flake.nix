@@ -156,6 +156,8 @@
                 modules.tools.patro.enable = true;
                 # Nepali proverbs — dashboard footer + SUPER+U
                 modules.tools.ukhaan.enable = true;
+                # Nietzsche quotations — SUPER+Y
+                modules.tools.nietzsche.enable = true;
 
                 modules.packages.enable = true;
                 # Heavy Java IDE suite only where Java work happens

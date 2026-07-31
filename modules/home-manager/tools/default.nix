@@ -14,5 +14,6 @@
     ./cava.nix
     ./patro.nix
     ./ukhaan.nix
+    ./nietzsche.nix
   ];
 }
