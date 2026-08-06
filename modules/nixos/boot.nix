@@ -39,12 +39,33 @@ in
       default = true;
       description = "Graphical boot splash instead of scrolling kernel text";
     };
+
+    kernelSeries = lib.mkOption {
+      type = lib.types.enum [ "latest" "lts" ];
+      default = "latest";
+      description = ''
+        Kernel series to track. "latest" follows the newest stable kernel
+        (newer amdgpu + amd_pstate for the Zen 2 APUs); "lts" pins longterm.
+
+        The work laptop (Lenovo IdeaPad 3 14ALC6, AMD Lucienne) hangs at S5
+        poweroff: systemd runs to completion — "Reached target System Power
+        Off", journald stops cleanly — and then the machine never cuts power,
+        so it sits with the power LED lit until a forced shutdown. Reboot
+        hangs the same way, which puts the fault after systemd hands off, in
+        the driver-shutdown/ACPI window. Upstream this class of bug is
+        reliably kernel-version-dependent (regresses on new kernels, LTS
+        unaffected), so "lts" is the first bisect step. Move back to "latest"
+        once a kernel ships the fix.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    # Latest stable kernel — newer amdgpu + amd_pstate for the Zen 2 APUs.
-    # Cached on cache.nixos.org (verified before adding), no local compile.
-    boot.kernelPackages = pkgs.linuxPackages_latest;
+    # Both series are cached on cache.nixos.org, no local compile.
+    boot.kernelPackages =
+      if cfg.kernelSeries == "lts"
+      then pkgs.linuxPackages
+      else pkgs.linuxPackages_latest;
 
     boot.loader = lib.mkMerge [
       (lib.mkIf (cfg.loader == "systemd-boot") {
@@ -74,12 +95,16 @@ in
     };
     boot.consoleLogLevel = lib.mkIf cfg.enablePlymouth 3;
     boot.initrd.verbose = lib.mkIf cfg.enablePlymouth false;
-    boot.kernelParams = lib.mkIf cfg.enablePlymouth [
-      "quiet"
-      "splash"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
-    ];
+    # Only the console-silencing params belong under enablePlymouth. Keep the
+    # conditional scoped to that list so anything added later (reboot=, acpi
+    # quirks) can sit outside it and survive with plymouth off.
+    boot.kernelParams =
+      lib.optionals cfg.enablePlymouth [
+        "quiet"
+        "splash"
+        "rd.systemd.show_status=false"
+        "rd.udev.log_level=3"
+        "udev.log_priority=3"
+      ];
   };
 }

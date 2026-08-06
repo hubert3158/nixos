@@ -17,6 +17,10 @@
   # Java profiling happens on this machine (relaxes kptr_restrict)
   modules.boot.enableJProfiler = true;
 
+  # S5 poweroff hang bisect — see modules/nixos/boot.nix kernelSeries.
+  # This laptop only; the home machine stays on latest.
+  modules.boot.kernelSeries = "lts";
+
   # Dev tunnel (vite on :5173) — runs on this machine only
   modules.services.cloudflared = {
     enable = true;
