@@ -51,6 +51,18 @@ function _G.ts_match_skip()
 	return 0
 end
 
+-- Same synID() breakage in the runtime indent expressions: GetNixIndent (vim-nix)
+-- and GetRustIndent skip brackets inside strings/comments through synID, so with
+-- treesitter highlighting they re-indent the *contents* of nix '' '' blocks and
+-- drift after multi-line Rust strings. Measured on modules/home-manager/default.nix:
+-- `gg=G` rewrote 5 lines with the vim indent, 0 lines with the treesitter one.
+-- Only these two filetypes — other synID-using indent files (ts/js/html/css/sh)
+-- showed no treesitter-specific regression, so they keep their vim indentexpr.
+local ts_indent_filetypes = {
+	nix = true,
+	rust = true,
+}
+
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("TreesitterHighlight", { clear = true }),
 	callback = function(args)
@@ -58,6 +70,15 @@ vim.api.nvim_create_autocmd("FileType", {
 			-- Only for treesitter-highlighted buffers; without a parser the
 			-- regex syntax stays on and matchit's own default skip works.
 			vim.b[args.buf].match_skip = "v:lua.ts_match_skip()"
+
+			if ts_indent_filetypes[args.match] then
+				local lang = vim.treesitter.language.get_lang(args.match)
+				-- No indents.scm for the language: keep the vim indentexpr,
+				-- a missing query would indent everything to column 0.
+				if lang and vim.treesitter.query.get(lang, "indents") then
+					vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+				end
+			end
 		end
 	end,
 })
