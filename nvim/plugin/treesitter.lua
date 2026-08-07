@@ -33,10 +33,32 @@ end
 -- pcall: filetypes without a parser keep regex syntax; bigfile.lua still
 -- calls vim.treesitter.stop() afterwards for oversized files.
 -- ============================================================================
+-- matchit (a Neovim default plugin) maps `%` and skips brackets inside
+-- strings/comments via synID(). vim.treesitter.start() sets `syntax = ""`, so
+-- synID() returns nothing and matchit counts brackets inside string and char
+-- literals as real ones — e.g. in Rust, `%` on the `{` of a `match` block lands
+-- on the `}` inside `Some('}')`. Give matchit a treesitter-based skip instead.
+function _G.ts_match_skip()
+	local ok, captures = pcall(vim.treesitter.get_captures_at_cursor, 0)
+	if not ok then
+		return 0
+	end
+	for _, capture in ipairs(captures) do
+		if capture:find("^string") or capture:find("^character") or capture:find("^comment") then
+			return 1
+		end
+	end
+	return 0
+end
+
 vim.api.nvim_create_autocmd("FileType", {
 	group = vim.api.nvim_create_augroup("TreesitterHighlight", { clear = true }),
 	callback = function(args)
-		pcall(vim.treesitter.start, args.buf)
+		if pcall(vim.treesitter.start, args.buf) then
+			-- Only for treesitter-highlighted buffers; without a parser the
+			-- regex syntax stays on and matchit's own default skip works.
+			vim.b[args.buf].match_skip = "v:lua.ts_match_skip()"
+		end
 	end,
 })
 
