@@ -36,12 +36,13 @@ local screenshot  = "flameshot gui"
 
 
 -- ═══ AUTOSTART ═══════════════════════════════════════════════════════════
--- systemd user services (home-manager): awww-daemon (wallpaper), swaync.
--- hyprpaper is retired. Only non-service tools start here.
+-- systemd user services (home-manager): awww-daemon (wallpaper), swaync,
+-- waybar (Restart=always — its mpris module segfaults now and then and an
+-- exec-once bar never returns). hyprpaper is retired. Only non-service tools
+-- start here.
 
 hl.on("hyprland.start", function()
     hl.exec_cmd("wl-paste --watch cliphist store")
-    hl.exec_cmd("waybar")
 end)
 
 

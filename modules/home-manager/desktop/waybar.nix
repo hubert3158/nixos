@@ -23,5 +23,27 @@ in
       # Overwrite pre-existing unmanaged files instead of aborting activation
       force = true;
     };
+
+    # Supervised rather than `exec-once = waybar` in hyprland.lua: the mpris
+    # module segfaults inside playerctl_player_properties_changed_callback when
+    # a player drops its D-Bus name (crashes on 2026-08-07 and 2026-08-12), and
+    # an exec-once bar never comes back — the desktop stays bare until the next
+    # login. Restart=always brings it back in ~2s. Started by uwsm's
+    # graphical-session.target, same as swaync/awww-daemon.
+    systemd.user.services.waybar = {
+      Unit = {
+        Description = "Waybar status bar";
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.waybar}/bin/waybar";
+        # SIGUSR2 makes waybar re-read config + style without dropping the bar
+        ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR2 $MAINPID";
+        Restart = "always";
+        RestartSec = 2;
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
   };
 }
