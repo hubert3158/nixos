@@ -101,13 +101,19 @@ in {
     # which would copy the plaintext into the world-readable /nix/store.
     # The dotted tmp name keeps the `config.d/*` Include glob from ever
     # matching a half-written file.
+    #
+    # `< /dev/null` is load-bearing: `gopass cat <entry>` WRITES the secret from
+    # stdin whenever stdin is not a terminal, and during activation it never is.
+    # Without it, gopass silently overwrites the secret with whatever the
+    # activation script's stdin happens to carry and prints nothing.
     home.activation.syncWorkSshHosts = lib.mkIf cfg.workHostsFromPass (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         export PATH="${lib.makeBinPath [ pkgs.gopass pkgs.gnupg pkgs.coreutils ]}:$PATH"
         mkdir -p "$HOME/.ssh/config.d"
         chmod 700 "$HOME/.ssh/config.d"
         if timeout 10 gopass cat ${lib.escapeShellArg cfg.passEntry} \
-            > "$HOME/.ssh/config.d/.work.tmp" 2>/dev/null; then
+            < /dev/null > "$HOME/.ssh/config.d/.work.tmp" 2>/dev/null \
+            && [ -s "$HOME/.ssh/config.d/.work.tmp" ]; then
           chmod 600 "$HOME/.ssh/config.d/.work.tmp"
           mv "$HOME/.ssh/config.d/.work.tmp" "$HOME/.ssh/config.d/work"
         else
@@ -122,21 +128,29 @@ in {
     # the mechanism but no hint of which keys exist. Add a key with
     #   gopass cat ssh/keys/<name> < ~/.ssh/<name>
     # and rebuild — no nix changes needed.
+    # `gopass cat <entry>` is read-only ONLY when stdin is a terminal; otherwise
+    # it reads stdin and OVERWRITES the secret. Activation has no tty, so every
+    # read must pass `< /dev/null`, and the entry list must be fed on fd 3 —
+    # feeding the loop on stdin let gopass swallow the remaining entry names and
+    # store them as the first key's contents (destroying it, and ending the loop
+    # early so no later key was ever synced). `[ -s ]` then keeps an empty
+    # decrypt from ever replacing a good key file.
     home.activation.syncWorkSshKeys = lib.mkIf cfg.keysFromPass (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         export PATH="${lib.makeBinPath [ pkgs.gopass pkgs.gnupg pkgs.coreutils ]}:$PATH"
-        if entries=$(timeout 10 gopass ls --flat ${lib.escapeShellArg cfg.passKeysPrefix} 2>/dev/null); then
-          while IFS= read -r entry; do
+        if entries=$(timeout 10 gopass ls --flat ${lib.escapeShellArg cfg.passKeysPrefix} < /dev/null 2>/dev/null); then
+          while IFS= read -r entry <&3; do
             [ -n "$entry" ] || continue
             name=$(basename "$entry")
-            if timeout 10 gopass cat "$entry" > "$HOME/.ssh/.$name.tmp" 2>/dev/null; then
+            if timeout 10 gopass cat "$entry" < /dev/null > "$HOME/.ssh/.$name.tmp" 2>/dev/null \
+                && [ -s "$HOME/.ssh/.$name.tmp" ]; then
               chmod 600 "$HOME/.ssh/.$name.tmp"
               mv "$HOME/.ssh/.$name.tmp" "$HOME/.ssh/$name"
             else
               rm -f "$HOME/.ssh/.$name.tmp"
               echo "ssh.nix: cannot decrypt gopass entry '$entry'; keeping existing ~/.ssh/$name" >&2
             fi
-          done <<< "$entries"
+          done 3<<< "$entries"
         else
           echo "ssh.nix: cannot list gopass prefix '${cfg.passKeysPrefix}' (gpg-agent locked?); ssh keys not synced" >&2
         fi
