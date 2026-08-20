@@ -10,6 +10,7 @@
     ./delta.nix
     ./htop.nix
     ./uv-tools.nix
+    ./rustup-nix-ld.nix
     ./fastfetch.nix
     ./cava.nix
     ./patro.nix
