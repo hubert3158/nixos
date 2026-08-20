@@ -30,12 +30,13 @@ in
             defaultFgColor = [ palette.fujiWhite ];
           };
         };
-        # new-schema pagers array (git.paging was removed; the old key trips
-        # an auto-migration that can't write back to the read-only HM symlink)
-        git.pagers = [
+        # lazygit >= 0.64 schema: git.pagers -> git.diffRenderers, pager -> command.
+        # Old keys trip an auto-migration that can't write back to the
+        # read-only home-manager symlink.
+        git.diffRenderers = [
           {
             colorArg = "always";
-            pager = "delta --dark --paging=never";
+            command = "delta --dark --paging=never";
           }
         ];
       };
