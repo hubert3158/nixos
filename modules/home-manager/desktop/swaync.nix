@@ -3,6 +3,13 @@
 # volume/backlight sliders and a DND toggle (waybar bell icon).
 # Symlinks ~/.config/swaync to the live-editable config in the repo
 # (apply edits with `swaync-client --reload-config` / `--reload-css`).
+#
+# Per-host caveat: the backlight widget in config.json pins
+# widget-config.backlight.device = "amdgpu_bl1". swaync's schema takes a literal
+# device name (no glob, no autodetect) and defaults to "intel_backlight", which
+# exists on neither host. Both hosts are amdgpu, but the bl index comes from DRM
+# connector enumeration, so if the slider goes dead after a hardware/kernel
+# change, check `ls /sys/class/backlight` and update that key.
 { config, lib, pkgs, ... }:
 
 let
