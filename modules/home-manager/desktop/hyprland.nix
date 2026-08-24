@@ -41,7 +41,29 @@ in
         # plugin no longer compiles. Re-enable once nixpkgs ships a rev that
         # builds against 0.56 (PR KZDKM/Hyprspace#238 is the candidate).
         # pkgs.hyprlandPlugins.hyprspace
-        pkgs.hyprlandPlugins.hypr-dynamic-cursors # cursor tilt + shake-to-find
+
+        # cursor tilt + shake-to-find. nixpkgs pins this at f5ba36c
+        # (2026-07-21), which predates Hyprland 0.56.2 (2026-08-05). It still
+        # compiles, but the plugin resolves Hyprland internals by function
+        # signature at init, so 0.56 makes it throw and Hyprland paints a red
+        # error overlay across the top of the screen:
+        #   [dynamic-cursors] cannot load, unexpected function signature
+        #   ... plugin crashed/threw in main: std::exception
+        # The rev below is the one upstream's own hyprpm.toml pins to Hyprland
+        # v0.56.2 (commit efb5099). Do NOT use the plugin's HEAD instead: it
+        # tracks Hyprland git main, which moved the IPC to
+        # hyprland/src/ipc/s2/S2.hpp — a header 0.56.2 does not ship, so it
+        # fails to compile. Drop this override once nixpkgs ships a rev at or
+        # past this one.
+        (pkgs.hyprlandPlugins.hypr-dynamic-cursors.overrideAttrs (_: {
+          version = "0-unstable-2026-08-03";
+          src = pkgs.fetchFromGitHub {
+            owner = "VirtCode";
+            repo = "hypr-dynamic-cursors";
+            rev = "5a224284872208b5324759d535d65061043725de";
+            hash = "sha256-BQjuQplkQFA30/7evDxmEAvr2ArIG09JffEBQhuzo80=";
+          };
+        }))
       ];
       # require() with an absolute path registers the dotfile with Hyprland's
       # inotify watcher (plain dofile() would not), so saving it reloads live.
