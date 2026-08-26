@@ -227,7 +227,7 @@ require("lz.n").load({
 	{
 		"toggleterm.nvim",
 		cmd = { "ToggleTerm", "TermExec" },
-		keys = { [[<c-\>]] },
+		keys = { [[<c-\>]], { "<leader>H", desc = "Herdr (float)" } },
 		after = function()
 			require("user.toggleterm")
 		end,

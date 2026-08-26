@@ -70,6 +70,23 @@ in {
 
         [keys]
 
+        # ── Workspaces ("spaces") and agents ──
+        # Unbound in Herdr's defaults (`herdr --default-config`), so these are
+        # additions, not overrides. Workspace prev/next mirror the tab bindings
+        # one shift up: prefix+p/prefix+n cycle tabs, prefix+shift+p/n cycle
+        # workspaces.
+        previous_workspace = "prefix+shift+p"
+        next_workspace = "prefix+shift+n"
+        switch_workspace = "prefix+shift+1..9"
+        previous_agent = "prefix+shift+k"
+        next_agent = "prefix+shift+j"
+        focus_agent = "prefix+alt+1..9"
+
+        # Displaced by the two workspace bindings above — rebound, not dropped.
+        # Defaults were new_workspace=prefix+shift+n, rename_pane=prefix+shift+p.
+        new_workspace = "prefix+shift+c"
+        rename_pane = "prefix+shift+m"
+
         # ── herdr-splits: navigation (Herdr panes ↔ Neovim splits) ──
         [[keys.command]]
         key = "ctrl+h"

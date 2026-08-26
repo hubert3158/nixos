@@ -48,3 +48,23 @@ end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+-- Herdr in a float. Herdr is normally the OUTER multiplexer (nvim runs inside
+-- one of its panes, see nvim/lua/user/herdr-splits.lua); this is the reverse
+-- nesting, so the <C-h/j/k/l> maps set above would steal Herdr's own pane-nav
+-- chords. Drop them for this buffer and let the inner Herdr have them —
+-- <esc>/jk still get you back to normal mode.
+local herdr = require("toggleterm.terminal").Terminal:new({
+  cmd = "herdr",
+  direction = "float",
+  hidden = true,
+  on_open = function(term)
+    for _, key in ipairs({ "<C-h>", "<C-j>", "<C-k>", "<C-l>" }) do
+      pcall(vim.keymap.del, "t", key, { buffer = term.bufnr })
+    end
+  end,
+})
+
+vim.keymap.set("n", "<leader>H", function()
+  herdr:toggle()
+end, { desc = "Herdr (float)" })
