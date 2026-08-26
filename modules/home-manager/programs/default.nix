@@ -14,5 +14,6 @@
     ./opencode.nix
     ./emacs.nix
     ./helix.nix
+    ./herdr.nix
   ];
 }

@@ -141,6 +141,7 @@
                 # Re-enable for instant `emacsclient` startup.
                 # modules.programs.emacs.daemon = true;
                 modules.programs.helix.enable = true;
+                modules.programs.herdr.enable = true;
 
                 modules.fileManagers.yazi.enable = true;
                 modules.fileManagers.ranger.enable = true;

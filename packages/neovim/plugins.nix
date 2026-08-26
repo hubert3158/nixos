@@ -111,6 +111,11 @@ in
     { plugin = harpoon2; optional = true; }
     { plugin = nvim-window-picker; optional = true; }
     vim-tmux-navigator
+    # herdr-splits — Herdr pane <-> nvim split nav/resize. Only packadd'ed
+    # inside a Herdr pane (lz.n `enabled` guard); the same derivation also
+    # supplies the herdr-side plugin, see
+    # modules/home-manager/programs/herdr.nix.
+    { plugin = herdr-splits-nvim; optional = true; }
 
     # ============================================================================
     # GIT INTEGRATION

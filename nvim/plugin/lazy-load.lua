@@ -212,6 +212,19 @@ require("lz.n").load({
 		end,
 	},
 	{
+		-- Only inside a Herdr pane; elsewhere the plain <C-w>h/j/k/l maps from
+		-- user/keymaps.lua stay in charge. Must load eagerly (not off its own
+		-- keys) — setup() writes the conf telling Herdr which chords to forward.
+		"herdr-splits.nvim",
+		enabled = function()
+			return vim.env.HERDR_ENV == "1"
+		end,
+		event = "DeferredUIEnter",
+		after = function()
+			require("user.herdr-splits")
+		end,
+	},
+	{
 		"toggleterm.nvim",
 		cmd = { "ToggleTerm", "TermExec" },
 		keys = { [[<c-\>]] },
