@@ -16,6 +16,17 @@
   ...
 }: let
   cfg = config.modules.programs.ssh;
+
+  # gnupg auto-spawns its own `gpg-agent --daemon` whenever it cannot reach an
+  # existing agent socket. During activation the systemd unit is usually not up
+  # yet and /run/user/$UID/gnupg may not be usable, so that stray agent puts its
+  # sockets in ~/.gnupg and starts a second keyboxd. Both keyboxd instances then
+  # contend for the ~/.gnupg/public-keys.d/pubring.db dotlock and every later
+  # gopass/gpg read dies with "keydb_search failed: Connection timed out".
+  # Starting the socket unit first makes gpg attach to the real agent instead.
+  ensureGpgAgent = ''
+    ${pkgs.systemd}/bin/systemctl --user start gpg-agent.socket 2>/dev/null || true
+  '';
 in {
   options.modules.programs.ssh = {
     enable = lib.mkEnableOption "SSH client configuration";
@@ -109,6 +120,7 @@ in {
     home.activation.syncWorkSshHosts = lib.mkIf cfg.workHostsFromPass (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         export PATH="${lib.makeBinPath [ pkgs.gopass pkgs.gnupg pkgs.coreutils ]}:$PATH"
+        ${ensureGpgAgent}
         mkdir -p "$HOME/.ssh/config.d"
         chmod 700 "$HOME/.ssh/config.d"
         if timeout 10 gopass cat ${lib.escapeShellArg cfg.passEntry} \
@@ -138,6 +150,7 @@ in {
     home.activation.syncWorkSshKeys = lib.mkIf cfg.keysFromPass (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         export PATH="${lib.makeBinPath [ pkgs.gopass pkgs.gnupg pkgs.coreutils ]}:$PATH"
+        ${ensureGpgAgent}
         if entries=$(timeout 10 gopass ls --flat ${lib.escapeShellArg cfg.passKeysPrefix} < /dev/null 2>/dev/null); then
           while IFS= read -r entry <&3; do
             [ -n "$entry" ] || continue

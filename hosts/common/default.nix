@@ -46,8 +46,7 @@ in {
     enableRtkit = true;
     enablePolkit = true;
     enableGnomeKeyring = true;
-    enableGpgAgent = true;
-    gpgCacheTtl = 600;
+    enableSmartcard = true;
   };
 
   # Nix settings

@@ -1,4 +1,13 @@
 # Security configuration
+#
+# NOTE: gpg-agent is deliberately NOT configured here. It is owned solely by
+# home-manager (`modules/home-manager/programs/gpg.nix` -> services.gpg-agent).
+# Enabling `programs.gnupg.agent` as well installs a second set of
+# gpg-agent.{service,socket} units (/etc/systemd/user vs ~/.config/systemd/user)
+# and a second SSH_AUTH_SOCK export; the two stacks end up with different
+# socket dirs and two keyboxd daemons fighting over the
+# ~/.gnupg/public-keys.d/pubring.db dotlock, which makes every gpg read fail
+# with "keydb_search failed: Connection timed out".
 { config, lib, pkgs, ... }:
 
 let
@@ -26,16 +35,10 @@ in
       description = "Enable GNOME Keyring integration";
     };
 
-    enableGpgAgent = lib.mkOption {
+    enableSmartcard = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Enable GPG agent with SSH support";
-    };
-
-    gpgCacheTtl = lib.mkOption {
-      type = lib.types.int;
-      default = 600;
-      description = "GPG agent cache TTL in seconds";
+      description = "Enable pcscd for smart card support (OpenPGP cards, YubiKey)";
     };
   };
 
@@ -48,17 +51,8 @@ in
 
     services.gnome.gnome-keyring.enable = cfg.enableGnomeKeyring;
 
-    # GPG Agent
-    programs.gnupg.agent = lib.mkIf cfg.enableGpgAgent {
-      enable = true;
-      enableSSHSupport = true;
-      settings = {
-        default-cache-ttl = cfg.gpgCacheTtl;
-      };
-    };
-
     # PCSCD for smart card support
-    services.pcscd.enable = cfg.enableGpgAgent;
+    services.pcscd.enable = cfg.enableSmartcard;
 
     # DBus packages for GCR (GNOME crypto)
     services.dbus.packages = lib.mkIf cfg.enableGnomeKeyring [ pkgs.gcr ];

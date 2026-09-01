@@ -1,4 +1,9 @@
 # GPG agent configuration
+#
+# This module is the ONLY owner of gpg-agent. `programs.gnupg.agent` on the
+# NixOS side is intentionally left off (see modules/nixos/security.nix) —
+# running both installs two competing sets of gpg-agent units and two keyboxd
+# daemons, which deadlock on the ~/.gnupg/public-keys.d/pubring.db dotlock.
 { config, lib, pkgs, ... }:
 
 let
@@ -19,6 +24,12 @@ in
       default = true;
       description = "Enable Zsh integration";
     };
+
+    cacheTtl = lib.mkOption {
+      type = lib.types.int;
+      default = 600;
+      description = "GPG agent passphrase cache TTL in seconds";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -26,6 +37,8 @@ in
       enable = true;
       enableZshIntegration = cfg.enableZshIntegration;
       enableSshSupport = cfg.enableSshSupport;
+      defaultCacheTtl = cfg.cacheTtl;
+      defaultCacheTtlSsh = cfg.cacheTtl;
       pinentry.package = pkgs.pinentry-gnome3;
     };
 
