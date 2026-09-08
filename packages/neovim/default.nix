@@ -26,16 +26,45 @@ let
   # Bump both together whenever nixpkgs bumps kulala.nvim, or the queries (from this
   # repo) and the compiled parser drift and vim.treesitter.start() throws on ft=http.
   # The repo vendors a generated src/parser.c, so buildGrammar compiles it directly.
-  treesitter-kulala-http = pkgs.tree-sitter.buildGrammar {
-    language = "kulala_http";
-    version = "6.15.3"; # kulala.nvim version this grammar rev ships with
-    src = pkgs.fetchFromGitHub {
-      owner = "mistweaverco";
-      repo = "tree-sitter-kulala-http";
-      rev = "cb7a092a6e9923f611c34d0448a9084c9949c923";
-      hash = "sha256-waldW9KmNMY7sFanW6sqVMURwhseH/BnpqDwGJd36oY=";
-    };
+  #
+  # The three values below are GENERATED — do not hand-edit. After `nix flake update`
+  # moves kulala.nvim, run:  ./scripts/update-kulala-grammar.sh
+  # The eval-time check underneath warns loudly if they have drifted, so a stale pin
+  # can never rot silently.
+  kulalaGrammarPin = {
+    pluginVersion = "6.28.0"; # kulala.nvim version this grammar rev ships with
+    rev = "630e2b8523c775ba866564c2b4ad88d649a56c00";
+    hash = "sha256-+BtU7xGUwgZeFX21St8YNYCDrOstDzLjQvbedNtbhvU=";
   };
+
+  # What the *installed* plugin pins. Read out of the built plugin (IFD — kulala.nvim
+  # is a plain fetch that substitutes from cache, so this costs a download at most)
+  # purely to compare against the pin above; the grammar fetch itself stays pinned
+  # and hashed, so evaluation remains reproducible.
+  kulalaPluginRev =
+    let
+      versionFile = "${pkgs.vimPlugins.kulala-nvim}/lua/kulala/globals/versions/treesitter.lua";
+      m = builtins.match "return \"([0-9a-f]+)\"[[:space:]]*" (builtins.readFile versionFile);
+    in
+    if m == null then null else builtins.head m;
+
+  treesitter-kulala-http =
+    pkgs.lib.warnIf (kulalaPluginRev == null)
+      "kulala: could not parse the grammar rev out of kulala.nvim - drift check skipped"
+      (pkgs.lib.warnIf (kulalaPluginRev != null && kulalaPluginRev != kulalaGrammarPin.rev)
+        ("kulala grammar drift: kulala.nvim pins ${toString kulalaPluginRev}, this flake pins "
+          + "${kulalaGrammarPin.rev}. Run ./scripts/update-kulala-grammar.sh to resync, "
+          + "or ft=http highlighting breaks.")
+        (pkgs.tree-sitter.buildGrammar {
+          language = "kulala_http";
+          version = kulalaGrammarPin.pluginVersion;
+          src = pkgs.fetchFromGitHub {
+            owner = "mistweaverco";
+            repo = "tree-sitter-kulala-http";
+            rev = kulalaGrammarPin.rev;
+            hash = kulalaGrammarPin.hash;
+          };
+        }));
 
   extraPackages = with pkgs; [
     lua-language-server
