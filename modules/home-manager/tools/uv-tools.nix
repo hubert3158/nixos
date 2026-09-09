@@ -30,7 +30,12 @@ let
     {
       name = "graphify";
       # PyPI package is `graphifyy` (double-y); exposes the `graphify` bin.
-      args = "graphifyy";
+      # Pin to uv's *managed* CPython: the Nix python3 launches under Nix's own
+      # ld.so, which has no libstdc++.so.6 on its search path, so manylinux
+      # wheels (numpy) die with "libstdc++.so.6: cannot open shared object
+      # file". uv's standalone build uses /lib64/ld-linux-x86-64.so.2 -> nix-ld,
+      # which injects NIX_LD_LIBRARY_PATH (includes stdenv.cc.cc.lib).
+      args = "-p 3.13 --python-preference only-managed graphifyy";
     }
     {
       name = "markitdown";
