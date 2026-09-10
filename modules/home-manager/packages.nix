@@ -65,6 +65,8 @@ in {
         hyprpicker # color picker on Mod+Shift+C
         cava # audio visualizer (waybar module + terminal)
         chafa # image → terminal art (nvim snacks dashboard wave header)
+        imagemagick # nvim snacks.image converter (png/svg/pdf → png)
+        ghostscript # imagemagick PDF delegate — snacks.image pdf preview needs it
         dejavu_fonts
         alacritty-theme
         swayimg
