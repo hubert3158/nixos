@@ -26,6 +26,31 @@
   # Starting the socket unit first makes gpg attach to the real agent instead.
   ensureGpgAgent = ''
     ${pkgs.systemd}/bin/systemctl --user start gpg-agent.socket 2>/dev/null || true
+    # At boot this activation runs from home-manager-<user>.service, before the
+    # user's own systemd instance exists, so the line above is a silent no-op
+    # and gpg spawns its own agent + keyboxd anyway. Record that, so the
+    # matching releaseGpgAgent below knows it may tear them down again.
+    if [ -S "/run/user/$(id -u)/gnupg/S.gpg-agent" ]; then
+      hmSpawnedGpg=0
+    else
+      hmSpawnedGpg=1
+    fi
+  '';
+
+  # Counterpart to ensureGpgAgent. A stray activation-spawned keyboxd keeps the
+  # ~/.gnupg/public-keys.d/pubring.db dotlock for the whole boot; every later
+  # gpg then starts a *second* keyboxd against /run/user/$UID/gnupg, which
+  # blocks on that lock and dies with
+  #   gpg: Note: database_open <n> waiting for lock (held by <pid>) ...
+  #   gpg: keydb_search failed: Connection timed out
+  # surfacing in gopass as `invalid recipients detected ...: Invalid Recipients`
+  # even though the recipient key is perfectly fine.
+  # Guarded on hmSpawnedGpg so a rebuild inside a live session never kills the
+  # user's real agent (and its cached passphrases / loaded ssh keys).
+  releaseGpgAgent = ''
+    if [ "''${hmSpawnedGpg:-0}" = 1 ]; then
+      ${pkgs.gnupg}/bin/gpgconf --homedir "$HOME/.gnupg" --kill all 2>/dev/null || true
+    fi
   '';
 in {
   options.modules.programs.ssh = {
@@ -132,6 +157,7 @@ in {
           rm -f "$HOME/.ssh/config.d/.work.tmp"
           echo "ssh.nix: cannot decrypt gopass entry '${cfg.passEntry}' (gpg-agent locked?); keeping existing ~/.ssh/config.d/work" >&2
         fi
+        ${releaseGpgAgent}
       ''
     );
 
@@ -167,6 +193,7 @@ in {
         else
           echo "ssh.nix: cannot list gopass prefix '${cfg.passKeysPrefix}' (gpg-agent locked?); ssh keys not synced" >&2
         fi
+        ${releaseGpgAgent}
       ''
     );
   };
