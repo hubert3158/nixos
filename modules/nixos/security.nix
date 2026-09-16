@@ -54,9 +54,6 @@ in
     # PCSCD for smart card support
     services.pcscd.enable = cfg.enableSmartcard;
 
-    # DBus packages for GCR (GNOME crypto)
-    services.dbus.packages = lib.mkIf cfg.enableGnomeKeyring [ pkgs.gcr ];
-
     # Required packages
     environment.systemPackages = with pkgs; [
       gnupg
