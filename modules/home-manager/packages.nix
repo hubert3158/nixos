@@ -125,6 +125,7 @@ in {
       # Productivity packages
       ++ (lib.optionals cfg.enableProductivity [
         obsidian
+        anki # spaced repetition (FSRS); pkgs.anki is newer + fully cached vs anki-bin
         pandoc
         mdbook-pdf
         libreoffice
