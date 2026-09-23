@@ -205,8 +205,6 @@ hl.config({
     },
 
     binds = {
-        -- pressing the number of the workspace you're on returns to the last
-        workspace_back_and_forth = true,
         -- switching workspace closes an open scratchpad / drop-down terminal
         hide_special_on_workspace_change = true,
     },
@@ -337,12 +335,10 @@ hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
 
 -- ── workspaces ──
--- SUPER+1 on workspace 1 bounces back to the previous one
--- (binds.workspace_back_and_forth below), so a number key is also a toggle.
 for i = 1, 10 do
     local key = i % 10 -- 10 maps to key 0
     if i == 1 then
-        bind(mainMod .. " + 1", hl.dsp.focus({ workspace = 1 }), "workspace १–१० (1–0; again: back)")
+        bind(mainMod .. " + 1", hl.dsp.focus({ workspace = 1 }), "workspace १–१० (1–0)")
         bind(mainMod .. " + SHIFT + 1", hl.dsp.window.move({ workspace = 1 }), "send window to workspace १–१०")
     else
         hl.bind(mainMod .. " + " .. key,         hl.dsp.focus({ workspace = i }))
