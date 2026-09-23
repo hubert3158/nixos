@@ -432,6 +432,19 @@ require("lz.n").load({
 		end,
 	},
 	{
+		-- multi-cursor. Only its entry keys are stubbed: <C-n> (word under
+		-- cursor / selection) and the \\A select-all · \\/ regex starters.
+		-- Every other VM key only exists once a VM session is running, by
+		-- which point the plugin is loaded. <C-Up>/<C-Down> stay the resize
+		-- maps from user/keymaps.lua.
+		"vim-visual-multi",
+		keys = {
+			{ "<C-n>", mode = { "n", "x" }, desc = "Multi-cursor: add next match" },
+			{ "\\\\A", desc = "Multi-cursor: select all matches" },
+			{ "\\\\/", desc = "Multi-cursor: regex search" },
+		},
+	},
+	{
 		"venn.nvim",
 		cmd = { "VBox", "VBoxD", "VBoxH", "VBoxO" },
 		after = function()

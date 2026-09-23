@@ -63,6 +63,7 @@ in {
         playerctl # XF86Audio media binds in hyprland.lua
         libnotify # notify-send for swaync
         hyprpicker # color picker on Mod+Shift+C
+        wf-recorder # screen recording — dotfiles/hypr/scripts/record.sh (Mod+Ctrl+N, waybar drawer)
         cava # audio visualizer (waybar module + terminal)
         chafa # image → terminal art (nvim snacks dashboard wave header)
         imagemagick # nvim snacks.image converter (png/svg/pdf → png)
@@ -70,6 +71,7 @@ in {
         dejavu_fonts
         alacritty-theme
         swayimg
+        mpv # video/audio player — yazi `play` opener + xdg default for video/*
         exiftool
       ]
       # Development packages

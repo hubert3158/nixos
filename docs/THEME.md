@@ -247,6 +247,8 @@ Adding quotations means adding TSV rows; nothing else needs touching.
 - Shell surfaces are **frosted glass**: `rgba(sumiInk1, ~0.9)` + a 7%-tall lit
   edge along the top + hyprland layer blur
 - Borders: 1px `rgba(sumiInk6, ~0.5)` on glass; gradient only on the focused window
+- Shadows: the focused window casts a waveBlue2 aura, the rest plain sumiInk0 — one shadow pass either way
+- Menus are spotlights: launcher/fuzzel menus and wlogout `dim_around` (0.35); swaync slides in from the right
 - Motion: material-expressive beziers (see `dotfiles/hypr/hyprland.lua`), 200–400 ms
 
 ### Border language
@@ -294,6 +296,36 @@ margins, the border thins to a hairline. It pushes both states through
 `hyprctl eval` + `hl.config()` rather than reloading, so it is instant and costs
 nothing while idle. **The "off" values in that script must match the
 `general`/`decoration` blocks in `hyprland.lua`** — there is no "unset".
+
+### ekagra — the focus timer
+
+`custom/focus` in waybar's centre island (`home-manager-config-files/waybar/focus.sh`),
+also `SUPER+A`. Click starts 25 minutes, scroll-up adds 5, right-click stops;
+it counts down in Devanagari numerals like the workspaces, turns gold while
+running and surimiOrange in the last five minutes, and ends with a
+notification. The script is a daemon blocked on a FIFO read — idle it never
+wakes, running it wakes once per minute boundary. `FOCUS_MINUTES` changes the
+length.
+
+### Surfaces that talk to each other
+
+- **Cheat sheet (`SUPER+/`)** is generated from the live bind table
+  (`hyprctl binds -j`): every `bind(…, desc)` in `hyprland.lua` appears, anything
+  bound with bare `hl.bind` does not. Describe a bind and it documents itself.
+- **Recording** (`SUPER+CTRL+N` region, `+SHIFT` screen, or the drawer's camera)
+  signals waybar `RTMIN+9` on start/stop; the breathing red `rec` pill exists
+  only while wf-recorder runs. Files land in `~/Videos/Recordings`.
+- **Neovim's window title** is `nvim <file> · <project>`, which the waybar
+  window rewrite turns into ` <file> · <project>`.
+- **Mode ink:** Neovim's cursor-line number takes the statusline cap's pigment
+  (INS springGreen, VIS oniViolet, REP peachRed, TRM waveAqua); insert and
+  replace also wash the line winterGreen / winterRed. Normal mode is untouched.
+  `nvim/lua/user/mode-ink.lua`.
+- **Weather goes to night** after the location's sunset: night sky glyphs,
+  springViolet instead of carpYellow, moon phase + sunrise/sunset in the
+  tooltip.
+- **Workspace pills carry app glyphs** for the windows on them
+  (`window-rewrite` in the waybar config; unknown classes get a generic mark).
 
 ### Hyprland config format: Lua, not `.conf`
 

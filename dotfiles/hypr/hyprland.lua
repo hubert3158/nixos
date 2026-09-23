@@ -92,12 +92,22 @@ hl.config({
         -- the Vega 7 iGPU. Uncomment to trade smoothness for the look.
         -- screen_shader = "~/nixos/dotfiles/hypr/shaders/vibrance.frag",
 
+        -- the focused window sits in a pool of deep water (waveBlue2) —
+        -- light bleeding out from under the paper — while the rest cast
+        -- plain ink shadows. Same single shadow pass as before, only the
+        -- colour differs, so the aura is free.
         shadow = {
-            enabled      = true,
-            range        = 18,
-            render_power = 3,
-            color        = "rgba(16161daa)",
+            enabled        = true,
+            range          = 22,
+            render_power   = 3,
+            offset         = { 0, 4 },
+            color          = "rgba(2d4f67cc)",
+            color_inactive = "rgba(16161daa)",
         },
+
+        -- strength of the layer-rule `dim_around` spotlight (launcher,
+        -- power menu): the desktop sinks back while a menu is up
+        dim_around = 0.35,
 
         blur = {
             enabled = true,
@@ -190,6 +200,22 @@ hl.config({
 
     cursor = {
         inactive_timeout = 8,
+        -- typing puts the pointer away; touching the mouse brings it back
+        hide_on_key_press = true,
+    },
+
+    binds = {
+        -- pressing the number of the workspace you're on returns to the last
+        workspace_back_and_forth = true,
+        -- switching workspace closes an open scratchpad / drop-down terminal
+        hide_special_on_workspace_change = true,
+    },
+
+    render = {
+        -- fullscreen games/video scan out straight to the display, skipping
+        -- composition. 2 = only for surfaces that tag themselves as games,
+        -- which avoids the flicker some apps show under unconditional scanout.
+        direct_scanout = 2,
     },
 
     ecosystem = {
@@ -221,82 +247,121 @@ hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 
 
 -- ═══ KEYBINDINGS ═════════════════════════════════════════════════════════
+-- Every bind that a person would want to look up carries a description.
+-- SUPER+/ (scripts/keys.sh) reads them back out of `hyprctl binds -j`, so the
+-- cheat sheet is generated from this file and can never drift from it. Binds
+-- without one (media keys, the per-number workspace spam, mouse drags) stay
+-- out of the sheet on purpose.
 
 local mainMod = "SUPER"
+local scripts = "~/nixos/dotfiles/hypr/scripts/"
+
+local function bind(keys, dispatcher, desc, opts)
+    opts = opts or {}
+    opts.description = desc
+    hl.bind(keys, dispatcher, opts)
+end
 
 -- ── apps ──
-hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(screenshot))
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
+bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal), "terminal")
+bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager), "file manager")
+bind(mainMod .. " + R", hl.dsp.exec_cmd(menu), "launcher")
+bind(mainMod .. " + N", hl.dsp.exec_cmd(screenshot), "screenshot (annotate)")
+bind(mainMod .. " + CTRL + N", hl.dsp.exec_cmd(scripts .. "record.sh region"), "record a region (again: stop)")
+bind(mainMod .. " + CTRL + SHIFT + N", hl.dsp.exec_cmd(scripts .. "record.sh screen"), "record the screen (again: stop)")
+bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"), "pick a colour → clipboard")
+bind(mainMod .. " + SHIFT + V",
+    hl.dsp.exec_cmd("cliphist list | fuzzel --dmenu --width 70 --lines 15 --prompt '󰨸  ' | cliphist decode | wl-copy"),
+    "clipboard history")
+bind(mainMod .. " + slash", hl.dsp.exec_cmd(scripts .. "keys.sh"), "this cheat sheet")
 
 -- ── shell: notifications · wallpaper · power ──
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("swaync-client -t -sw")) -- notification center
-hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client --close-all"))
-hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("wallpaper next")) -- animated wall cycle
-hl.bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("wallpaper random"))
-hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd("wlogout -b 3 --protocol layer-shell"))
+bind(mainMod .. " + B", hl.dsp.exec_cmd("swaync-client -t -sw"), "notification centre")
+bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client --close-all"), "dismiss all notifications")
+bind(mainMod .. " + W", hl.dsp.exec_cmd("wallpaper next"), "next wallpaper")
+bind(mainMod .. " + SHIFT + W", hl.dsp.exec_cmd("wallpaper random"), "random wallpaper")
+bind(mainMod .. " + Escape", hl.dsp.exec_cmd("wlogout -b 3 --protocol layer-shell"), "power menu")
 
 -- Bikram Sambat — what is today's Bikram Sambat date? (lib/patro.nix)
-hl.bind(mainMod .. " + K", hl.dsp.exec_cmd("patro notify"))
+bind(mainMod .. " + K", hl.dsp.exec_cmd("patro notify"), "patro — today in Bikram Sambat")
 
 -- ukhaan — a random Nepali proverb (lib/ukhaan.tsv)
-hl.bind(mainMod .. " + U", hl.dsp.exec_cmd("ukhaan notify"))
+bind(mainMod .. " + U", hl.dsp.exec_cmd("ukhaan notify"), "ukhaan — a Nepali proverb")
 
 -- nietzsche — a random Nietzsche quotation (lib/nietzsche.tsv)
-hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("nietzsche notify"))
+bind(mainMod .. " + Y", hl.dsp.exec_cmd("nietzsche notify"), "nietzsche — a quotation")
 
 -- dhyan — dhyan mode: bar folds away, gaps open into paper margins
-hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("~/nixos/dotfiles/hypr/scripts/zen.sh"))
+bind(mainMod .. " + Z", hl.dsp.exec_cmd(scripts .. "zen.sh"), "dhyan — reading-room mode")
+
+-- ekagra — the waybar focus timer, from the keyboard
+bind(mainMod .. " + A", hl.dsp.exec_cmd("~/nixos/home-manager-config-files/waybar/focus.sh toggle"),
+    "ekagra — start / stop a 25 min focus session")
 
 -- ── window management ──
-hl.bind(mainMod .. " + C", hl.dsp.window.close())
-hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a")) -- pick a color, hex lands in clipboard
-hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(mainMod .. " + P", hl.dsp.window.pseudo()) -- dwindle
-hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
-hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
+bind(mainMod .. " + C", hl.dsp.window.close(), "close window")
+bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }), "float / tile")
+bind(mainMod .. " + SHIFT + P", hl.dsp.window.pin(), "pin floating window to every workspace")
+bind(mainMod .. " + P", hl.dsp.window.pseudo(), "pseudotile") -- dwindle
+bind(mainMod .. " + J", hl.dsp.layout("togglesplit"), "toggle split direction")
+bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized" }), "maximise (red border)")
+bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }), "fullscreen")
 
 -- alt+tab window cycling
-hl.bind("ALT + Tab", hl.dsp.window.cycle_next())
-hl.bind("ALT + SHIFT + Tab", hl.dsp.window.cycle_next({ next = false }))
+bind("ALT + Tab", hl.dsp.window.cycle_next(), "next window")
+bind("ALT + SHIFT + Tab", hl.dsp.window.cycle_next({ next = false }), "previous window")
 
 -- ── tabbed groups ──
-hl.bind(mainMod .. " + T", hl.dsp.group.toggle())
-hl.bind(mainMod .. " + Tab", hl.dsp.group.next())
-hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.group.prev())
-hl.bind(mainMod .. " + SHIFT + T", hl.dsp.group.lock_active({ action = "toggle" }))
+bind(mainMod .. " + T", hl.dsp.group.toggle(), "group windows into tabs")
+bind(mainMod .. " + Tab", hl.dsp.group.next(), "next tab in group")
+bind(mainMod .. " + SHIFT + Tab", hl.dsp.group.prev(), "previous tab in group")
+bind(mainMod .. " + SHIFT + T", hl.dsp.group.lock_active({ action = "toggle" }), "lock group (gold border)")
 
 -- workspace overview (Hyprspace plugin — disabled, does not build on Hyprland
 -- 0.56; see modules/home-manager/desktop/hyprland.nix). When it is re-enabled,
 -- the old `overview:toggle` dispatcher needs a Lua-side equivalent — plugins
 -- expose theirs under hl.plugin.<namespace>.<fn> once loaded, so check
--- `hyprctl repl` for what Hyprspace actually registers before rebinding.
--- hl.bind(mainMod .. " + grave", ...)
+-- `hyprctl repl` for what Hyprspace actually registers before binding it to
+-- SUPER+O (SUPER+grave now belongs to the drop-down terminal).
 
 -- ── focus ──
-hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
+bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }), "focus ← → ↑ ↓")
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + down",  hl.dsp.focus({ direction = "down" }))
 
 -- ── move window ──
-hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }))
+bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }), "move window ← → ↑ ↓")
 hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
 hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
 
 -- ── workspaces ──
+-- SUPER+1 on workspace 1 bounces back to the previous one
+-- (binds.workspace_back_and_forth below), so a number key is also a toggle.
 for i = 1, 10 do
     local key = i % 10 -- 10 maps to key 0
-    hl.bind(mainMod .. " + " .. key,           hl.dsp.focus({ workspace = i }))
-    hl.bind(mainMod .. " + SHIFT + " .. key,   hl.dsp.window.move({ workspace = i }))
+    if i == 1 then
+        bind(mainMod .. " + 1", hl.dsp.focus({ workspace = 1 }), "workspace १–१० (1–0; again: back)")
+        bind(mainMod .. " + SHIFT + 1", hl.dsp.window.move({ workspace = 1 }), "send window to workspace १–१०")
+    else
+        hl.bind(mainMod .. " + " .. key,         hl.dsp.focus({ workspace = i }))
+        hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+    end
 end
 
+-- walk the occupied workspaces without reaching for a number
+bind(mainMod .. " + CTRL + right", hl.dsp.focus({ workspace = "e+1" }), "next occupied workspace")
+bind(mainMod .. " + CTRL + left",  hl.dsp.focus({ workspace = "e-1" }), "previous occupied workspace")
+
 -- scratchpad
-hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"), "scratchpad")
+bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }), "send window to scratchpad")
+
+-- drop-down terminal: a kitty that lives on its own special workspace and
+-- slides down from the bar. The workspace rule below spawns it on first use;
+-- after that SUPER+` only shows and hides it, so its scrollback survives.
+bind(mainMod .. " + grave", hl.dsp.workspace.toggle_special("dropterm"), "drop-down terminal")
 
 -- scroll through workspaces
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
@@ -305,6 +370,23 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 -- drag to move / resize
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
+-- ── magnifier ──
+-- Lua-side binds: read the live zoom, scale it, write it back. The zoom
+-- follows the cursor; nothing runs until a key is pressed.
+local function zoom(factor)
+    return function()
+        local z = tonumber(hl.get_config("cursor.zoom_factor")) or 1
+        z = factor and math.min(math.max(z * factor, 1), 6) or 1
+        hl.config({ cursor = { zoom_factor = z } })
+    end
+end
+
+bind(mainMod .. " + CTRL + equal", zoom(1.25), "zoom in (CTRL+scroll too)", { repeating = true })
+bind(mainMod .. " + CTRL + minus", zoom(0.8), "zoom out", { repeating = true })
+bind(mainMod .. " + CTRL + 0", zoom(nil), "reset zoom")
+hl.bind(mainMod .. " + CTRL + mouse_up",   zoom(1.15))
+hl.bind(mainMod .. " + CTRL + mouse_down", zoom(1 / 1.15))
 
 -- ── media & hardware keys ──
 -- swayosd-client shows an OSD; falls back to raw wpctl/brightnessctl until
@@ -329,7 +411,7 @@ hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = tr
 -- Unlike the old .conf format, submap membership is lexical: only binds inside
 -- the hl.define_submap callback belong to it, so ordering no longer matters.
 
-hl.bind(mainMod .. " + X", hl.dsp.submap("resize"))
+bind(mainMod .. " + X", hl.dsp.submap("resize"), "resize mode (arrows / hjkl, Esc to leave)")
 
 hl.define_submap("resize", function()
     local step = { repeating = true }
@@ -350,6 +432,13 @@ end)
 -- ═══ WORKSPACE RULES ═════════════════════════════════════════════════════
 
 -- scratchpad inherits regular gaps — dim_special marks it as an overlay
+
+-- drop-down terminal (SUPER+grave): the first toggle spawns its kitty, every
+-- later one just shows/hides the same window
+hl.workspace_rule({
+    workspace        = "special:dropterm",
+    on_created_empty = "kitty --class dropterm",
+})
 
 
 -- ═══ WINDOW RULES ════════════════════════════════════════════════════════
@@ -415,6 +504,37 @@ hl.window_rule({
 
     float  = true,
     size   = { 1100, 680 },
+    center = true,
+})
+
+-- the drop-down terminal: a wide floating sheet hanging just under the bar,
+-- sliding in with the specialWorkspace slidefadevert animation
+hl.window_rule({
+    name  = "dropterm",
+    match = { class = "dropterm" },
+
+    float = true,
+    size  = { "76%", "52%" },
+    move  = { "12%", "6%" },
+})
+
+-- small system utilities float as centred panels rather than tiling across
+-- half the screen
+hl.window_rule({
+    name  = "float-utilities",
+    match = { class = "(nm-connection-editor|blueman-manager|.blueman-manager-wrapped|org.gnome.Calculator|qalculate-gtk|xdg-desktop-portal-gtk|org.kde.polkit-kde-authentication-agent-1)" },
+
+    float  = true,
+    center = true,
+})
+
+-- image viewer: a floating lightbox
+hl.window_rule({
+    name  = "float-image-viewer",
+    match = { class = "(swayimg|imv)" },
+
+    float  = true,
+    size   = { "70%", "75%" },
     center = true,
 })
 
@@ -543,6 +663,8 @@ hl.layer_rule({
     xray         = true,
 })
 
+-- the launcher (and every fuzzel menu: clipboard, cheat sheet) is a
+-- spotlight — the desktop dims behind it while it is open
 hl.layer_rule({
     name  = "blur-launcher",
     match = { namespace = "launcher" },
@@ -550,6 +672,8 @@ hl.layer_rule({
     blur         = true,
     ignore_alpha = 0.29,
     xray         = true,
+    dim_around   = true,
+    animation    = "popin 88%",
 })
 
 hl.layer_rule({
@@ -558,6 +682,8 @@ hl.layer_rule({
 
     blur         = true,
     ignore_alpha = 0.29,
+    -- notifications and the centre drift in from the right edge they live on
+    animation    = "slide right",
 })
 
 hl.layer_rule({
@@ -566,6 +692,7 @@ hl.layer_rule({
 
     blur         = true,
     ignore_alpha = 0.29,
+    animation    = "slide right",
 })
 
 hl.layer_rule({
@@ -581,5 +708,7 @@ hl.layer_rule({
     name  = "blur-wlogout",
     match = { namespace = "logout_dialog" },
 
-    blur = true,
+    blur       = true,
+    dim_around = true,
+    animation  = "fade",
 })

@@ -1,9 +1,21 @@
 local cmp = require("blink.cmp")
-local luasnip = require("luasnip")
-require("luasnip.loaders.from_vscode").lazy_load()
-luasnip.config.setup({})
+
+-- LuaSnip + friendly-snippets' vscode loader were ~12 ms of require()s — the
+-- single largest line item in `nvim --startuptime`. Nothing touches a snippet
+-- before the first insert or cmdline, so they load then, once. lazy_load()
+-- covers the current buffer itself; later buffers load via LuaSnip's own
+-- FileType autocmds. blink's luasnip preset only require()s it lazily.
+vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
+	group = vim.api.nvim_create_augroup("UserSnippetsLoad", { clear = true }),
+	once = true,
+	callback = function()
+		require("luasnip").config.setup({})
+		require("luasnip.loaders.from_vscode").lazy_load()
+	end,
+})
 
 vim.keymap.set({ "i", "s" }, "<C-k>", function()
+	local luasnip = require("luasnip")
 	if luasnip.expand_or_jumpable() then
 		luasnip.expand_or_jump()
 	end

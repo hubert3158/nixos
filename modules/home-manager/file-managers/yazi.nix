@@ -44,11 +44,33 @@ in
               desc = "open";
             };
           }
+          {
+            # orphan: the player outlives yazi and doesn't grab its terminal
+            play = {
+              run = "mpv --force-window '$@'";
+              orphan = true;
+              desc = "play (mpv)";
+            };
+          }
         ];
 
         open = [
           {
             rules = [
+              # media must match before the catch-all "*" → edit below,
+              # or Enter on a video opens its bytes in nvim
+              {
+                mime = "video/*";
+                use = "play";
+              }
+              {
+                mime = "audio/*";
+                use = "play";
+              }
+              {
+                mime = "image/*";
+                use = "open";
+              }
               {
                 mime = "text/plain";
                 use = "edit";

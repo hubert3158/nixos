@@ -89,6 +89,16 @@ in {
       mimeApps = {
         enable = true;
         defaultApplications = {
+          # video → mpv (was unset: nothing on the system could play one)
+          "video/mp4" = ["mpv.desktop"];
+          "video/webm" = ["mpv.desktop"];
+          "video/x-matroska" = ["mpv.desktop"];
+          "video/quicktime" = ["mpv.desktop"];
+          "video/x-msvideo" = ["mpv.desktop"];
+          "video/mpeg" = ["mpv.desktop"];
+          "audio/mpeg" = ["mpv.desktop"];
+          "audio/flac" = ["mpv.desktop"];
+          "audio/ogg" = ["mpv.desktop"];
           "image/jpeg" = ["swayimg.desktop"];
           "image/png" = ["swayimg.desktop"];
           "image/gif" = ["swayimg.desktop"];

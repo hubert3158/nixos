@@ -150,6 +150,11 @@ require("kanagawa").setup({
 })
 vim.cmd.colorscheme("kanagawa")
 
+-- cursor line takes the statusline mode cap's pigment (insert green, visual
+-- violet, replace red); must run after the colorscheme so it captures the
+-- resting CursorLine/CursorLineNr to return to
+require("user.mode-ink").setup()
+
 -- ============================================================================
 -- Session restore — must be set up before VimEnter, so loaded eagerly
 -- ============================================================================

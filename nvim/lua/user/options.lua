@@ -138,4 +138,9 @@ opt.fillchars = "fold: ,foldopen:▾,foldsep: ,foldclose:▸,stl: ,eob: ,vert:�
 -- Cursor and scrolling
 opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50"
 opt.scrolloff = 8
+-- window title "nvim <file> · <project>" — waybar's hyprland/window rewrite
+-- turns the leading "nvim " into the neovim glyph, so the bar reads
+-- " options.lua · nixos" instead of kitty's generic shell title
+opt.title = true
+opt.titlestring = "nvim %t · %{fnamemodify(getcwd(), ':t')}"
 opt.sidescrolloff = 8

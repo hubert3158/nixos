@@ -192,7 +192,9 @@ in
     # and breaks nvim-ufo's require('async'). LSP code actions cover most of
     # what refactoring.nvim offered. Re-evaluate once upstream resolves the
     # naming collision.
-    vim-visual-multi
+    # vim-visual-multi — ~4.6 ms of vimscript at startup; lazy on its entry
+    # keys via lz.n (nvim/plugin/lazy-load.lua).
+    { plugin = vim-visual-multi; optional = true; }
     { plugin = yanky-nvim; }
     # grug-far — ripgrep-backed search/replace with live preview (replaced
     # nvim-spectre: stale, sed-based apply). Lazy via lz.n on keys/cmd.

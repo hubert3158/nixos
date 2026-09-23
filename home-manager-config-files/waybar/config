@@ -1,11 +1,16 @@
 // Waybar — Himal Himal (docs/THEME.md)
 //
 // Three frosted ink islands. Left is identity (os · workspaces · window · now
-// playing), centre is time (Bikram Sambat date · clock · weather), right is
-// state (vitals · radios · power).
+// playing), centre is time (Bikram Sambat date · clock · ekagra focus timer ·
+// weather), right is state (vitals · radios · power).
+//
+// Two drawers keep the right island short: 󰇘 folds the click-actions, and
+// hovering the cpu pill slides out the deeper vitals (per-core heat strip,
+// disk, live throughput). Neither costs anything while folded.
 //
 // Live-editable: symlinked from ~/.config/waybar/config.
-//   style.css reloads on save;  config changes need `pkill waybar && waybar &`.
+//   style.css reloads on save;  config changes need `systemctl --user reload waybar`
+//   (waybar runs as a supervised user service — see modules/home-manager/desktop/waybar.nix).
 {
     "layer": "top",
     "position": "top",
@@ -27,14 +32,16 @@
     "modules-center": [
         "custom/patro",
         "clock",
+        "custom/focus",
         "custom/weather"
     ],
     "modules-right": [
         "privacy",
+        "custom/record",
         "systemd-failed-units",
         "group/utils",
         "tray",
-        "cpu",
+        "group/vitals",
         "temperature",
         "memory",
         "pulseaudio",
@@ -55,8 +62,36 @@
         "on-click-right": "patro notify"
     },
 
+    // Each numeral carries a faint trail of glyphs for the windows living on
+    // it, so an unfocused workspace answers "what's over there?" without a
+    // visit. Glyphs ride a smaller, dimmer span; empty workspaces stay bare.
+    // Unknown classes fall back to a generic app mark.
     "hyprland/workspaces": {
-        "format": "{icon}",
+        "format": "{icon}<span size='85%' alpha='70%'>{windows}</span>",
+        "format-window-separator": "",
+        "window-rewrite-default": " 󰘔",
+        "window-rewrite": {
+            "class<kitty|com.mitchellh.ghostty|org.wezfurlong.wezterm>": " 󰆍",
+            "class<dropterm>": "",
+            "class<firefox>": " 󰈹",
+            "class<google-chrome|chromium-browser>": " 󰊯",
+            "class<[Mm]icrosoft-edge.*>": " 󰇩",
+            "class<brave-browser>": " 󰖟",
+            "class<code|Code|code-url-handler>": " 󰨞",
+            "class<jetbrains-.*>": " 󱃖",
+            "class<DBeaver|dbeaver>": " 󱘲",
+            "class<obsidian>": " 󰺿",
+            "class<anki|Anki>": " 󰘹",
+            "class<org.kde.dolphin>": " 󰉖",
+            "class<[Ss]lack>": " 󰒱",
+            "class<discord|vesktop>": " 󰙯",
+            "class<[Ss]potify>": " 󰓇",
+            "class<evolution|org.gnome.Evolution|thunderbird>": " 󰇰",
+            "class<mpv|vlc>": " 󰿎",
+            "class<swayimg|imv>": " 󰋩",
+            "class<waybar-tui>": " 󰄨",
+            "class<org.pulseaudio.pavucontrol|pavucontrol>": " 󰕾"
+        },
         "format-icons": {
             "1": "१",
             "2": "२",
@@ -164,6 +199,19 @@
         }
     },
 
+    // ekagra (एकाग्र, "one-pointed") — a focus timer. The script is a tiny
+    // daemon blocked on a FIFO read: idle it costs nothing, running it wakes
+    // once a minute. Counts down in Devanagari numerals, like the workspaces.
+    //   click: start 25 min / stop · scroll up: +5 min · right-click: stop
+    "custom/focus": {
+        "exec": "/home/hubert/nixos/home-manager-config-files/waybar/focus.sh",
+        "return-type": "json",
+        "on-click": "/home/hubert/nixos/home-manager-config-files/waybar/focus.sh toggle",
+        "on-click-right": "/home/hubert/nixos/home-manager-config-files/waybar/focus.sh stop",
+        "on-scroll-up": "/home/hubert/nixos/home-manager-config-files/waybar/focus.sh add",
+        "escape": false
+    },
+
     "custom/weather": {
         "exec": "/home/hubert/nixos/home-manager-config-files/waybar/weather.sh",
         "return-type": "json",
@@ -180,6 +228,15 @@
             { "type": "screenshare" },
             { "type": "audio-in" }
         ]
+    },
+
+    // screen recording in progress — invisible otherwise. record.sh signals
+    // RTMIN+9 on start and stop, so this never polls. Click stops.
+    "custom/record": {
+        "exec": "/home/hubert/nixos/dotfiles/hypr/scripts/record.sh status",
+        "return-type": "json",
+        "signal": 9,
+        "on-click": "/home/hubert/nixos/dotfiles/hypr/scripts/record.sh stop"
     },
 
     "systemd-failed-units": {
@@ -203,8 +260,11 @@
             "custom/utils",
             "custom/docker",
             "custom/screenshot",
+            "custom/screencast",
+            "custom/picker",
             "custom/clipboard",
             "custom/wallpaper",
+            "custom/keys",
             "idle_inhibitor"
         ]
     },
@@ -225,6 +285,25 @@
         "format": "󰄀",
         "tooltip": false,
         "on-click": "flameshot gui"
+    },
+
+    "custom/screencast": {
+        "format": "󰯜",
+        "tooltip-format": "record a region · right-click: whole screen",
+        "on-click": "/home/hubert/nixos/dotfiles/hypr/scripts/record.sh region",
+        "on-click-right": "/home/hubert/nixos/dotfiles/hypr/scripts/record.sh screen"
+    },
+
+    "custom/picker": {
+        "format": "󰈊",
+        "tooltip-format": "pick a colour — hex lands in the clipboard",
+        "on-click": "hyprpicker -a"
+    },
+
+    "custom/keys": {
+        "format": "󰥻",
+        "tooltip-format": "keybindings (SUPER+/)",
+        "on-click": "/home/hubert/nixos/dotfiles/hypr/scripts/keys.sh"
     },
 
     "custom/clipboard": {
@@ -255,11 +334,64 @@
         "spacing": 10
     },
 
+    // Vitals drawer — cpu stays on the bar; hovering it slides out the
+    // readouts you only want on demand.
+    "group/vitals": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 350,
+            "transition-left-to-right": false,
+            "children-class": "vitals-child",
+            "click-to-reveal": false
+        },
+        "modules": [
+            "cpu",
+            "cpu#cores",
+            "disk",
+            "network#speed"
+        ]
+    },
+
     "cpu": {
         "interval": 5,
         "format": "󰻠  {usage}%",
         "tooltip": true,
         "on-click": "kitty --class waybar-tui -e btop"
+    },
+
+    // one block glyph per hardware thread, coloured by heat — the whole
+    // processor drawn as a strip of ink. Cool water → gold → peach at 100%.
+    "cpu#cores": {
+        "interval": 5,
+        "format": "{icon0}{icon1}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7}{icon8}{icon9}{icon10}{icon11}{icon12}{icon13}{icon14}{icon15}",
+        "format-icons": [
+            "<span color='#54546D'>▁</span>",
+            "<span color='#658594'>▂</span>",
+            "<span color='#7AA89F'>▃</span>",
+            "<span color='#7FB4CA'>▄</span>",
+            "<span color='#E6C384'>▅</span>",
+            "<span color='#FFA066'>▆</span>",
+            "<span color='#E46876'>▇</span>",
+            "<span color='#FF5D62'>█</span>"
+        ],
+        "tooltip": false,
+        "on-click": "kitty --class waybar-tui -e btop"
+    },
+
+    "disk": {
+        "interval": 120,
+        "path": "/",
+        "format": "󰋊  {percentage_used}%",
+        "tooltip-format": "{used} of {total} on {path}\n{free} free",
+        "on-click": "kitty --class waybar-tui -e sh -c 'df -h -x tmpfs -x devtmpfs -x efivarfs; read -n1'"
+    },
+
+    // live throughput; hidden when offline (empty format = no pill)
+    "network#speed": {
+        "interval": 3,
+        "format": "󰱦 {bandwidthDownBytes}  󰳘 {bandwidthUpBytes}",
+        "format-disconnected": "",
+        "tooltip": false
     },
 
     "temperature": {
@@ -280,10 +412,16 @@
         "on-click": "kitty --class waybar-tui -e btop"
     },
 
+    // A muted microphone rides along inside the volume pill as a red mark —
+    // silent mics are the kind of state you want to see without asking.
+    // middle-click toggles the mic.
     "pulseaudio": {
-        "format": "{icon}  {volume}%",
-        "format-muted": "󰝟  {volume}%",
-        "format-bluetooth": "󰂰  {volume}%",
+        "format": "{icon}  {volume}%{format_source}",
+        "format-muted": "󰝟  {volume}%{format_source}",
+        "format-bluetooth": "󰂰  {volume}%{format_source}",
+        "format-source": "",
+        "format-source-muted": "  <span color='#E46876'>󰍭</span>",
+        "on-click-middle": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
         "format-icons": {
             "headphone": "󰋋",
             "default": ["󰕿", "󰖀", "󰕾"]
