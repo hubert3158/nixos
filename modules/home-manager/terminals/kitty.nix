@@ -74,6 +74,13 @@ in
         # animated cursor smear — pure nerd candy
         cursor_trail = 3;
         cursor_trail_decay = "0.1 0.4";
+        # Trail *styling* only (kitty >= 0.49 custom shaders). What triggers a
+        # trail is still cursor_trail (dwell ms) + cursor_trail_start_threshold
+        # (default 2 cells), so single-cell typing/backspace stay untrailed —
+        # this only fires on multi-cell deletes and bigger jumps, as before.
+        # Alternatives, drop-in: cursor-trail-lightning (jagged/electric),
+        # cursor-trail-motion-blur (directional smear), cursor-trail-default.
+        custom_shaders = "cursor-trail-blaze";
 
         url_color = palette.springBlue;
         url_style = "curly";
