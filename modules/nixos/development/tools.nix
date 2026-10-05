@@ -88,7 +88,18 @@ in
         vscode-langservers-extracted        # html/css/json/eslint servers
         nginx-language-server
         sqls
-        semgrep
+        # TODO(2026-10-05): semgrep commented out to unbreak the rebuild on
+        # nixpkgs 8c6b395. semgrep 1.172.0 pins `pyjwt~=2.13.0` but this pin
+        # ships pyjwt 2.14.0, so pythonRuntimeDepsCheckHook rejects the wheel:
+        #   "pyjwt~=2.13.0 not satisfied by version 2.14.0"
+        # Not cached either (404) — hydra fails the same build, so waiting does
+        # not help; nixpkgs has to relax the bound upstream.
+        # Restore by deleting this comment, or re-apply the one-line override in
+        # `git stash list` -> "wip: anyio/semgrep overrides + pgadmin pin ...",
+        # which sets pythonRelaxDeps = [ "pyjwt" ] (2.14 is a compatible minor
+        # bump; semgrep only uses pyjwt for app-token auth).
+        # Check: p.semgrep cached again? -> 200 means upstream fixed it.
+        # semgrep
         marksman
         graphql-language-service-cli        # graphql-lsp — (graphql +lsp)
         terraform-ls                        # terraform LSP (terraform-mode)

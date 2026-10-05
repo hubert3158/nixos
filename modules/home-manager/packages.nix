@@ -93,7 +93,21 @@ in {
         vtsls
 
         # Python with packages
-        (python312.withPackages (ps:
+        #
+        # Tracks `python3` (the nixpkgs default, currently 3.14) rather than a
+        # pinned python312. Hydra only builds the package set for the default
+        # interpreter, so an off-default version means every package here is a
+        # cache miss that compiles locally AND runs its own test suite — one
+        # upstream test regression anywhere in the closure then takes down the
+        # whole rebuild. That is exactly what happened on nixpkgs 8c6b395:
+        # python312Packages.anyio 4.14.2 was 404 and its TLS test failed, which
+        # cascaded through httpx -> openai into home-manager-path. All 13
+        # packages below are cached (200) on the default interpreter.
+        #
+        # So: do not pin this back to a specific pythonNNN without a concrete
+        # reason. If some tool ever needs an exact version, give it its own env
+        # or a uv venv (see tools/uv-tools.nix) instead of moving this one.
+        (python3.withPackages (ps:
           with ps; [
             reportlab
             openai
@@ -109,8 +123,7 @@ in {
             geoip2
             # Python DAP adapter for Emacs (dape's built-in `debugpy` config runs
             # a bare `python`, which resolves to THIS env — so debugpy must live
-            # inside it, not in systemPackages or a uv venv. Not in the binary
-            # cache (404) but a tiny pure-Python build, no torch/onnxruntime.
+            # inside it, not in systemPackages or a uv venv.
             debugpy
           ]))
         pipx

@@ -27,22 +27,15 @@
       });
     })
 
-    # inline-snapshot 0.32.5: 3 of its own unit tests fail on the current
-    # nixpkgs pin (upstream test breakage, not a runtime problem). It is a
-    # check-time dep of python openai, so the failure cascades into the whole
-    # python312 env. Skip its tests. Must go through pythonPackagesExtensions
-    # so every python version's package set (incl. python312Packages) picks
-    # up the override — a top-level attr override wouldn't reach openai's deps.
-    (final: prev: {
-      pythonPackagesExtensions = (prev.pythonPackagesExtensions or []) ++ [
-        (pyfinal: pyprev: {
-          inline-snapshot = pyprev.inline-snapshot.overridePythonAttrs (old: {
-            doCheck = false;
-            doInstallCheck = false;
-          });
-        })
-      ];
-    })
+    # NOTE (2026-10-05): the inline-snapshot doCheck=false override that used to
+    # live here is gone. It existed because inline-snapshot's own unit tests
+    # failed on the python312 set, and it is a check-time dep of openai — but
+    # the python env now tracks the default interpreter (see packages.nix), and
+    # on that set both inline-snapshot and openai are cached and green.
+    # Worse, keeping it was actively harmful: overriding a check-time dep changes
+    # openai's drv hash, so openai lost its binary-cache hit and compiled
+    # locally. If a python check failure ever needs skipping again, scope it to
+    # the env that needs it rather than putting it here.
 
     # vscode-langservers-extracted 4.10.0 ships *ServerMain.js bundles that are
     # CommonJS (babel-injected top-level `require("core-js/...")`) except for a

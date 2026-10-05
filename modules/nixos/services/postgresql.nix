@@ -56,7 +56,23 @@ in
 
     environment.systemPackages = with pkgs; [
       pgformatter
-      pgadmin4
+      # TODO(2026-10-05): pgadmin4 commented out to unbreak the rebuild on
+      # nixpkgs 8c6b395. pgadmin 9.14 monkeypatches psycopg's PRIVATE
+      # `psycopg._encodings._py_codecs`, which became a tuple in psycopg 3.3.5
+      # (this pin; 3.3.4 before), so the driver dies on import:
+      #   TypeError: 'tuple' object does not support item assignment
+      # Upstream bug in pgadmin, see its
+      # web/pgadmin/utils/driver/psycopg3/encoding.py. NOT test-only — that code
+      # runs at driver import, so every connection would break at runtime, and
+      # it is not a one-line patch (it also calls `_py_codecs.items()` and
+      # assigns `_encodings.pg_codecs`).
+      # Cleanest restore: pin pgadmin4 to a nixpkgs with psycopg 3.3.4 — the
+      # flameshot-style overlay is in `git stash list` -> "wip: anyio/semgrep
+      # overrides + pgadmin pin for nixpkgs 8c6b395" (rev c7def04, same pgadmin
+      # 9.14, cached). That pin self-heals: whole-package substitution, so no
+      # hash-changing tweak and no silent local-build tax.
+      # Meanwhile: psql + pgformatter on the CLI, or run pgadmin in a container.
+      # pgadmin4
     ];
   };
 }
