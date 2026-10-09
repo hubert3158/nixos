@@ -2,9 +2,10 @@
 #
 # Work/private host definitions are NOT tracked in this repo (it is public).
 # They live in gopass (entry `ssh/work-config`) and are decrypted into
-# ~/.ssh/config.d/work by an activation script on every rebuild (work host
-# only, via workHostsFromPass). The Include below picks them up; a glob that
-# matches nothing is a silent no-op, so machines without the entry still work.
+# ~/.ssh/config.d/work by an activation script on every in-session rebuild
+# (all hosts, via workHostsFromPass; skipped at boot). The Include below picks
+# them up; a glob that matches nothing is a silent no-op, so machines without
+# the entry still work.
 #
 # Update flow: gopass edit ssh/work-config   (or edit ~/.ssh/config.d/work,
 # then `gopass cat ssh/work-config < ~/.ssh/config.d/work` — activation
@@ -36,6 +37,13 @@
       hmSpawnedGpg=1
     fi
   '';
+
+  # At boot, activation runs from home-manager-<user>.service before anyone
+  # has logged in: /run/user/$UID does not exist, gpg-agent has no cached
+  # passphrase and pinentry cannot prompt, so every `timeout 10 gopass cat`
+  # burns its full 10s. With ~11 entries that held up SDDM ~110s every boot
+  # and synced nothing. Skip instead — the next in-session rebuild syncs.
+  hasUserSession = ''[ -d "/run/user/$(id -u)" ]'';
 
   # Counterpart to ensureGpgAgent. A stray activation-spawned keyboxd keeps the
   # ~/.gnupg/public-keys.d/pubring.db dotlock for the whole boot; every later
@@ -144,20 +152,24 @@ in {
     # activation script's stdin happens to carry and prints nothing.
     home.activation.syncWorkSshHosts = lib.mkIf cfg.workHostsFromPass (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        export PATH="${lib.makeBinPath [ pkgs.gopass pkgs.gnupg pkgs.coreutils ]}:$PATH"
-        ${ensureGpgAgent}
-        mkdir -p "$HOME/.ssh/config.d"
-        chmod 700 "$HOME/.ssh/config.d"
-        if timeout 10 gopass cat ${lib.escapeShellArg cfg.passEntry} \
-            < /dev/null > "$HOME/.ssh/config.d/.work.tmp" 2>/dev/null \
-            && [ -s "$HOME/.ssh/config.d/.work.tmp" ]; then
-          chmod 600 "$HOME/.ssh/config.d/.work.tmp"
-          mv "$HOME/.ssh/config.d/.work.tmp" "$HOME/.ssh/config.d/work"
+        if ! ${hasUserSession}; then
+          echo "ssh.nix: no user session (boot); skipping gopass sync of ~/.ssh/config.d/work" >&2
         else
-          rm -f "$HOME/.ssh/config.d/.work.tmp"
-          echo "ssh.nix: cannot decrypt gopass entry '${cfg.passEntry}' (gpg-agent locked?); keeping existing ~/.ssh/config.d/work" >&2
+          export PATH="${lib.makeBinPath [ pkgs.gopass pkgs.gnupg pkgs.coreutils ]}:$PATH"
+          ${ensureGpgAgent}
+          mkdir -p "$HOME/.ssh/config.d"
+          chmod 700 "$HOME/.ssh/config.d"
+          if timeout 10 gopass cat ${lib.escapeShellArg cfg.passEntry} \
+              < /dev/null > "$HOME/.ssh/config.d/.work.tmp" 2>/dev/null \
+              && [ -s "$HOME/.ssh/config.d/.work.tmp" ]; then
+            chmod 600 "$HOME/.ssh/config.d/.work.tmp"
+            mv "$HOME/.ssh/config.d/.work.tmp" "$HOME/.ssh/config.d/work"
+          else
+            rm -f "$HOME/.ssh/config.d/.work.tmp"
+            echo "ssh.nix: cannot decrypt gopass entry '${cfg.passEntry}' (gpg-agent locked?); keeping existing ~/.ssh/config.d/work" >&2
+          fi
+          ${releaseGpgAgent}
         fi
-        ${releaseGpgAgent}
       ''
     );
 
@@ -175,25 +187,30 @@ in {
     # decrypt from ever replacing a good key file.
     home.activation.syncWorkSshKeys = lib.mkIf cfg.keysFromPass (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        export PATH="${lib.makeBinPath [ pkgs.gopass pkgs.gnupg pkgs.coreutils ]}:$PATH"
-        ${ensureGpgAgent}
-        if entries=$(timeout 10 gopass ls --flat ${lib.escapeShellArg cfg.passKeysPrefix} < /dev/null 2>/dev/null); then
-          while IFS= read -r entry <&3; do
-            [ -n "$entry" ] || continue
-            name=$(basename "$entry")
-            if timeout 10 gopass cat "$entry" < /dev/null > "$HOME/.ssh/.$name.tmp" 2>/dev/null \
-                && [ -s "$HOME/.ssh/.$name.tmp" ]; then
-              chmod 600 "$HOME/.ssh/.$name.tmp"
-              mv "$HOME/.ssh/.$name.tmp" "$HOME/.ssh/$name"
-            else
-              rm -f "$HOME/.ssh/.$name.tmp"
-              echo "ssh.nix: cannot decrypt gopass entry '$entry'; keeping existing ~/.ssh/$name" >&2
-            fi
-          done 3<<< "$entries"
+        if ! ${hasUserSession}; then
+          echo "ssh.nix: no user session (boot); skipping gopass sync of ssh keys" >&2
         else
-          echo "ssh.nix: cannot list gopass prefix '${cfg.passKeysPrefix}' (gpg-agent locked?); ssh keys not synced" >&2
+          export PATH="${lib.makeBinPath [ pkgs.gopass pkgs.gnupg pkgs.coreutils ]}:$PATH"
+          ${ensureGpgAgent}
+          if entries=$(timeout 10 gopass ls --flat ${lib.escapeShellArg cfg.passKeysPrefix} < /dev/null 2>/dev/null); then
+            while IFS= read -r entry <&3; do
+              [ -n "$entry" ] || continue
+              name=$(basename "$entry")
+              if timeout 10 gopass cat "$entry" < /dev/null > "$HOME/.ssh/.$name.tmp" 2>/dev/null \
+                  && [ -s "$HOME/.ssh/.$name.tmp" ]; then
+                chmod 600 "$HOME/.ssh/.$name.tmp"
+                mv "$HOME/.ssh/.$name.tmp" "$HOME/.ssh/$name"
+              else
+                rm -f "$HOME/.ssh/.$name.tmp"
+                echo "ssh.nix: cannot decrypt gopass entry '$entry'; keeping existing ~/.ssh/$name and skipping the rest (gpg-agent locked?)" >&2
+                break
+              fi
+            done 3<<< "$entries"
+          else
+            echo "ssh.nix: cannot list gopass prefix '${cfg.passKeysPrefix}' (gpg-agent locked?); ssh keys not synced" >&2
+          fi
+          ${releaseGpgAgent}
         fi
-        ${releaseGpgAgent}
       ''
     );
   };
