@@ -109,6 +109,7 @@ in {
   modules.services.flatpak.enable = true;
   modules.services.appimage.enable = true;
   modules.services.printing.enable = true;
+  modules.services.thunar.enable = true;
   # cloudflared is enabled per-host (tunnel id/hostname live in the host config)
 
   # ============================================================================

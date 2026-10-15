@@ -99,6 +99,7 @@ in {
           "audio/mpeg" = ["mpv.desktop"];
           "audio/flac" = ["mpv.desktop"];
           "audio/ogg" = ["mpv.desktop"];
+          "inode/directory" = ["thunar.desktop"];
           "image/jpeg" = ["swayimg.desktop"];
           "image/png" = ["swayimg.desktop"];
           "image/gif" = ["swayimg.desktop"];

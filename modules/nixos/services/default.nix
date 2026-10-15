@@ -10,5 +10,6 @@
     ./flatpak.nix
     ./appimage.nix
     ./printing.nix
+    ./thunar.nix
   ];
 }
