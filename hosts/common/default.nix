@@ -3,6 +3,7 @@
   cocoindex = pkgs.callPackage ../../packages/cocoindex {};
   ccline = pkgs.callPackage ../../packages/ccline {};
   sigmap = pkgs.callPackage ../../packages/sigmap {};
+  crafts = pkgs.callPackage ../../packages/storytold-craft {}; # pdfcraft, gridcraft (prebuilt)
 in {
   # ============================================================================
   # ENABLE ALL MODULES
@@ -242,6 +243,8 @@ in {
     ccline # @cometix/ccline statusline (custom pkg, Rust binary)
     cocoindex # incremental indexing engine for agents (Python+Rust)
     sigmap # AI context engine CLI (gen-context / gen-project-map)
+    crafts.pdfcraft # storytold PDF reader/organizer — not in nixpkgs yet (PR #571437)
+    crafts.gridcraft # storytold spreadsheet — nixpkgs 0.8.0 uncached (local Rust build), prebuilt 0.11.1 instead
   ];
 
   # Environment shells

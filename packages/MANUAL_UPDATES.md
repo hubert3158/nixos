@@ -28,6 +28,7 @@ These look manual but aren't — listed so they're not bumped twice:
 | **ccline** | `packages/ccline/default.nix` | npm `@cometix/ccline-linux-x64` | see below |
 | **cocoindex** | `packages/cocoindex/default.nix` | PyPI `cocoindex` (manylinux wheel) | see below |
 | **sigmap** | `packages/sigmap/default.nix` | npm `sigmap` | see below |
+| **pdfcraft, gridcraft** | `packages/storytold-craft/default.nix` | GitHub releases `storytold/<name>` (linux-x86_64 tarball) | see below |
 
 ### ccline / sigmap (npm tarballs)
 
@@ -42,6 +43,25 @@ nix-prefetch-url --type sha256 "https://registry.npmjs.org/sigmap/-/sigmap-<VERS
 ```
 
 Then edit `version` + `hash` in the derivation.
+
+### pdfcraft / gridcraft (storytold GitHub release tarballs)
+
+pdfcraft is not in nixpkgs (PR NixOS/nixpkgs#571437); gridcraft is, but uncached
+(from-source Rust build). Before bumping, check whether nixpkgs now has a cached
+`pkgs.pdfcraft` / `pkgs.gridcraft` (CLAUDE.md cache check) — if so, delete that
+entry from the builder and use the nixpkgs attr like wordcraft.
+
+```bash
+# latest version
+curl -s https://api.github.com/repos/storytold/<NAME>/releases/latest | jq -r .tag_name
+
+# new hash
+nix hash convert --hash-algo sha256 --to sri \
+  $(curl -sL https://github.com/storytold/<NAME>/releases/download/v<VERSION>/SHA256SUMS.txt \
+    | grep '<NAME>-<VERSION>-linux-x86_64.tar.gz' | cut -d' ' -f1)
+```
+
+Then edit `version` + `hash` for that entry.
 
 ### cocoindex (PyPI wheel)
 
@@ -135,17 +155,6 @@ Deliberately pinned to a fixed nixpkgs commit to work around a flameshot v14 +
 xdg-desktop-portal-hyprland screenshot-interface ABI mismatch (30s portal
 timeout). **Leave pinned.** Only revisit when nixpkgs ships compatible versions —
 see the comment in `flake.nix`.
-
-### Prisma schema engine (`packages/prisma-schema-engine-static/`)
-
-Tracks the Prisma version **installed in the core-v3 project**, not npm-latest.
-Bump only after upgrading Prisma there:
-
-```bash
-~/nixos/scripts/update-prisma-engine.sh   # reads version from core-v3/backend
-```
-
-See `.claude/CLAUDE.md` for the full Prisma workaround rationale.
 
 ## Imperative installs — outside Nix entirely
 

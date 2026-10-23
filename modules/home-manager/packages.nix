@@ -144,6 +144,7 @@ in {
         pandoc
         mdbook-pdf
         libreoffice
+        wordcraft # Rust word processor (storytold/wordcraft) — DOCX/ODT/RTF; cached
 
         onedrive
       ])
