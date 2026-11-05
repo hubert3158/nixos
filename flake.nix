@@ -142,6 +142,7 @@
                 # modules.programs.emacs.daemon = true;
                 modules.programs.helix.enable = true;
                 modules.programs.herdr.enable = true;
+                modules.programs.claude-code.enable = true;
 
                 modules.fileManagers.yazi.enable = true;
                 modules.fileManagers.ranger.enable = true;
@@ -149,6 +150,7 @@
                 modules.tools.eza.enable = true;
                 modules.tools.bat.enable = true;
                 modules.tools.zoxide.enable = true;
+                modules.tools.worktrunk.enable = true;
                 modules.tools.fzf.enable = true;
                 modules.tools.htop.enable = true;
                 modules.tools.fastfetch.enable = true;

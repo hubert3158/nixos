@@ -145,6 +145,8 @@ in {
         mdbook-pdf
         libreoffice
         wordcraft # Rust word processor (storytold/wordcraft) — DOCX/ODT/RTF; cached
+        pdfcraft # storytold PDF reader/organizer; cached
+        vectorcraft # storytold vector graphics editor; cached
 
         onedrive
       ])
@@ -194,9 +196,8 @@ in {
       # Browsers
       ++ [
         google-chrome
-        brave
         # Force XWayland — native Wayland path has hover-triggered tooltip
-        # rendering glitches in Edge specifically (Chrome/Brave unaffected).
+        # rendering glitches in Edge specifically (Chrome unaffected).
         (microsoft-edge.override {commandLineArgs = "--ozone-platform=x11";})
       ]
       # Fun packages

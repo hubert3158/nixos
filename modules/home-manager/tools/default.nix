@@ -6,6 +6,7 @@
     ./eza.nix
     ./bat.nix
     ./zoxide.nix
+    ./worktrunk.nix
     ./fzf.nix
     ./delta.nix
     ./htop.nix

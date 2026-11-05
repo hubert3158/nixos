@@ -18,29 +18,6 @@
       flameshot = inputs.nixpkgs-flameshot.legacyPackages.${prev.stdenv.hostPlatform.system}.flameshot;
     })
 
-    # diff-cover 10.5.1 (nixpkgs bump 2026-10-08, PR #470881) fails 6 HTML
-    # snapshot tests on the python314 set (rendered report differs from the
-    # checked-in fixture) -> uncached on hydra -> sqlfluff builds locally and
-    # fails. Only sqlfluff depends on diff-cover, so scope the override to it
-    # rather than pythonPackagesExtensions. Both are pure python, cheap to build.
-    # Check: p.sqlfluff cached again (200)? -> drop this block.
-    (final: prev: {
-      sqlfluff = prev.sqlfluff.override {
-        python3Packages = prev.python3Packages.overrideScope (pyfinal: pyprev: {
-          diff-cover = pyprev.diff-cover.overridePythonAttrs (old: {
-            disabledTests = (old.disabledTests or [ ]) ++ [
-              "test_added_file_pycodestyle_html"
-              "test_added_file_pyflakes_html"
-              "test_added_file_pylint_html"
-              "test_all_reports"
-              "test_fail_under_html"
-              "test_fail_under_pass_html"
-            ];
-          });
-        });
-      };
-    })
-
     # NOTE (2026-10-05): the inline-snapshot doCheck=false override that used to
     # live here is gone. It existed because inline-snapshot's own unit tests
     # failed on the python312 set, and it is a check-time dep of openai — but
@@ -50,5 +27,17 @@
     # openai's drv hash, so openai lost its binary-cache hit and compiled
     # locally. If a python check failure ever needs skipping again, scope it to
     # the env that needs it rather than putting it here.
+
+    # opencode 2.2.5: nixpkgs-unstable carries a stale node_modules hash, so the
+    # build dies with a hash mismatch. Fixed on master (NixOS/nixpkgs#582675)
+    # but not in the channel yet; same value as that fix.
+    # Check: `nix eval` p.opencode.node_modules.outputHash matches? -> drop this block.
+    (final: prev: {
+      opencode = prev.opencode.overrideAttrs (old: {
+        node_modules = old.node_modules.overrideAttrs {
+          outputHash = "sha256-prx9dX7kUvs/E3zopkaPk5LXh3xJAy5sZeum/W8L7cA=";
+        };
+      });
+    })
   ];
 }

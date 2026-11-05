@@ -94,7 +94,6 @@ in
       themePackages = lib.mkIf cfg.enablePlymouth [ himalPlymouth ];
     };
     boot.consoleLogLevel = lib.mkIf cfg.enablePlymouth 3;
-    boot.initrd.verbose = lib.mkIf cfg.enablePlymouth false;
     # Only the console-silencing params belong under enablePlymouth. Keep the
     # conditional scoped to that list so anything added later (reboot=, acpi
     # quirks) can sit outside it and survive with plymouth off.

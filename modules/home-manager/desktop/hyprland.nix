@@ -83,10 +83,13 @@ in
         # builds against 0.56 (PR KZDKM/Hyprspace#238 is the candidate).
         # pkgs.hyprlandPlugins.hyprspace
 
-        # cursor tilt + shake-to-find, rev-pinned to match Hyprland — see
+        # cursor tilt + shake-to-find is disabled: upstream hyprpm.toml has no
+        # commit_pins entry for Hyprland 0.57.x yet, and has open 0.57 crash
+        # reports (VirtCode/hypr-dynamic-cursors#170). Re-enable once
+        # ./scripts/update-hypr-dynamic-cursors.sh finds a pin. See
         # dynamicCursorsPin in the let block above, which also carries the two
         # drift warnings.
-        hyprDynamicCursors
+        # hyprDynamicCursors
       ];
       # require() with an absolute path registers the dotfile with Hyprland's
       # inotify watcher (plain dofile() would not), so saving it reloads live.

@@ -3,19 +3,13 @@
 # We unpack the tarball, install the JS files, and wrap with nix-provided nodejs.
 { lib
 , stdenvNoCC
-, fetchurl
+, sources
 , nodejs
 , makeWrapper
 }:
 
-stdenvNoCC.mkDerivation rec {
-  pname = "sigmap";
-  version = "6.10.12";
-
-  src = fetchurl {
-    url = "https://registry.npmjs.org/sigmap/-/sigmap-${version}.tgz";
-    hash = "sha256-s2RpWKZNAG1+OLKaGd/lqctqInxsk0rfmDi0cx8B4Zg=";
-  };
+stdenvNoCC.mkDerivation {
+  inherit (sources.sigmap) pname version src;
 
   nativeBuildInputs = [ makeWrapper ];
 

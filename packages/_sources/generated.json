@@ -1,0 +1,62 @@
+{
+    "agent-desktop": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "agent-desktop",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-nksaadnWvkh4c6HfjbYSNKi3qcea7O1OQDqBJsDgvMA=",
+            "type": "url",
+            "url": "https://registry.npmjs.org/agent-desktop/-/agent-desktop-1.2.0.tgz"
+        },
+        "version": "1.2.0"
+    },
+    "cocoindex": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "cocoindex",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-627ctqgHKjh4zrXdVnrvf2ETsoDI+pflx/OyYp1dOq8=",
+            "type": "url",
+            "url": "https://files.pythonhosted.org/packages/cp311/c/cocoindex/cocoindex-1.1.1-cp311-abi3-manylinux_2_28_x86_64.whl"
+        },
+        "version": "1.1.1"
+    },
+    "gridcraft": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "gridcraft",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-Qp4DNM3TDtdev/WUU6ZEEUw8t+M0eZGoGzIEHXX0H+Q=",
+            "type": "url",
+            "url": "https://github.com/storytold/gridcraft/releases/download/v0.16.1/gridcraft-0.16.1-linux-x86_64.tar.gz"
+        },
+        "version": "0.16.1"
+    },
+    "sigmap": {
+        "cargoLock": null,
+        "date": null,
+        "extract": null,
+        "name": "sigmap",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-8N6AeFh45WvitjxbIg48zNvBlL4dZV65vcC/VVtrHfE=",
+            "type": "url",
+            "url": "https://registry.npmjs.org/sigmap/-/sigmap-8.85.1.tgz"
+        },
+        "version": "8.85.1"
+    }
+}

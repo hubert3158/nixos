@@ -1,9 +1,11 @@
 # Common configuration shared by all hosts
 {pkgs, ...}: let
-  cocoindex = pkgs.callPackage ../../packages/cocoindex {};
-  ccline = pkgs.callPackage ../../packages/ccline {};
-  sigmap = pkgs.callPackage ../../packages/sigmap {};
-  crafts = pkgs.callPackage ../../packages/storytold-craft {}; # pdfcraft, gridcraft (prebuilt)
+  # versions + hashes come from packages/nvfetcher.toml, bumped by scripts/update-everything.sh
+  sources = pkgs.callPackage ../../packages/_sources/generated.nix {};
+  cocoindex = pkgs.callPackage ../../packages/cocoindex {inherit sources;};
+  sigmap = pkgs.callPackage ../../packages/sigmap {inherit sources;};
+  agent-desktop = pkgs.callPackage ../../packages/agent-desktop {inherit sources;};
+  crafts = pkgs.callPackage ../../packages/storytold-craft {inherit sources;}; # gridcraft (prebuilt)
 in {
   # ============================================================================
   # ENABLE ALL MODULES
@@ -240,11 +242,11 @@ in {
 
     # AI / Claude Code tooling — replaces previous npm-global installs.
     claude-code # @anthropic-ai/claude-code CLI
-    ccline # @cometix/ccline statusline (custom pkg, Rust binary)
+    claude-powerline # Claude Code statusline; config in home-manager-config-files/claude
     cocoindex # incremental indexing engine for agents (Python+Rust)
     sigmap # AI context engine CLI (gen-context / gen-project-map)
-    crafts.pdfcraft # storytold PDF reader/organizer — not in nixpkgs yet (PR #571437)
-    crafts.gridcraft # storytold spreadsheet — nixpkgs 0.8.0 uncached (local Rust build), prebuilt 0.11.1 instead
+    agent-desktop # computer use for AI agents via AT-SPI (custom pkg, prebuilt binaries)
+    crafts.gridcraft # storytold spreadsheet — nixpkgs lags far behind, prebuilt tarball instead
   ];
 
   # Environment shells
@@ -277,6 +279,10 @@ in {
   # Kill the biggest memory hog before the kernel OOM-kills the session
   # (the work machine swaps to zram only — no disk swap to absorb spikes)
   services.earlyoom.enable = true;
+
+  # Accessibility bus — agent-desktop reads apps through AT-SPI. When disabled,
+  # NixOS also sets NO_AT_BRIDGE=1 and GTK_A11Y=none, hiding GTK apps from it.
+  services.gnome.at-spi2-core.enable = true;
 
   # Periodic SSD TRIM
   services.fstrim.enable = true;

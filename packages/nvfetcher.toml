@@ -1,0 +1,21 @@
+# Upstream tracking for the custom packages nixpkgs can't provide.
+# Generates packages/_sources/generated.nix (version + hash for each entry).
+# Don't run by hand — use ./scripts/update-everything.sh.
+
+[sigmap]
+src.cmd = "curl -s https://registry.npmjs.org/sigmap | jq -r '.\"dist-tags\".latest'"
+fetch.url = "https://registry.npmjs.org/sigmap/-/sigmap-$ver.tgz"
+
+[agent-desktop]
+src.cmd = "curl -s https://registry.npmjs.org/agent-desktop | jq -r '.\"dist-tags\".latest'"
+fetch.url = "https://registry.npmjs.org/agent-desktop/-/agent-desktop-$ver.tgz"
+
+[cocoindex]
+src.pypi = "cocoindex"
+fetch.url = "https://files.pythonhosted.org/packages/cp311/c/cocoindex/cocoindex-$ver-cp311-abi3-manylinux_2_28_x86_64.whl"
+
+# gridcraft: nixpkgs has it, but far behind upstream (0.8.0 vs 0.11.x).
+[gridcraft]
+src.github = "storytold/gridcraft"
+src.prefix = "v"
+fetch.url = "https://github.com/storytold/gridcraft/releases/download/v$ver/gridcraft-$ver-linux-x86_64.tar.gz"

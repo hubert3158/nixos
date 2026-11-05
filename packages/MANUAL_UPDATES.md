@@ -15,73 +15,26 @@ After any bump: `sudo nixos-rebuild switch --flake ~/nixos`.
 These look manual but aren't — listed so they're not bumped twice:
 
 - **uv tools** (`modules/home-manager/tools/uv-tools.nix`): `serena-agent`,
-  `cocoindex-code`, `semble`, `graphify` (PyPI `graphifyy`), `markitdown`.
+  `cocoindex-code`, `semble`, `graphify` (PyPI `graphifyy`), `markitdown`,
+  `scrapling` (playwright + patchright pinned to `pkgs.playwright-driver.version`).
   Installed with `uv tool install --upgrade`, which re-runs on every
   home-manager switch → upgraded on every rebuild.
   > Note: `cocoindex-code` (uv) is **not** the same as the Nix `cocoindex`
   > package below.
 
-## Manual — bump to latest
+## Tracked by nvfetcher (`packages/nvfetcher.toml`)
 
-| Package | File | Source | How to get the new hash |
-|---------|------|--------|-------------------------|
-| **ccline** | `packages/ccline/default.nix` | npm `@cometix/ccline-linux-x64` | see below |
-| **cocoindex** | `packages/cocoindex/default.nix` | PyPI `cocoindex` (manylinux wheel) | see below |
-| **sigmap** | `packages/sigmap/default.nix` | npm `sigmap` | see below |
-| **pdfcraft, gridcraft** | `packages/storytold-craft/default.nix` | GitHub releases `storytold/<name>` (linux-x86_64 tarball) | see below |
+sigmap, agent-desktop, cocoindex and gridcraft live in `packages/` but
+take their version and hash from `packages/_sources/generated.nix`, which
+nvfetcher regenerates from upstream. Never edit that file by hand; add new
+packages to the TOML instead.
 
-### ccline / sigmap (npm tarballs)
+`./scripts/update-everything.sh` runs `nix flake update`, nvfetcher, and the two
+version-gated scripts below in one go. Before dropping an entry for nixpkgs, run
+the CLAUDE.md cache check; gridcraft is here because nixpkgs lags far behind.
 
-```bash
-# latest version
-curl -s https://registry.npmjs.org/@cometix/ccline-linux-x64 | jq -r '.["dist-tags"].latest'
-curl -s https://registry.npmjs.org/sigmap | jq -r '.["dist-tags"].latest'
-
-# new hash (substitute pkg + version)
-nix-prefetch-url --type sha256 "https://registry.npmjs.org/sigmap/-/sigmap-<VERSION>.tgz" \
-  | tail -1 | xargs -I{} nix hash convert --hash-algo sha256 --to sri {}
-```
-
-Then edit `version` + `hash` in the derivation.
-
-### pdfcraft / gridcraft (storytold GitHub release tarballs)
-
-pdfcraft is not in nixpkgs (PR NixOS/nixpkgs#571437); gridcraft is, but uncached
-(from-source Rust build). Before bumping, check whether nixpkgs now has a cached
-`pkgs.pdfcraft` / `pkgs.gridcraft` (CLAUDE.md cache check) — if so, delete that
-entry from the builder and use the nixpkgs attr like wordcraft.
-
-```bash
-# latest version
-curl -s https://api.github.com/repos/storytold/<NAME>/releases/latest | jq -r .tag_name
-
-# new hash
-nix hash convert --hash-algo sha256 --to sri \
-  $(curl -sL https://github.com/storytold/<NAME>/releases/download/v<VERSION>/SHA256SUMS.txt \
-    | grep '<NAME>-<VERSION>-linux-x86_64.tar.gz' | cut -d' ' -f1)
-```
-
-Then edit `version` + `hash` for that entry.
-
-### cocoindex (PyPI wheel)
-
-The wheel URL contains a per-file hash directory, so **both the URL and the hash
-change** on a bump.
-
-```bash
-# latest version
-curl -s https://pypi.org/pypi/cocoindex/json | jq -r '.info.version'
-
-# URL + sha256 for the cp311-abi3 manylinux wheel of a given version
-curl -s https://pypi.org/pypi/cocoindex/<VERSION>/json | jq -r '
-  .urls[] | select(.filename | endswith("cp311-abi3-manylinux_2_28_x86_64.whl"))
-  | "url: \(.url)\nsha256: \(.digests.sha256)"'
-
-# convert the hex sha256 PyPI gives you into an SRI hash
-nix hash convert --hash-algo sha256 --to sri <HEX_SHA256>
-```
-
-Then edit `version`, `url`, and `hash` in the derivation.
+nvfetcher takes upstream's latest blindly. On a major bump, check the tarball
+layout still matches the `installPhase` of that package.
 
 ## Manual — version-gated (do NOT chase upstream latest)
 
@@ -146,8 +99,9 @@ matching entry up in upstream `hyprpm.toml`, and prefetches the hash. If upstrea
 has no entry for that Hyprland yet it stops and says so — keep the old pin and
 retry later rather than guessing.
 
-Currently Hyprland `0.56.2` → plugin `5a22428` (nixpkgs still at `f5ba36c`, so
-the override is still required).
+Currently **disabled** in `plugins`: upstream has no pin for Hyprland `0.57.1` and
+open 0.57 crash reports (#170). Pin still reads `0.56.2` → `5a22428`. When the
+script finds a pin, uncomment `hyprDynamicCursors` in `hyprland.nix`.
 
 ### nixpkgs-flameshot input (`flake.nix`)
 

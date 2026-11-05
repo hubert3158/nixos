@@ -15,5 +15,6 @@
     ./emacs.nix
     ./helix.nix
     ./herdr.nix
+    ./claude-code.nix
   ];
 }

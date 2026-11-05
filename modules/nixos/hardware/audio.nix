@@ -29,7 +29,7 @@ in
     enableJack = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Enable JACK support";
+      description = "Install pw-jack, for running JACK apps on PipeWire";
     };
   };
 
@@ -42,12 +42,11 @@ in
       alsa.enable = cfg.enableAlsa;
       alsa.support32Bit = cfg.enableAlsa32Bit;
       pulse.enable = cfg.enablePulse;
-      jack.enable = cfg.enableJack;
     };
 
     environment.systemPackages = with pkgs; [
       pipewire
       pavucontrol
-    ];
+    ] ++ lib.optional cfg.enableJack pipewire.jack; # pw-jack <app> runs an app on PipeWire's JACK
   };
 }

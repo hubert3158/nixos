@@ -38,6 +38,17 @@ let
       args = "-p 3.13 --python-preference only-managed graphifyy";
     }
     {
+      name = "scrapling";
+      # [all] = CLI, interactive shell and MCP server (`scrapling-mcp`).
+      # Skip `scrapling install`: install-deps can't work on NixOS, and browsers
+      # come from the global PLAYWRIGHT_BROWSERS_PATH (playwright-driver). That
+      # path holds one exact browser revision, and --upgrade would otherwise move
+      # past it, so pin both drivers to the nixpkgs playwright version.
+      args = "-p 3.13 --python-preference only-managed 'scrapling[all]'"
+        + " --with 'playwright==${pkgs.playwright-driver.version}'"
+        + " --with 'patchright==${lib.versions.majorMinor pkgs.playwright-driver.version}.*'";
+    }
+    {
       name = "markitdown";
       # Nix's python312Packages.markitdown pulls torch+onnxruntime+transformers
       # as hard deps (via speechrecognition/magika) and isn't cached → hours of

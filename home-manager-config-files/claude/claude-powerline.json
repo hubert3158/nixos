@@ -1,0 +1,34 @@
+{
+  "theme": "custom",
+  "display": {
+    "style": "powerline",
+    "charset": "unicode",
+    "colorCompatibility": "auto",
+    "autoWrap": true,
+    "padding": 1,
+    "lines": [
+      {
+        "segments": {
+          "directory": { "enabled": true, "style": "basename" },
+          "git": { "enabled": true, "showSha": false, "showWorkingTree": true, "showOperation": true, "showAheadBehind": true },
+          "model": { "enabled": true },
+          "context": { "enabled": true, "showPercentageOnly": true, "displayStyle": "text" },
+          "block": { "enabled": true, "type": "weighted", "burnType": "tokens" },
+          "weekly": { "enabled": true }
+        }
+      }
+    ]
+  },
+  "colors": {
+    "custom": {
+      "directory": { "bg": "#7E9CD8", "fg": "#1F1F28", "bold": true },
+      "git": { "bg": "#2A2A37", "fg": "#98BB6C" },
+      "model": { "bg": "#363646", "fg": "#DCD7BA" },
+      "context": { "bg": "#2A2A37", "fg": "#7AA89F" },
+      "contextWarning": { "bg": "#2A2A37", "fg": "#E6C384" },
+      "contextCritical": { "bg": "#2A2A37", "fg": "#D27E99" },
+      "block": { "bg": "#363646", "fg": "#957FB8" },
+      "weekly": { "bg": "#2A2A37", "fg": "#957FB8" }
+    }
+  }
+}
