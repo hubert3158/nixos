@@ -36,6 +36,18 @@ the CLAUDE.md cache check; gridcraft is here because nixpkgs lags far behind.
 nvfetcher takes upstream's latest blindly. On a major bump, check the tarball
 layout still matches the `installPhase` of that package.
 
+## Claude skills and plugins (`scripts/update-skills.sh`)
+
+Skills and plugins live outside the repo, so `update-everything.sh` updates them
+on the machine it runs on; run it on both. Covers the skills CLI, all plugins and
+the git-cloned skills. Plugin updates stop to confirm a changed install command,
+so run it from a terminal.
+
+Not covered:
+
+- **Hand-copied skills:** `dimensional-drawing`, `dimensional-drawing-motion`,
+  `impeccable` and `mcapay` have no tracked source.
+
 ## Manual — version-gated (do NOT chase upstream latest)
 
 ### kulala_http tree-sitter grammar (`packages/neovim/default.nix`)

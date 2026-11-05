@@ -4,6 +4,7 @@
 #   2. nvfetcher           — custom packages in packages/nvfetcher.toml
 #   3. kulala grammar      — follows the kulala.nvim nixpkgs ships
 #   4. hypr-dynamic-cursors — follows upstream hyprpm.toml; waits if no pin exists
+#   5. Claude skills/plugins — scripts/update-skills.sh; run on each machine
 #
 # Rebuild afterwards: sudo nixos-rebuild switch --flake ~/nixos
 
@@ -33,4 +34,10 @@ nix eval --raw --impure --expr \
   "(builtins.getFlake \"$REPO_DIR\").inputs.nixpkgs.legacyPackages.\${builtins.currentSystem}.playwright-driver.version"
 echo
 
+echo "==> Claude skills and plugins"
+# Not fatal: a skill source being down shouldn't block the rebuild.
+./scripts/update-skills.sh ||
+  echo "    some skill updates failed — see above, retry with ./scripts/update-skills.sh"
+
+echo
 echo "Done. Rebuild: sudo nixos-rebuild switch --flake ~/nixos"
