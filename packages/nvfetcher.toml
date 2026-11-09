@@ -19,3 +19,9 @@ fetch.url = "https://files.pythonhosted.org/packages/cp311/c/cocoindex/cocoindex
 src.github = "storytold/gridcraft"
 src.prefix = "v"
 fetch.url = "https://github.com/storytold/gridcraft/releases/download/v$ver/gridcraft-$ver-linux-x86_64.tar.gz"
+
+# raea: canary render engine, changes daily; prebuilt tarball (~1 GB) only.
+[raea]
+src.github = "shinyobjectz/raea"
+src.prefix = "v"
+fetch.url = "https://github.com/shinyobjectz/raea/releases/download/v$ver/raea-$ver-linux-x86_64.tar.gz"

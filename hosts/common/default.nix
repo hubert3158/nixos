@@ -6,6 +6,8 @@
   sigmap = pkgs.callPackage ../../packages/sigmap {inherit sources;};
   agent-desktop = pkgs.callPackage ../../packages/agent-desktop {inherit sources;};
   crafts = pkgs.callPackage ../../packages/storytold-craft {inherit sources;}; # gridcraft (prebuilt)
+  nepali-fonts = pkgs.callPackage ../../packages/nepali-fonts {};
+  raea = pkgs.callPackage ../../packages/raea {inherit sources;};
 in {
   # ============================================================================
   # ENABLE ALL MODULES
@@ -183,6 +185,7 @@ in {
     mplus-outline-fonts.githubRelease
     dina-font
     proggyfonts
+    nepali-fonts # legacy Preeti-encoded ARAP fonts, fetched by pinned hash
   ];
 
   # Additional system packages not covered by modules
@@ -247,7 +250,12 @@ in {
     sigmap # AI context engine CLI (gen-context / gen-project-map)
     agent-desktop # computer use for AI agents via AT-SPI (custom pkg, prebuilt binaries)
     crafts.gridcraft # storytold spreadsheet — nixpkgs lags far behind, prebuilt tarball instead
+    raea # Render Anything Engine (React/TS -> video/3D/games on the GPU); prebuilt canary tarball
   ];
+
+  # raea's agent skill, matched to the installed version (what its `curl | sh`
+  # installer would copy into ~/.claude/skills by hand).
+  home-manager.users.hubert.home.file.".claude/skills/raea".source = "${raea}/share/raea/skills/raea";
 
   # Environment shells
   environment.shells = with pkgs; [zsh];

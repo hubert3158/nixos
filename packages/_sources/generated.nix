@@ -30,6 +30,14 @@
       sha256 = "sha256-Qp4DNM3TDtdev/WUU6ZEEUw8t+M0eZGoGzIEHXX0H+Q=";
     };
   };
+  raea = {
+    pname = "raea";
+    version = "0.1.0";
+    src = fetchurl {
+      url = "https://github.com/shinyobjectz/raea/releases/download/v0.1.0/raea-0.1.0-linux-x86_64.tar.gz";
+      sha256 = "sha256-usiPwFMGQdzg9efQOUiIGvouv9QrEdcDd2ri9D3jzC0=";
+    };
+  };
   sigmap = {
     pname = "sigmap";
     version = "8.85.1";
