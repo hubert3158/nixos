@@ -121,6 +121,8 @@
                 modules.desktop.waybar.enable = true;
                 # mako retired → swaync: control center + mpris + sliders
                 modules.desktop.swaync.enable = true;
+                # keyboard/mouse sharing with the Windows machine (daemon as user service)
+                modules.desktop.lan-mouse.enable = true;
                 modules.desktop.wlogout.enable = true;
 
                 modules.programs.git.enable = true;

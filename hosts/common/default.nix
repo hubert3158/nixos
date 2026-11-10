@@ -251,6 +251,8 @@ in {
     agent-desktop # computer use for AI agents via AT-SPI (custom pkg, prebuilt binaries)
     crafts.gridcraft # storytold spreadsheet — nixpkgs lags far behind, prebuilt tarball instead
     raea # Render Anything Engine (React/TS -> video/3D/games on the GPU); prebuilt canary tarball
+    blender # raea's asset workshop (`raea blender run`, headless); raea finds it on PATH; cached
+    bun # raea's mocap retarget script (sdk/raea/tools/retarget.ts) runs under bun
   ];
 
   # raea's agent skill, matched to the installed version (what its `curl | sh`

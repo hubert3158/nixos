@@ -42,7 +42,9 @@ in {
 
     allowedUDPPorts = lib.mkOption {
       type = lib.types.listOf lib.types.port;
-      default = [];
+      default = [
+        4242 # lan-mouse (keyboard/mouse sharing with the Windows machine, DTLS)
+      ];
       description = "Allowed UDP ports in firewall";
     };
   };

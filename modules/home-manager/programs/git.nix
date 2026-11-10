@@ -42,6 +42,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
+      lfs.enable = true; # git-lfs + its filters in ~/.gitconfig (raea projects keep media in LFS)
       signing.format = "openpgp";
       settings = {
         user.name = cfg.userName;

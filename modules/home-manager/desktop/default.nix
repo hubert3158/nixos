@@ -15,6 +15,7 @@
     ./flameshot.nix
     ./waybar.nix
     ./swaync.nix
+    ./lan-mouse.nix
     ./wlogout.nix
   ];
 }
