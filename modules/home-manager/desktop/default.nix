@@ -16,6 +16,7 @@
     ./waybar.nix
     ./swaync.nix
     ./lan-mouse.nix
+    ./kdeconnect.nix
     ./wlogout.nix
   ];
 }

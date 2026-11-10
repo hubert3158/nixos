@@ -150,6 +150,9 @@ in {
   programs.zsh.enable = true;
   programs.fish.enable = true;
   programs.tmux.enable = true;
+  # KDE Connect: file sending + clipboard sync with the Windows machine (and phones).
+  # Opens its firewall range, TCP+UDP 1714-1764. Daemon + tray: modules/home-manager/desktop/kdeconnect.nix
+  programs.kdeconnect.enable = true;
 
   # Steam
   programs.steam.enable = true;

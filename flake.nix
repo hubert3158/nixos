@@ -123,6 +123,8 @@
                 modules.desktop.swaync.enable = true;
                 # keyboard/mouse sharing with the Windows machine (daemon as user service)
                 modules.desktop.lan-mouse.enable = true;
+                # files + clipboard with the Windows machine (lan-mouse has no clipboard)
+                modules.desktop.kdeconnect.enable = true;
                 modules.desktop.wlogout.enable = true;
 
                 modules.programs.git.enable = true;
