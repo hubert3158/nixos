@@ -25,9 +25,6 @@ in {
       "v" = "nvim";
       "vi" = "nvim";
 
-      # AI coding
-      "oc" = "opencode";
-
       # File manager aliases
       "r" = "ranger";
       "y" = "yazi";

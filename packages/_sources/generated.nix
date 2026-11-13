@@ -8,34 +8,34 @@
 {
   agent-desktop = {
     pname = "agent-desktop";
-    version = "1.2.0";
+    version = "1.3.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/agent-desktop/-/agent-desktop-1.2.0.tgz";
-      sha256 = "sha256-nksaadnWvkh4c6HfjbYSNKi3qcea7O1OQDqBJsDgvMA=";
+      url = "https://registry.npmjs.org/agent-desktop/-/agent-desktop-1.3.0.tgz";
+      sha256 = "sha256-Wi71vtS4PD5+WnEpnlJMtCXrKJfkyQq3C92umB1xebc=";
     };
   };
   cocoindex = {
     pname = "cocoindex";
-    version = "1.1.1";
+    version = "1.2.0";
     src = fetchurl {
-      url = "https://files.pythonhosted.org/packages/cp311/c/cocoindex/cocoindex-1.1.1-cp311-abi3-manylinux_2_28_x86_64.whl";
-      sha256 = "sha256-627ctqgHKjh4zrXdVnrvf2ETsoDI+pflx/OyYp1dOq8=";
+      url = "https://files.pythonhosted.org/packages/cp311/c/cocoindex/cocoindex-1.2.0-cp311-abi3-manylinux_2_28_x86_64.whl";
+      sha256 = "sha256-kazYZq/DNieM0DBmSs2r+V/bVvY/Gf1KmiurhMc94G4=";
     };
   };
   gridcraft = {
     pname = "gridcraft";
-    version = "0.16.1";
+    version = "0.19.1";
     src = fetchurl {
-      url = "https://github.com/storytold/gridcraft/releases/download/v0.16.1/gridcraft-0.16.1-linux-x86_64.tar.gz";
-      sha256 = "sha256-Qp4DNM3TDtdev/WUU6ZEEUw8t+M0eZGoGzIEHXX0H+Q=";
+      url = "https://github.com/storytold/gridcraft/releases/download/v0.19.1/gridcraft-0.19.1-linux-x86_64.tar.gz";
+      sha256 = "sha256-jZe7otW7AP1p7VUGSFLB/ZFN5A1ezVXKAcjfgbgolG0=";
     };
   };
   raea = {
     pname = "raea";
-    version = "0.1.0";
+    version = "0.1.2";
     src = fetchurl {
-      url = "https://github.com/shinyobjectz/raea/releases/download/v0.1.0/raea-0.1.0-linux-x86_64.tar.gz";
-      sha256 = "sha256-usiPwFMGQdzg9efQOUiIGvouv9QrEdcDd2ri9D3jzC0=";
+      url = "https://github.com/shinyobjectz/raea/releases/download/v0.1.2/raea-0.1.2-linux-x86_64.tar.gz";
+      sha256 = "sha256-U/XkGX+GdHqEnX+J7Xaa/w4Ur+gSgI5OoYMOToDChqE=";
     };
   };
   sigmap = {

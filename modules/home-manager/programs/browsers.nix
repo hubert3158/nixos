@@ -13,11 +13,19 @@ in
       default = true;
       description = "Enable Qutebrowser";
     };
+
+    enableBrave = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable Brave";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     programs.qutebrowser = lib.mkIf cfg.enableQutebrowser {
       enable = true;
     };
+
+    home.packages = lib.mkIf cfg.enableBrave [ pkgs.brave ];
   };
 }

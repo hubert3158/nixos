@@ -75,6 +75,11 @@
           {
             nixpkgs.config = {
               allowUnfree = true;
+              # Temporary: nixpkgs flags qutebrowser because QtWebEngine still
+              # accepts the revoked eMudhra intermediates. Drop once unflagged.
+              permittedInsecurePackages = [
+                "qutebrowser-3.7.0"
+              ];
             };
           }
 
@@ -139,7 +144,6 @@
                 modules.programs.browsers.enable = true;
                 modules.programs.media.enable = true;
                 modules.programs.nixIndex.enable = true;
-                modules.programs.opencode.enable = true;
                 modules.programs.emacs.enable = true;
                 # daemon disabled — resident emacs server was eating ~340M RAM.
                 # Re-enable for instant `emacsclient` startup.

@@ -56,7 +56,10 @@ in
 
     environment.systemPackages = with pkgs; [
       pgformatter
-      pgadmin4
+      # TODO(2026-11-13): pgadmin4 9.18 not cached on nixpkgs 2074cc6 (404),
+      # so it compiles from source. Unused for now.
+      # Check: p.pgadmin4 cached again? -> 200 means uncomment.
+      # pgadmin4
     ];
   };
 }
