@@ -8,10 +8,10 @@
 {
   agent-desktop = {
     pname = "agent-desktop";
-    version = "1.3.0";
+    version = "1.3.1";
     src = fetchurl {
-      url = "https://registry.npmjs.org/agent-desktop/-/agent-desktop-1.3.0.tgz";
-      sha256 = "sha256-Wi71vtS4PD5+WnEpnlJMtCXrKJfkyQq3C92umB1xebc=";
+      url = "https://registry.npmjs.org/agent-desktop/-/agent-desktop-1.3.1.tgz";
+      sha256 = "sha256-8T0UzybAO5FXtS4lgWS+PE5+ZzBDt/EqLwpl3H/YGHA=";
     };
   };
   cocoindex = {
@@ -32,18 +32,18 @@
   };
   raea = {
     pname = "raea";
-    version = "0.1.2";
+    version = "0.1.5";
     src = fetchurl {
-      url = "https://github.com/shinyobjectz/raea/releases/download/v0.1.2/raea-0.1.2-linux-x86_64.tar.gz";
-      sha256 = "sha256-U/XkGX+GdHqEnX+J7Xaa/w4Ur+gSgI5OoYMOToDChqE=";
+      url = "https://github.com/shinyobjectz/raea/releases/download/v0.1.5/raea-0.1.5-linux-x86_64.tar.gz";
+      sha256 = "sha256-KwUHGgYKQu9WkDjR2gglbJ5/QCAePr4Iq/8oA81EIE4=";
     };
   };
   sigmap = {
     pname = "sigmap";
-    version = "8.85.1";
+    version = "8.87.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/sigmap/-/sigmap-8.85.1.tgz";
-      sha256 = "sha256-8N6AeFh45WvitjxbIg48zNvBlL4dZV65vcC/VVtrHfE=";
+      url = "https://registry.npmjs.org/sigmap/-/sigmap-8.87.0.tgz";
+      sha256 = "sha256-KKmFmx99oHed7hpzZbEqFBmfa/mK1hbvtgekFdmgPz0=";
     };
   };
 }
