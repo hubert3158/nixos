@@ -53,11 +53,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-KwUHGgYKQu9WkDjR2gglbJ5/QCAePr4Iq/8oA81EIE4=",
+            "sha256": "sha256-epfosM6KAQ0YJ4DvFCdOc6HGlYKpgygsoXM+TaZCK4A=",
             "type": "url",
-            "url": "https://github.com/shinyobjectz/raea/releases/download/v0.1.5/raea-0.1.5-linux-x86_64.tar.gz"
+            "url": "https://github.com/shinyobjectz/raea/releases/download/v0.1.7/raea-0.1.7-linux-x86_64.tar.gz"
         },
-        "version": "0.1.5"
+        "version": "0.1.7"
     },
     "sigmap": {
         "cargoLock": null,
