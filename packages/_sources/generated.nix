@@ -32,18 +32,18 @@
   };
   raea = {
     pname = "raea";
-    version = "0.1.7";
+    version = "0.1.9";
     src = fetchurl {
-      url = "https://github.com/shinyobjectz/raea/releases/download/v0.1.7/raea-0.1.7-linux-x86_64.tar.gz";
-      sha256 = "sha256-epfosM6KAQ0YJ4DvFCdOc6HGlYKpgygsoXM+TaZCK4A=";
+      url = "https://github.com/shinyobjectz/raea/releases/download/v0.1.9/raea-0.1.9-linux-x86_64.tar.gz";
+      sha256 = "sha256-N+XQgxCC2jSvqw907tfI8g5po71FBAymQNOEYsynQOo=";
     };
   };
   sigmap = {
     pname = "sigmap";
-    version = "8.87.0";
+    version = "8.88.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/sigmap/-/sigmap-8.87.0.tgz";
-      sha256 = "sha256-KKmFmx99oHed7hpzZbEqFBmfa/mK1hbvtgekFdmgPz0=";
+      url = "https://registry.npmjs.org/sigmap/-/sigmap-8.88.0.tgz";
+      sha256 = "sha256-lIGnV+ADrDqEvsNQLC6LhQXY8IbLjhT0GooePJyHSHg=";
     };
   };
 }

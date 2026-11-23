@@ -53,11 +53,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-epfosM6KAQ0YJ4DvFCdOc6HGlYKpgygsoXM+TaZCK4A=",
+            "sha256": "sha256-N+XQgxCC2jSvqw907tfI8g5po71FBAymQNOEYsynQOo=",
             "type": "url",
-            "url": "https://github.com/shinyobjectz/raea/releases/download/v0.1.7/raea-0.1.7-linux-x86_64.tar.gz"
+            "url": "https://github.com/shinyobjectz/raea/releases/download/v0.1.9/raea-0.1.9-linux-x86_64.tar.gz"
         },
-        "version": "0.1.7"
+        "version": "0.1.9"
     },
     "sigmap": {
         "cargoLock": null,
@@ -68,10 +68,10 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-KKmFmx99oHed7hpzZbEqFBmfa/mK1hbvtgekFdmgPz0=",
+            "sha256": "sha256-lIGnV+ADrDqEvsNQLC6LhQXY8IbLjhT0GooePJyHSHg=",
             "type": "url",
-            "url": "https://registry.npmjs.org/sigmap/-/sigmap-8.87.0.tgz"
+            "url": "https://registry.npmjs.org/sigmap/-/sigmap-8.88.0.tgz"
         },
-        "version": "8.87.0"
+        "version": "8.88.0"
     }
 }
